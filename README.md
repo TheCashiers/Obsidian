@@ -1,7 +1,5 @@
 # Obsidian
 
 # Contributing
-'
-  npm install tsd -g
-  tsd update
-'
+`npm install tsd -g
+tsd update`
