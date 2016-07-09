@@ -8,6 +8,6 @@ install:
     - sudo apt-get install -y dotnet-dev-1.0.0-preview2-003121
 
 script:
-	- cd ./src/Obsidian/
+    - cd ./src/Obsidian/
     - dotnet restore
     - dotnet --verbose build
