@@ -10,7 +10,8 @@ namespace Obsidian.Controllers
 {
     public class ManageController : Controller
     {
-        public IActionResult Index()        {
+        public IActionResult Index()
+        {
             return View();
         }
 
