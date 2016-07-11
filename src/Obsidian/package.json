@@ -1,9 +1,12 @@
 {
-	"version": "1.0.0",
-	"name": "asp.net",
-	"private": true,
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
   "devDependencies": {
-    "typings": "1.3.1"
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2"
   },
-  "scripts": {"postinstall": "typings install"}
+  "scripts": {
+    "prepublish": "webpack"
+  }
 }
