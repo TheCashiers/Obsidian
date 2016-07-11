@@ -10,4 +10,5 @@
     - dotnet --verbose build
 	- npm install -g typescript webpack typings
 	- npm link typescript
+	- npm update
 	- typings install
