@@ -29,6 +29,7 @@ bld/
 src/Obsidian/wwwroot/lib/
 src/Obsidian/wwwroot/js/
 src/Obsidian/typings/
+src/Obsidian/wwwroot/_references.js
 
 
 # MSTest test Results
