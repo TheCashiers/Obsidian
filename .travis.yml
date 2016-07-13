@@ -15,4 +15,5 @@ script:
     - npm install -g typescript webpack typings
     - npm link typescript
     - typings install
+    - bower install
     - webpack
