@@ -12,22 +12,44 @@ const SERVER_DATA = {
 };
 
 
-export class LoginComponent extends React.Component<any, any>{
-    render() {
+export var LoginComponent = React.createClass({
+    getInitialState: function () {
+        return { username: '', password: '' };
+    },
+    handleUsernameChange: function (e) {
+        this.setState({ username: e.target.value });
+    },
+    handlePasswordChange: function (e) {
+        this.setState({ password: e.target.value });
+    },
+    handleSubmit: function (e) {
+        e.preventDefault();
+        var username = this.state.username.trim();
+        var password = this.state.password.trim();
+        if (!username || !password) {
+            return;
+        }
+        // TODO: send request to the server
+        console.log("login attempt:" + username + " // " + password);
+        this.setState({ username: '', password: '' });
+    },
+    render: function () {
         return (
-            <div>
-                <input type="text" placeholder="Username"/>
-                <input type="password" placeholder="Password"/>
-                <SubmitButton/>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={this.state.username}
+                    onChange={this.handleUsernameChange}
+                    />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
+                    />
+                <button type="submit">LOGIN</button>
+            </form>
         );
     }
-};
-
-class SubmitButton extends React.Component<any, any>{
-    render() {
-        return <button>Login</button>
-    }
-}
-
-export const HelloComponent = (props) => <h1>Hello from {this.props.compiler} and {this.props.framework}!</h1>;
+});

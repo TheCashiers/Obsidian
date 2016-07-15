@@ -4,9 +4,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { HelloComponent, LoginComponent } from "./components/Login";
+import { LoginComponent } from "./components/Login";
 
 ReactDOM.render(
-    <LoginComponent compiler="TypeScript" framework="React" />,
+    <LoginComponent />,
     document.getElementById("loginer")
 );
