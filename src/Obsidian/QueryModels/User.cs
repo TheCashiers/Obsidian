@@ -1,4 +1,4 @@
-﻿using Shared;
+﻿using Obsidian.Shared;
 using System;
 
 namespace Obsidian.QueryModels
@@ -18,7 +18,7 @@ namespace Obsidian.QueryModels
         #region Props
 
         /// <summary>
-        /// Represents the unique identifier of the user.
+        /// Represents the unique identifier of the <see cref="User"/>.
         /// </summary>
         public Guid Id { get; }
 

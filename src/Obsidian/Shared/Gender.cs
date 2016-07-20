@@ -1,7 +1,9 @@
-﻿namespace Shared
+﻿using Obsidian.Domain;
+
+namespace Obsidian.Shared
 {
     /// <summary>
-    /// Represents the gender of a <see cref="Domain.User"/>.
+    /// Represents the gender of a <see cref="User"/>.
     /// </summary>
     public enum Gender
     {

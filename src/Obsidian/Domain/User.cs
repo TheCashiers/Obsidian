@@ -1,9 +1,9 @@
-﻿using Shared;
+﻿using Obsidian.Shared;
 using System;
 
 namespace Obsidian.Domain
 {
-    public class User
+    public class User : IEntity, IAggregateRoot
     {
         /// <summary>
         /// Initializes a new instence of <see cref="User"/>.
@@ -18,7 +18,7 @@ namespace Obsidian.Domain
         #region Props
 
         /// <summary>
-        /// Represents the unique identifier of the user.
+        /// Represents the unique identifier of the <see cref="User"/>.
         /// </summary>
         public Guid Id { get; }
 
