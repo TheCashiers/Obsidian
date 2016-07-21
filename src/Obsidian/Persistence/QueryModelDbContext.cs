@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Obsidian.QueryModels;
+using System.Linq;
 
 namespace Obsidian.Persistence
 {
@@ -10,14 +11,13 @@ namespace Obsidian.Persistence
         /// </summary>
         /// <param name="options"></param>
         public QueryModelDbContext(DbContextOptions<QueryModelDbContext> options)
-            :base(options)
+            : base(options)
         {
-            Users = base.Set<User>();
         }
 
         /// <summary>
         /// Used to query instences of <see cref="User"/>.
         /// </summary>
-        public DbSet<User> Users { get; }
+        public IQueryable<User> Users { get { return base.Set<User>(); } }
     }
 }
