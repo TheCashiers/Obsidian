@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Obsidian.Controllers
+namespace Obsidian.Controllers.ViewControllers
 {
     public class HomeController : Controller
     {

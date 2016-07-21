@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Obsidian.Persistence;
 
 namespace Obsidian
 {
@@ -37,6 +35,11 @@ namespace Obsidian
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+
+            //Add DbContext
+            const string dbName = "Obsidian";
+            services.AddDbContext<CommandModelDbContext>(opt => opt.UseInMemoryDatabase(dbName));
+            services.AddDbContext<QueryModelDbContext>(opt => opt.UseInMemoryDatabase(dbName));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
