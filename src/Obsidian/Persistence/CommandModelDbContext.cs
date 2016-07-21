@@ -12,12 +12,11 @@ namespace Obsidian.Persistence
         public CommandModelDbContext(DbContextOptions<CommandModelDbContext> options)
             : base(options)
         {
-            Users = base.Set<User>();
         }
 
         /// <summary>
         /// Used to query and save instences of <see cref="User"/>.
         /// </summary>
-        public DbSet<User> Users { get; }
+        public DbSet<User> Users { get { return base.Set<User>(); } }
     }
 }
