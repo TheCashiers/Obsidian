@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Obsidian.Persistence;
+using Obsidian.QueryModel.Persistence;
 
 namespace Obsidian
 {

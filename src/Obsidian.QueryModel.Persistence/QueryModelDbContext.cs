@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Obsidian.QueryModels;
+using Obsidian.QueryModel;
 using System.Linq;
 
-namespace Obsidian.Persistence
+namespace Obsidian.QueryModel.Persistence
 {
     public class QueryModelDbContext : DbContext
     {

@@ -1,9 +1,9 @@
-﻿using Obsidian.Shared;
+﻿using Obsidian.Domain.Shared;
 using System;
 
-namespace Obsidian.QueryModels
+namespace Obsidian.Domain
 {
-    public class User
+    public class User : IEntity, IAggregateRoot
     {
         /// <summary>
         /// Initializes a new instence of <see cref="User"/>.
