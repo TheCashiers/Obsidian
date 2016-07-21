@@ -1,4 +1,5 @@
-﻿using Obsidian.Shared;
+﻿using Obsidian.Domain.Shared;
+using Obsidian.Shared;
 using System;
 
 namespace Obsidian.Domain
