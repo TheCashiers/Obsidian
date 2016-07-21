@@ -1,4 +1,4 @@
-﻿using Obsidian.Shared;
+﻿using Obsidian.Domain.Shared;
 using System;
 using System.Linq;
 
