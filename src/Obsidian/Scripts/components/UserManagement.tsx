@@ -11,9 +11,9 @@ const UserItem = (props) => (
 
 export const UserList = (props) => (
     <div>
-    <h1>Users: </h1>
-    <ul>
+        <h1>Users: </h1>
+        <ul>
             {props.users.map((user, index) => <UserItem username={user.name}/>) }
-    </ul>
-        </div>
+        </ul>
+    </div>
 )
