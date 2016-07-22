@@ -1,6 +1,6 @@
 ﻿using Obsidian.Domain;
 
-namespace Obsidian.Shared
+namespace Obsidian.Domain.Shared
 {
     /// <summary>
     /// Represents the gender of a <see cref="User"/>.

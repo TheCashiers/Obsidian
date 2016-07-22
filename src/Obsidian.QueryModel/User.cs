@@ -1,7 +1,7 @@
-﻿using Obsidian.Shared;
+﻿using Obsidian.QueryModel.Shared;
 using System;
 
-namespace Obsidian.QueryModels
+namespace Obsidian.QueryModel
 {
     public class User
     {
@@ -20,22 +20,22 @@ namespace Obsidian.QueryModels
         /// <summary>
         /// Represents the unique identifier of the <see cref="User"/>.
         /// </summary>
-        public Guid Id { get; }
+        public Guid Id { get; private set;}
 
         /// <summary>
         /// Represents the username used to login.
         /// </summary>
-        public string UserName { get; }
+        public string UserName { get; private set;}
 
         /// <summary>
         /// Represents the display name of the <see cref="User"/> .
         /// </summary>
-        public string DisplayName { get; }
+        public string DisplayName { get; private set;}
 
         /// <summary>
         /// Represents the Gender of the <see cref="User"/>.
         /// </summary>
-        public Gender Gender { get; }
+        public Gender Gender { get; private set;}
 
         #endregion Props
     }

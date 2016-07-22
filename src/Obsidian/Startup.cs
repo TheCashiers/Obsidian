@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Obsidian.Persistence;
+using Obsidian.QueryModel;
+using Obsidian.QueryModel.Persistence;
 
 namespace Obsidian
 {
@@ -40,6 +42,9 @@ namespace Obsidian
             const string dbName = "Obsidian";
             services.AddDbContext<CommandModelDbContext>(opt => opt.UseInMemoryDatabase(dbName));
             services.AddDbContext<QueryModelDbContext>(opt => opt.UseInMemoryDatabase(dbName));
+
+            //configure interface
+            services.AddScoped<IQueryModelDbContext>(prov => prov.GetService<QueryModelDbContext>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

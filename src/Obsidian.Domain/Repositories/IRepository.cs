@@ -1,8 +1,8 @@
-﻿using Obsidian.Shared;
+﻿using Obsidian.Domain.Shared;
 using System;
 using System.Linq;
 
-namespace Obsidian.Persistence.Repositories
+namespace Obsidian.Domain.Repositories
 {
     public interface IRepository<TAggregate> where TAggregate : IAggregateRoot
     {
