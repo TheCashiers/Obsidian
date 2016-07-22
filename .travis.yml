@@ -9,8 +9,9 @@ install:
     - npm install -g typescript webpack typings bower
 
 script:
-    - cd ./src/Obsidian/
+    - cd ./src/
     - dotnet restore
+    - cd ./Obsidian/
     - dotnet --verbose build
     - npm update
     - npm link typescript
