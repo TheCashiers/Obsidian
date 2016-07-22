@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Obsidian.QueryModel;
+using Obsidian.QueryModel.Persistence.Maps;
 using System.Linq;
 
 namespace Obsidian.QueryModel.Persistence
 {
-    public class QueryModelDbContext : DbContext
+    public class QueryModelDbContext : DbContext, IQueryModelDbContext
     {
         /// <summary>
         /// Initializes a new instence of <see cref="QueryModelDbContext"/>.
@@ -13,6 +13,12 @@ namespace Obsidian.QueryModel.Persistence
         public QueryModelDbContext(DbContextOptions<QueryModelDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            UserMap.MapUser(modelBuilder);
         }
 
         /// <summary>
