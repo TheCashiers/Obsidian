@@ -1,5 +1,7 @@
 ﻿module.exports = {
-    entry: "./Scripts/Main.tsx",
+    entry: [
+        "./Scripts/Main.tsx"
+    ],
     output: {
         filename: "./wwwroot/js/bundle.js",
     },
@@ -9,13 +11,14 @@
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js",".css"]
     },
 
     module: {
         loaders: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-            { test: /\.tsx?$/, loader: "ts-loader" }
+            { test: /\.tsx?$/, loader: "ts-loader" },
+            { test: /\.css$/, loader:"style-loader" }
         ],
 
         preLoaders: [
