@@ -6,6 +6,7 @@
     "jquery": "2.2.0",
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.6",
-    "react": "15.2.0"
+    "react": "15.2.0",
+    "axios": "2.6.0"
   }
 }
