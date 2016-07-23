@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Obsidian.Domain;
+using Obsidian.Persistence.Maps;
 
 namespace Obsidian.Persistence
 {
@@ -12,6 +13,12 @@ namespace Obsidian.Persistence
         public CommandModelDbContext(DbContextOptions<CommandModelDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            UserMap.MapUser(modelBuilder);
         }
 
         /// <summary>

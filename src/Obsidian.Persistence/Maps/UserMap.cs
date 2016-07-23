@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Obsidian.Domain;
 
-namespace Obsidian.QueryModel.Persistence.Maps
+namespace Obsidian.Persistence.Maps
 {
     public static class UserMap
     {
