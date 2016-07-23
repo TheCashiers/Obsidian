@@ -6,6 +6,7 @@ import * as ReactDOM from "react-dom";
 
 import { Router, Route, Link } from "react-router";
 import { Main } from "../components/Global";
+import { UserControlContainer } from "../containers/UserManagementContainer";
 
 export var routes = (
     <Router>

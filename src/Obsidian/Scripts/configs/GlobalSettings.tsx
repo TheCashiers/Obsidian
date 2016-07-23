@@ -5,7 +5,7 @@ export const configs = {
     getUser: {
         request_uri: "/api/users",
         request_type: REQUEST_TYPES.GET
-    }
+    } as ServerConfig
 }
 
 
@@ -13,4 +13,9 @@ enum REQUEST_TYPES {
     GET,
     POST,
     PUT
+}
+
+interface ServerConfig {
+    request_uri: string,
+    request_type: REQUEST_TYPES
 }

@@ -6,8 +6,13 @@ import * as SERVER_CONFIG from "../configs/GlobalSettings";
 import { Main } from "../components/Global"
 
 
-ReactDOM.render(
-    <Main>
-        <UserList/>
-    </Main>, document.getElementById("usermanage")
-);
+
+export let UserControlContainer = React.createClass({
+    render: function () {
+        return (
+            <Main>
+                <UserList/>
+            </Main>
+        )
+    }
+});
