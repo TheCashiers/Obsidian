@@ -15,7 +15,7 @@ enum REQUEST_TYPES {
     PUT
 }
 
-interface ServerConfig {
+export interface ServerConfig {
     request_uri: string,
     request_type: REQUEST_TYPES
 }
