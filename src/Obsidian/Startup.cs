@@ -39,9 +39,9 @@ namespace Obsidian
             services.AddMvc();
 
             //Add DbContext
-            const string dbName = "Obsidian";
-            services.AddDbContext<CommandModelDbContext>(opt => opt.UseInMemoryDatabase(dbName));
-            services.AddDbContext<QueryModelDbContext>(opt => opt.UseInMemoryDatabase(dbName));
+            const string connectionString = "Filename=./Obsidian.db";
+            services.AddDbContext<CommandModelDbContext>(opt => opt.UseSqlite(connectionString,b=>b.MigrationsAssembly("Obsidian")));
+            services.AddDbContext<QueryModelDbContext>(opt => opt.UseSqlite(connectionString));
 
             //configure interface
             services.AddScoped<IQueryModelDbContext>(prov => prov.GetService<QueryModelDbContext>());
@@ -59,6 +59,7 @@ namespace Obsidian
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.InsertTestData();
             }
             else
             {
