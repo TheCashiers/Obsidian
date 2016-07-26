@@ -1,12 +1,12 @@
-﻿using Obsidian.Domain.Messaging.Commanding;
+﻿using Obsidian.Application.Commanding;
 using System;
 using System.Collections.Generic;
 
-namespace Obsidian.Domain.Messaging
+namespace Obsidian.Application.Messaging
 {
-    public class Bus
+    public class CommandBus
     {
-        public Bus(IServiceProvider provider)
+        public CommandBus(IServiceProvider provider)
         {
             serviceProvider = provider;
         }

@@ -4,10 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Obsidian.Domain.Messaging.Commanding
+namespace Obsidian.Application.Commanding
 {
-    public abstract class Command : Message
+    public abstract class Command
     {
+        /// <summary>
+        /// Repersents when the <see cref="Command"/> was created.
+        /// </summary>
+        public DateTime TimeStamp { get; } = DateTime.UtcNow;
+
         /// <summary>
         /// Represents if the <see cref="Command"/> is handled.
         /// </summary>

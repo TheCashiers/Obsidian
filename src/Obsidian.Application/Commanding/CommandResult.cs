@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Obsidian.Domain.Messaging.Commanding
+namespace Obsidian.Application.Commanding
 {
     /// <summary>
     /// Represents the handle result of a <see cref="Command"/>.
