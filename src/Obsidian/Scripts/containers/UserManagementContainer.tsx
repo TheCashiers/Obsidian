@@ -3,17 +3,27 @@
 import { UserList } from "../components/UserManagement";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
-import { Main } from "../components/Global"
+import { Main } from "../components/Main";
 
 
 
 
-export class UserManagementContainer extends React.Component<api.IDefaultProps, any> {
+
+export class UserManagementContainer extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            users: [],
+            isLoading: true
+        };
+    }
+    public componentDidMount() {
+        axios.get(api.configs.getUser.request_uri)
+            .then((info) => { this.setState({users:info.data}) });
+    }
     public render() {
         return (
-            <Main>
-                <UserList/>
-            </Main>
+            <UserList users={this.state.users}/>
         );
     }
 

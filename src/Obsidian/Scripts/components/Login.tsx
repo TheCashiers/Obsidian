@@ -3,7 +3,6 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as api from "../configs/GlobalSettings"
 
 

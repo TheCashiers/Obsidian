@@ -10,6 +10,7 @@
   },
   "scripts": {},
   "dependencies": {
+    "axios": "^0.13.1",
     "react-addons-css-transition-group": "^15.2.1"
   }
 }

@@ -13,7 +13,7 @@ export const UserList = (props) => (
     <div>
         <h1>Users: </h1>
         <ul>
-            {props.users.map((user, index) => <UserItem username={user.name}/>) }
+            {props.users.map((user, index) => <UserItem username={user.userName}/>) }
         </ul>
     </div>
 )

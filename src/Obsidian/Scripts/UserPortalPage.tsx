@@ -10,5 +10,5 @@ import { UserManagementContainer } from "./containers/UserManagementContainer";
 
 ReactDOM.render(
     routes,
-    document.getElementById("loginer")
+    document.getElementById("portal")
 );
