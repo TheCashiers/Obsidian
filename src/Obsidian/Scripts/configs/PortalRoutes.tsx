@@ -4,14 +4,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Router, Route, Link } from "react-router";
+import { Router, Route, Link, IndexRoute } from "react-router";
 import { Main } from "../components/Global";
-import { UserControlContainer } from "../containers/UserManagementContainer";
+import { UserManagementContainer } from "../containers/UserManagementContainer";
+
 
 export var routes = (
     <Router>
         <Route path="/manage" component={ Main }>
-            <Route path="/users" component={ UserControlContainer }/>
+            <Route path="/users" component={ UserManagementContainer } />
         </Route>
     </Router>
 );
+

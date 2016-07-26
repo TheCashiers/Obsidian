@@ -1,9 +1,9 @@
 ﻿module.exports = {
     entry: [
-        "./Scripts/Main.tsx"
+        "./Scripts/UserPortalPage.tsx"
     ],
     output: {
-        filename: "./wwwroot/js/bundle.js",
+        filename: "./wwwroot/js/UserPortalBundle.js",
     },
 
     // Enable sourcemaps for debugging webpack's output.

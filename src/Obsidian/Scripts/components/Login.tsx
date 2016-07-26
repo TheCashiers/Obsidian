@@ -4,36 +4,44 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-//Server-side Config Here
-const SERVER_DATA = {
-    request_uri: "/api",
-    invoke_func: "login"
-};
+import * as api from "../configs/GlobalSettings"
 
 
-export var LoginComponent = React.createClass({
-    getInitialState: function () {
-        return { username: '', password: '' };
-    },
-    handleUsernameChange: function (e) {
-        this.setState({ username: e.target.value });
-    },
-    handlePasswordChange: function (e) {
-        this.setState({ password: e.target.value });
-    },
-    handleSubmit: function (e) {
-        e.preventDefault();
-        var username = this.state.username.trim();
-        var password = this.state.password.trim();
-        if (!username || !password) {
-            return;
+
+interface ILoginStates {
+    username?: string;
+    password?: string;
+}
+
+export class LoginComponent extends React.Component<api.IDefaultProps, ILoginStates>{
+    public state: ILoginStates;
+    constructor(props: api.IDefaultProps) {
+        super(props);
+        this.state = {
+            username: "", password: ""
         }
-        // TODO: send request to the server
-        console.log("login attempt:" + username + " // " + password);
-        this.setState({ username: '', password: '' });
-    },
-    render: function () {
+    }
+    public handleUsernameChange(e){
+        this.setState({
+            username: e.target.value as string
+        });
+    }
+    public handlePasswordChange(e) {
+        this.setState({
+            password: e.target.value as string
+        });
+    }
+    public handleSubmit(e) {
+        e.preventDefault();
+        let username = this.state.username.trim();
+        let password = this.state.password.trim();
+        if (username && password) {
+            //TODO:send login requeset
+            this.setState({ username: "", password: "" });
+        }
+        else return;
+    }
+    public render() {
         return (
             <form onSubmit={this.handleSubmit}>
                 <input
@@ -52,4 +60,4 @@ export var LoginComponent = React.createClass({
             </form>
         );
     }
-});
+}

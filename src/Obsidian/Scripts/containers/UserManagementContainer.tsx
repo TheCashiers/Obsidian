@@ -2,17 +2,19 @@
 
 import { UserList } from "../components/UserManagement";
 import * as axios from "axios";
-import * as SERVER_CONFIG from "../configs/GlobalSettings";
+import * as api from "../configs/GlobalSettings";
 import { Main } from "../components/Global"
 
 
 
-export let UserControlContainer = React.createClass({
-    render: function () {
+
+export class UserManagementContainer extends React.Component<api.IDefaultProps, any> {
+    public render() {
         return (
             <Main>
                 <UserList/>
             </Main>
-        )
+        );
     }
-});
+
+}

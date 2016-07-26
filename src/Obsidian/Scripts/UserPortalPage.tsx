@@ -3,10 +3,12 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as api from "./configs/GlobalSettings";
+import { routes } from "./configs/PortalRoutes";
 
-import { LoginComponent } from "./components/Login";
+import { UserManagementContainer } from "./containers/UserManagementContainer";
 
 ReactDOM.render(
-    <LoginComponent />,
+    routes,
     document.getElementById("loginer")
 );
