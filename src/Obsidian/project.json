@@ -29,7 +29,8 @@
     "Obsidian.Domain": "1.0.0-*",
     "Obsidian.QueryModel": "1.0.0-*",
     "Obsidian.Persistence": "1.0.0-*",
-    "Obsidian.QueryModel.Persistence": "1.0.0-*"
+    "Obsidian.QueryModel.Persistence": "1.0.0-*",
+    "Obsidian.Application": "1.0.0-*"
   },
 
   "tools": {
