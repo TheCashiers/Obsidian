@@ -1,10 +1,13 @@
-﻿using Obsidian.Domain.Shared;
+﻿using Obsidian.Domain.Misc;
+using Obsidian.Domain.Shared;
 using System;
 
 namespace Obsidian.Domain
 {
     public class User : IEntity, IAggregateRoot
     {
+        private readonly PasswordHasher _passwordHasher = new PasswordHasher();
+
         /// <summary>
         /// Initializes a new instence of <see cref="User"/>.
         /// </summary>
@@ -24,6 +27,11 @@ namespace Obsidian.Domain
         /// </summary>
         public Guid Id { get; private set; }
 
+        public void SetPassword(string password)
+        {
+            PasswordHash = _passwordHasher.HashPasword(password);
+        }
+
         /// <summary>
         /// Represents the username used to login.
         /// </summary>
@@ -38,6 +46,8 @@ namespace Obsidian.Domain
         /// Represents the Gender of the <see cref="User"/>.
         /// </summary>
         public Gender Gender { get; private set; }
+
+        private string PasswordHash { get; set; }
 
         #endregion Props
     }

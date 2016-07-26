@@ -4,7 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Obsidian.Application.Commanding;
+using Obsidian.Application.Commanding.ApplicationCommands;
+using Obsidian.Application.Commanding.CommandHandlers;
+using Obsidian.Application.Messaging;
+using Obsidian.Domain.Repositories;
 using Obsidian.Persistence;
+using Obsidian.Persistence.Repositories;
 using Obsidian.QueryModel;
 using Obsidian.QueryModel.Persistence;
 
@@ -40,11 +46,15 @@ namespace Obsidian
 
             //Add DbContext
             const string connectionString = "Filename=./Obsidian.db";
-            services.AddDbContext<CommandModelDbContext>(opt => opt.UseSqlite(connectionString,b=>b.MigrationsAssembly("Obsidian")));
+            services.AddDbContext<CommandModelDbContext>(opt => opt.UseSqlite(connectionString, b => b.MigrationsAssembly("Obsidian")));
             services.AddDbContext<QueryModelDbContext>(opt => opt.UseSqlite(connectionString));
 
             //configure interface
             services.AddScoped<IQueryModelDbContext>(prov => prov.GetService<QueryModelDbContext>());
+
+            services.AddSingleton<CommandBus>();
+            services.AddTransient<CreateUserCommandHandler>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +69,6 @@ namespace Obsidian
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-                app.InsertTestData();
             }
             else
             {
@@ -76,6 +85,9 @@ namespace Obsidian
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            var cmdBus = app.ApplicationServices.GetService<CommandBus>();
+            cmdBus.Register<CreateUserCommandHandler, CreateUserCommand>();
         }
     }
 }

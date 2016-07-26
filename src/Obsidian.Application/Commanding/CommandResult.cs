@@ -24,11 +24,23 @@ namespace Obsidian.Application.Commanding
         public bool Succeed { get; private set; }
 
         /// <summary>
+        /// Creates a failed command result.
+        /// </summary>
+        /// <param name="ex">The exception.</param>
+        /// <returns>A failed command result.</returns>
+        public static CommandResult Fail(Exception ex) => new CommandResult(false, ex);
+
+        /// <summary>
         /// Represents the <see cref="System.Exception"/> thrown by the handler.
         /// </summary>
         /// <remarks>
         /// This will be null if <see cref="Succeed"/> is true.
         /// </remarks>
         public Exception Exception { get; private set; }
+
+        /// <summary>
+        /// Represents a success command result.
+        /// </summary>
+        public static CommandResult Succeess { get { return new CommandResult(true, null); } }
     }
 }

@@ -8,9 +8,10 @@ using Obsidian.Persistence;
 namespace Obsidian.Migrations
 {
     [DbContext(typeof(CommandModelDbContext))]
-    partial class CommandModelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160726144937_M1Mig02")]
+    partial class M1Mig02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");

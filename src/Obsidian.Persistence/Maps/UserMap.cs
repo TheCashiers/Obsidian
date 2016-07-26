@@ -10,6 +10,7 @@ namespace Obsidian.Persistence.Maps
             var typeBuilder = builder.Entity<User>();
 
             typeBuilder.HasKey(u => u.Id);
+            typeBuilder.Property<string>("PasswordHash");
             typeBuilder.ToTable("Users");
         }
     }
