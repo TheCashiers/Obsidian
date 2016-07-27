@@ -14,10 +14,5 @@ namespace Obsidian.Controllers.ViewControllers
         {
             return View();
         }
-
-        public IActionResult Users()
-        {
-            return View();
-        }
     }
 }
