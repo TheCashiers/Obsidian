@@ -1,18 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Obsidian.Application.Commanding;
-using Obsidian.Application.Commanding.ApplicationCommands;
-using Obsidian.Application.Commanding.CommandHandlers;
-using Obsidian.Application.Messaging;
-using Obsidian.Domain.Repositories;
-using Obsidian.Persistence;
-using Obsidian.Persistence.Repositories;
-using Obsidian.QueryModel;
-using Obsidian.QueryModel.Persistence;
+using Obsidian.Application.DependencyInjection;
+using Obsidian.Persistence.DependencyInjection;
 
 namespace Obsidian
 {
@@ -44,21 +37,15 @@ namespace Obsidian
 
             services.AddMvc();
 
-            //Add DbContext
-            const string connectionString = "Filename=./Obsidian.db";
-            services.AddDbContext<CommandModelDbContext>(opt => opt.UseSqlite(connectionString, b => b.MigrationsAssembly("Obsidian")));
-            services.AddDbContext<QueryModelDbContext>(opt => opt.UseSqlite(connectionString));
-
-            //configure interface
-            services.AddScoped<IQueryModelDbContext>(prov => prov.GetService<QueryModelDbContext>());
-
-            services.AddSingleton<CommandBus>();
-            services.AddTransient<CreateUserCommandHandler>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            //Add application components
+            services.AddDbContext();
+            services.AddCommandBus();
+            services.AddCommandHandlers();
+            services.AddRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, CommandBus commandBus)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -86,8 +73,7 @@ namespace Obsidian
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var cmdBus = app.ApplicationServices.GetService<CommandBus>();
-            cmdBus.Register<CreateUserCommandHandler, CreateUserCommand>();
+            commandBus.RegisterHandlers();
         }
     }
 }

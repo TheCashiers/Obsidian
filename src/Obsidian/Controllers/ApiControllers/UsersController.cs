@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.Commanding.ApplicationCommands;
 using Obsidian.Application.Dto;
-using Obsidian.Application.Messaging;
+using Obsidian.Application.Commanding;
 using Obsidian.QueryModel;
 using System;
 using System.Linq;

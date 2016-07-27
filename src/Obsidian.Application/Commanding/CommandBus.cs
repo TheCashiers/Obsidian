@@ -1,8 +1,7 @@
-﻿using Obsidian.Application.Commanding;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Obsidian.Application.Messaging
+namespace Obsidian.Application.Commanding
 {
     public class CommandBus
     {
