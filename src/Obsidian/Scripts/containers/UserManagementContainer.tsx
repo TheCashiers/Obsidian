@@ -8,7 +8,6 @@ import { Main } from "../components/Main";
 
 
 
-
 export class UserManagementContainer extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -19,7 +18,7 @@ export class UserManagementContainer extends React.Component<any, any> {
     }
     public componentDidMount() {
         axios.get(api.configs.getUser.request_uri)
-            .then((info) => { this.setState({users:info.data}) });
+            .then((info) => { this.setState({ users: info.data });});
     }
     public render() {
         return (

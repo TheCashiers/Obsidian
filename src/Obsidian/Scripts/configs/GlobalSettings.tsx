@@ -1,16 +1,6 @@
 ﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-export const configs = {
-    getUser: {
-        request_uri: "/api/users",
-        request_type: REQUEST_TYPES.GET
-    } as IServerConfig,
-    login: {
-        request_uri: "/api/login",
-        request_type: REQUEST_TYPES.POST
-    } as IServerConfig
-}
 
 export enum REQUEST_TYPES {
     GET,
@@ -26,3 +16,15 @@ export interface IServerConfig {
 export interface IDefaultProps {
     api: IServerConfig;
 }
+
+export const configs = {
+    getUser: {
+        request_uri: "/api/users",
+        request_type: REQUEST_TYPES.GET
+    } as IServerConfig,
+    login: {
+        request_uri: "/api/login",
+        request_type: REQUEST_TYPES.POST
+    } as IServerConfig
+}
+
