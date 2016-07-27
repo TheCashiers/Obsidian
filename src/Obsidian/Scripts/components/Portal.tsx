@@ -6,7 +6,7 @@ import { Router, Route, Link, IndexRoute, hashHistory } from "react-router";
 
 export const Portal = (props) => {
     return (
-        <Link to="/users">
+        <Link to="/manage/users">
             <button className="btn btn-lg btn-success">Go to User Management</button>
         </Link>
     )

@@ -12,6 +12,9 @@ interface ILoginStates {
     password?: string;
 }
 
+//TODO: Seperate this from View UI.
+
+
 export class LoginComponent extends React.Component<api.IDefaultProps, ILoginStates>{
     public state: ILoginStates;
     constructor(props: api.IDefaultProps) {

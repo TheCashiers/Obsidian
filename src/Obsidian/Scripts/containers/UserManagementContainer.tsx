@@ -5,10 +5,13 @@ import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import { Main } from "../components/Main";
 
+interface UserManagementState {
+    users: Array<any>; 
+    isLoading: boolean;
+}
 
 
-
-export class UserManagementContainer extends React.Component<any, any> {
+export class UserManagementContainer extends React.Component<any, UserManagementState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -18,7 +21,8 @@ export class UserManagementContainer extends React.Component<any, any> {
     }
     public componentDidMount() {
         axios.get(api.configs.getUser.request_uri)
-            .then((info) => { this.setState({ users: info.data });});
+            .then((info) => { this.setState({ users: info.data as Array<any>, isLoading: false }); })
+            .catch((e) => { console.warn("Obsidian Exception: " + e); });
     }
     public render() {
         return (

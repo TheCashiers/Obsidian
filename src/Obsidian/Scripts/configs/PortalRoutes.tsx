@@ -3,16 +3,16 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 
-import { Router, Route, IndexRoute, hashHistory } from "react-router";
+import { Router, Route, IndexRoute, hashHistory, browserHistory } from "react-router";
 import { Main } from "../components/Main";
 import { UserManagementContainer } from "../containers/UserManagementContainer";
 import { Portal } from "../components/Portal";
 
 export var routes = (
-    <Router history={ hashHistory }>
-        <Route path="/" component={ Main }>
+    <Router history={ browserHistory }>
+        <Route path="/manage" component={ Main }>
             <IndexRoute component={ Portal }/>
-            <Route path="/users" component={ UserManagementContainer } />
+            <Route path="/manage/users" component={ UserManagementContainer } />
         </Route>
     </Router>
 );
