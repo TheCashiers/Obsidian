@@ -4,15 +4,15 @@
 export const configs = {
     getUser: {
         request_uri: "/api/users",
-        request_type: 0
-    },
+        request_type: REQUEST_TYPES.GET
+    } as IServerConfig,
     login: {
         request_uri: "/api/login",
-        request_type: 1
-    }
-};
+        request_type: REQUEST_TYPES.POST
+    } as IServerConfig
+}
 
-enum REQUEST_TYPES {
+export enum REQUEST_TYPES {
     GET,
     POST,
     PUT

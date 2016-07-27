@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 
-import { Router, Route, Link, IndexRoute, hashHistory } from "react-router";
+import { Router, Route, IndexRoute, hashHistory } from "react-router";
 import { Main } from "../components/Main";
 import { UserManagementContainer } from "../containers/UserManagementContainer";
 import { Portal } from "../components/Portal";
