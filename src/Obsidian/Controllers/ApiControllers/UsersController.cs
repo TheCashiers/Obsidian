@@ -44,7 +44,7 @@ namespace Obsidian.Controllers.ApiControllers
             var resultCmd = _commandBus.Send(cmd);
             if (resultCmd.Result.Succeed)
             {
-                return Created($"~/api/users/{resultCmd.ResultId}", null);
+                return Created(Url.Action(nameof(GetById), new { id = resultCmd.ResultId }), null);
             }
             else
             {
