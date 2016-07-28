@@ -15,7 +15,7 @@ namespace Obsidian.Application.DependencyInjection
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add servicesto.</param>
         /// <returns>The same service collection so that multiple calls can be chained.</returns>
-        public static IServiceCollection AddCommandBus(this IServiceCollection services) => services.AddScoped<CommandBus>();
+        public static IServiceCollection AddCommandBus(this IServiceCollection services) => services.AddSingleton<CommandBus>();
 
         /// <summary>
         /// Register command handlers in <see cref="Commanding.CommandHandlers"/> as services in <see cref="IServiceCollection"/>.

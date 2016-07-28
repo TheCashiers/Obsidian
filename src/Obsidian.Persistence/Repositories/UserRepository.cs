@@ -32,6 +32,9 @@ namespace Obsidian.Persistence.Repositories
             throw new NotImplementedException();
         }
 
+        public User FindByUserName(string userName)
+            => _dbContext.Users.SingleOrDefault(u => u.UserName == userName);
+
         public IQueryable<User> QueryAll()
         {
             throw new NotImplementedException();

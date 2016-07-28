@@ -41,8 +41,15 @@ namespace Obsidian.Controllers.ApiControllers
         public IActionResult Post([FromBody]UserCreationDto dto)
         {
             var cmd = new CreateUserCommand(dto);
-            var result = _commandBus.Send(cmd);
-            return Created($"~/api/users/{result.ResultId}", null);
+            var resultCmd = _commandBus.Send(cmd);
+            if (resultCmd.Result.Succeed)
+            {
+                return Created($"~/api/users/{resultCmd.ResultId}", null);
+            }
+            else
+            {
+                return StatusCode(412, resultCmd.Result.Exception.Message);
+            }
         }
     }
 }

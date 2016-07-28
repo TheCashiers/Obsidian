@@ -19,18 +19,17 @@ namespace Obsidian.Application.Commanding.CommandHandlers
 
         public CreateUserCommand Handle(CreateUserCommand command)
         {
-            try
+            if (_repo.FindByUserName(command.Dto.UserName) != null)
             {
-                var user = User.Create(Guid.NewGuid(), command.Dto.UserName);
-                user.SetPassword(command.Dto.Password);
-                _repo.Add(user);
-                command.Result = CommandResult.Succeess;
-                command.ResultId = user.Id;
+                command.Result = CommandResult.Fail(
+                    new InvalidOperationException($"User of user name {command.Dto.UserName} already exists."));
+                return command;
             }
-            catch (Exception ex)
-            {
-                command.Result = CommandResult.Fail(ex);
-            }
+            var user = User.Create(Guid.NewGuid(), command.Dto.UserName);
+            user.SetPassword(command.Dto.Password);
+            _repo.Add(user);
+            command.Result = CommandResult.Succeess;
+            command.ResultId = user.Id;
             return command;
         }
     }
