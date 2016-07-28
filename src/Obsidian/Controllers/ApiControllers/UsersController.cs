@@ -48,6 +48,7 @@ namespace Obsidian.Controllers.ApiControllers
             }
             else
             {
+                // currently, the only reason for the failure is that a user of the same username exists.
                 return StatusCode(412, resultCmd.Result.Exception.Message);
             }
         }
