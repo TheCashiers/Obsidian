@@ -21,9 +21,20 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
-        public IQueryable<QueryModel.User> Get()
+        public IQueryable<User> Get()
         {
             return _queryDbContext.Users;
+        }
+
+        [HttpGet("{id:guid}")]
+        public IActionResult GetById(Guid id)
+        {
+            var user = _queryDbContext.Users.SingleOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
         [HttpPost]
