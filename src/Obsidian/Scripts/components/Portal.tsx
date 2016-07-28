@@ -2,7 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
-import { Router, Route, Link, IndexRoute, hashHistory } from "react-router";
+import { Link } from "react-router";
 
 export const Portal = (props) => {
     return (
