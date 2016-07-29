@@ -2,6 +2,15 @@
     ViewData["Title"] = "Management Portal";
 }
 @section scripts{
-    <script src="~/js/UserPortalBundle.js"></script>
+<script src="~/lib/adminlte/bootstrap/js/bootstrap.js"></script>
+<script src="~/lib/adminlte/plugins/jQueryUI/jquery-ui.js"></script>
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<script src="~/lib/adminlte/dist/js/app.js"></script>
+<script src="~/js/UserPortalBundle.js"></script>
 }
 <div id="portal"></div>
+
+<link href="~/lib/adminlte/dist/css/AdminLTE.css" rel="stylesheet" />
+<link href="~/lib/adminlte/dist/css/skins/skin-blue.css" rel="stylesheet" />

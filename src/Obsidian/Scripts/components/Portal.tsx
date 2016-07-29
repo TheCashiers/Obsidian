@@ -3,11 +3,12 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 import { Link } from "react-router";
-
 export const Portal = (props) => {
     return (
-        <Link to="/manage/users">
-            <button className="btn btn-lg btn-success">Go to User Management</button>
-        </Link>
+        <div className="content-wrapper">
+            <Link to="/manage/users">
+                <button className="btn btn-lg btn-success">Go to User Management</button>
+            </Link>
+        </div>
     )
 }

@@ -10,7 +10,7 @@ const UserItem = (props) => (
 );
 
 export const UserList = (props) => (
-    <div>
+    <div className="content-wrapper">
         <h1>Users: </h1>
         <ul>
             {props.users.map((user, index) => <UserItem username={user.userName} key={user.id}/>) }
