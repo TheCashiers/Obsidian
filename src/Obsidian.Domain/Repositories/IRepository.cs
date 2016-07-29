@@ -1,6 +1,7 @@
 ﻿using Obsidian.Domain.Shared;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Obsidian.Domain.Repositories
 {
@@ -12,28 +13,28 @@ namespace Obsidian.Domain.Repositories
         /// you build one query through the layers (not tiers!)
         /// </summary>
         /// <returns>IQueryable (query, not data)</returns>
-        IQueryable<TAggregate> QueryAll();
+        Task<IQueryable<TAggregate>> QueryAllAsync();
 
         /// <summary>
         /// Return a <typeparamref name="TAggregate"/> of the <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The unique identifier of the <typeparamref name="TAggregate"/> </param>
         /// <returns><typeparamref name="TAggregate"/></returns>
-        TAggregate FindById(Guid id);
+        Task<TAggregate> FindByIdAsync(Guid id);
 
         /// <summary>
         /// Add an aggregate graph to the store.
         /// </summary>
         /// <param name="aggregate">Aggregate root object</param>
         /// <returns>True if successful; False otherwise</returns>
-        bool Add(TAggregate aggregate);
+        Task AddAsync(TAggregate aggregate);
 
         /// <summary>
         /// Save changes to an aggregate graph already in the store.
         /// </summary>
         /// <param name="aggregate">Aggregate root object</param>
         /// <returns>True if successful; False otherwise</returns>
-        bool Save(TAggregate aggregate);
+        Task SaveAsync(TAggregate aggregate);
 
         /// <summary>
         /// Delete the entire graph rooted in the specified aggregate object.
@@ -41,6 +42,6 @@ namespace Obsidian.Domain.Repositories
         /// </summary>
         /// <param name="aggregate">Aggregate root object</param>
         /// <returns>True if successful; False otherwise</returns>
-        bool Delete(TAggregate aggregate);
+        Task DeleteAsync(TAggregate aggregate);
     }
 }

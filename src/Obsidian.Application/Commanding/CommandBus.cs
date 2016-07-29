@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Obsidian.Application.Commanding
 {
@@ -22,8 +23,8 @@ namespace Obsidian.Application.Commanding
         /// </summary>
         /// <typeparam name="THandler">The type of the handler.</typeparam>
         /// <typeparam name="TCommand">The type of the command.</typeparam>
-        public void Register<THandler, TCommand>() where THandler : ICommandHandler<TCommand>
-                                                   where TCommand : Command
+        public void Register<THandler, TCommand, TResultData>() where THandler : ICommandHandler<TCommand, TResultData>
+                                                   where TCommand : Command<TResultData>
         {
             try
             {
@@ -39,7 +40,7 @@ namespace Obsidian.Application.Commanding
         /// Unregister the handler for a spefific type of commands.
         /// </summary>
         /// <typeparam name="TCommand">The type of the command.</typeparam>
-        public void Unregister<TCommand>() where TCommand : Command
+        public void Unregister<TCommand, TResultData>() where TCommand : Command<TResultData>
         {
             try
             {
@@ -57,16 +58,19 @@ namespace Obsidian.Application.Commanding
         /// <typeparam name="TCommand">the type of the command.</typeparam>
         /// <param name="command">The command.</param>
         /// <returns></returns>
-        public TCommand Send<TCommand>(TCommand command) where TCommand : Command
+        public Task<CommandResult<TResultData>> SendAsync<TCommand, TResultData>(TCommand command) where TCommand : Command<TResultData>
         {
-            if (!_commandHandlerMap.ContainsKey(typeof(TCommand)))
+            Type handlerType;
+            try
             {
-                return command;
+                handlerType = _commandHandlerMap[typeof(TCommand)];
             }
-            var handlerType = _commandHandlerMap[typeof(TCommand)];
-            var handler = (ICommandHandler<TCommand>)_serviceProvider.GetService(handlerType);
-            handler.Handle(command);
-            return command;
+            catch (KeyNotFoundException)
+            {
+                throw new NullReferenceException($"There is no command handler for {typeof(TCommand).FullName}.");
+            }
+            var handler = (ICommandHandler<TCommand, TResultData>)_serviceProvider.GetService(handlerType);
+            return handler.HandleAsync(command);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.Commanding.ApplicationCommands
 {
-    public class CreateUserCommand : Command
+    public class CreateUserCommand : Command<Guid>
     {
         public CreateUserCommand(UserCreationDto dto)
         {
@@ -14,7 +14,5 @@ namespace Obsidian.Application.Commanding.ApplicationCommands
         }
 
         public UserCreationDto Dto { get; private set; }
-
-        public Guid ResultId { get; set; }
     }
 }

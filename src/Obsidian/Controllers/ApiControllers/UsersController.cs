@@ -37,19 +37,20 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]UserCreationDto dto)
+        public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
             var cmd = new CreateUserCommand(dto);
-            var resultCmd = _commandBus.Send(cmd);
-            if (resultCmd.Result.Succeed)
+            var result = await _commandBus.SendAsync<CreateUserCommand, Guid>(cmd);
+            if (result.Succeed)
             {
-                return Created(Url.Action(nameof(GetById), new { id = resultCmd.ResultId }), null);
+                return Created(Url.Action(nameof(GetById), new { id = result.Data }), null);
             }
-            else
+            else if (result.Exception is InvalidOperationException)
             {
-                // currently, the only reason for the failure is that a user of the same username exists.
-                return StatusCode(412, resultCmd.Result.Exception.Message);
+                // currently, the only reason for InvalidOperationException is that a user of the same username exists.
+                return StatusCode(412, result.Exception.Message);
             }
+            return BadRequest();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Obsidian.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Obsidian.Persistence.Repositories
 {
@@ -16,31 +17,29 @@ namespace Obsidian.Persistence.Repositories
             _dbContext = ctx;
         }
 
-        public bool Add(User aggregate)
+        public async Task AddAsync(User aggregate)
         {
             _dbContext.Users.Add(aggregate);
-            return _dbContext.SaveChanges() == 1;
+            await _dbContext.SaveChangesAsync();
         }
 
-        public bool Delete(User aggregate)
+        public Task DeleteAsync(User aggregate)
         {
             throw new NotImplementedException();
         }
 
-        public User FindById(Guid id)
+        public Task<User> FindByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public User FindByUserName(string userName)
-            => _dbContext.Users.SingleOrDefault(u => u.UserName == userName);
+        public Task<User> FindByUserNameAsync(string userName)
+            => _dbContext.Users.AsNoTracking().SingleOrDefaultAsync(u => u.UserName == userName);
 
-        public IQueryable<User> QueryAll()
-        {
-            throw new NotImplementedException();
-        }
+        public Task<IQueryable<User>> QueryAllAsync()
+            => Task.FromResult(_dbContext.Users.AsNoTracking().AsQueryable());
 
-        public bool Save(User aggregate)
+        public Task SaveAsync(User aggregate)
         {
             throw new NotImplementedException();
         }

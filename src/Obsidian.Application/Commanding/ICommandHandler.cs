@@ -1,7 +1,9 @@
-﻿namespace Obsidian.Application.Commanding
+﻿using System.Threading.Tasks;
+
+namespace Obsidian.Application.Commanding
 {
-    public interface ICommandHandler<TCommand> where TCommand : Command
+    public interface ICommandHandler<TCommand, TResultData> where TCommand : Command<TResultData>
     {
-        TCommand Handle(TCommand command);
+        Task<CommandResult<TResultData>> HandleAsync(TCommand command);
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.Commanding.CommandHandlers
 {
-    public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+    public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Guid>
     {
         private readonly IUserRepository _repo;
 
@@ -17,20 +17,16 @@ namespace Obsidian.Application.Commanding.CommandHandlers
             _repo = repo;
         }
 
-        public CreateUserCommand Handle(CreateUserCommand command)
+        public async Task<CommandResult<Guid>> HandleAsync(CreateUserCommand command)
         {
-            if (_repo.FindByUserName(command.Dto.UserName) != null)
+            if (_repo.FindByUserNameAsync(command.Dto.UserName) != null)
             {
-                command.Result = CommandResult.Fail(
-                    new InvalidOperationException($"User of user name {command.Dto.UserName} already exists."));
-                return command;
+                return new CommandResult<Guid>(false, new InvalidOperationException($"User of user name {command.Dto.UserName} already exists."), Guid.Empty);
             }
             var user = User.Create(Guid.NewGuid(), command.Dto.UserName);
             user.SetPassword(command.Dto.Password);
-            _repo.Add(user);
-            command.Result = CommandResult.Succeess;
-            command.ResultId = user.Id;
-            return command;
+            await _repo.AddAsync(user);
+            return new CommandResult<Guid>(true, null, user.Id);
         }
     }
 }

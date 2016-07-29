@@ -17,7 +17,7 @@ namespace Obsidian.Application.Commanding
         /// <returns>The same command bus so that multiple calls can be chained.</returns>
         public static CommandBus RegisterHandlers(this CommandBus bus)
         {
-            bus.Register<CreateUserCommandHandler, CreateUserCommand>();
+            bus.Register<CreateUserCommandHandler, CreateUserCommand, Guid>();
             return bus;
         }
     }
