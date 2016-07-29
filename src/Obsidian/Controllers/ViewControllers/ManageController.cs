@@ -6,7 +6,7 @@ namespace Obsidian.Controllers.ViewControllers
 {
     public class ManageController : Controller
     {
-        [Route("[controller]/{path?}")]
+        [Route("[controller]/{*path}")]
         public IActionResult Index(string path = "")
         {
             ViewData["FrontendRoute"] = path;
