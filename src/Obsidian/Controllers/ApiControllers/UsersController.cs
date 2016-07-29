@@ -5,6 +5,8 @@ using Obsidian.Application.Commanding;
 using Obsidian.QueryModel;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -21,15 +23,12 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
-        public IQueryable<User> Get()
-        {
-            return _queryDbContext.Users;
-        }
+        public Task<IQueryable<User>> Get() => Task.FromResult(_queryDbContext.Users);
 
         [HttpGet("{id:guid}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var user = _queryDbContext.Users.SingleOrDefault(u => u.Id == id);
+            var user = await _queryDbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
