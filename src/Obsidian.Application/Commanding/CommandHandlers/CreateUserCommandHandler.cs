@@ -19,7 +19,7 @@ namespace Obsidian.Application.Commanding.CommandHandlers
 
         public async Task<CommandResult<Guid>> HandleAsync(CreateUserCommand command)
         {
-            if (_repo.FindByUserNameAsync(command.Dto.UserName) != null)
+            if (await _repo.FindByUserNameAsync(command.Dto.UserName) != null)
             {
                 return new CommandResult<Guid>(false, new InvalidOperationException($"User of user name {command.Dto.UserName} already exists."), Guid.Empty);
             }
