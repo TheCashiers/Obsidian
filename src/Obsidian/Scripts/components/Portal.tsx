@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 import { Link } from "react-router";
+
 export const Portal = (props) => {
     return (
         <div className="content-wrapper">
