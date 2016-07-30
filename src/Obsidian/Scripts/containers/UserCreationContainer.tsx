@@ -1,17 +1,15 @@
 ﻿import * as React from "react";
 
-import { UserList } from "../components/UserManagement";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
-import { Main } from "../components/Main";
 import { CreateUser } from "../components/CreateUser";
 
-interface UserCreationState {
+interface IUserCreationState {
     username?: string;
     password?: string;
 }
 
-export class UserCreationContainer extends React.Component<any, UserCreationState>{
+export class UserCreationContainer extends React.Component<any, IUserCreationState> {
     constructor(props: any) {
         super(props);
         this.state = { username: "", password: "" };
@@ -31,18 +29,20 @@ export class UserCreationContainer extends React.Component<any, UserCreationStat
     }
     handleSubmit(e) {
         e.preventDefault();
-        let username = this.state.username.trim();
-        let password = this.state.password.trim();
+        let username: string = this.state.username.trim();
+        let password: string = this.state.password.trim();
         if (username && password) {
-            //TODO:send login requeset
-            console.log("creating: " + username +" /w "+ password)
+            // todo:send login requeset
+            console.log(`creating: ${username} /w ${password}`);
             this.setState({ username: "", password: "" });
-        }
-        else return;
+        } else { return; }
     }
     public render() {
-        return (<CreateUser onUsernameChange={this.handleUsernameChange} onPasswordChange={this.handlePasswordChange} onSubmit={this.handleSubmit}
-            username={this.state.username} password={this.state.password}/>)
+        return (<CreateUser
+            onUsernameChange={this.handleUsernameChange}
+            onPasswordChange={this.handlePasswordChange}
+            onSubmit={this.handleSubmit}
+            username={this.state.username}
+            password={this.state.password}/>);
     }
-
-} 
+};

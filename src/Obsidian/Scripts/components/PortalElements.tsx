@@ -4,6 +4,32 @@
 import * as React from "react";
 import { Link } from "react-router";
 
+export const UserStatus = (props) => (
+    <li className="dropdown user user-menu">
+        <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <span className="hidden-xs">{props.username}</span>
+        </a>
+        <ul className="dropdown-menu">
+            <li className="user-header">
+                Obsidian Portal
+                <p>
+                    {props.username} - {props.level}
+                    <hr/>
+                    <small>{props.description}</small>
+                </p>
+            </li>
+            <li className="user-footer">
+                <div className="pull-left">
+                    <a href="#" className="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div className="pull-right">
+                    <a href="#" className="btn btn-default btn-flat">Sign out</a>
+                </div>
+            </li>
+        </ul>
+    </li>
+)
+
 export const PortalHeader = (props) => (
     <header className="main-header">
         <Link to="/manage" className="logo">
@@ -12,28 +38,7 @@ export const PortalHeader = (props) => (
         <nav className="navbar navbar-static-top" role="navigation">
             <div className="navbar-custom-menu">
                 <ul className="nav navbar-nav">
-                    <li className="dropdown user user-menu">
-                        <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                            <span className="hidden-xs">###USERNAME###</span>
-                        </a>
-                        <ul className="dropdown-menu">
-                            <li className="user-header">
-                                #ICON#
-                                <p>
-                                    ###USERNAME### - ###DESCRIPTION###
-                                    <small>###SOMEDATA###</small>
-                                </p>
-                            </li>
-                            <li className="user-footer">
-                                <div className="pull-left">
-                                    <a href="#" className="btn btn-default btn-flat">Profile</a>
-                                </div>
-                                <div className="pull-right">
-                                    <a href="#" className="btn btn-default btn-flat">Sign out</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+                    <UserStatus username="Henry Zhu" level="Administrator" description="A real boss." />
                 </ul>
             </div>
         </nav>
