@@ -14,24 +14,28 @@ interface UserCreationState {
 export class UserCreationContainer extends React.Component<any, UserCreationState>{
     constructor(props: any) {
         super(props);
-        this.state = { username: "", password:"" };
+        this.state = { username: "", password: "" };
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public handleUsernameChange(e) {
+    handleUsernameChange(e) {
         this.setState({
             username: e.target.value as string
         });
     }
-    public handlePasswordChange(e) {
+    handlePasswordChange(e) {
         this.setState({
             password: e.target.value as string
         });
     }
-    public handleSubmit(e) {
+    handleSubmit(e) {
         e.preventDefault();
         let username = this.state.username.trim();
         let password = this.state.password.trim();
         if (username && password) {
             //TODO:send login requeset
+            console.log("creating: " + username +" /w "+ password)
             this.setState({ username: "", password: "" });
         }
         else return;
@@ -41,34 +45,4 @@ export class UserCreationContainer extends React.Component<any, UserCreationStat
             username={this.state.username} password={this.state.password}/>)
     }
 
-}
-
-
-
-interface UserManagementState {
-    users: Array<any>; 
-    isLoading: boolean;
-}
-
-
-
-export class UserManagementContainer extends React.Component<any, UserManagementState> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            users: [],
-            isLoading: true
-        };
-    }
-    public componentDidMount() {
-        axios.get(api.configs.getUser.request_uri)
-            .then((info) => { this.setState({ users: info.data as Array<any>, isLoading: false }); })
-            .catch((e) => { console.warn("Obsidian Exception: " + e); });
-    }
-    public render() {
-        return (
-            <UserList users={this.state.users}/>
-        );
-    }
-
-}
+} 

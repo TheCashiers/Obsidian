@@ -2,6 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
+import { Link } from "react-router";
 
 const UserItem = (props) => (
     <li>
@@ -15,5 +16,9 @@ export const UserList = (props) => (
         <ul>
             {props.users.map((user, index) => <UserItem username={user.userName} key={user.id}/>) }
         </ul>
+        <hr/>
+        <Link to="/manage/users/create">
+            <button className="btn btn-lg btn-success">Create User</button>
+        </Link>
     </div>
 )
