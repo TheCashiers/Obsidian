@@ -34,6 +34,8 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
         if (username && password) {
             // todo:send login requeset
             console.log(`creating: ${username} /w ${password}`);
+            axios.post(api.configs.createUser.request_uri, { userName: username, password: password })
+                .catch((e) => console.warn(e.response.data));
             this.setState({ username: "", password: "" });
         } else { return; }
     }
