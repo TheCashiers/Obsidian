@@ -2,7 +2,8 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
+import { UserInfoContainer } from "../containers/UserInfoContainer"
 
 export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
@@ -29,21 +30,44 @@ export const UserInfo = (props) => (
         </ul>
     </li>
 )
-
 export const PortalHeader = (props) => (
     <header className="main-header">
-        <Link to="/manage" className="logo">
-            Obsidian
-        </Link>
-        <nav className="navbar navbar-static-top" role="navigation">
-            <div className="navbar-custom-menu">
-                <ul className="nav navbar-nav">
-                    {props.children}
-                </ul>
+        <nav className="navbar navbar-static-top">
+            <div className="container-fluid">
+                <div className="navbar-header">
+                    <Link to="/manage" className="navbar-brand">Obsidian</Link>
+                </div>
+                <div className="collapse navbar-collapse" id="navbar-collapse">
+                    <ul className="nav navbar-nav">
+                        <li><Link to="/manage/users">Users</Link></li>
+                        <li><a href="#">Link</a></li>
+                        <li className="dropdown">
+                            <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
+                            <ul className="dropdown-menu" role="menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li className="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li className="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form className="navbar-form navbar-left" role="search">
+                        <div className="form-group">
+                            <input type="text" className="form-control" id="navbar-search-input" placeholder="Search"/>
+                        </div>
+                    </form>
+                    <ul className="nav navbar-nav navbar-right">
+                        <UserInfoContainer/>
+                    </ul>
+                </div>
             </div>
         </nav>
-    </header>
-);
+    </header>);
+
+
 
 export const PortalSidebar = (props) => (
     <div className="main-sidebar">

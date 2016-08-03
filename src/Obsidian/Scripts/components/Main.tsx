@@ -1,6 +1,5 @@
 ﻿import * as React from "react";
-import { PortalHeader, PortalSidebar } from "./PortalElements"
-import { UserInfoContainer } from "../containers/UserInfoContainer"
+import { PortalHeader } from "./PortalElements";
 const fixLayout = function () {
     //Get window height and the wrapper height
     var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
@@ -34,9 +33,8 @@ export let Main = React.createClass({
     },
     render: function () {
         return (
-            <div className="wrapper skin-blue">
-                <UserInfoContainer/>
-                <PortalSidebar/>
+            <div className="layout-top-nav wrapper skin-purple">
+                <PortalHeader currentPath={this.props.route.path}/>
                 {this.props.children}
             </div>)
     }

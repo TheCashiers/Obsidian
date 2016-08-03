@@ -7,14 +7,18 @@ const UserItem = (props) => (
 );
 
 export const UserList = (props) => (
-    <div className="content-wrapper">
-        <h1>Users: </h1>
-        <ul>
-            {props.users.map((user, index) => <UserItem username={user.userName} key={user.id}/>) }
-        </ul>
-        <hr/>
+    <div className="content-wrapper content">
+        <div className="box box-solid box-info">
+            <div className="box-header">
+                <h3 className="box-title">Users</h3>
+            </div>
+            <div className="box-body">
+            <ul>{props.users.map((user, index) => <UserItem username={user.userName} key={user.id}/>) }</ul>
+            </div>
+        </div>
         <Link to="/manage/users/create">
             <button className="btn btn-lg btn-success">Create User</button>
         </Link>
     </div>
+
 );

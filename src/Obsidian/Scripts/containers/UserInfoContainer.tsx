@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import { PortalHeader, UserInfo } from "../components/PortalElements"
+import { UserInfo } from "../components/PortalElements"
 
 interface IUserInfoState {
     username: string;
@@ -14,14 +14,13 @@ export class UserInfoContainer extends React.Component<any, IUserInfoState>{
     }
     public componentDidMount() {
         // todo: fetch some userinfo here;
-        this.setState({ description: "A real boss.", level: "Administrator", username: "Henry Zhu" });
+        this.setState({ description: "A real boss.", level: "Administrator", username: "Henry Chu" });
+        
     }
 
     public render() {
         return (
-            <PortalHeader>
                 <UserInfo username={this.state.username} level={this.state.level} description={this.state.description} />
-            </PortalHeader>
         );
     }
 }
