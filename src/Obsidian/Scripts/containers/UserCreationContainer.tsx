@@ -13,18 +13,12 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
     constructor(props: any) {
         super(props);
         this.state = { username: "", password: "" };
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleUsernameChange(e) {
+    handleInputChange(e) {
         this.setState({
-            username: e.target.value as string
-        });
-    }
-    handlePasswordChange(e) {
-        this.setState({
-            password: e.target.value as string
+            [e.target.name]: e.target.value as string
         });
     }
     handleSubmit(e) {
@@ -32,17 +26,14 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
         let username: string = this.state.username.trim();
         let password: string = this.state.password.trim();
         if (username && password) {
-            // todo:send login requeset
-            console.log(`creating: ${username} /w ${password}`);
             axios.post(api.configs.createUser.request_uri, { userName: username, password: password })
-                .catch((e) => console.warn(e.response.data));
+                .catch((e) => console.warn(e));
             this.setState({ username: "", password: "" });
         } else { return; }
     }
     public render() {
         return (<CreateUser
-            onUsernameChange={this.handleUsernameChange}
-            onPasswordChange={this.handlePasswordChange}
+            onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}/>);

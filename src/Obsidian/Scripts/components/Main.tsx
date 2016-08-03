@@ -1,9 +1,7 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-import * as React from "react";
+﻿import * as React from "react";
 import { PortalHeader, PortalSidebar } from "./PortalElements"
-var fixLayout = function () {
+import { UserInfoContainer } from "../containers/UserInfoContainer"
+const fixLayout = function () {
     //Get window height and the wrapper height
     var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
     var window_height = $(window).height();
@@ -21,14 +19,12 @@ var fixLayout = function () {
             $(".content-wrapper, .right-side").css('min-height', sidebar_height);
             postSetWidth = sidebar_height;
         }
-
         //Fix for the control sidebar height
         var controlSidebar = $(".control-sidebar");
         if (typeof controlSidebar !== "undefined") {
             if (controlSidebar.height() > postSetWidth)
                 $(".content-wrapper, .right-side").css('min-height', controlSidebar.height());
         }
-
     }
 };
 export let Main = React.createClass({
@@ -39,7 +35,7 @@ export let Main = React.createClass({
     render: function () {
         return (
             <div className="wrapper skin-blue">
-                <PortalHeader/>
+                <UserInfoContainer/>
                 <PortalSidebar/>
                 {this.props.children}
             </div>)

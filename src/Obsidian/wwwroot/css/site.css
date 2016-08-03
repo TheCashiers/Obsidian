@@ -1,4 +1,5 @@
-﻿body {
+﻿* {
+    font-family:'Microsoft YaHei UI' !important
 }
 
 /* Wrapping element */

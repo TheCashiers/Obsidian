@@ -9,7 +9,7 @@ import { UserManagementContainer } from "../containers/UserManagementContainer";
 import { Portal } from "../components/Portal";
 import { UserCreationContainer } from "../containers/UserCreationContainer"
 
-export var routes = (
+export const routes = (
     <Router history={ browserHistory }>
         <Route path="/manage" component={ Main }>
             <IndexRoute component={ Portal }/>

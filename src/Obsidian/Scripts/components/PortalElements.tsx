@@ -4,7 +4,7 @@
 import * as React from "react";
 import { Link } from "react-router";
 
-export const UserStatus = (props) => (
+export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
             <span className="hidden-xs">{props.username}</span>
@@ -38,7 +38,7 @@ export const PortalHeader = (props) => (
         <nav className="navbar navbar-static-top" role="navigation">
             <div className="navbar-custom-menu">
                 <ul className="nav navbar-nav">
-                    <UserStatus username="Henry Zhu" level="Administrator" description="A real boss." />
+                    {props.children}
                 </ul>
             </div>
         </nav>
@@ -48,7 +48,6 @@ export const PortalHeader = (props) => (
 export const PortalSidebar = (props) => (
     <div className="main-sidebar">
         <div className="sidebar">
-
             <form action="#" method="get" className="sidebar-form">
                 <div className="input-group">
                     <input type="text" name="q" className="form-control" placeholder="Search..."/>
@@ -57,7 +56,6 @@ export const PortalSidebar = (props) => (
                     </span>
                 </div>
             </form>
-
             <ul className="sidebar-menu">
                 <li className="header">HEADER</li>
                 <li className="active"><a href="#"><span>Link</span></a></li>
@@ -70,6 +68,6 @@ export const PortalSidebar = (props) => (
                     </ul>
                 </li>
             </ul>
-
         </div>
-    </div>);
+    </div>
+);
