@@ -5,6 +5,7 @@
       "type": "platform"
     },
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Razor.Tools": {
@@ -70,7 +71,7 @@
   },
 
   "scripts": {
-    "prepublish": [ "bower install", "npm update","typings install" ],
+    "prepublish": [ "bower install", "npm update", "typings install" ],
     "precompile": [ "webpack" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
