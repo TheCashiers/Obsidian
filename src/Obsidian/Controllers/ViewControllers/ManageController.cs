@@ -15,8 +15,8 @@ namespace Obsidian.Controllers.ViewControllers
             {
                 //TODO: redirect to oauth
             }
-            //TODO: check if current user is admin
-            ViewData["Code"] = code;
+            //TODO: generate access token from code
+            //TODO: check user permission
             ViewData["FrontendRoute"] = path;
             return View();
         }

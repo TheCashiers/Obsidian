@@ -7,5 +7,6 @@ namespace Obsidian.Domain
     {
         public Guid Id { get; private set; }
         public Uri RedirectUri { get; set; }
+        public string Secret { get; private set; }
     }
 }
