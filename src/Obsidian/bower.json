@@ -8,6 +8,7 @@
     "jquery-validation-unobtrusive": "3.2.6",
     "react": "15.2.0",
     "react-router": "^2.6.0",
-    "adminlte": "^2.3.5"
+    "adminlte": "^2.3.5",
+    "fontawesome": "^4.6.3"
   }
 }
