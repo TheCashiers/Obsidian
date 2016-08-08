@@ -1,7 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-import * as React from "react";
+﻿import * as React from "react";
 import { Link, browserHistory } from "react-router";
 import { UserInfoContainer } from "../containers/UserInfoContainer"
 
@@ -36,6 +33,9 @@ export const PortalHeader = (props) => (
             <div className="container-fluid">
                 <div className="navbar-header">
                     <Link to="/manage" className="navbar-brand">Obsidian</Link>
+                    <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                        <i className="fa fa-bars"/>
+                    </button>
                 </div>
                 <div className="collapse navbar-collapse" id="navbar-collapse">
                     <ul className="nav navbar-nav">
@@ -66,32 +66,3 @@ export const PortalHeader = (props) => (
             </div>
         </nav>
     </header>);
-
-
-
-export const PortalSidebar = (props) => (
-    <div className="main-sidebar">
-        <div className="sidebar">
-            <form action="#" method="get" className="sidebar-form">
-                <div className="input-group">
-                    <input type="text" name="q" className="form-control" placeholder="Search..."/>
-                    <span className="input-group-btn">
-                        <button type="submit" name="search" id="search-btn" className="btn btn-flat"><i className="fa fa-search"></i></button>
-                    </span>
-                </div>
-            </form>
-            <ul className="sidebar-menu">
-                <li className="header">HEADER</li>
-                <li className="active"><a href="#"><span>Link</span></a></li>
-                <li><a href="#"><span>Another Link</span></a></li>
-                <li className="treeview">
-                    <a href="#"><span>Multilevel</span> <i className="fa fa-angle-left pull-right"></i></a>
-                    <ul className="treeview-menu">
-                        <li><a href="#">Link in level 2</a></li>
-                        <li><a href="#">Link in level 2</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-);
