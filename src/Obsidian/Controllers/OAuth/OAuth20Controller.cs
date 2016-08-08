@@ -39,7 +39,7 @@ namespace Obsidian.Controllers.OAuth
 
         [Route("oauth20/authorize")]
         [HttpPost]
-        public async Task<IActionResult> Authorize([FromBody]OAuthSignInModel model)
+        public async Task<IActionResult> Authorize([FromForm]OAuthSignInModel model)
         {
             //TODO: sign user in
             //TODO: vaildate client
