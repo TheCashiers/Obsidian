@@ -36,6 +36,7 @@ namespace Obsidian
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+            services.AddMemoryCache();
 
             //Add application components
             services.AddDbContext();

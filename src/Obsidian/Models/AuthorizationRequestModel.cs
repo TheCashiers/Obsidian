@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Obsidian.Models
 {
@@ -8,7 +9,7 @@ namespace Obsidian.Models
         public string ResponseType { get; set; }
 
         [FromQuery(Name ="client_id")]
-        public string ClientId { get; set; }
+        public Guid ClientId { get; set; }
 
         [FromQuery(Name ="redirect_uri")]
         public string RedirectUri { get; set; }

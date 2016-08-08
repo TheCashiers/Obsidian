@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Obsidian.Application.OAuth20;
+using Obsidian.Domain;
 using Obsidian.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +15,13 @@ namespace Obsidian.Controllers.OAuth
 {
     public class OAuth20Controller : Controller
     {
+        private readonly IMemoryCache _memoryCache;
+
+        public OAuth20Controller(IMemoryCache memCache)
+        {
+            _memoryCache = memCache;
+        }
+
         [Route("oauth20/authorize")]
         [HttpGet]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
@@ -21,8 +31,9 @@ namespace Obsidian.Controllers.OAuth
             {
                 return View("SignIn");
             }
-            //TODO: if user did not authorized this app before, show permissons page
             //TODO: vaildate client
+            //TODO: if user did not authorized this app before, show permissons page
+            //TODO: if response type is code
             return StatusCode(501);
         }
 
@@ -31,16 +42,40 @@ namespace Obsidian.Controllers.OAuth
         public async Task<IActionResult> Authorize([FromBody]OAuthSignInModel model)
         {
             //TODO: sign user in
-            //TODO: if user did not authorized this app before, show permissons page
             //TODO: vaildate client
-            return StatusCode(501);
+            //TODO: if user did not authorized this app before, show permissons page
+            //TODO: if response type is code
+
+            //TODO: get user and client via command stack
+            //here just for pass the compiler
+            Client client = null;
+            User user = null;
+            string[] scope = new[] { "" };
+
+            var code = CacheCodeGrantContext(client, user, scope);
+            var url = $"{client.RedirectUri}?code={code}";
+            return Redirect(url);
+        }
+
+        private Guid CacheCodeGrantContext(Client client, User user, string[] scope)
+        {
+            var code = Guid.NewGuid();
+            var context = new AuthorizationCodeContext(client, user, scope);
+            _memoryCache.Set(code, context, TimeSpan.FromMinutes(3));
+            return code;
         }
 
         [Route("oauth20/token")]
         [HttpPost]
-        public async Task<IActionResult> Token()
+        public async Task<IActionResult> Token(AccessTokenFromAuthorizationCodeRequestModel model)
         {
-            return StatusCode(501);
+            AuthorizationCodeContext context;
+            if (_memoryCache.TryGetValue(model.Code, out context))
+            {
+                _memoryCache.Remove(model.Code);
+                //TODO: generate access token
+            }
+            return BadRequest();
         }
     }
 }
