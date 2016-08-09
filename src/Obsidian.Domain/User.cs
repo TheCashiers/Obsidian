@@ -50,5 +50,11 @@ namespace Obsidian.Domain
         private string PasswordHash { get; set; }
 
         #endregion Props
+
+        public bool VaildatePassword(string password)
+        {
+            var hash = _passwordHasher.HashPasword(password);
+            return hash == PasswordHash;
+        }
     }
 }

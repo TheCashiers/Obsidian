@@ -25,5 +25,10 @@ namespace Obsidian.Persistence
         /// Used to query and save instences of <see cref="User"/>.
         /// </summary>
         public DbSet<User> Users { get { return base.Set<User>(); } }
+
+        /// <summary>
+        /// Used to query and save instences of <see cref="Client"/>.
+        /// </summary>
+        public DbSet<Client> Clients { get { return base.Set<Client>(); } }
     }
 }
