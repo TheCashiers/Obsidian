@@ -20,7 +20,6 @@ namespace Obsidian
         public static IServiceCollection AddDbContext(this IServiceCollection services)
         {
             const string connectionString = "Filename=./Obsidian.db";
-            services.AddDbContext<CommandModelDbContext>(opt => opt.UseSqlite(connectionString, b => b.MigrationsAssembly("Obsidian")));
             services.AddDbContext<QueryModelDbContext>(opt => opt.UseSqlite(connectionString));
 
             //configure interface mapping
