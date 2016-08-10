@@ -5,6 +5,7 @@
     "Microsoft.EntityFrameworkCore.Relational": "1.0.0",
     "NETStandard.Library": "1.6.0",
     "StackExchange.Redis.StrongName": "1.1.604-alpha",
+    "MongoDB.Driver": "2.3.0-beta1" ,
     "Obsidian.Domain": "1.0.0-*"
   },
 
