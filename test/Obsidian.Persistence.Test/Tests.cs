@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace Tests
+namespace Obsidian.Persistence.Test
 {
     public class Tests
     {
