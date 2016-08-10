@@ -42,7 +42,7 @@ namespace Obsidian
             services.AddDbContext();
             services.AddCommandBus();
             services.AddCommandHandlers();
-            services.AddRepositories();
+            services.AddMongoRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
