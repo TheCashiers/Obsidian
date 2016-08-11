@@ -17,14 +17,33 @@ namespace Obsidian.Persistence.Repositories
             _collection = database.GetCollection<Client>("Client");
         }
 
-        public async Task AddAsync(Client aggregate) => await _collection.InsertOneAsync(aggregate);
+        public async Task AddAsync(Client aggregate)
+        {
+            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
+            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
+            await _collection.InsertOneAsync(aggregate);
+        }
 
-        public Task DeleteAsync(Client aggregate) => _collection.DeleteOneAsync(Builders<Client>.Filter.Eq("id", aggregate.Id));
+        public Task DeleteAsync(Client aggregate)
+        {
+            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
+            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
+            return _collection.DeleteOneAsync(Builders<Client>.Filter.Eq("id", aggregate.Id));
+        }
 
-        public Task<Client> FindByIdAsync(Guid id) => _collection.Find(Builders<Client>.Filter.Eq("id", id)).FirstOrDefaultAsync();
+        public Task<Client> FindByIdAsync(Guid id)
+        {
+            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+            return _collection.Find(Builders<Client>.Filter.Eq("id", id)).FirstOrDefaultAsync();
+        }
 
         public Task<IQueryable<Client>> QueryAllAsync() => new Task<IQueryable<Client>>(() => _collection.AsQueryable().AsQueryable());
 
-        public Task SaveAsync(Client aggregate) => _collection.ReplaceOneAsync(Builders<Client>.Filter.Eq("id", aggregate.Id), aggregate);
+        public Task SaveAsync(Client aggregate)
+        {
+            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
+            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
+            return _collection.ReplaceOneAsync(Builders<Client>.Filter.Eq("id", aggregate.Id), aggregate);
+        }
     }
 }
