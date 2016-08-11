@@ -23,4 +23,5 @@ script:
     - dotnet --verbose build
     - webpack
     - cd ../../
+    - chmod +x ./test.sh
     - ./test.sh
