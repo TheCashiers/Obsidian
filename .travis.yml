@@ -22,5 +22,5 @@ before_script:
 script:
     - dotnet --verbose build
     - webpack
-    - ../../
+    - cd ../../
     - ./test.sh

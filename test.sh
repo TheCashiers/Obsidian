@@ -1,7 +1,3 @@
 cd ./test
 
-for d in */ ; do
-    cd $d
-    dotnet test
-    cd ..
-done
+for d in ./*/ ; do (cd "$d" && dotnet test); done
