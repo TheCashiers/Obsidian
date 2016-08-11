@@ -1,6 +1,7 @@
-cd ../../test
+cd ./test
 
-for D in `find . -type d`
-do
+for d in */ ; do
+    cd $d
     dotnet test
+    cd ..
 done
