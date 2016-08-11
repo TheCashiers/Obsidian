@@ -15,7 +15,9 @@ namespace Obsidian.Persistence.Test.Repositories
         protected override IRepository<User> CreateRepository() => new UserMongoRepository(new Mock<IMongoDatabase>().Object);
 
         [Theory]
-        [InlineData(null, "", "  ")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
         public async void FindByUserName_Fail_When_UserNameIsNullOrWhiteSpace(string value)
         {
             var repo = CreateRepository() as UserMongoRepository;
