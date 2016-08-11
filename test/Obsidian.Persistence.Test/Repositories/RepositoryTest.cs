@@ -11,54 +11,28 @@ namespace Obsidian.Persistence.Test.Repositories
 
         protected abstract TAggregate CreateAggregateWithEmptyId();
 
-        #region Aggregate null
-
         [Fact]
-        public async void AddFailWhenAggregateNull()
+        public async void CUD_Fail_When_AggregateNull()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", () => CreateRepository().AddAsync(null));
+            var repo = CreateRepository();
+            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", async () => await repo.AddAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", async () => await repo.SaveAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", async () => await repo.DeleteAsync(null));
         }
 
         [Fact]
-        public async void SaveFailWhenAggregateNull()
+        public async void FindById_Fail_When_IdEmpty()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", () => CreateRepository().SaveAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>("id", async () => await CreateRepository().FindByIdAsync(Guid.Empty));
         }
 
         [Fact]
-        public async void DeleteFailWhenAggregateNull()
+        public async void CUD_Fail_When_IdEmpty()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", () => CreateRepository().DeleteAsync(null));
+            var repo = CreateRepository();
+            await Assert.ThrowsAsync<ArgumentException>("aggregate", async () => await repo.AddAsync(CreateAggregateWithEmptyId()));
+            await Assert.ThrowsAsync<ArgumentException>("aggregate", async () => await repo.SaveAsync(CreateAggregateWithEmptyId()));
+            await Assert.ThrowsAsync<ArgumentException>("aggregate", async () => await repo.DeleteAsync(CreateAggregateWithEmptyId()));
         }
-
-        #endregion Aggregate null
-
-        #region Id Empty
-
-        [Fact]
-        public async void FindByIdFailWhenIdEmpty()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>("id", () => CreateRepository().FindByIdAsync(Guid.Empty));
-        }
-
-        [Fact]
-        public async void AddFailWhenIdEmpty()
-        {
-            await Assert.ThrowsAsync<ArgumentException>("aggregate", () => CreateRepository().AddAsync(CreateAggregateWithEmptyId()));
-        }
-
-        [Fact]
-        public async void SaveFailWhenIdEmpty()
-        {
-            await Assert.ThrowsAsync<ArgumentException>("aggregate", () => CreateRepository().SaveAsync(CreateAggregateWithEmptyId()));
-        }
-
-        [Fact]
-        public async void DeleteFailWhenIdEmpty()
-        {
-            await Assert.ThrowsAsync<ArgumentException>("aggregate", () => CreateRepository().DeleteAsync(CreateAggregateWithEmptyId()));
-        }
-
-        #endregion Id Empty
     }
 }

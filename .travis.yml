@@ -1,20 +1,25 @@
 sudo: required
 dist: trusty
 
-install:
+before_install:
     - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
     - sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
     - sudo apt-get update
+        
+install:
     - sudo apt-get install -y dotnet-dev-1.0.0-preview2-003121
     - npm install -g typescript webpack typings bower
 
-script:
+before_script:
     - cd ./src/
     - dotnet restore
     - cd ./Obsidian/
-    - dotnet --verbose build
     - npm update
     - npm link typescript
     - typings install
     - bower install
+
+script:
+    - dotnet --verbose build
     - webpack
+    - dotnet test
