@@ -10,12 +10,12 @@ using MongoDB.Driver;
 
 namespace Obsidian.Persistence.Test.Repositories
 {
-    public class ClientMongoRepositoryTest : RepositoryTest<Client>
+    public class ClientMongoRepositoryTest : MongoRepositoryTest<Client>
     {
         protected override Client CreateAggregate() => Client.Create(Guid.NewGuid(), "XXX", "http://www.xxx.com");
 
         protected override Client CreateAggregateWithEmptyId() => new Client();
 
-        protected override IRepository<Client> CreateRepository() => new ClientMongoRepository(new Mock<IMongoDatabase>().Object);
+        protected override IRepository<Client> CreateRepository() => new ClientMongoRepository(GetDatabase());
     }
 }

@@ -6,9 +6,11 @@ using Xunit;
 
 namespace Obsidian.Persistence.Test.Repositories
 {
-    public abstract class RepositoryTest<TAggregate> where TAggregate : class, IAggregateRoot
+    public abstract class RepositoryTest<TAggregate> : IDisposable where TAggregate : class, IAggregateRoot
     {
         private const string skipReason = "not finished yet.";
+
+        protected readonly IRepository<TAggregate> _repository;
 
         protected abstract IRepository<TAggregate> CreateRepository();
 
@@ -16,13 +18,20 @@ namespace Obsidian.Persistence.Test.Repositories
 
         protected abstract TAggregate CreateAggregate();
 
+        protected abstract void CleanupDatabase();
+
+        public RepositoryTest()
+        {
+            _repository = CreateRepository();
+        }
+
         [Fact]
         public virtual async Task CUD_Fail_When_AggregateNull()
         {
-            var repo = CreateRepository();
-            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", async () => await repo.AddAsync(null));
-            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", async () => await repo.SaveAsync(null));
-            await Assert.ThrowsAsync<ArgumentNullException>("aggregate", async () => await repo.DeleteAsync(null));
+            const string parameterName = "aggregate";
+            await Assert.ThrowsAsync<ArgumentNullException>(parameterName, async () => await _repository.AddAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(parameterName, async () => await _repository.SaveAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(parameterName, async () => await _repository.DeleteAsync(null));
         }
 
         [Fact]
@@ -34,27 +43,30 @@ namespace Obsidian.Persistence.Test.Repositories
         [Fact]
         public virtual async Task CUD_Fail_When_IdEmpty()
         {
-            var repo = CreateRepository();
-            await Assert.ThrowsAsync<ArgumentException>("aggregate", async () => await repo.AddAsync(CreateAggregateWithEmptyId()));
-            await Assert.ThrowsAsync<ArgumentException>("aggregate", async () => await repo.SaveAsync(CreateAggregateWithEmptyId()));
-            await Assert.ThrowsAsync<ArgumentException>("aggregate", async () => await repo.DeleteAsync(CreateAggregateWithEmptyId()));
+            const string parameterName = "aggregate";
+            await Assert.ThrowsAsync<ArgumentException>(parameterName, async () => await _repository.AddAsync(CreateAggregateWithEmptyId()));
+            await Assert.ThrowsAsync<ArgumentException>(parameterName, async () => await _repository.SaveAsync(CreateAggregateWithEmptyId()));
+            await Assert.ThrowsAsync<ArgumentException>(parameterName, async () => await _repository.DeleteAsync(CreateAggregateWithEmptyId()));
         }
 
-        [Fact(Skip = skipReason)]
+        [Fact]
         public virtual async Task Add_Fail_When_Exists()
         {
             var aggregate = CreateAggregate();
-            var repo = CreateRepository();
-            await repo.AddAsync(aggregate);
-            await Assert.ThrowsAsync<InvalidOperationException>(async () => await repo.AddAsync(aggregate));
+            await _repository.AddAsync(aggregate);
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository.AddAsync(aggregate));
         }
 
-        [Fact(Skip = skipReason)]
+        [Fact]
         public virtual async Task Save_Fail_When_NotExists()
         {
             var aggregate = CreateAggregate();
-            var repo = CreateRepository();
-            await Assert.ThrowsAsync<InvalidOperationException>(async () => await repo.SaveAsync(aggregate));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository.SaveAsync(aggregate));
+        }
+
+        public void Dispose()
+        {
+            CleanupDatabase();
         }
     }
 }

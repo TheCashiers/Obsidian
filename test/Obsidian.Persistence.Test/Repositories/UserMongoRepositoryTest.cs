@@ -1,6 +1,4 @@
-﻿using MongoDB.Driver;
-using Moq;
-using Obsidian.Domain;
+﻿using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Persistence.Repositories;
 using System;
@@ -9,11 +7,11 @@ using Xunit;
 
 namespace Obsidian.Persistence.Test.Repositories
 {
-    public class UserMongoRepositoryTest : RepositoryTest<User>
+    public class UserMongoRepositoryTest : MongoRepositoryTest<User>
     {
         protected override User CreateAggregateWithEmptyId() => new User();
 
-        protected override IRepository<User> CreateRepository() => new UserMongoRepository(new Mock<IMongoDatabase>().Object);
+        protected override IRepository<User> CreateRepository() => new UserMongoRepository(GetDatabase());
 
         protected override User CreateAggregate() => User.Create(Guid.NewGuid(), "test");
 
