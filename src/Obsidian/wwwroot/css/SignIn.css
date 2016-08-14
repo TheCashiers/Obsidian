@@ -1,0 +1,46 @@
+﻿body {
+    background-image: url('../images/obsidian_background.png');
+}
+
+label{
+    font-size:large;
+    font-weight:300;
+}
+
+.fullscreen {
+    background: rgba(255,255,255,0.6);
+        color: white;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
+    position:absolute;
+    width:600px;
+    height:400px;
+    left:50%;
+    top:50%;
+    margin:-200px -300px;
+}
+.left-div {
+    border-radius: inherit;
+    background-image: url('../images/obsidian_texture_1.jpg');
+    float: left;
+    height: 100%;
+    width: 200px;
+
+}
+.left-div>h1{
+    padding-bottom:40px;
+}
+.form-padding{
+    padding-left:200px;
+    height:100%;
+}
+.text-padding{
+    padding:10px 10px 10px 10px;
+}
+.form-btn{
+    border-radius:0;
+    width:100%
+}
+.checkbox{
+    width:20px;
+    height:20px;
+}

@@ -10,11 +10,14 @@ export const CreateUser = (props) => (
             Password: <input type="password" name="password" onChange={props.onInputChange} value={props.password}></input>
             <button className="btn btn-lg btn-success" type="submit">Create!</button>
         </form>
-        <div className="callout callout-success lead">
-            <h4>Success</h4>
-            <p>
-                User Created.
-            </p>
-        </div>
+        {props.isComplete ?
+            <div className="callout callout-success lead">
+                <h4>Success</h4>
+                <p>
+                    User Created.
+                </p>
+            </div>
+            : null}
+
     </div>
 );
