@@ -1,5 +1,5 @@
 ﻿body {
-    background-image: url('../images/obsidian_background.png');
+    background: url("../images/obsidian_background.png") 0 / cover fixed;
 }
 
 label{
@@ -17,6 +17,15 @@ label{
     left:50%;
     top:50%;
     margin:-200px -300px;
+}
+.fullscreen::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: url("../images/obsidian_background.png") 0 / cover fixed;
+    filter: blur(20px);
+    -webkit-filter:blur(3px);
+    z-index: -1;
 }
 .left-div {
     border-radius: inherit;
