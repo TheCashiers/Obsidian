@@ -26,16 +26,22 @@ namespace Obsidian.Persistence.Test.Repositories
             await Assert.ThrowsAsync<ArgumentNullException>("userName", async () => await repo.FindByUserNameAsync(value));
         }
 
-        [Fact(Skip = "Not implemented.")]
-        public async override Task Save_Test()
-        {
-            var aggregate = CreateAggregate();
-            var id = aggregate.Id;
-            await _repository.AddAsync(aggregate);
+        [Fact]
+        public async override Task Save_Test() => await Save_PasswordHash();
 
-            await _repository.SaveAsync(aggregate);
-            var query = await _repository.QueryAllAsync();
-            var queryAggregate = query.Single(u => u.Id == id);
+
+        [Fact]
+        public async Task Save_PasswordHash()
+        {
+            var user = CreateAggregate();
+            var id = user.Id;
+            const string password = "test";
+            user.SetPassword(password);
+            await _repository.AddAsync(user);
+            var found = await _repository.FindByIdAsync(id);
+            Assert.True(found.VaildatePassword(password));
         }
+
+
     }
 }

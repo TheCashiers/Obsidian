@@ -78,6 +78,26 @@ namespace Obsidian.Persistence.Test.Repositories
 
         public abstract Task Save_Test();
 
+        [Fact]
+        public virtual async Task FindById_Test()
+        {
+            var aggregate = CreateAggregate();
+            var id = aggregate.Id;
+            await _repository.AddAsync(aggregate);
+            var found = await _repository.FindByIdAsync(id);
+            Assert.Equal(found.Id, id);
+        }
+
+        [Fact]
+        public virtual async Task Delete_Test()
+        {
+            var aggregate = CreateAggregate();
+            await _repository.AddAsync(aggregate);
+            await _repository.DeleteAsync(aggregate);
+            var result = await _repository.QueryAllAsync();
+            Assert.Empty(result);
+        }
+
         public void Dispose()
         {
             CleanupDatabase();
