@@ -21,6 +21,7 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
+            if (_collection.Find(Builders<User>.Filter.Eq("id", aggregate.Id)).FirstOrDefault() != null) throw new InvalidOperationException();
             await _collection.InsertOneAsync(aggregate);
         }
 
@@ -50,6 +51,7 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
+            if (_collection.Find(Builders<User>.Filter.Eq("id", aggregate.Id)).FirstOrDefault() == null) throw new InvalidOperationException();
             return _collection.ReplaceOneAsync(Builders<User>.Filter.Eq("id", aggregate.Id), aggregate);
         }
     }
