@@ -5,10 +5,11 @@
 label{
     font-size:large;
     font-weight:300;
+    text-shadow:4px 4px 25px black;
 }
 
 .fullscreen {
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.4);
         color: white;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
     position:absolute;
@@ -52,4 +53,6 @@ label{
 .checkbox{
     width:20px;
     height:20px;
+    float:left;
+    margin:4px 5px 0 0 !important;
 }
