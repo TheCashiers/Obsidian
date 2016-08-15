@@ -9,7 +9,7 @@ namespace Obsidian.Domain
              => new Client { Id = id, Secret = secret, RedirectUri = new Uri(redirectUri) };
 
         public Guid Id { get; private set; }
-        public Uri RedirectUri { get; private set; }
+        public Uri RedirectUri { get; set; }
         public string Secret { get; private set; }
     }
 }

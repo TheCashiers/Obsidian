@@ -8,7 +8,7 @@ namespace Obsidian.Persistence.Test.Repositories
         private const string dbUri = "mongodb://127.0.0.1:27017";
         private const string testDbName = "ObsidianTest";
 
-        protected IMongoDatabase GetDatabase() => new MongoClient(dbUri).GetDatabase(testDbName);
+        protected IMongoDatabase Database => new MongoClient(dbUri).GetDatabase(testDbName);
 
         protected override void CleanupDatabase()
         {

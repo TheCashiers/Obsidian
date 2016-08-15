@@ -1,6 +1,7 @@
 ﻿using Obsidian.Domain.Repositories;
 using Obsidian.Domain.Shared;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -8,8 +9,6 @@ namespace Obsidian.Persistence.Test.Repositories
 {
     public abstract class RepositoryTest<TAggregate> : IDisposable where TAggregate : class, IAggregateRoot
     {
-        private const string skipReason = "not finished yet.";
-
         protected readonly IRepository<TAggregate> _repository;
 
         protected abstract IRepository<TAggregate> CreateRepository();
@@ -63,6 +62,22 @@ namespace Obsidian.Persistence.Test.Repositories
             var aggregate = CreateAggregate();
             await Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository.SaveAsync(aggregate));
         }
+
+        [Fact]
+        public virtual async Task Add_Query_Test()
+        {
+            var aggregates = new[] { CreateAggregate(), CreateAggregate(), CreateAggregate() };
+            foreach (var aggregate in aggregates)
+            {
+                await _repository.AddAsync(aggregate);
+            }
+            var queryResult = await _repository.QueryAllAsync();
+            var count = queryResult.Count();
+            Assert.Equal(aggregates.Length, count);
+        }
+
+        [Fact]
+        public abstract Task Save_Test();
 
         public void Dispose()
         {
