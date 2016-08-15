@@ -1,12 +1,15 @@
 ﻿using MongoDB.Driver;
 using Obsidian.Domain.Shared;
+using System;
 
 namespace Obsidian.Persistence.Test.Repositories
 {
     public abstract class MongoRepositoryTest<TAggregate> : RepositoryTest<TAggregate> where TAggregate : class, IAggregateRoot
     {
+
+        private static readonly Random rand = new Random();
         private const string dbUri = "mongodb://127.0.0.1:27017";
-        private const string testDbName = "ObsidianTest";
+        private readonly string testDbName = "ObsidianTest_" + rand.Next(0, 1000000).ToString("X");
 
         protected IMongoDatabase Database => new MongoClient(dbUri).GetDatabase(testDbName);
 
