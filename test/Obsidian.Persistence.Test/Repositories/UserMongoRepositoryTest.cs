@@ -14,7 +14,7 @@ namespace Obsidian.Persistence.Test.Repositories
 
         protected override IRepository<User> CreateRepository() => new UserMongoRepository(Database);
 
-        protected override User CreateAggregate() => User.Create(Guid.NewGuid(), "test");
+        protected override User CreateAggregate() => User.Create(Guid.NewGuid(), Guid.NewGuid().ToString());
 
         [Theory]
         [InlineData(null)]

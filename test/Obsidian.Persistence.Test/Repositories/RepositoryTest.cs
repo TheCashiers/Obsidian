@@ -76,7 +76,6 @@ namespace Obsidian.Persistence.Test.Repositories
             Assert.Equal(aggregates.Length, count);
         }
 
-        [Fact]
         public abstract Task Save_Test();
 
         public void Dispose()

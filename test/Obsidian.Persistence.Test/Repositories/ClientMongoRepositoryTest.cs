@@ -13,6 +13,7 @@ namespace Obsidian.Persistence.Test.Repositories
 {
     public class ClientMongoRepositoryTest : MongoRepositoryTest<Client>
     {
+        [Fact]
         public async override Task Save_Test()
         {
             var aggregate = CreateAggregate();
