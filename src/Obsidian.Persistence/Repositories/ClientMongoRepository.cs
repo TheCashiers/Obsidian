@@ -37,7 +37,7 @@ namespace Obsidian.Persistence.Repositories
             return _collection.Find(Builders<Client>.Filter.Eq("id", id)).FirstOrDefaultAsync();
         }
 
-        public Task<IQueryable<Client>> QueryAllAsync() => new Task<IQueryable<Client>>(() => _collection.AsQueryable().AsQueryable());
+        public Task<IQueryable<Client>> QueryAllAsync() => Task.FromResult<IQueryable<Client>>(_collection.AsQueryable());
 
         public Task SaveAsync(Client aggregate)
         {
