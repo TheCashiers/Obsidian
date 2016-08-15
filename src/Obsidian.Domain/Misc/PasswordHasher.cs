@@ -13,7 +13,11 @@ namespace Obsidian.Domain.Misc
             {
                 var buffer = Encoding.UTF8.GetBytes(password);
                 hash.Initialize();
-                var result = hash.ComputeHash(buffer);
+                var result= hash.ComputeHash(buffer);
+                for (int i = 0; i < 5; i++)
+                {
+                    result = hash.ComputeHash(result);
+                }
                 return ByteToString(result);
             }
         }
