@@ -15,6 +15,6 @@ namespace Obsidian.Persistence.DependencyInjection
         public static IServiceCollection AddMongoRepositories(this IServiceCollection services) =>
             services.AddScoped<IUserRepository, UserMongoRepository>()
                     .AddScoped<IClientRepository, ClientMongoRepository>()
-                    .AddScoped(p => new MongoClient("mongodb://localhost:27017").GetDatabase("Obsidian"));
+                    .AddScoped(p => new MongoClient("mongodb://127.0.0.1:27017").GetDatabase("Obsidian"));
     }
 }
