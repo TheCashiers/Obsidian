@@ -44,7 +44,7 @@ namespace Obsidian.Persistence.Repositories
         }
 
 
-        public Task<IQueryable<User>> QueryAllAsync() => new Task<IQueryable<User>>(() => _collection.AsQueryable().AsQueryable());
+        public Task<IQueryable<User>> QueryAllAsync() => Task.FromResult<IQueryable<User>>(_collection.AsQueryable());
 
         public Task SaveAsync(User aggregate)
         {
