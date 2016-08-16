@@ -52,7 +52,5 @@ namespace Obsidian.Persistence.Test.Repositories
             var found = await _repository.FindByIdAsync(id);
             Assert.True(found.VaildatePassword(password));
         }
-
-
     }
 }
