@@ -9,7 +9,7 @@ namespace Obsidian.Persistence.Test.Repositories
 {
     public abstract class RepositoryTest<TAggregate> : IDisposable where TAggregate : class, IAggregateRoot
     {
-        protected readonly IRepository<TAggregate> _repository;
+        protected IRepository<TAggregate> _repository;
 
         protected abstract IRepository<TAggregate> CreateRepository();
 
@@ -19,7 +19,12 @@ namespace Obsidian.Persistence.Test.Repositories
 
         protected abstract void CleanupDatabase();
 
-        public RepositoryTest()
+        protected RepositoryTest()
+        {
+            InitializeContext();
+        }
+
+        protected void InitializeContext()
         {
             _repository = CreateRepository();
         }
@@ -35,9 +40,8 @@ namespace Obsidian.Persistence.Test.Repositories
 
         [Fact]
         public virtual async Task FindById_Fail_When_IdEmpty()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>("id", async () => await CreateRepository().FindByIdAsync(Guid.Empty));
-        }
+            => await Assert.ThrowsAsync<ArgumentNullException>("id", async () => await _repository.FindByIdAsync(Guid.Empty));
+
 
         [Fact]
         public virtual async Task CUD_Fail_When_IdEmpty()
@@ -98,9 +102,6 @@ namespace Obsidian.Persistence.Test.Repositories
             Assert.Empty(result);
         }
 
-        public void Dispose()
-        {
-            CleanupDatabase();
-        }
+        public void Dispose() => CleanupDatabase();
     }
 }

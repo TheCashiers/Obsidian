@@ -16,14 +16,25 @@ namespace Obsidian.Persistence.Test.Repositories
 
         protected override User CreateAggregate() => User.Create(Guid.NewGuid(), Guid.NewGuid().ToString());
 
+        private IUserRepository UserRepo => _repository as IUserRepository;
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
         public async Task FindByUserName_Fail_When_UserNameIsNullOrWhiteSpace(string value)
         {
-            var repo = CreateRepository() as UserMongoRepository;
-            await Assert.ThrowsAsync<ArgumentNullException>("userName", async () => await repo.FindByUserNameAsync(value));
+            await Assert.ThrowsAsync<ArgumentNullException>("userName", async () => await UserRepo.FindByUserNameAsync(value));
+        }
+
+        [Fact]
+        public async Task FindByUserName_Test()
+        {
+            var user = CreateAggregate();
+            var userName = user.UserName;
+            await UserRepo.AddAsync(user);
+            var found = await UserRepo.FindByUserNameAsync(userName);
+            Assert.Equal(user.Id, found.Id);
         }
 
         [Fact]
@@ -41,7 +52,5 @@ namespace Obsidian.Persistence.Test.Repositories
             var found = await _repository.FindByIdAsync(id);
             Assert.True(found.VaildatePassword(password));
         }
-
-
     }
 }

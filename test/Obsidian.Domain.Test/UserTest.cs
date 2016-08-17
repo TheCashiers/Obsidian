@@ -34,5 +34,13 @@ namespace Obsidian.Domain.Test
             user.SetPassword("test");
             Assert.False(user.VaildatePassword("wrong"));
         }
+
+        [Fact]
+        public void Profile_Not_Null()
+        {
+            var user = new User();
+            Assert.NotNull(user.Profile);
+        }
+
     }
 }
