@@ -45,21 +45,47 @@ namespace Obsidian.Controllers.OAuth
                 var context = _dataProtector.Protect($"{model.ClientId}|{model.ResponseType}|{model.Scope}|{DateTime.Now}");
                 return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
             }
-            //TODO: vaildate client
-            //TODO: if user did not authorized this app before, show permissons page
+
+            var client = await _clientRepository.FindByIdAsync(model.ClientId);
+            if (client == null)
+            {
+                return BadRequest();
+            }
+            var user = await _userRepository.FindByUserNameAsync(User.Identity.Name);
+
+            //if user did not authorized this app before, show permissons page
+            var scopes = GrantScopes(model.Scope, client, user);
             //TODO: if response type is code
-            return StatusCode(501);
+            var code = CacheCodeGrantContext(client, user, scopes);
+            var url = $"{client.RedirectUri}?code={code}";
+            return Redirect(url);
         }
 
-        [Route("oauth20/authorize")]
+        private string[] GrantScopes(string reqScopes, Client client, User user)
+        {
+            var authDetail = user.AuthorizedClients.SingleOrDefault(d => d.Client == client);
+            var scopes = reqScopes.Split(' ');
+            var allScopesGranted = scopes.All(s => authDetail.Scopes.Select(sc => sc.ScopeName).Contains(s));
+            if (authDetail == null || (!allScopesGranted))
+            {
+                ViewData["ShowPermissionGrant"] = true;
+            }
+            else
+            {
+                ViewData["ShowPermissionGrant"] = false;
+            }
+
+            return scopes;
+        }
+
+        [Route("oauth20/api/authorize")]
         [HttpPost]
-        public async Task<IActionResult> Authorize([FromForm]OAuthSignInModel model)
+        public async Task<IActionResult> Authorize([FromBody]OAuthSignInModel model)
         {
 
             var user = await _userRepository.FindByUserNameAsync(model.UserName);
             //TODO: sign user in
 
-            //TODO: if user did not authorized this app before, show permissons page
             //TODO: if response type is code
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext).Split('|');
             Guid clientId;
@@ -70,12 +96,24 @@ namespace Obsidian.Controllers.OAuth
             var responseType = context[1];
             var scope = context[2].Split(' ');
 
-            var client =  await _clientRepository.FindByIdAsync(clientId);
-            //TODO: vaildate client
+            var client = await _clientRepository.FindByIdAsync(clientId);
+            if (client == null)
+            {
+                return BadRequest();
+            }
+            //if user did not authorized this app before, show permissons page
+            var scopes = GrantScopes(context[2], client, user);
 
             var code = CacheCodeGrantContext(client, user, scope);
             var url = $"{client.RedirectUri}?code={code}";
             return Redirect(url);
+        }
+
+        [Route("oauth20/api/permissiongrant")]
+        [HttpPost]
+        public async Task<IActionResult> PermissionGrant([FromBody]PermissionGrantModel model)
+        {
+            return StatusCode(501);
         }
 
         private Guid CacheCodeGrantContext(Client client, User user, string[] scope)

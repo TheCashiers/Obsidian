@@ -1,6 +1,7 @@
 ﻿using Obsidian.Domain.Misc;
 using Obsidian.Domain.Shared;
 using System;
+using System.Collections.Generic;
 
 namespace Obsidian.Domain
 {
@@ -30,6 +31,8 @@ namespace Obsidian.Domain
         private string PasswordHash { get; set; }
 
         public UserProfile Profile { get; private set; }
+
+        public IList<ClientAuthorizationDetail> AuthorizedClients { get; private set; }
 
         #endregion Props
 
