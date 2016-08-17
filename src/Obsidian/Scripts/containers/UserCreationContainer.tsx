@@ -8,12 +8,13 @@ interface IUserCreationState {
     username?: string;
     password?: string;
     isComplete?: boolean;
+    isError?:boolean;
 }
 
 export class UserCreationContainer extends React.Component<any, IUserCreationState> {
     constructor(props: any) {
         super(props);
-        this.state = { username: "", password: "", isComplete: false };
+        this.state = { username: "", password: "", isComplete: false ,isError:false};
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -29,7 +30,7 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
         if (username && password) {
             axios.post(api.configs.createUser.request_uri, { userName: username, password: password })
                 .then(()=>this.setState({ isComplete: true }))
-                .catch((e) => console.warn(e));
+                .catch((e) => this.setState({ isError: true }));
             this.setState({ username: "", password: "" });
         } else { return; }
     }

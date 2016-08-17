@@ -14,10 +14,19 @@ export const CreateUser = (props) => (
             <div className="callout callout-success lead">
                 <h4>Success</h4>
                 <p>
-                    User Created.
+                    User created.
                 </p>
             </div>
             : null}
+            {
+                props.isError ?
+                <div className="callout callout-failed lead">
+                    <h4>Error</h4>
+                    <p>
+                        User creation failed.
+                    </p>
+                </div>:null
+            }
 
     </div>
 );
