@@ -35,12 +35,11 @@ namespace Obsidian.Controllers.OAuth
         }
 
         [Route("oauth20/authorize/frontend/debug")]
+        [HttpGet]
         public IActionResult FrontEndDebug()
         {
             return View("SignIn");
         }
-
-        [HttpGet]
 
         [Route("oauth20/authorize")]
         [HttpGet]
