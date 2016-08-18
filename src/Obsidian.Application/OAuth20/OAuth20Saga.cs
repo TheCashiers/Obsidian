@@ -12,17 +12,14 @@ namespace Obsidian.Application.OAuth20
         IHandlerOf<PermissionGrantMessage,PermissionGrantResult>,
         IHandlerOf<AccessTokenRequestMessage,AccessTokenResult>
     {
-        public bool ShouldHandle(PermissionGrantMessage message)
+        public Task<Guid> StartAsync(AuthorizeCommand command)
         {
             throw new NotImplementedException();
         }
+
+        #region SignIn
 
         public bool ShouldHandle(SignInMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<PermissionGrantResult> HandleAsync(PermissionGrantMessage message)
         {
             throw new NotImplementedException();
         }
@@ -32,15 +29,22 @@ namespace Obsidian.Application.OAuth20
             throw new NotImplementedException();
         }
 
-        public Task<Guid> StartAsync(AuthorizeCommand command)
+        #endregion
+
+        #region Permission Grant
+
+        public bool ShouldHandle(PermissionGrantMessage message)
         {
             throw new NotImplementedException();
         }
 
-        protected override bool IsProcessCompleted()
+        public Task<PermissionGrantResult> HandleAsync(PermissionGrantMessage message)
         {
-            return false;
+            throw new NotImplementedException();
         }
+        #endregion
+
+        #region Access Token Request
 
         public bool ShouldHandle(AccessTokenRequestMessage message)
         {
@@ -50,6 +54,13 @@ namespace Obsidian.Application.OAuth20
         public Task<AccessTokenResult> HandleAsync(AccessTokenRequestMessage message)
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        protected override bool IsProcessCompleted()
+        {
+            return false;
         }
     }
 }
