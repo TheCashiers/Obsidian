@@ -2,7 +2,7 @@
 import { UserList } from "../components/UserManagement";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
-import { PortalContentWrapper } from "../components/PortalContentWrapper";
+import { Main } from "../components/Main";
 
 interface UserManagementState {
     users: Array<any>; 
