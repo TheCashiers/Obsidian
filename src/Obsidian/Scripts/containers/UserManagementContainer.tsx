@@ -21,7 +21,7 @@ export class UserManagementContainer extends React.Component<any, UserManagement
     public componentDidMount() {
         axios.get(api.configs.getUser.request_uri)
             .then((info) => { this.setState({ users: info.data as Array<any>, isLoading: false }); })
-            .catch((e) => { console.warn("Obsidian Exception: " + e); });
+            .catch((e) => { console.warn(`Error occurred from axios $(e)`); });
     }
     public render() {
         return (
