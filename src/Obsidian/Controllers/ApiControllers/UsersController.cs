@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Obsidian.Application.Commanding.ApplicationCommands;
+using Obsidian.Application.OldCommanding.ApplicationCommands;
 using Obsidian.Application.Dto;
-using Obsidian.Application.Commanding;
+using Obsidian.Application.OldCommanding;
 using Obsidian.QueryModel;
 using System;
 using System.Linq;
@@ -14,9 +14,9 @@ namespace Obsidian.Controllers.ApiControllers
     public class UsersController : Controller
     {
         private readonly IQueryModelDbContext _queryDbContext;
-        private readonly CommandBus _commandBus;
+        private readonly OldCommandBus _commandBus;
 
-        public UsersController(IQueryModelDbContext qctx, CommandBus cmdBus)
+        public UsersController(IQueryModelDbContext qctx, OldCommandBus cmdBus)
         {
             _queryDbContext = qctx;
             _commandBus = cmdBus;
@@ -39,8 +39,8 @@ namespace Obsidian.Controllers.ApiControllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
-            var cmd = new CreateUserCommand(dto);
-            var result = await _commandBus.SendAsync<CreateUserCommand, Guid>(cmd);
+            var cmd = new CreateUserOldCommand(dto);
+            var result = await _commandBus.SendAsync<CreateUserOldCommand, Guid>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(nameof(GetById), new { id = result.Data }), null);

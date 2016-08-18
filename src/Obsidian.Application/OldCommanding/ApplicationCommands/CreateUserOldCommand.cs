@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Obsidian.Application.Commanding.ApplicationCommands
+namespace Obsidian.Application.OldCommanding.ApplicationCommands
 {
-    public class CreateUserCommand : Command<Guid>
+    public class CreateUserOldCommand : OldCommand<Guid>
     {
-        public CreateUserCommand(UserCreationDto dto)
+        public CreateUserOldCommand(UserCreationDto dto)
         {
             Dto = dto;
         }

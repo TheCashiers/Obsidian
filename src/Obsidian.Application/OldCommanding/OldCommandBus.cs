@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Obsidian.Application.Commanding
+namespace Obsidian.Application.OldCommanding
 {
-    public class CommandBus
+    public class OldCommandBus
     {
         /// <summary>
-        /// Initializes a new instence of <see cref="CommandBus"/>.
+        /// Initializes a new instence of <see cref="OldCommandBus"/>.
         /// </summary>
         /// <param name="provider"></param>
-        public CommandBus(IServiceProvider provider)
+        public OldCommandBus(IServiceProvider provider)
         {
             _serviceProvider = provider;
         }
@@ -23,8 +23,8 @@ namespace Obsidian.Application.Commanding
         /// </summary>
         /// <typeparam name="THandler">The type of the handler.</typeparam>
         /// <typeparam name="TCommand">The type of the command.</typeparam>
-        public void Register<THandler, TCommand, TResultData>() where THandler : ICommandHandler<TCommand, TResultData>
-                                                   where TCommand : Command<TResultData>
+        public void Register<THandler, TCommand, TResultData>() where THandler : IOldCommandHandler<TCommand, TResultData>
+                                                   where TCommand : OldCommand<TResultData>
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Obsidian.Application.Commanding
         /// Unregister the handler for a spefific type of commands.
         /// </summary>
         /// <typeparam name="TCommand">The type of the command.</typeparam>
-        public void Unregister<TCommand, TResultData>() where TCommand : Command<TResultData>
+        public void Unregister<TCommand, TResultData>() where TCommand : OldCommand<TResultData>
         {
             try
             {
@@ -53,12 +53,12 @@ namespace Obsidian.Application.Commanding
         }
 
         /// <summary>
-        /// Send a command to the <see cref="CommandBus"/> so that it can be handled.
+        /// Send a command to the <see cref="OldCommandBus"/> so that it can be handled.
         /// </summary>
         /// <typeparam name="TCommand">the type of the command.</typeparam>
         /// <param name="command">The command.</param>
         /// <returns></returns>
-        public Task<CommandResult<TResultData>> SendAsync<TCommand, TResultData>(TCommand command) where TCommand : Command<TResultData>
+        public Task<OldCommandResult<TResultData>> SendAsync<TCommand, TResultData>(TCommand command) where TCommand : OldCommand<TResultData>
         {
             Type handlerType;
             try
@@ -69,7 +69,7 @@ namespace Obsidian.Application.Commanding
             {
                 throw new NullReferenceException($"There is no command handler for {typeof(TCommand).FullName}.");
             }
-            var handler = (ICommandHandler<TCommand, TResultData>)_serviceProvider.GetService(handlerType);
+            var handler = (IOldCommandHandler<TCommand, TResultData>)_serviceProvider.GetService(handlerType);
             return handler.HandleAsync(command);
         }
     }
