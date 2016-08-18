@@ -2,5 +2,6 @@
 {
     public class PermissionGrantResult
     {
+        public string RedirectUri { get; set; }
     }
 }

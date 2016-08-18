@@ -1,7 +1,14 @@
-﻿namespace Obsidian.Application.OAuth20
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Obsidian.Domain;
+
+namespace Obsidian.Application.OAuth20
 {
     public class SignInResult
     {
-        public bool Succeed { get; internal set; }
+        public string RedirectUri { get; set; }
+        public IEnumerable<PermissionScope> Scopes { get; set; }
+        public OAuth20Status Status { get; set; }
+        public bool Succeed { get; set; }
     }
 }

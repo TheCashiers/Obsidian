@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Domain
 {
-    public class PermissionScope : IEntity
+    public class PermissionScope : IEntity, IAggregateRoot
     {
         public Guid Id { get; private set; }
 

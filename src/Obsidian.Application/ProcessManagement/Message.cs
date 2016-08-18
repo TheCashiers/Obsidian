@@ -7,6 +7,12 @@ namespace Obsidian.Application.ProcessManagement
 {
     public abstract class Message<TResult>
     {
-        public Guid SagaId { get; private set; }
+
+        public Message(Guid sagaId)
+        {
+            SagaId = sagaId;
+        }
+
+        public Guid SagaId { get; }
     }
 }

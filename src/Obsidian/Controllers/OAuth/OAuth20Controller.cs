@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Obsidian.Application.OAuth20;
+using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Models;
@@ -9,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using OAuth20SignInResult = Obsidian.Application.OAuth20.SignInResult;
 
 //TODO: remove this when implemented
 #pragma warning disable CS1998
@@ -22,16 +25,19 @@ namespace Obsidian.Controllers.OAuth
         private readonly IDataProtector _dataProtector;
         private readonly IClientRepository _clientRepository;
         private readonly IUserRepository _userRepository;
+        private readonly SagaBus _sagaBus;
 
         public OAuth20Controller(IMemoryCache memCache,
             IDataProtectionProvider dataProtectionProvicer,
             IUserRepository userRepo,
-            IClientRepository clientRepo)
+            IClientRepository clientRepo,
+            SagaBus bus)
         {
             _memoryCache = memCache;
             _dataProtector = dataProtectionProvicer.CreateProtector("Obsidian.OAuth.Context.Key");
             _userRepository = userRepo;
             _clientRepository = clientRepo;
+            _sagaBus = bus;
         }
 
         [Route("oauth20/authorize/frontend/debug")]
@@ -45,103 +51,78 @@ namespace Obsidian.Controllers.OAuth
         [HttpGet]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
-
-            if (!User.Identity.IsAuthenticated)
+            var command = new AuthorizeCommand
             {
-                //date time is just to make the context string different each time.
-                var context = _dataProtector.Protect($"{model.ClientId}|{model.ResponseType}|{model.Scope}|{DateTime.Now}");
-                return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
+                ClientId = model.ClientId,
+                ScopeNames = model.Scope.Split(' '),
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                command.UserName = User.Identity.Name;
             }
 
-            var client = await _clientRepository.FindByIdAsync(model.ClientId);
-            if (client == null)
+            var result = await _sagaBus.InvokeAsync<AuthorizeCommand, AuthorizeResult>(command);
+            var protectedContext = _dataProtector.Protect(result.SagaId.ToString());
+            switch (result.Status)
             {
-                return BadRequest();
+                case OAuth20Status.Fail:
+                    return BadRequest(result.ErrorMessage);
+                case OAuth20Status.RequireSignIn:
+                    return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = protectedContext });
+                case OAuth20Status.CanRequestToken:
+                    return Redirect(result.RedirectUri);
+                case OAuth20Status.RequirePermissionGrant:
+                    return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = protectedContext });
+                default:
+                    return BadRequest();
             }
-            var user = await _userRepository.FindByUserNameAsync(User.Identity.Name);
 
-            //if user did not authorized this app before, show permissons page
-            var scopes = GrantScopes(model.Scope, client, user);
-            //TODO: if response type is code
-            var code = CacheCodeGrantContext(client, user, scopes);
-            var url = $"{client.RedirectUri}?code={code}";
-            return Redirect(url);
         }
 
-        private string[] GrantScopes(string reqScopes, Client client, User user)
-        {
-            var authDetail = user.AuthorizedClients.SingleOrDefault(d => d.Client == client);
-            var scopes = reqScopes.Split(' ');
-            var allScopesGranted = scopes.All(s => authDetail.Scopes.Select(sc => sc.ScopeName).Contains(s));
-            if (authDetail == null || (!allScopesGranted))
-            {
-                ViewData["ShowPermissionGrant"] = true;
-            }
-            else
-            {
-                ViewData["ShowPermissionGrant"] = false;
-            }
-
-            return scopes;
-        }
-
-        [Route("oauth20/api/authorize")]
+        [Route("oauth20/authorize")]
         [HttpPost]
         public async Task<IActionResult> Authorize([FromBody]OAuthSignInModel model)
         {
-
-            var user = await _userRepository.FindByUserNameAsync(model.UserName);
-            //TODO: sign user in
-
-            //TODO: if response type is code
-            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext).Split('|');
-            Guid clientId;
-            if (!Guid.TryParse(context[0], out clientId))
+            Guid sagaId;
+            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
+            if (Guid.TryParse(context, out sagaId))
             {
                 return BadRequest();
             }
-            var responseType = context[1];
-            var scope = context[2].Split(' ');
-
-            var client = await _clientRepository.FindByIdAsync(clientId);
-            if (client == null)
+            var message = new SignInMessage(sagaId)
             {
-                return BadRequest();
-            }
-            //if user did not authorized this app before, show permissons page
-            var scopes = GrantScopes(context[2], client, user);
-
-            var code = CacheCodeGrantContext(client, user, scope);
-            var url = $"{client.RedirectUri}?code={code}";
-            return Redirect(url);
+                UserName = model.UserName,
+                Password = model.Password
+            };
+            var result = await _sagaBus.SendAsync<SignInMessage, OAuth20SignInResult>(message);
+            throw new NotImplementedException();
         }
 
-        [Route("oauth20/api/permissiongrant")]
+        [Route("oauth20/authorize")]
         [HttpPost]
-        public async Task<IActionResult> PermissionGrant([FromBody]PermissionGrantModel model)
+        public async Task<IActionResult> PermissionGrant([FromForm]PermissionGrantModel model)
         {
-            return StatusCode(501);
-        }
-
-        private Guid CacheCodeGrantContext(Client client, User user, string[] scope)
-        {
-            var code = Guid.NewGuid();
-            var context = new AuthorizationCodeContext(client, user, scope);
-            _memoryCache.Set(code, context, TimeSpan.FromMinutes(3));
-            return code;
+            Guid sagaId;
+            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
+            if (Guid.TryParse(context, out sagaId))
+            {
+                return BadRequest();
+            }
+            var message = new PermissionGrantMessage(sagaId) { PermissionGranted = model.Grant };
+            var result = await _sagaBus.SendAsync<PermissionGrantMessage, PermissionGrantResult>(message);
+            if (model.Grant)
+            {
+                return Redirect(result.RedirectUri);
+            }
+            return BadRequest();
         }
 
         [Route("oauth20/token")]
         [HttpPost]
         public async Task<IActionResult> Token(AccessTokenFromAuthorizationCodeRequestModel model)
         {
-            AuthorizationCodeContext context;
-            if (_memoryCache.TryGetValue(model.Code, out context))
-            {
-                _memoryCache.Remove(model.Code);
-                //TODO: generate access token
-            }
-            return BadRequest();
+            return StatusCode(501);
         }
     }
 }

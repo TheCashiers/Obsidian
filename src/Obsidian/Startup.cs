@@ -42,6 +42,7 @@ namespace Obsidian
             services.AddDbContext();
             services.AddCommandBus();
             services.AddCommandHandlers();
+            services.AddSagaBus();
             services.AddMongoRepositories();
         }
 
