@@ -41,5 +41,10 @@ namespace Obsidian.Domain
             var hash = _passwordHasher.HashPasword(password);
             return hash == PasswordHash;
         }
+
+        public bool IsClientAuthorized(Client client, IEnumerable<string> scopeNames)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

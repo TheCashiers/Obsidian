@@ -2,5 +2,6 @@
 {
     public class SignInResult
     {
+        public bool Succeed { get; internal set; }
     }
 }

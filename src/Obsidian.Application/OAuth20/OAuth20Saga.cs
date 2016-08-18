@@ -1,8 +1,11 @@
-﻿using Obsidian.Application.ProcessManagement;
+﻿using OAuth20;
+using Obsidian.Application.ProcessManagement;
+using Obsidian.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Obsidian.Domain;
 
 namespace Obsidian.Application.OAuth20
 {
@@ -12,22 +15,73 @@ namespace Obsidian.Application.OAuth20
         IHandlerOf<PermissionGrantMessage, PermissionGrantResult>,
         IHandlerOf<AccessTokenRequestMessage, AccessTokenResult>
     {
-        public Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
+        private readonly IClientRepository _clientRepository;
+        private readonly IUserRepository _userRepository;
+
+        public OAuth20Saga(IClientRepository clientRepo,
+                           IUserRepository userRepo)
         {
-            throw new NotImplementedException();
+            _clientRepository = clientRepo;
+            _userRepository = userRepo;
+        }
+
+        private OAuth20Status _status;
+        private User _user;
+
+        public async Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
+        {
+            var client = await _clientRepository.FindByIdAsync(command.ClientId);
+            if (client == null)
+            {
+                _status = OAuth20Status.Fail;
+                return new AuthorizeResult
+                {
+                    Status = this._status,
+                    ErrorMessage = "Client not found."
+                };
+            }
+            if (command.UserName != null)
+            {
+                _user = await _userRepository.FindByUserNameAsync(command.UserName);
+                if (_user == null)
+                {
+                    _status = OAuth20Status.Fail;
+                    return new AuthorizeResult
+                    {
+                        Status = this._status,
+                        ErrorMessage = "User not found."
+                    };
+                }
+                if (_user.IsClientAuthorized(client, command.ScopeNames))
+                {
+                    _status = OAuth20Status.CanRequestToken;
+                    return new AuthorizeResult { Status = this._status };
+                }
+                _status = OAuth20Status.RequirePermissionGrant;
+                return new AuthorizeResult { Status = this._status };
+            }
+
+            _status = OAuth20Status.RequireSignIn;
+            return new AuthorizeResult { Status = this._status };
         }
 
         #region SignIn
 
         public bool ShouldHandle(SignInMessage message)
         {
-            throw new NotImplementedException();
+            return message.SagaId == this.Id && _status == OAuth20Status.RequireSignIn;
         }
 
         public Task<SignInResult> HandleAsync(SignInMessage message)
         {
-            throw new NotImplementedException();
+            if (_user.UserName != message.UserName || !_user.VaildatePassword(message.Password))
+            {
+                return Task.FromResult(new SignInResult { Succeed = false });
+            }
+            return Task.FromResult(new SignInResult { Succeed = true });
+
         }
+
 
         #endregion
 
@@ -62,7 +116,6 @@ namespace Obsidian.Application.OAuth20
         {
             return false;
         }
-
 
     }
 }
