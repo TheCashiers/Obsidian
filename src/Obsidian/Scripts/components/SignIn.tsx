@@ -9,20 +9,20 @@ export const SignIn = (props) => (
     <div className="white form form-padding">
         <form className="text-padding">
             <div className="form-group">
-                <label htmlFor="UserName" className="control-label">Username: </label>
-                <input id="UserName" className="form-control" type="text" placeholder="Enter your E-mail address" required/>
+                <label htmlFor="UserName" className="control-label"></label>
+                <input htmlFor="UserName" className="form-control" type="text" placeholder="Enter your E-mail address" required/>
             </div>
 
             <div className="form-group">
-                <label className="control-label" htmlFor="Password">Password: </label>
-                <input className="form-control" id="Password" type="password" placeholder="Enter your password" required/>
+                <label className="control-label" htmlFor="Password"></label>
+                <input className="form-control" htmlFor="Password" type="password" placeholder="Enter your password" required/>
             </div>
 
             <br/>
 
             <div className="form-inline">
-                <input className="form-inline checkbox" id="RememberMe" type="checkbox" />
-                <label className="control-label" htmlFor="RememberMe">Remember Me</label>
+                <input className="form-inline checkbox" htmlFor="RememberMe" type="checkbox" />
+                <label className="control-label" htmlFor="RememberMe"></label>
             </div>
 
             <input htmlFor="ProtectedOAuthContext" type="hidden" />
