@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Obsidian.Application.OAuth20
 {
     public class OAuth20Saga : Saga,
-        IStartsWith<AuthorizeCommand,Guid>, 
-        IHandlerOf<SignInMessage,SignInResult>,
-        IHandlerOf<PermissionGrantMessage,PermissionGrantResult>,
-        IHandlerOf<AccessTokenRequestMessage,AccessTokenResult>
+        IStartsWith<AuthorizeCommand, AuthorizeResult>,
+        IHandlerOf<SignInMessage, SignInResult>,
+        IHandlerOf<PermissionGrantMessage, PermissionGrantResult>,
+        IHandlerOf<AccessTokenRequestMessage, AccessTokenResult>
     {
-        public Task<Guid> StartAsync(AuthorizeCommand command)
+        public Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
         {
             throw new NotImplementedException();
         }
@@ -62,5 +62,7 @@ namespace Obsidian.Application.OAuth20
         {
             return false;
         }
+
+
     }
 }

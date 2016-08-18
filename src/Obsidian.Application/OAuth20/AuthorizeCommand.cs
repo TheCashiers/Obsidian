@@ -3,7 +3,7 @@ using System;
 
 namespace Obsidian.Application.OAuth20
 {
-    public class AuthorizeCommand : Command<Guid>
+    public class AuthorizeCommand : Command<AuthorizeResult>
     {
 
     }
