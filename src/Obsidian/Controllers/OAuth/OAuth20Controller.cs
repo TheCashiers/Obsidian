@@ -34,6 +34,14 @@ namespace Obsidian.Controllers.OAuth
             _clientRepository = clientRepo;
         }
 
+        [Route("oauth20/authorize/frontend/debug")]
+        public IActionResult FrontEndDebug()
+        {
+            return View("SignIn");
+        }
+
+        [HttpGet]
+
         [Route("oauth20/authorize")]
         [HttpGet]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
