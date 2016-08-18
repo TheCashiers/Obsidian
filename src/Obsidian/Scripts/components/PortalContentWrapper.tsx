@@ -26,7 +26,7 @@ const fixLayout = function () {
         }
     }
 };
-export let Main = React.createClass({
+export let PortalContentWrapper = React.createClass({
     componentDidUpdate: () => {
         fixLayout();
         console.log("re-rendered layout.")

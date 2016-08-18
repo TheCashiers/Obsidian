@@ -1,9 +1,11 @@
 ﻿module.exports = {
-    entry: [
-        "./Scripts/UserPortalPage.tsx"
-    ],
+    entry: {
+        "Portal":"./Scripts/UserPortalPage.tsx",
+        "OAuth":"./Scripts/OAuthPage.tsx"
+    },
     output: {
-        filename: "./wwwroot/js/UserPortalBundle.js",
+        path:"./wwwroot/js/",
+        filename: "[name]Bundle.js",
     },
 
     // Enable sourcemaps for debugging webpack's output.
