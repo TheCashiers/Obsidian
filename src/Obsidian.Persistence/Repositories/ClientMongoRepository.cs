@@ -21,7 +21,7 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(Builders<Client>.Filter.Eq("id", aggregate.Id)).FirstOrDefault() != null) throw new InvalidOperationException();
+            if (_collection.Find(c => c.Id == aggregate.Id).SingleOrDefault() != null) throw new InvalidOperationException();
             await _collection.InsertOneAsync(aggregate);
         }
 
@@ -29,13 +29,13 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            return _collection.DeleteOneAsync(Builders<Client>.Filter.Eq("id", aggregate.Id));
+            return _collection.DeleteOneAsync(c => c.Id == aggregate.Id);
         }
 
         public Task<Client> FindByIdAsync(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
-            return _collection.Find(Builders<Client>.Filter.Eq("id", id)).FirstOrDefaultAsync();
+            return _collection.Find(c=> c.Id == id).SingleOrDefaultAsync();
         }
 
         public Task<IQueryable<Client>> QueryAllAsync() => Task.FromResult<IQueryable<Client>>(_collection.AsQueryable());
@@ -44,8 +44,8 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(Builders<Client>.Filter.Eq("id", aggregate.Id)).FirstOrDefault() == null) throw new InvalidOperationException();
-            return _collection.ReplaceOneAsync(Builders<Client>.Filter.Eq("id", aggregate.Id), aggregate);
+            if (_collection.Find(c => c.Id == aggregate.Id).SingleOrDefault() == null) throw new InvalidOperationException();
+            return _collection.ReplaceOneAsync(c=>c.Id == aggregate.Id, aggregate);
         }
     }
 }

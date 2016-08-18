@@ -21,7 +21,7 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(Builders<User>.Filter.Eq("id", aggregate.Id)).FirstOrDefault() != null) throw new InvalidOperationException();
+            if (_collection.Find(u => u.Id == aggregate.Id).SingleOrDefault() != null) throw new InvalidOperationException();
             await _collection.InsertOneAsync(aggregate);
         }
 
@@ -29,19 +29,19 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            return _collection.DeleteOneAsync(Builders<User>.Filter.Eq("id", aggregate.Id));
+            return _collection.DeleteOneAsync(u => u.Id == aggregate.Id);
         }
 
         public Task<User> FindByIdAsync(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
-            return _collection.Find(Builders<User>.Filter.Eq("id", id)).FirstOrDefaultAsync();
+            return _collection.Find(u => u.Id == id).SingleOrDefaultAsync();
         }
 
         public Task<User> FindByUserNameAsync(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentNullException(nameof(userName));
-            return _collection.Find(Builders<User>.Filter.Eq("username", userName)).FirstOrDefaultAsync();
+            return _collection.Find(u => u.UserName == userName).SingleOrDefaultAsync();
         }
 
 
@@ -51,8 +51,8 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(Builders<User>.Filter.Eq("id", aggregate.Id)).FirstOrDefault() == null) throw new InvalidOperationException();
-            return _collection.ReplaceOneAsync(Builders<User>.Filter.Eq("id", aggregate.Id), aggregate);
+            if (_collection.Find(u => u.Id ==aggregate.Id).SingleOrDefault() == null) throw new InvalidOperationException();
+            return _collection.ReplaceOneAsync(u => u.Id == aggregate.Id, aggregate);
         }
     }
 }
