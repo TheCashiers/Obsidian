@@ -7,7 +7,7 @@ namespace Obsidian.Application.ProcessManagement
 {
     public class SagaBus
     {
-        public void Register<TSaga>(TSaga saga) where TSaga : Saga
+        public void Register<TSaga>() where TSaga : Saga
         {
             throw new NotImplementedException();
         }
