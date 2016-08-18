@@ -5,10 +5,39 @@
 @{
     ViewData["Title"] = "Sign in";
 }
-@section scripts{
-<script src="~/js/OAuthBundle.js"></script>
-}
+<div class="main fullscreen">
 
-<div id="oauth"></div>
+    <div class="bg cover text-padding left-div">
+        @*Left Section*@
+        <h1>Obsidian</h1>
+        <h3>One-stop Authenication Solution</h3>
+    </div>
+    <div class="white form form-padding">
+        <form class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
+            @*Right Section*@
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" type="text" placeholder="Enter your E-mail address" required/>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" asp-for="Password"></label>
+                <input class="form-control" asp-for="Password" type="password" placeholder="Enter your password" required/>
+            </div>
+
+            <br/>
+
+            <div class="form-inline">
+                <input class="form-inline checkbox" asp-for="RememberMe" type="checkbox" />
+                <label class="control-label" asp-for="RememberMe"></label>
+            </div>
+
+            <input asp-for="ProtectedOAuthContext" type="hidden" />
+            <br/>
+            <hr/>
+            <button class="btn btn-lg btn-info form-btn" type="submit">Sign In</button>
+        </form>
+    </div>
+</div>
 
 <link href="~/css/SignIn.css" rel="stylesheet" />
