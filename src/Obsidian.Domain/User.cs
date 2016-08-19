@@ -2,6 +2,7 @@
 using Obsidian.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Obsidian.Domain
 {
@@ -45,6 +46,11 @@ namespace Obsidian.Domain
         public bool IsClientAuthorized(Client client, IEnumerable<string> scopeNames)
         {
             throw new NotImplementedException();
+        }
+
+        public IList<Claim> GetClaims()
+        {
+            return new List<Claim>();
         }
     }
 }

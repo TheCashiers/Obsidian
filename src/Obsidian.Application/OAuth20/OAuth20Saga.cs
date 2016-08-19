@@ -4,6 +4,9 @@ using Obsidian.Domain.Repositories;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Obsidian.Application.OAuth20
 {
@@ -33,6 +36,12 @@ namespace Obsidian.Application.OAuth20
 
         public async Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
         {
+            if (command.GrantType != AuthorizationGrant.AuthorizationCode &&
+                command.GrantType != AuthorizationGrant.Implicit)
+            {
+                throw new NotSupportedException();
+            }
+
             _requestedScopes = await Task.WhenAll(command.ScopeNames.Select(s => _scopeRepository.FindByScopeNameAsync(s)));
             _client = await _clientRepository.FindByIdAsync(command.ClientId);
             if (_client == null)
@@ -62,7 +71,7 @@ namespace Obsidian.Application.OAuth20
                     return new AuthorizeResult { Status = this._status };
                 }
                 _status = OAuth20Status.RequirePermissionGrant;
-                return new AuthorizeResult { Status = this._status, SagaId = Id };
+                return new AuthorizeResult { Status = this._status, SagaId = Id, Client = _client, Scopes = _requestedScopes };
             }
 
             _status = OAuth20Status.RequireSignIn;
@@ -120,19 +129,36 @@ namespace Obsidian.Application.OAuth20
 
         #region Access Token Request
 
-        public bool ShouldHandle(AccessTokenRequestMessage message)
-        {
-            throw new NotImplementedException();
-        }
+        public bool ShouldHandle(AccessTokenRequestMessage message) => _status == OAuth20Status.CanRequestToken;
 
         public Task<AccessTokenResult> HandleAsync(AccessTokenRequestMessage message)
         {
-            throw new NotImplementedException();
+            //vaildate client
+            return Task.FromResult(new AccessTokenResult { AccessToken = GenerateAccessToken() });
+        }
+
+        const string key = "Obsidian.OAuth20.Jwt";
+
+        private string GenerateAccessToken()
+        {
+            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            var claims = _user.GetClaims();
+            var jwt = new JwtSecurityToken(
+                issuer: "Obsidian",
+                audience: "ObsidianAud",
+                claims: claims,
+                signingCredentials: signingCredentials
+                );
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return token;
         }
 
         #endregion Access Token Request
 
         protected override bool IsProcessCompleted()
-            => _status == OAuth20Status.Fail || _status == OAuth20Status.Finished;
+            => _status == OAuth20Status.Fail ||
+            _status == OAuth20Status.Finished ||
+            _status == OAuth20Status.ImplicitTokenReturned;
     }
 }

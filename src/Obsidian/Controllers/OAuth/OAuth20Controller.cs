@@ -21,22 +21,12 @@ namespace Obsidian.Controllers.OAuth
 {
     public class OAuth20Controller : Controller
     {
-        private readonly IMemoryCache _memoryCache;
         private readonly IDataProtector _dataProtector;
-        private readonly IClientRepository _clientRepository;
-        private readonly IUserRepository _userRepository;
         private readonly SagaBus _sagaBus;
 
-        public OAuth20Controller(IMemoryCache memCache,
-            IDataProtectionProvider dataProtectionProvicer,
-            IUserRepository userRepo,
-            IClientRepository clientRepo,
-            SagaBus bus)
+        public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus)
         {
-            _memoryCache = memCache;
             _dataProtector = dataProtectionProvicer.CreateProtector("Obsidian.OAuth.Context.Key");
-            _userRepository = userRepo;
-            _clientRepository = clientRepo;
             _sagaBus = bus;
         }
 
@@ -68,16 +58,22 @@ namespace Obsidian.Controllers.OAuth
             {
                 case OAuth20Status.Fail:
                     return BadRequest(result.ErrorMessage);
+
                 case OAuth20Status.RequireSignIn:
                     return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = protectedContext });
+
                 case OAuth20Status.CanRequestToken:
+                case OAuth20Status.ImplicitTokenReturned:
                     return Redirect(result.RedirectUri);
+
                 case OAuth20Status.RequirePermissionGrant:
+                    ViewBag.Client = result.Client;
+                    ViewBag.Scopes = result.Scopes;
                     return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = protectedContext });
+
                 default:
                     return BadRequest();
             }
-
         }
 
         [Route("oauth20/authorize")]

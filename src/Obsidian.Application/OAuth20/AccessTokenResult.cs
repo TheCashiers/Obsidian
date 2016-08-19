@@ -2,5 +2,6 @@
 {
     public class AccessTokenResult
     {
+        public string AccessToken { get; set; }
     }
 }

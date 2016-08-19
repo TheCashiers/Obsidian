@@ -6,6 +6,7 @@
         Fail,
         RequireSignIn,
         CanRequestToken,
+        ImplicitTokenReturned,
         RequirePermissionGrant,
         Finished
     }

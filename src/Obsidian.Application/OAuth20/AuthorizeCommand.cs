@@ -9,5 +9,7 @@ namespace Obsidian.Application.OAuth20
         public string UserName { get; set; }
         public string[] ScopeNames { get; set; }
 
+        public AuthorizationGrant GrantType { get; set; }
+
     }
 }

@@ -1,0 +1,20 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Obsidian.Domain
+@using Obsidian.Models
+
+@Model PermissionGrantModel
+
+@{
+    var client = ViewBag.Client as Client;
+    var scopes = ViewBag.Scopes as PermissionScope[];
+}
+<h1>Allow &ensp;<b>@client.DisplayName</b>&ensp; to access these following information?</h1>
+
+<ul>
+    @foreach (var scope in scopes)
+    {
+        <li><b>@scope.DisplayName &ensp;</b>@scope.Description</li>
+    }
+</ul>
