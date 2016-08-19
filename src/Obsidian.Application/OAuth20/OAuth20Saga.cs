@@ -33,6 +33,7 @@ namespace Obsidian.Application.OAuth20
         private User _user;
         private Client _client;
         private PermissionScope[] _requestedScopes;
+        private AuthorizationGrant _grantType;
 
         public async Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
         {
@@ -41,6 +42,7 @@ namespace Obsidian.Application.OAuth20
             {
                 throw new NotSupportedException();
             }
+            _grantType = command.GrantType;
 
             _requestedScopes =
                 await Task.WhenAll(command.ScopeNames.Select(s => _scopeRepository.FindByScopeNameAsync(s)));
@@ -67,8 +69,21 @@ namespace Obsidian.Application.OAuth20
                 }
                 if (_user.IsClientAuthorized(_client, command.ScopeNames))
                 {
-                    _status = OAuth20Status.AuthorizationCodeReturned;
-                    return new AuthorizeResult { Status = _status };
+                    if (_grantType == AuthorizationGrant.AuthorizationCode)
+                    {
+                        _status = OAuth20Status.AuthorizationCodeReturned;
+                        // code is saga id
+                        return new AuthorizeResult { Status = _status };
+                    }
+                    else if (_grantType == AuthorizationGrant.Implicit)
+                    {
+                        _status = OAuth20Status.ImplicitTokenReturned;
+                        return new AuthorizeResult
+                        {
+                            Status = _status,
+                            RedirectUri = $"{_client.RedirectUri}?access_token={GenerateAccessToken()}"
+                        };
+                    }
                 }
                 _status = OAuth20Status.RequirePermissionGrant;
                 return new AuthorizeResult { Status = _status, SagaId = Id, Client = _client, Scopes = _requestedScopes };
@@ -113,7 +128,7 @@ namespace Obsidian.Application.OAuth20
 
             var result = new SignInResult { Succeed = true, Status = _status };
 
-            if (_status==OAuth20Status.AuthorizationCodeReturned)
+            if (_status == OAuth20Status.AuthorizationCodeReturned)
             {
                 result.RedirectUri = $"{_client.RedirectUri}?code={Id}";
             }
