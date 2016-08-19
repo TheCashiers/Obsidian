@@ -62,7 +62,7 @@ namespace Obsidian.Controllers.OAuth
                 case OAuth20Status.RequireSignIn:
                     return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = protectedContext });
 
-                case OAuth20Status.CanRequestToken:
+                case OAuth20Status.AuthorizationCodeReturned:
                 case OAuth20Status.ImplicitTokenReturned:
                     return Redirect(result.RedirectUri);
 
@@ -118,7 +118,24 @@ namespace Obsidian.Controllers.OAuth
         [HttpPost]
         public async Task<IActionResult> Token(AccessTokenFromAuthorizationCodeRequestModel model)
         {
-            return StatusCode(501);
+            if (model.GrantType == "authorization_code")
+            {
+                var message = new AccessTokenRequestMessage(model.Code);
+                var result = await _sagaBus.SendAsync<AccessTokenRequestMessage, AccessTokenResult>(message);
+                if (result.Succeed)
+                {
+                    return Ok(new AccessTokenResponseModel
+                    {
+                        TokenType = "Bearer",
+                        AccessToken = result.AccessToken,
+                        RefreshToken = result.RefreshToken,
+                        AuthrneticationToken = result.AuthrneticationToken,
+                        Scope = string.Join(" ", result.Scope.Select(s => s.ScopeName)),
+                        ExpireInSecond = (long)result.ExpireIn.TotalSeconds
+                    });
+                }
+            }
+            return BadRequest();
         }
     }
 }

@@ -5,7 +5,7 @@
         NotProcessed,
         Fail,
         RequireSignIn,
-        CanRequestToken,
+        AuthorizationCodeReturned,
         ImplicitTokenReturned,
         RequirePermissionGrant,
         Finished

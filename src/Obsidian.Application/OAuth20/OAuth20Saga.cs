@@ -42,40 +42,58 @@ namespace Obsidian.Application.OAuth20
                 throw new NotSupportedException();
             }
 
-            _requestedScopes = await Task.WhenAll(command.ScopeNames.Select(s => _scopeRepository.FindByScopeNameAsync(s)));
+            _requestedScopes =
+                await Task.WhenAll(command.ScopeNames.Select(s => _scopeRepository.FindByScopeNameAsync(s)));
+
             _client = await _clientRepository.FindByIdAsync(command.ClientId);
             if (_client == null)
             {
                 _status = OAuth20Status.Fail;
                 return new AuthorizeResult
                 {
-                    Status = this._status,
+                    Status = _status,
                     ErrorMessage = "Client not found."
                 };
             }
             if (command.UserName != null)
             {
-                _user = await _userRepository.FindByUserNameAsync(command.UserName);
-                if (_user == null)
+                if (!await LoadUserAsync(command.UserName))
                 {
-                    _status = OAuth20Status.Fail;
                     return new AuthorizeResult
                     {
-                        Status = this._status,
+                        Status = _status,
                         ErrorMessage = "User not found."
                     };
                 }
                 if (_user.IsClientAuthorized(_client, command.ScopeNames))
                 {
-                    _status = OAuth20Status.CanRequestToken;
-                    return new AuthorizeResult { Status = this._status };
+                    _status = OAuth20Status.AuthorizationCodeReturned;
+                    return new AuthorizeResult { Status = _status };
                 }
                 _status = OAuth20Status.RequirePermissionGrant;
-                return new AuthorizeResult { Status = this._status, SagaId = Id, Client = _client, Scopes = _requestedScopes };
+                return new AuthorizeResult { Status = _status, SagaId = Id, Client = _client, Scopes = _requestedScopes };
             }
 
             _status = OAuth20Status.RequireSignIn;
-            return new AuthorizeResult { Status = this._status, SagaId = Id };
+            return new AuthorizeResult { Status = _status, SagaId = Id };
+        }
+
+        private async Task<bool> LoadUserAsync(string userName)
+        {
+            if (_user == null)
+            {
+                _user = await _userRepository.FindByUserNameAsync(userName);
+                if (_user == null)
+                {
+                    _status = OAuth20Status.Fail;
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return userName == _user.UserName;
+            }
         }
 
         #region SignIn
@@ -83,19 +101,19 @@ namespace Obsidian.Application.OAuth20
         public bool ShouldHandle(SignInMessage message) => _status == OAuth20Status.RequireSignIn;
 
 
-        public Task<SignInResult> HandleAsync(SignInMessage message)
+        public async Task<SignInResult> HandleAsync(SignInMessage message)
         {
-            if (_user.UserName != message.UserName || !_user.VaildatePassword(message.Password))
+            if (!await LoadUserAsync(message.UserName) || !_user.VaildatePassword(message.Password))
             {
-                return Task.FromResult(new SignInResult { Succeed = false });
+                return new SignInResult { Succeed = false };
             }
 
             var clientAuthorized = _user.IsClientAuthorized(_client, _requestedScopes.Select(s => s.ScopeName));
-            _status = clientAuthorized ? OAuth20Status.CanRequestToken : OAuth20Status.RequirePermissionGrant;
+            _status = clientAuthorized ? OAuth20Status.AuthorizationCodeReturned : OAuth20Status.RequirePermissionGrant;
 
             var result = new SignInResult { Succeed = true, Status = _status };
 
-            if (clientAuthorized)//and if response type is code
+            if (_status==OAuth20Status.AuthorizationCodeReturned)
             {
                 result.RedirectUri = $"{_client.RedirectUri}?code={Id}";
             }
@@ -103,7 +121,7 @@ namespace Obsidian.Application.OAuth20
             {
                 result.Scopes = _requestedScopes;
             }
-            return Task.FromResult(result);
+            return result;
         }
 
         #endregion SignIn
@@ -118,7 +136,7 @@ namespace Obsidian.Application.OAuth20
             {
                 _user.AuthorizedClients.Add(new ClientAuthorizationDetail { Client = _client, Scopes = _requestedScopes });
                 await _userRepository.SaveAsync(_user);
-                _status = OAuth20Status.CanRequestToken;
+                _status = OAuth20Status.AuthorizationCodeReturned;
                 var result = new PermissionGrantResult { RedirectUri = $"{_client.RedirectUri}?code={Id}" };
                 return result;
             }
@@ -129,7 +147,7 @@ namespace Obsidian.Application.OAuth20
 
         #region Access Token Request
 
-        public bool ShouldHandle(AccessTokenRequestMessage message) => _status == OAuth20Status.CanRequestToken;
+        public bool ShouldHandle(AccessTokenRequestMessage message) => _status == OAuth20Status.AuthorizationCodeReturned;
 
         public Task<AccessTokenResult> HandleAsync(AccessTokenRequestMessage message)
         {
