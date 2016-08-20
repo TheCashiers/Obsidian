@@ -20,7 +20,7 @@ namespace Obsidian.Application.OAuth20
         private readonly IUserRepository _userRepository;
         private readonly IPermissionScopeRepository _scopeRepository;
 
-        private OAuth20Status _status;
+        private OAuth20State _state;
 
         public OAuth20Saga(IClientRepository clientRepo,
                            IUserRepository userRepo,
@@ -31,31 +31,31 @@ namespace Obsidian.Application.OAuth20
             _scopeRepository = scopeRepo;
         }
 
+        private void GoToState(OAuth20State state) => _state = state;
+
         protected override bool IsProcessCompleted()
-        {
-            throw new NotImplementedException();
-        }
+            => _state == OAuth20State.Finished || _state == OAuth20State.UserDenied;
 
         public Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
         {
             throw new NotImplementedException();
         }
 
-        public bool ShouldHandle(SignInMessage message) => _status == OAuth20Status.RequireSignIn;
+        public bool ShouldHandle(SignInMessage message) => _state == OAuth20State.RequireSignIn;
 
         public Task<SignInResult> HandleAsync(SignInMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public bool ShouldHandle(PermissionGrantMessage message) => _status == OAuth20Status.RequirePermissionGrant;
+        public bool ShouldHandle(PermissionGrantMessage message) => _state == OAuth20State.RequirePermissionGrant;
 
         public Task<PermissionGrantResult> HandleAsync(PermissionGrantMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public bool ShouldHandle(AccessTokenRequestMessage message) => _status == OAuth20Status.AuthorizationCodeGenerated;
+        public bool ShouldHandle(AccessTokenRequestMessage message) => _state == OAuth20State.AuthorizationCodeGenerated;
 
         public Task<AccessTokenResult> HandleAsync(AccessTokenRequestMessage message)
         {

@@ -10,6 +10,6 @@ namespace Obsidian.Application.OAuth20
         public string RedirectUri { get; set; }
         public Guid SagaId { get; set; }
         public PermissionScope[] Scopes { get;  set; }
-        public OAuth20Status Status { get; set; }
+        public OAuth20State Status { get; set; }
     }
 }

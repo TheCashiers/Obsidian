@@ -1,6 +1,6 @@
 ﻿namespace Obsidian.Application.OAuth20
 {
-    public enum OAuth20Status
+    public enum OAuth20State
     {
         Initial,
         RequireSignIn,
