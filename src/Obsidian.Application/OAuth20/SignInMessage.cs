@@ -3,7 +3,7 @@ using Obsidian.Application.ProcessManagement;
 
 namespace Obsidian.Application.OAuth20
 {
-    public class SignInMessage : Message<SignInResult>
+    public class SignInMessage : Message<OAuth20Result>
     {
         public SignInMessage(Guid sagaId) : base(sagaId)
         {

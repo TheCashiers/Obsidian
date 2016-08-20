@@ -7,6 +7,7 @@
         RequirePermissionGrant,
         AuthorizationCodeGenerated,
         Finished,
-        UserDenied
+        UserDenied,
+        Failed
     }
 }

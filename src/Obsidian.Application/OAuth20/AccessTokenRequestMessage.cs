@@ -3,7 +3,7 @@ using Obsidian.Application.ProcessManagement;
 
 namespace Obsidian.Application.OAuth20
 {
-    public class AccessTokenRequestMessage : Message<AccessTokenResult>
+    public class AccessTokenRequestMessage : Message<OAuth20Result>
     {
         public AccessTokenRequestMessage(Guid sagaId) : base(sagaId)
         {
