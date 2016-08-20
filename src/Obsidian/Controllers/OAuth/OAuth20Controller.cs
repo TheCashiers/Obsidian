@@ -9,9 +9,8 @@ using Obsidian.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-
-using OAuth20SignInResult = Obsidian.Application.OAuth20.SignInResult;
 
 //TODO: remove this when implemented
 #pragma warning disable CS1998
@@ -41,10 +40,22 @@ namespace Obsidian.Controllers.OAuth
         [HttpGet]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
+            AuthorizationGrant grantType;
+            if ("code".Equals(model.ResponseType, StringComparison.OrdinalIgnoreCase))
+            {
+                grantType = AuthorizationGrant.AuthorizationCode;
+            }
+            else if ("token".Equals(model.ResponseType, StringComparison.OrdinalIgnoreCase))
+            {
+                grantType = AuthorizationGrant.AuthorizationCode;
+            }
+            else
+                return BadRequest();
             var command = new AuthorizeCommand
             {
                 ClientId = model.ClientId,
                 ScopeNames = model.Scope.Split(' '),
+                GrantType = grantType
             };
 
             if (User.Identity.IsAuthenticated)
@@ -52,10 +63,40 @@ namespace Obsidian.Controllers.OAuth
                 command.UserName = User.Identity.Name;
             }
 
-            var result = await _sagaBus.InvokeAsync<AuthorizeCommand, AuthorizeResult>(command);
-            var protectedContext = _dataProtector.Protect(result.SagaId.ToString());
+            var result = await _sagaBus.InvokeAsync<AuthorizeCommand, OAuth20Result>(command);
+            var context = _dataProtector.Protect(result.SagaId.ToString());
+            switch (result.State)
+            {
+                case OAuth20State.RequireSignIn:
+                    return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
+                case OAuth20State.RequirePermissionGrant:
+                    ViewBag.Client = result.PermissionGrant.Client;
+                    ViewBag.Scopes = result.PermissionGrant.Scopes;
+                    return View("PermissionGrant");
+                case OAuth20State.AuthorizationCodeGenerated:
+                    var codeRedirectUri = $"{result.RedirectUri}?code={result.AuthorizationCode}";
+                    return Redirect(codeRedirectUri);
+                case OAuth20State.Finished:
+                    string tokenRedirectUri = BuildImplictReturnUri(result);
+                    return Redirect(tokenRedirectUri);
+                default:
+                    return BadRequest();
+            }
+        }
 
-            return BadRequest();
+        private static string BuildImplictReturnUri(OAuth20Result result)
+        {
+            var sb = new StringBuilder($"{result.RedirectUri}?access_token={result.Token.AccessToken}");
+            if (result.Token.AuthrneticationToken != null)
+            {
+                sb.Append($"&authentication_token={result.Token.AuthrneticationToken}");
+            }
+            if (result.Token.RefreshToken != null)
+            {
+                sb.Append($"&refresh_token={result.Token.RefreshToken}");
+            }
+            var tokenRedirectUri = sb.ToString();
+            return tokenRedirectUri;
         }
 
         [Route("oauth20/authorize")]

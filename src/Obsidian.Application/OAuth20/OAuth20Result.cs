@@ -13,6 +13,7 @@ namespace Obsidian.Application.OAuth20
         public PermissionGrantResult PermissionGrant { get; set; }
         public TokenResult Token { get; set; }
         public Guid AuthorizationCode { get; set; }
+        public string RedirectUri { get; set; }
 
         public class TokenResult
         {

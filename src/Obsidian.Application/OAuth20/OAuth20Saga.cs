@@ -53,7 +53,7 @@ namespace Obsidian.Application.OAuth20
             if (TryLoadClient(command.ClientId, out _client)
                && TryLoadScopes(command.ScopeNames, out _scopes))
             {
-                if (TryLoadUser(command.UserName, out _user))
+                if (command.UserName != null && TryLoadUser(command.UserName, out _user))
                 {
                     return Task.FromResult(VerifyPermission());
                 }
@@ -154,6 +154,7 @@ namespace Obsidian.Application.OAuth20
         private OAuth20Result AuthorizationCodeResult()
         {
             var result = StateResult();
+            result.RedirectUri = _client.RedirectUri.OriginalString;
             result.AuthorizationCode = GenerateAuthorizationCode();
             return result;
         }
@@ -161,6 +162,7 @@ namespace Obsidian.Application.OAuth20
         private OAuth20Result AccessTokenResult()
         {
             var result = StateResult();
+            result.RedirectUri = _client.RedirectUri.OriginalString;
             result.Token = new OAuth20Result.TokenResult
             {
                 Scope = _scopes,
