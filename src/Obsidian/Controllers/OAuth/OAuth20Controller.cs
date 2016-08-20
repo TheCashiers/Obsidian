@@ -54,26 +54,8 @@ namespace Obsidian.Controllers.OAuth
 
             var result = await _sagaBus.InvokeAsync<AuthorizeCommand, AuthorizeResult>(command);
             var protectedContext = _dataProtector.Protect(result.SagaId.ToString());
-            switch (result.Status)
-            {
-                case OAuth20Status.Fail:
-                    return BadRequest(result.ErrorMessage);
 
-                case OAuth20Status.RequireSignIn:
-                    return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = protectedContext });
-
-                case OAuth20Status.AuthorizationCodeReturned:
-                case OAuth20Status.ImplicitTokenReturned:
-                    return Redirect(result.RedirectUri);
-
-                case OAuth20Status.RequirePermissionGrant:
-                    ViewBag.Client = result.Client;
-                    ViewBag.Scopes = result.Scopes;
-                    return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = protectedContext });
-
-                default:
-                    return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Route("oauth20/authorize")]

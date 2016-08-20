@@ -20,6 +20,8 @@ namespace Obsidian.Application.OAuth20
         private readonly IUserRepository _userRepository;
         private readonly IPermissionScopeRepository _scopeRepository;
 
+        private OAuth20Status _status;
+
         public OAuth20Saga(IClientRepository clientRepo,
                            IUserRepository userRepo,
                            IPermissionScopeRepository scopeRepo)
@@ -29,169 +31,44 @@ namespace Obsidian.Application.OAuth20
             _scopeRepository = scopeRepo;
         }
 
-        private OAuth20Status _status;
-        private User _user;
-        private Client _client;
-        private PermissionScope[] _requestedScopes;
-        private AuthorizationGrant _grantType;
-
-        public async Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
+        protected override bool IsProcessCompleted()
         {
-            if (command.GrantType != AuthorizationGrant.AuthorizationCode &&
-                command.GrantType != AuthorizationGrant.Implicit)
-            {
-                throw new NotSupportedException();
-            }
-            _grantType = command.GrantType;
-
-            _requestedScopes =
-                await Task.WhenAll(command.ScopeNames.Select(s => _scopeRepository.FindByScopeNameAsync(s)));
-
-            _client = await _clientRepository.FindByIdAsync(command.ClientId);
-            if (_client == null)
-            {
-                _status = OAuth20Status.Fail;
-                return new AuthorizeResult
-                {
-                    Status = _status,
-                    ErrorMessage = "Client not found."
-                };
-            }
-            if (command.UserName != null)
-            {
-                if (!await LoadUserAsync(command.UserName))
-                {
-                    return new AuthorizeResult
-                    {
-                        Status = _status,
-                        ErrorMessage = "User not found."
-                    };
-                }
-                if (_user.IsClientAuthorized(_client, command.ScopeNames))
-                {
-                    if (_grantType == AuthorizationGrant.AuthorizationCode)
-                    {
-                        _status = OAuth20Status.AuthorizationCodeReturned;
-                        // code is saga id
-                        return new AuthorizeResult { Status = _status };
-                    }
-                    else if (_grantType == AuthorizationGrant.Implicit)
-                    {
-                        _status = OAuth20Status.ImplicitTokenReturned;
-                        return new AuthorizeResult
-                        {
-                            Status = _status,
-                            RedirectUri = $"{_client.RedirectUri}?access_token={GenerateAccessToken()}"
-                        };
-                    }
-                }
-                _status = OAuth20Status.RequirePermissionGrant;
-                return new AuthorizeResult { Status = _status, SagaId = Id, Client = _client, Scopes = _requestedScopes };
-            }
-
-            _status = OAuth20Status.RequireSignIn;
-            return new AuthorizeResult { Status = _status, SagaId = Id };
+            throw new NotImplementedException();
         }
 
-        private async Task<bool> LoadUserAsync(string userName)
+        public Task<AuthorizeResult> StartAsync(AuthorizeCommand command)
         {
-            if (_user == null)
-            {
-                _user = await _userRepository.FindByUserNameAsync(userName);
-                if (_user == null)
-                {
-                    _status = OAuth20Status.Fail;
-                    return false;
-                }
-                return true;
-            }
-            else
-            {
-                return userName == _user.UserName;
-            }
+            throw new NotImplementedException();
         }
 
-        #region SignIn
-
-        public bool ShouldHandle(SignInMessage message) => _status == OAuth20Status.RequireSignIn;
-
-
-        public async Task<SignInResult> HandleAsync(SignInMessage message)
+        public bool ShouldHandle(SignInMessage message)
         {
-            if (!await LoadUserAsync(message.UserName) || !_user.VaildatePassword(message.Password))
-            {
-                return new SignInResult { Succeed = false };
-            }
-
-            var clientAuthorized = _user.IsClientAuthorized(_client, _requestedScopes.Select(s => s.ScopeName));
-            _status = clientAuthorized ? OAuth20Status.AuthorizationCodeReturned : OAuth20Status.RequirePermissionGrant;
-
-            var result = new SignInResult { Succeed = true, Status = _status };
-
-            if (_status == OAuth20Status.AuthorizationCodeReturned)
-            {
-                result.RedirectUri = $"{_client.RedirectUri}?code={Id}";
-            }
-            else
-            {
-                result.Scopes = _requestedScopes;
-            }
-            return result;
+            throw new NotImplementedException();
         }
 
-        #endregion SignIn
-
-        #region Permission Grant
-
-        public bool ShouldHandle(PermissionGrantMessage message) => _status == OAuth20Status.RequirePermissionGrant;
-
-        public async Task<PermissionGrantResult> HandleAsync(PermissionGrantMessage message)
+        public Task<SignInResult> HandleAsync(SignInMessage message)
         {
-            if (message.PermissionGranted)
-            {
-                _user.AuthorizedClients.Add(new ClientAuthorizationDetail { Client = _client, Scopes = _requestedScopes });
-                await _userRepository.SaveAsync(_user);
-                _status = OAuth20Status.AuthorizationCodeReturned;
-                var result = new PermissionGrantResult { RedirectUri = $"{_client.RedirectUri}?code={Id}" };
-                return result;
-            }
-            return new PermissionGrantResult();
+            throw new NotImplementedException();
         }
 
-        #endregion Permission Grant
+        public bool ShouldHandle(PermissionGrantMessage message)
+        {
+            throw new NotImplementedException();
+        }
 
-        #region Access Token Request
+        public Task<PermissionGrantResult> HandleAsync(PermissionGrantMessage message)
+        {
+            throw new NotImplementedException();
+        }
 
-        public bool ShouldHandle(AccessTokenRequestMessage message) => _status == OAuth20Status.AuthorizationCodeReturned;
+        public bool ShouldHandle(AccessTokenRequestMessage message)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<AccessTokenResult> HandleAsync(AccessTokenRequestMessage message)
         {
-            //vaildate client
-            return Task.FromResult(new AccessTokenResult { AccessToken = GenerateAccessToken() });
+            throw new NotImplementedException();
         }
-
-        const string key = "Obsidian.OAuth20.Jwt";
-
-        private string GenerateAccessToken()
-        {
-            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            var claims = _user.GetClaims();
-            var jwt = new JwtSecurityToken(
-                issuer: "Obsidian",
-                audience: "ObsidianAud",
-                claims: claims,
-                signingCredentials: signingCredentials
-                );
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return token;
-        }
-
-        #endregion Access Token Request
-
-        protected override bool IsProcessCompleted()
-            => _status == OAuth20Status.Fail ||
-            _status == OAuth20Status.Finished ||
-            _status == OAuth20Status.ImplicitTokenReturned;
     }
 }

@@ -2,12 +2,11 @@
 {
     public enum OAuth20Status
     {
-        NotProcessed,
-        Fail,
+        Initial,
         RequireSignIn,
-        AuthorizationCodeReturned,
-        ImplicitTokenReturned,
         RequirePermissionGrant,
-        Finished
+        AuthorizationCodeGenerated,
+        Finished,
+        UserDenied
     }
 }
