@@ -41,30 +41,21 @@ namespace Obsidian.Application.OAuth20
             throw new NotImplementedException();
         }
 
-        public bool ShouldHandle(SignInMessage message)
-        {
-            throw new NotImplementedException();
-        }
+        public bool ShouldHandle(SignInMessage message) => _status == OAuth20Status.RequireSignIn;
 
         public Task<SignInResult> HandleAsync(SignInMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public bool ShouldHandle(PermissionGrantMessage message)
-        {
-            throw new NotImplementedException();
-        }
+        public bool ShouldHandle(PermissionGrantMessage message) => _status == OAuth20Status.RequirePermissionGrant;
 
         public Task<PermissionGrantResult> HandleAsync(PermissionGrantMessage message)
         {
             throw new NotImplementedException();
         }
 
-        public bool ShouldHandle(AccessTokenRequestMessage message)
-        {
-            throw new NotImplementedException();
-        }
+        public bool ShouldHandle(AccessTokenRequestMessage message) => _status == OAuth20Status.AuthorizationCodeGenerated;
 
         public Task<AccessTokenResult> HandleAsync(AccessTokenRequestMessage message)
         {
