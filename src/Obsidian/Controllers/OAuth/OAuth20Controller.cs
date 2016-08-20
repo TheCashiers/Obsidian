@@ -114,7 +114,7 @@ namespace Obsidian.Controllers.OAuth
                 UserName = model.UserName,
                 Password = model.Password
             };
-            var result = await _sagaBus.SendAsync<SignInMessage, OAuth20SignInResult>(message);
+            //var result = await _sagaBus.SendAsync<SignInMessage, OAuth20SignInResult>(message);
             throw new NotImplementedException();
         }
 
@@ -129,7 +129,7 @@ namespace Obsidian.Controllers.OAuth
                 return BadRequest();
             }
             var message = new PermissionGrantMessage(sagaId) { PermissionGranted = model.Grant };
-            var result = await _sagaBus.SendAsync<PermissionGrantMessage, PermissionGrantResult>(message);
+            //var result = await _sagaBus.SendAsync<PermissionGrantMessage, PermissionGrantResult>(message);
             if (model.Grant)
             {
                 return Redirect(result.RedirectUri);
@@ -144,7 +144,7 @@ namespace Obsidian.Controllers.OAuth
             if (model.GrantType == "authorization_code")
             {
                 var message = new AccessTokenRequestMessage(model.Code);
-                var result = await _sagaBus.SendAsync<AccessTokenRequestMessage, AccessTokenResult>(message);
+                //var result = await _sagaBus.SendAsync<AccessTokenRequestMessage, AccessTokenResult>(message);
                 if (result.Succeed)
                 {
                     return Ok(new AccessTokenResponseModel
