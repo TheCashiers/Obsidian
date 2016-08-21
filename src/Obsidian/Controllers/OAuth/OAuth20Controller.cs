@@ -29,11 +29,35 @@ namespace Obsidian.Controllers.OAuth
             _sagaBus = bus;
         }
 
-        [Route("oauth20/authorize/frontend/debug")]
+        [Route("oauth20/authorize/frontend/singin")]
         [HttpGet]
-        public IActionResult FrontEndDebug()
+        public IActionResult FrontEndSignInDebug()
         {
             return View("SignIn");
+        }
+
+
+        [Route("oauth20/authorize/frontend/grant")]
+        [HttpGet]
+        public IActionResult FrontEndGrantDebug()
+        {
+            var context = _dataProtector.Protect(Guid.NewGuid().ToString());
+            var client = Client.Create(Guid.NewGuid(), "XXXX", "http://za-pt.org/exchange");
+            client.DisplayName = "iTech";
+            ViewBag.Client = client;
+            ViewBag.Scopes = new[] {
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.basicinfo","Basic Information","Includes you name and gender."),
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.email","Email address","Your email address."),
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system."),
+            };
+            return View("PermissionGrant", new PermissionGrantModel { Grant = true, ProtectedOAuthContext = context });
+        }
+
+        [Route("oauth20/authorize/frontend/denied")]
+        [HttpGet]
+        public IActionResult FrontEndDeniedDebug()
+        {
+            return View("UserDenied");
         }
 
         [Route("oauth20/authorize")]
@@ -85,7 +109,7 @@ namespace Obsidian.Controllers.OAuth
             var context = _dataProtector.Protect(result.SagaId.ToString());
             ViewBag.Client = result.PermissionGrant.Client;
             ViewBag.Scopes = result.PermissionGrant.Scopes;
-            return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
+            return View("PermissionGrant", new PermissionGrantModel { Grant = true, ProtectedOAuthContext = context });
         }
 
         private IActionResult ImplictRedirect(OAuth20Result result)
@@ -148,13 +172,13 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        [Route("oauth20/authorize")]
+        [Route("oauth20/authorize/permission")]
         [HttpPost]
         public async Task<IActionResult> PermissionGrant([FromForm]PermissionGrantModel model)
         {
             Guid sagaId;
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (Guid.TryParse(context, out sagaId))
+            if (!Guid.TryParse(context, out sagaId))
             {
                 return BadRequest();
             }
