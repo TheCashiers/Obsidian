@@ -21,7 +21,7 @@ namespace Obsidian.Domain
 
         public void SetPassword(string password)
         {
-            PasswordHash = _passwordHasher.HashPasword(password);
+            _passwordHash = _passwordHasher.HashPasword(password);
         }
 
         /// <summary>
@@ -29,18 +29,19 @@ namespace Obsidian.Domain
         /// </summary>
         public string UserName { get; private set; }
 
-        private string PasswordHash { get; set; }
-
         public UserProfile Profile { get; private set; }
 
         public IList<ClientAuthorizationDetail> AuthorizedClients { get; private set; }
 
         #endregion Props
 
+        private string _passwordHash;
+
+
         public bool VaildatePassword(string password)
         {
             var hash = _passwordHasher.HashPasword(password);
-            return hash == PasswordHash;
+            return hash == _passwordHash;
         }
 
         public bool IsClientAuthorized(Client client, IEnumerable<string> scopeNames)
