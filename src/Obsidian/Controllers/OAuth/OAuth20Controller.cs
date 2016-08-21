@@ -114,7 +114,7 @@ namespace Obsidian.Controllers.OAuth
 
         private IActionResult ImplictRedirect(OAuth20Result result)
         {
-            string tokenRedirectUri = BuildImplictReturnUri(result);
+            var tokenRedirectUri = BuildImplictReturnUri(result);
             return Redirect(tokenRedirectUri);
         }
 
