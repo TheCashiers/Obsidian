@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
@@ -14,6 +15,14 @@ namespace Obsidian.Persistence.Repositories
 
         public UserMongoRepository(IMongoDatabase database)
         {
+            if (!BsonClassMap.IsClassMapRegistered(typeof(User)))
+            {
+                BsonClassMap.RegisterClassMap<User>(cm =>
+                   {
+                       cm.AutoMap();
+                       cm.MapField("_passwordHash").SetElementName("PasswordHash");
+                   });
+            }
             _collection = database.GetCollection<User>("User");
         }
 
@@ -51,7 +60,7 @@ namespace Obsidian.Persistence.Repositories
         {
             if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
             if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(u => u.Id ==aggregate.Id).SingleOrDefault() == null) throw new InvalidOperationException();
+            if (_collection.Find(u => u.Id == aggregate.Id).SingleOrDefault() == null) throw new InvalidOperationException();
             return _collection.ReplaceOneAsync(u => u.Id == aggregate.Id, aggregate);
         }
     }
