@@ -50,6 +50,7 @@ namespace Obsidian.Application.OAuth20
 
         public Task<OAuth20Result> StartAsync(AuthorizeCommand command)
         {
+            _grantType = command.GrantType;
             if (TryLoadClient(command.ClientId, out _client)
                && TryLoadScopes(command.ScopeNames, out _scopes))
             {
