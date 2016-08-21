@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Obsidian.Application.OldCommanding;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Persistence.DependencyInjection;
+using Obsidian.Application.ProcessManagement;
 
 namespace Obsidian
 {
@@ -42,11 +43,14 @@ namespace Obsidian
             services.AddDbContext();
             services.AddCommandBus();
             services.AddCommandHandlers();
+            services.AddSagaBus();
+            services.AddSaga();
             services.AddMongoRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, OldCommandBus commandBus)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, OldCommandBus commandBus
+            ,SagaBus sagaBus)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -75,6 +79,7 @@ namespace Obsidian
             });
 
             commandBus.RegisterHandlers();
+            sagaBus.RegisterSagas();
         }
     }
 }

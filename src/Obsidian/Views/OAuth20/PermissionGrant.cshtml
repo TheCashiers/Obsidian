@@ -1,25 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model Obsidian.Models.OAuthSignInModel
+﻿@using Obsidian.Domain
+@using Obsidian.Models
+
+@model PermissionGrantModel
+
 @{
-    ViewData["Title"] = "Permission Grant";
-}
-<div class="fullscreen">
+    var client = ViewBag.Client as Client;
+    var scopes = ViewBag.Scopes as PermissionScope[];
+}<div class="fullscreen">
 
     <div class="text-padding left-div">
         @*Left Section*@
         <h1>Permission</h1>
-        <h3>This app can access to your:</h3>
+        <h3>Allow &ensp;<b>@client.DisplayName</b>&ensp; to access these following information?</h3>
     </div>
     <div class="form form-padding">
-        <br /><br />
-        <input type="checkbox" id="1" class="checkbox" />
-        <label for="1">Your public identifications(email, etc.)</label>
-        <br /><br />
-        <input type="checkbox" id="2" class="checkbox" />
-        <label for="2">Your school information(grade, class, etc.)</label>
+        <ul>
+            @foreach (var scope in scopes)
+            {
+                <li><b>@scope.DisplayName &ensp;</b>@scope.Description</li>
+            }
+        </ul>
+        <form asp-action="PermissionGrant" asp-controller="OAuth20">
+            <input asp-for="Grant" type="checkbox" />
+            <input asp-for="ProtectedOAuthContext" type="hidden" />
+            <button type="submit">Next</button>
+        </form>
     </div>
 </div>
 
 <link href="~/css/SignIn.css" rel="stylesheet" /> 
+<h1></h1>
+
+

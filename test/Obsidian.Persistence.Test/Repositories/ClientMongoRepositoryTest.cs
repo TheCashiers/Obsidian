@@ -22,9 +22,8 @@ namespace Obsidian.Persistence.Test.Repositories
             const string newValue = "http://www.yyy.com";
             aggregate.RedirectUri = new Uri(newValue);
             await _repository.SaveAsync(aggregate);
-            var query = await _repository.QueryAllAsync();
-            var queryAggregate = query.Single(c => c.Id == id);
-            Assert.Equal(newValue, queryAggregate.RedirectUri.OriginalString);
+            var found = await _repository.FindByIdAsync(id);
+            Assert.Equal(newValue, found.RedirectUri.OriginalString);
         }
 
         protected override Client CreateAggregate() => Client.Create(Guid.NewGuid(), "XXX", "http://www.xxx.com");
