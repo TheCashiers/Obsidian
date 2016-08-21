@@ -5,14 +5,14 @@
 @{
     ViewData["Title"] = "Sign in";
 }
-<div class="main fullscreen">
+<div class="fullscreen">
 
-    <div class="bg cover text-padding left-div">
+    <div class="text-padding left-div">
         @*Left Section*@
         <h1>Obsidian</h1>
         <h3>One-stop Authenication Solution</h3>
     </div>
-    <div class="white form form-padding">
+    <div class="form form-padding">
         <form class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
             @*Right Section*@
             <div class="form-group">
@@ -38,6 +38,8 @@
             <button class="btn btn-lg btn-info form-btn" type="submit">Sign In</button>
         </form>
     </div>
+
 </div>
+
 
 <link href="~/css/SignIn.css" rel="stylesheet" />

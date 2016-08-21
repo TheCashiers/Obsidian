@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Obsidian.Models.OAuthSignInModel
+@{
+    ViewData["Title"] = "Permission Grant";
+}
+<div class="fullscreen">
+
+    <div class="text-padding left-div">
+        @*Left Section*@
+        <h1>Permission</h1>
+        <h3>This app can access to your:</h3>
+    </div>
+    <div class="form form-padding">
+        <br /><br />
+        <input type="checkbox" id="1" class="checkbox" />
+        <label for="1">Your public identifications(email, etc.)</label>
+        <br /><br />
+        <input type="checkbox" id="2" class="checkbox" />
+        <label for="2">Your school information(grade, class, etc.)</label>
+    </div>
+</div>
+
+<link href="~/css/SignIn.css" rel="stylesheet" /> 
