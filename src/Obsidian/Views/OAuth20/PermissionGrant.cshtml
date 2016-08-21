@@ -4,7 +4,7 @@
 @using Obsidian.Domain
 @using Obsidian.Models
 
-@Model PermissionGrantModel
+@model PermissionGrantModel
 
 @{
     var client = ViewBag.Client as Client;
@@ -15,6 +15,11 @@
 <ul>
     @foreach (var scope in scopes)
     {
-        <li><b>@scope.DisplayName &ensp;</b>@scope.Description</li>
+    <li><b>@scope.DisplayName &ensp;</b>@scope.Description</li>
     }
 </ul>
+<form asp-action="PermissionGrant" asp-controller="OAuth20">
+    <input asp-for="Grant" type="checkbox" value="true" />
+    <input asp-for="ProtectedOAuthContext" type="hidden" />
+    <button type="submit">Next</button>
+</form>
