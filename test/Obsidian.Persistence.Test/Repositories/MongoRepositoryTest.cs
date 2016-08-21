@@ -7,9 +7,8 @@ namespace Obsidian.Persistence.Test.Repositories
     public abstract class MongoRepositoryTest<TAggregate> : RepositoryTest<TAggregate> where TAggregate : class, IAggregateRoot
     {
 
-        private static readonly Random rand = new Random();
         private const string dbUri = "mongodb://127.0.0.1:27017";
-        private readonly string testDbName = "ObsidianTest_" + rand.Next(0, 1000000).ToString("X");
+        private readonly string testDbName = "ObsidianTest_" + Guid.NewGuid();
 
         protected IMongoDatabase Database => new MongoClient(dbUri).GetDatabase(testDbName);
 

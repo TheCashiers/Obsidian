@@ -29,7 +29,7 @@ namespace Obsidian.Domain
         /// </summary>
         public string UserName { get; private set; }
 
-        public UserProfile Profile { get; private set; }
+        public UserProfile Profile { get; private set; } = new UserProfile();
 
         public IList<ClientAuthorizationDetail> AuthorizedClients { get; private set; }
 
