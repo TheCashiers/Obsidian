@@ -29,7 +29,7 @@ namespace Obsidian.Controllers.OAuth
             _sagaBus = bus;
         }
 
-        [Route("oauth20/authorize/frontend/singin")]
+        [Route("oauth20/authorize/frontend/signin")]
         [HttpGet]
         public IActionResult FrontEndSignInDebug()
         {
