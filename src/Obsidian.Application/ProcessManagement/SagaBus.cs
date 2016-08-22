@@ -13,6 +13,11 @@ namespace Obsidian.Application.ProcessManagement
         private readonly List<Saga> _sagaCache = new List<Saga>();
 
 
+        public SagaBus(IServiceProvider provider)
+        {
+            _serviceProvider = provider;
+        }
+
         private class CommandHolder : Command<int> { }
 
         private static readonly Type StarterInterfaceType = 
@@ -20,7 +25,7 @@ namespace Obsidian.Application.ProcessManagement
 
         public void Register<TSaga>() where TSaga : Saga
         {
-            var sagaType = typeof(Saga);
+            var sagaType = typeof(TSaga);
             var implementedInterfaces = sagaType.GetInterfaces();
             var commandTypes = implementedInterfaces
                 .Where(i => i.GetGenericTypeDefinition() == StarterInterfaceType)
