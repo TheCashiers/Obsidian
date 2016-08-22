@@ -1,4 +1,5 @@
 ﻿using Obsidian.Application.OAuth20;
+using Obsidian.Application.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Obsidian.Application.ProcessManagement
         public static void RegisterSagas(this SagaBus bus)
         {
             bus.Register<OAuth20Saga>();
+            bus.Register<CreateUserSaga>();
         }
     }
 }

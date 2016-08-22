@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.Dto;
-using Obsidian.Application.OldCommanding;
-using Obsidian.Application.OldCommanding.ApplicationCommands;
+using Obsidian.Application.ProcessManagement;
+using Obsidian.Application.UserManagement;
 using Obsidian.Domain.Repositories;
 using Obsidian.QueryModel;
 using Obsidian.QueryModel.Shared;
@@ -14,13 +14,13 @@ namespace Obsidian.Controllers.ApiControllers
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private readonly OldCommandBus _commandBus;
+        private readonly SagaBus _sagaBus;
         private readonly IUserRepository _userRepository;
 
-        public UsersController(OldCommandBus cmdBus, IUserRepository userRepo)
+        public UsersController(IUserRepository userRepo, SagaBus bus)
         {
-            _commandBus = cmdBus;
             _userRepository = userRepo;
+            _sagaBus = bus;
         }
 
         [HttpGet]
@@ -47,18 +47,14 @@ namespace Obsidian.Controllers.ApiControllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
-            var cmd = new CreateUserOldCommand(dto);
-            var result = await _commandBus.SendAsync<CreateUserOldCommand, Guid>(cmd);
+            var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };
+            var result = await _sagaBus.InvokeAsync<CreateUserCommand, UserCreationResult>(cmd);
             if (result.Succeed)
             {
-                return Created(Url.Action(nameof(GetById), new { id = result.Data }), null);
+                return Created(Url.Action(nameof(GetById), new { id = result.UserId }), null);
             }
-            else if (result.Exception is InvalidOperationException)
-            {
-                // currently, the only reason for InvalidOperationException is that a user of the same username exists.
-                return StatusCode(412, result.Exception.Message);
-            }
-            return BadRequest();
+            // currently, the only reason for failure is that a user of the same username exists.
+            return StatusCode(412, result.Message);
         }
     }
 }

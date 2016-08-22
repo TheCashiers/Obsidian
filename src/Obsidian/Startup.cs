@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Obsidian.Application.OldCommanding;
 using Obsidian.Application.DependencyInjection;
-using Obsidian.Persistence.DependencyInjection;
 using Obsidian.Application.ProcessManagement;
+using Obsidian.Persistence.DependencyInjection;
 
 namespace Obsidian
 {
@@ -40,16 +39,13 @@ namespace Obsidian
             services.AddMemoryCache();
 
             //Add application components
-            services.AddCommandBus();
-            services.AddCommandHandlers();
             services.AddSagaBus();
             services.AddSaga();
             services.AddMongoRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-            OldCommandBus commandBus, SagaBus sagaBus)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -77,7 +73,6 @@ namespace Obsidian
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            commandBus.RegisterHandlers();
             sagaBus.RegisterSagas();
         }
     }
