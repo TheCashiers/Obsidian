@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.Repositories
 {
-    public class UserMongoRepository : IUserRepository
+    public class UserMongoRepository : MongoRepository<User>, IUserRepository
     {
         private readonly IMongoCollection<User> _collection;
 
@@ -26,42 +26,13 @@ namespace Obsidian.Persistence.Repositories
             _collection = database.GetCollection<User>("User");
         }
 
-        public async Task AddAsync(User aggregate)
-        {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
-            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(u => u.Id == aggregate.Id).SingleOrDefault() != null) throw new InvalidOperationException();
-            await _collection.InsertOneAsync(aggregate);
-        }
-
-        public Task DeleteAsync(User aggregate)
-        {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
-            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            return _collection.DeleteOneAsync(u => u.Id == aggregate.Id);
-        }
-
-        public Task<User> FindByIdAsync(Guid id)
-        {
-            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
-            return _collection.Find(u => u.Id == id).SingleOrDefaultAsync();
-        }
+        protected override IMongoCollection<User> Collection => _collection;
 
         public Task<User> FindByUserNameAsync(string userName)
         {
-            if (string.IsNullOrWhiteSpace(userName)) throw new ArgumentNullException(nameof(userName));
-            return _collection.Find(u => u.UserName == userName).SingleOrDefaultAsync();
-        }
-
-
-        public Task<IQueryable<User>> QueryAllAsync() => Task.FromResult<IQueryable<User>>(_collection.AsQueryable());
-
-        public Task SaveAsync(User aggregate)
-        {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
-            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(u => u.Id == aggregate.Id).SingleOrDefault() == null) throw new InvalidOperationException();
-            return _collection.ReplaceOneAsync(u => u.Id == aggregate.Id, aggregate);
+            if (string.IsNullOrWhiteSpace(userName))
+                throw new ArgumentNullException(nameof(userName));
+            return Collection.Find(u => u.UserName == userName).SingleOrDefaultAsync();
         }
     }
 }

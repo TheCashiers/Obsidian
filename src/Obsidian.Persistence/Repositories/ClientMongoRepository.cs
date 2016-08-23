@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.Repositories
 {
-    public class ClientMongoRepository : IClientRepository
+    public class ClientMongoRepository : MongoRepository<Client>, IClientRepository
     {
         private readonly IMongoCollection<Client> _collection;
 
@@ -17,35 +17,7 @@ namespace Obsidian.Persistence.Repositories
             _collection = database.GetCollection<Client>("Client");
         }
 
-        public async Task AddAsync(Client aggregate)
-        {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
-            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(c => c.Id == aggregate.Id).SingleOrDefault() != null) throw new InvalidOperationException();
-            await _collection.InsertOneAsync(aggregate);
-        }
+        protected override IMongoCollection<Client> Collection => _collection;
 
-        public Task DeleteAsync(Client aggregate)
-        {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
-            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            return _collection.DeleteOneAsync(c => c.Id == aggregate.Id);
-        }
-
-        public Task<Client> FindByIdAsync(Guid id)
-        {
-            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
-            return _collection.Find(c=> c.Id == id).SingleOrDefaultAsync();
-        }
-
-        public Task<IQueryable<Client>> QueryAllAsync() => Task.FromResult<IQueryable<Client>>(_collection.AsQueryable());
-
-        public Task SaveAsync(Client aggregate)
-        {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
-            if (aggregate.Id == Guid.Empty) throw new ArgumentException("", nameof(aggregate));
-            if (_collection.Find(c => c.Id == aggregate.Id).SingleOrDefault() == null) throw new InvalidOperationException();
-            return _collection.ReplaceOneAsync(c=>c.Id == aggregate.Id, aggregate);
-        }
     }
 }
