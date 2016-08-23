@@ -1,5 +1,6 @@
 ﻿using System;
 using Obsidian.Application.ProcessManagement;
+using System.Collections.Generic;
 
 namespace Obsidian.Application.OAuth20
 {
@@ -9,6 +10,6 @@ namespace Obsidian.Application.OAuth20
         {
         }
 
-        public bool PermissionGranted { get; set; }
+        public IList<string> GrantedScopeNames { get; set; }
     }
 }

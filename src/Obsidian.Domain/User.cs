@@ -53,5 +53,10 @@ namespace Obsidian.Domain
         {
             return new List<Claim>();
         }
+
+        public void GrantClient(Client client, IList<PermissionScope> scopes)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

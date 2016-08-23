@@ -50,7 +50,7 @@ namespace Obsidian.Controllers.OAuth
                 PermissionScope.Create(Guid.NewGuid(),"obsidian.email","Email address","Your email address."),
                 PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system."),
             };
-            return View("PermissionGrant", new PermissionGrantModel { Grant = true, ProtectedOAuthContext = context });
+            return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
         }
 
         [Route("oauth20/authorize/frontend/denied")]
@@ -109,7 +109,7 @@ namespace Obsidian.Controllers.OAuth
             var context = _dataProtector.Protect(result.SagaId.ToString());
             ViewBag.Client = result.PermissionGrant.Client;
             ViewBag.Scopes = result.PermissionGrant.Scopes;
-            return View("PermissionGrant", new PermissionGrantModel { Grant = true, ProtectedOAuthContext = context });
+            return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
         }
 
         private IActionResult ImplictRedirect(OAuth20Result result)
@@ -182,7 +182,7 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-            var message = new PermissionGrantMessage(sagaId) { PermissionGranted = model.Grant };
+            var message = new PermissionGrantMessage(sagaId) { GrantedScopeNames = model.GrantedScopeNames };
             var result = await _sagaBus.SendAsync<PermissionGrantMessage, OAuth20Result>(message);
             switch (result.State)
             {

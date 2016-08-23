@@ -31,9 +31,10 @@ namespace Obsidian.Application.OAuth20
 
         private Client _client;
         private AuthorizationGrant _grantType;
-        private IList<PermissionScope> _scopes;
+        private IList<PermissionScope> _requestedScopes;
         private OAuth20State _state;
         private User _user;
+        private IList<PermissionScope> _grantedScopes;
 
         #endregion State Data
 
@@ -48,44 +49,58 @@ namespace Obsidian.Application.OAuth20
 
         #region Handlers
 
-        public Task<OAuth20Result> StartAsync(AuthorizeCommand command)
+        public async Task<OAuth20Result> StartAsync(AuthorizeCommand command)
         {
             _grantType = command.GrantType;
             if (TryLoadClient(command.ClientId, out _client)
-               && TryLoadScopes(command.ScopeNames, out _scopes))
+               && TryLoadScopes(command.ScopeNames, out _requestedScopes))
             {
                 if (command.UserName != null && TryLoadUser(command.UserName, out _user))
                 {
-                    return Task.FromResult(VerifyPermission());
+                    return await VerifyPermissionAsync();
                 }
                 GoToState(OAuth20State.RequireSignIn);
-                return Task.FromResult(StateResult());
+                return StateResult();
             }
             GoToState(OAuth20State.Failed);
-            return Task.FromResult(StateResult());
+            return StateResult();
         }
 
-        public Task<OAuth20Result> HandleAsync(SignInMessage message)
+        public async Task<OAuth20Result> HandleAsync(SignInMessage message)
         {
             if (TryLoadUser(message.UserName, out _user))
             {
                 if (_user.VaildatePassword(message.Password))
                 {
                     //TODO: signin here
-                    return Task.FromResult(VerifyPermission());
+                    return await VerifyPermissionAsync();
                 }
             }
-            return Task.FromResult(StateResult());
+            return StateResult();
         }
 
-        public Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
+        public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
         {
-            if (message.PermissionGranted)
+            if (TypLoadScopeFromNames(message.GrantedScopeNames, out _grantedScopes))
             {
-                return Task.FromResult(GrantPermission());
+                return await GrantPermissionAsync();
             }
             GoToState(OAuth20State.UserDenied);
-            return Task.FromResult(StateResult());
+            return StateResult();
+        }
+
+        private bool TypLoadScopeFromNames(IList<string> grantedScopeNames, out IList<PermissionScope> scopes)
+        {
+            scopes = new List<PermissionScope>();
+            foreach (var scopeName in grantedScopeNames)
+            {
+                var scope = _requestedScopes.SingleOrDefault(s => s.ScopeName == scopeName);
+                if (scope != null)
+                    scopes.Add(scope);
+                else
+                    return false;
+            }
+            return true;
         }
 
         public Task<OAuth20Result> HandleAsync(AccessTokenRequestMessage message)
@@ -112,18 +127,21 @@ namespace Obsidian.Application.OAuth20
 
         #region Process
 
-        private OAuth20Result VerifyPermission()
+        private async Task<OAuth20Result> VerifyPermissionAsync()
         {
-            if (IsPermissionGranted(_user, _client, _scopes))
+            if (IsPermissionGranted(_user, _client, _requestedScopes))
             {
-                return GrantPermission();
+                _grantedScopes = _requestedScopes;
+                return await GrantPermissionAsync();
             }
             GoToState(OAuth20State.RequirePermissionGrant);
             return StateResult();
         }
 
-        private OAuth20Result GrantPermission()
+        private async Task<OAuth20Result> GrantPermissionAsync()
         {
+            _user.GrantClient(_client, _grantedScopes);
+            await _userRepository.SaveAsync(_user);
             if (_grantType == AuthorizationGrant.AuthorizationCode)
             {
                 GoToState(OAuth20State.AuthorizationCodeGenerated);
@@ -166,7 +184,7 @@ namespace Obsidian.Application.OAuth20
             result.RedirectUri = _client.RedirectUri.OriginalString;
             result.Token = new OAuth20Result.TokenResult
             {
-                Scope = _scopes,
+                Scope = _grantedScopes,
                 AccessToken = GenerateAccessToken()
             };
             return result;

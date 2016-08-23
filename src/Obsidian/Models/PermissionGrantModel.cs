@@ -4,7 +4,7 @@ namespace Obsidian.Models
 {
     public class PermissionGrantModel
     {
-        public bool Grant { get; set; }
+        public IList<string> GrantedScopeNames { get; set; }
 
         public string ProtectedOAuthContext { get; set; }
     }
