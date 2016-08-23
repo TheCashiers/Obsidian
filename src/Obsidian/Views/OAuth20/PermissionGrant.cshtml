@@ -14,21 +14,23 @@
         <h3>Allow &ensp;<b>@client.DisplayName</b>&ensp; to access these following information?</h3>
     </div>
     <div class="form form-padding">
-        <ul>
+        @*Right Section*@
+        <ul class="list-group text-padding">
             @foreach (var scope in scopes)
             {
-                <li><b>@scope.DisplayName &ensp;</b>@scope.Description</li>
+                <li class="list-group-item list-group-item-info">
+                    <h4 class="list-group-item-heading">@scope.DisplayName</h4>
+                    <p class="list-group-item-text">@scope.Description</p>
+            </li>
             }
         </ul>
-        <form asp-action="PermissionGrant" asp-controller="OAuth20">
-            <input asp-for="Grant" type="checkbox" />
+        <form asp-action="PermissionGrant" asp-controller="OAuth20" class="text-padding">
             <input asp-for="ProtectedOAuthContext" type="hidden" />
-            <button type="submit">Next</button>
+            <button class="btn btn-lg btn-info form-btn" type="submit">Next</button>
         </form>
     </div>
 </div>
 
 <link href="~/css/SignIn.css" rel="stylesheet" /> 
-<h1></h1>
 
 

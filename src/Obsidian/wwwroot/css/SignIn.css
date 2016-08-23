@@ -10,7 +10,6 @@ label{
 
 .fullscreen {
     background: rgba(255,255,255,0.4);
-        color: white;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
     position:absolute;
     width:600px;
@@ -34,7 +33,7 @@ label{
     float: left;
     height: 100%;
     width: 200px;
-
+    color:white;
 }
 .left-div>h1{
     padding-bottom:40px;
@@ -55,4 +54,7 @@ label{
     height:20px;
     float:left;
     margin:4px 5px 0 0 !important;
+}
+.list-group-item-info{
+    opacity:0.7
 }
