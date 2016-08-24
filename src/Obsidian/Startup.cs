@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Persistence.DependencyInjection;
+using System.Text;
 
 namespace Obsidian
 {
@@ -66,12 +68,29 @@ namespace Obsidian
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            const string key = "Obsidian.OAuth20.SigningKey.Jwt";
+            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
+            var param = new TokenValidationParameters
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                AuthenticationType = "Bearer",
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = "Obsidian",
+                ValidAudience = "ObsidianAud"
+            };
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                TokenValidationParameters = param
             });
+
+            app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
 
             sagaBus.RegisterSagas();
         }

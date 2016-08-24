@@ -25,7 +25,7 @@ namespace Obsidian.Application.OAuth20
 
         #endregion External Dependencies
 
-        private const string key = "Obsidian.OAuth20.Jwt";
+        private const string key = "Obsidian.OAuth20.SigningKey.Jwt";
 
         #region State Data
 
@@ -237,7 +237,8 @@ namespace Obsidian.Application.OAuth20
                 issuer: "Obsidian",
                 audience: "ObsidianAud",
                 claims: claims,
-                signingCredentials: signingCredentials
+                signingCredentials: signingCredentials,
+                expires: DateTime.Now.AddMinutes(5)
                 );
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
             return token;
