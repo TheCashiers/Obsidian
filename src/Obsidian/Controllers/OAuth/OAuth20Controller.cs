@@ -199,7 +199,7 @@ namespace Obsidian.Controllers.OAuth
 
         [Route("oauth20/token")]
         [HttpPost]
-        public async Task<IActionResult> Token(AccessTokenFromAuthorizationCodeRequestModel model)
+        public async Task<IActionResult> Token(AuthorizationCodeGrantRequestModel model)
         {
             if (model.GrantType == "authorization_code")
             {

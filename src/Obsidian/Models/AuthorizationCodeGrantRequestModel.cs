@@ -4,7 +4,7 @@ using System;
 namespace Obsidian.Models
 {
     //TODO: map json proerty names
-    public class AccessTokenFromAuthorizationCodeRequestModel
+    public class AuthorizationCodeGrantRequestModel
     {
         public Guid Code{ get; set; }
         public Guid ClientId { get; set; }
