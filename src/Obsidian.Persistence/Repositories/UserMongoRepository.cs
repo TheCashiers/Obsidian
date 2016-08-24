@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Persistence.Mappings;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,15 +16,12 @@ namespace Obsidian.Persistence.Repositories
 
         public UserMongoRepository(IMongoDatabase database)
         {
-            if (!BsonClassMap.IsClassMapRegistered(typeof(User)))
-            {
-                BsonClassMap.RegisterClassMap<User>(cm =>
-                   {
-                       cm.AutoMap();
-                       cm.MapField("_passwordHash").SetElementName("PasswordHash");
-                   });
-            }
             _collection = database.GetCollection<User>("User");
+        }
+
+        static UserMongoRepository()
+        {
+            UserMapping.MapUser();
         }
 
         protected override IMongoCollection<User> Collection => _collection;
