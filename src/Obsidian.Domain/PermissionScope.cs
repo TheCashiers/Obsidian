@@ -16,6 +16,8 @@ namespace Obsidian.Domain
 
         public string Description { get; set; }
 
+        public IList<string> ClaimTypes { get; set; }
+
         public static PermissionScope Create(Guid id, string scopeName, string displayName, string description)
             => new PermissionScope
             {
