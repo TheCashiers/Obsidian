@@ -1,13 +1,11 @@
 ﻿@using Obsidian.Domain
 @using Obsidian.Models
-
 @model PermissionGrantModel
-
 @{
     var client = ViewBag.Client as Client;
     var scopes = ViewBag.Scopes as PermissionScope[];
+    var i = 0;
 }<div class="fullscreen">
-
     <div class="text-padding left-div">
         @*Left Section*@
         <h1>Permission</h1>
@@ -19,8 +17,10 @@
             <ul class="list-group text-padding">
                 @foreach (var scope in scopes)
                 {
+                    var id = $"{nameof(Model.GrantedScopeNames)}_{ ++i}";
                     <li class="list-group-item list-group-item-info">
-                        <input name="@nameof(Model.GrantedScopeNames)" type="checkbox" value="@scope.ScopeName" />
+                        <input name="@nameof(Model.GrantedScopeNames)" id="@id"
+                               type="checkbox" value="@scope.ScopeName" />
                         <h4 class="list-group-item-heading">@scope.DisplayName</h4>
                         <p class="list-group-item-text">@scope.Description</p>
                     </li>
@@ -31,7 +31,5 @@
         </form>
     </div>
 </div>
-
 <link href="~/css/SignIn.css" rel="stylesheet" />
-
 
