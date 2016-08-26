@@ -34,6 +34,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Persistence.Test",
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Domain.Test", "test\Obsidian.Domain.Test\Obsidian.Domain.Test.xproj", "{FF8B3AC9-7A39-4943-A45C-034CA525EE38}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Application.Test", "test\Obsidian.Application.Test\Obsidian.Application.Test.xproj", "{D18C03EE-DB97-419F-90AD-3502EE65D18D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,5 +89,6 @@ Global
 		{3F00572F-7AE4-4F5A-840A-E9C84DCACE2F} = {40E0AD8A-A93C-4F78-B9F7-E1A0D5613122}
 		{77401641-D954-4AC9-BB8A-410CF853A375} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
+		{D18C03EE-DB97-419F-90AD-3502EE65D18D} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 	EndGlobalSection
 EndGlobal
