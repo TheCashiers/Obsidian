@@ -20,9 +20,9 @@
                 @foreach (var scope in scopes)
                 {
                     <li class="list-group-item list-group-item-info">
-                        <input name="@nameof(Model.GrantedScopeNames)" type="checkbox" value="@scope.ScopeName" />
                         <h4 class="list-group-item-heading">@scope.DisplayName</h4>
                         <p class="list-group-item-text">@scope.Description</p>
+                        <input class="list-item-right lg-checkbox" name="@nameof(Model.GrantedScopeNames)" type="checkbox" value="@scope.ScopeName" />
                     </li>
                 }
             </ul>

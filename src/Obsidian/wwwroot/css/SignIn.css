@@ -55,3 +55,12 @@ label{
 .form-white{
     color:white
 }
+.list-item-right{
+    position: absolute;
+    top:25%;
+    left:90%
+}
+.lg-checkbox{
+    height: 25px;
+    width: 25px;
+}
