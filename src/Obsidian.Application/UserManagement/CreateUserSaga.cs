@@ -35,7 +35,7 @@ namespace Obsidian.Application.UserManagement
             await _repo.AddAsync(user);
             return new UserCreationResult
             {
-                Succeed = false,
+                Succeed = true,
                 Message = $"User successfully created.",
                 UserId = user.Id
             };
