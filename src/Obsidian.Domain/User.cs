@@ -17,6 +17,7 @@ namespace Obsidian.Domain
         /// <summary>
         /// Represents the unique identifier of the <see cref="User"/>.
         /// </summary>
+        [ClaimType(ClaimTypes.NameIdentifier)]
         public Guid Id { get; private set; }
 
         public void SetPassword(string password)
@@ -27,6 +28,7 @@ namespace Obsidian.Domain
         /// <summary>
         /// Represents the username used to login.
         /// </summary>
+        [ClaimType(ClaimTypes.Name)]
         public string UserName { get; private set; }
 
         public UserProfile Profile { get; private set; } = new UserProfile();

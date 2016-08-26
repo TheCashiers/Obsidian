@@ -28,7 +28,7 @@ namespace Obsidian.Controllers.ApiControllers
                                                      select new User
                                                      {
                                                          Id = u.Id,
-                                                         DisplayName = u.Profile.DisplayName,
+                                                         DisplayName = $"{u.Profile.GivenName} {u.Profile.SurnName}",
                                                          Gender = (Gender)u.Profile.Gender,
                                                          UserName = u.UserName
                                                      };
