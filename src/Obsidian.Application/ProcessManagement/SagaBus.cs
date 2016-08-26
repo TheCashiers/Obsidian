@@ -18,17 +18,12 @@ namespace Obsidian.Application.ProcessManagement
             _serviceProvider = provider;
         }
 
-        private class CommandHolder : Command<int> { }
-
-        private static readonly Type StarterInterfaceType = 
-            typeof(IStartsWith<CommandHolder, int>).GetGenericTypeDefinition();
-
         public void Register<TSaga>() where TSaga : Saga
         {
             var sagaType = typeof(TSaga);
             var implementedInterfaces = sagaType.GetInterfaces();
             var commandTypes = implementedInterfaces
-                .Where(i => i.GetGenericTypeDefinition() == StarterInterfaceType)
+                .Where(i => i.GetGenericTypeDefinition() == typeof(IStartsWith<,>))
                 .Select(i => i.GetGenericArguments().First()).ToList();
             commandTypes.ForEach(ct => _sagaStarterRegistry.Add(ct, sagaType));
         }
