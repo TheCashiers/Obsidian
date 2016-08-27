@@ -5,6 +5,9 @@
 @{
     ViewData["Title"] = "Sign in";
 }
+@section scripts{
+    <script>$.material.init();</script>
+}
 <div class="fullscreen">
 
     <div class="text-padding left-div">
@@ -25,19 +28,15 @@
                 <input class="form-control" asp-for="Password" type="password" placeholder="Enter your password" required/>
             </div>
 
-            <br/>
             <div class="checkbox checkbox-primary">
-                <input class="form-inline styled" asp-for="RememberMe" type="checkbox" />
-                <label class="control-label" asp-for="RememberMe"></label>
+                <label asp-for="RememberMe">
+                    <input type="checkbox" asp-for="RememberMe">
+                    Remember Me
+                </label>
             </div>
-            <div class="">
-
-            </div>
-
-            <input asp-for="ProtectedOAuthContext" type="hidden" />
             <br/>
-            <hr/>
-            <button class="btn btn-lg btn-info form-btn" type="submit">Sign In</button>
+            <input asp-for="ProtectedOAuthContext" type="hidden" />
+            <button class="btn btn-lg btn-primary btn-block btn-raised" type="submit">Sign In</button>
         </form>
     </div>
 

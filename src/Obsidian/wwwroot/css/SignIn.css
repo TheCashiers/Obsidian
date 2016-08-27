@@ -2,14 +2,8 @@
     background: url("../images/obsidian_background.png") 0 / cover fixed;
 }
 
-label{
-    font-size:large;
-    font-weight:300;
-    text-shadow:4px 4px 25px black;
-}
-
 .fullscreen {
-    background: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.2);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
     position:absolute;
     width:600px;
@@ -45,15 +39,8 @@ label{
 .text-padding{
     padding:10px 10px 10px 10px;
 }
-.form-btn{
-    border-radius:0;
-    width:100%
-}
 .list-group-item-info{
     opacity:0.7
-}
-.form-white{
-    color:white
 }
 .list-item-right{
     position: absolute;
@@ -63,4 +50,16 @@ label{
 .lg-checkbox{
     height: 25px;
     width: 25px;
+}
+.check{
+    border:2px solid rgba(255,255,255, .54) !important;
+}
+.form-group > label,.checkbox label, label{
+    color:white;    
+    font-size:large;
+    font-weight:300;
+    text-shadow:4px 4px 25px black;
+}
+.form-control{
+    color:white
 }
