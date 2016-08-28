@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.UserManagement;
 using Obsidian.Domain.Repositories;
-using Obsidian.QueryModel;
-using Obsidian.QueryModel.Shared;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Controllers.ApiControllers
@@ -24,14 +23,11 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
-        public async Task<IQueryable<User>> Get() => from u in await _userRepository.QueryAllAsync()
-                                                     select new User
-                                                     {
-                                                         Id = u.Id,
-                                                         DisplayName = $"{u.Profile.GivenName} {u.Profile.SurnName}",
-                                                         Gender = (Gender)u.Profile.Gender,
-                                                         UserName = u.UserName
-                                                     };
+        public async Task<IActionResult> Get()
+        {
+            var query = await _userRepository.QueryAllAsync();
+            return Ok(query.ProjectTo<QueryModel.User>());
+        }
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
@@ -41,7 +37,7 @@ namespace Obsidian.Controllers.ApiControllers
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(Mapper.Map<QueryModel.User>(user));
         }
 
         [HttpPost]

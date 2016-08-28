@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Persistence.DependencyInjection;
+using Obsidian.QueryModel.Mapping;
 using System.Text;
 
 namespace Obsidian
@@ -92,6 +93,7 @@ namespace Obsidian
                         template: "{controller=Home}/{action=Index}/{id?}");
                 });
 
+            MappingConfig.ConfigureQueryModelMapping();
             sagaBus.RegisterSagas();
         }
     }
