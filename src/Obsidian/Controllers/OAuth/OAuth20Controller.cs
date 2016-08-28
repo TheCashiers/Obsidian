@@ -42,7 +42,7 @@ namespace Obsidian.Controllers.OAuth
         public IActionResult FrontEndGrantDebug()
         {
             var context = _dataProtector.Protect(Guid.NewGuid().ToString());
-            var client = Client.Create(Guid.NewGuid(), "XXXX", "http://za-pt.org/exchange");
+            var client = Client.Create(Guid.NewGuid(), "http://za-pt.org/exchange");
             client.DisplayName = "iTech";
             ViewBag.Client = client;
             ViewBag.Scopes = new[] {

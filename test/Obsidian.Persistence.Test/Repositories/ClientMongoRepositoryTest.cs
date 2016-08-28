@@ -26,7 +26,7 @@ namespace Obsidian.Persistence.Test.Repositories
             Assert.Equal(newValue, found.RedirectUri.OriginalString);
         }
 
-        protected override Client CreateAggregate() => Client.Create(Guid.NewGuid(), "XXX", "http://www.xxx.com");
+        protected override Client CreateAggregate() => Client.Create(Guid.NewGuid(), "http://www.xxx.com");
 
         protected override Client CreateAggregateWithEmptyId() => new Client();
 
