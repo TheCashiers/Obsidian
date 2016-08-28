@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Obsidian.Domain.Repositories;
 using Obsidian.QueryModel.Mapping;
@@ -24,6 +25,17 @@ namespace Obsidian.Controllers.ApiControllers
         {
             var query = await _clientRepository.QueryAllAsync();
             return Ok(query.ProjectTo<QueryModel.Client>(query));
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var client = await _clientRepository.FindByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound();
+            }
+            return Ok(Mapper.Map<QueryModel.Client>(client));
         }
     }
 }
