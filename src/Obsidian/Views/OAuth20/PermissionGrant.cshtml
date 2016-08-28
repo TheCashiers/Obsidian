@@ -5,7 +5,11 @@
     var client = ViewBag.Client as Client;
     var scopes = ViewBag.Scopes as PermissionScope[];
     var i = 0;
-}<div class="fullscreen">
+}
+@section scripts{
+    <script>$.material.init();</script>
+}
+<div class="fullscreen">
     <div class="text-padding left-div">
         @*Left Section*@
         <h1>Permission</h1>
@@ -19,16 +23,20 @@
                 {
                     var id = $"{nameof(Model.GrantedScopeNames)}_{ ++i}";
                     <li class="list-group-item list-group-item-info">
-                        <input class="list-item-right lg-checkbox"
-                               name="@nameof(Model.GrantedScopeNames)" id="@id"
-                               type="checkbox" value="@scope.ScopeName" />
+                        <div class="checkbox checkbox-primary">
+                            <label class="list-group-item-right">
+                                <input
+                                    name="@nameof(Model.GrantedScopeNames)" id="@id"
+                                    type="checkbox" value="@scope.ScopeName" />
+                            </label>
+                        </div>
                         <h4 class="list-group-item-heading">@scope.DisplayName</h4>
                         <p class="list-group-item-text">@scope.Description</p>
                     </li>
                 }
             </ul>
             <input asp-for="ProtectedOAuthContext" type="hidden" />
-            <button class="btn btn-lg btn-info form-btn" type="submit">Next</button>
+            <button class="btn btn-lg btn-info btn-block btn-raised" type="submit">Next</button>
         </form>
     </div>
 </div>

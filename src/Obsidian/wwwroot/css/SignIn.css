@@ -42,7 +42,7 @@
 .list-group-item-info{
     opacity:0.7
 }
-.list-item-right{
+.list-group-item-right{
     position: absolute;
     top:25%;
     left:90%
@@ -62,4 +62,12 @@
 }
 .form-control{
     color:white
+}
+.list-group-item-info{
+    background-color:rgba(255,255,255,0.8) !important;
+    margin-bottom:1px;
+    border-radius:3px !important;
+}
+.list-group-item > p{
+    padding-bottom:5px
 }
