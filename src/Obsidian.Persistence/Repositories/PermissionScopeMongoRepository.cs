@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.Repositories
 {
+    [Repository(typeof(IPermissionScopeRepository))]
     public class PermissionScopeMongoRepository : MongoRepository<PermissionScope>, IPermissionScopeRepository
     {
         private readonly IMongoCollection<PermissionScope> _collection;

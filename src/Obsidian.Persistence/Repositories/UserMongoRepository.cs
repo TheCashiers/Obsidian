@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.Repositories
 {
+    [Repository(typeof(IUserRepository))]
     public class UserMongoRepository : MongoRepository<User>, IUserRepository
     {
         private readonly IMongoCollection<User> _collection;
