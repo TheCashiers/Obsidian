@@ -19,7 +19,7 @@ namespace Obsidian.QueryModel.Mapping
                           where m.IsStatic
                           select m;
 
-            mappers.ToList().ForEach(m => m.Invoke(null, null));
+            mappers.AsParallel().ForAll(m => m.Invoke(null, null));
         }
     }
 }
