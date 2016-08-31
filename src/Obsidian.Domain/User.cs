@@ -2,7 +2,9 @@
 using Obsidian.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Claims;
+using System.Linq;
 
 namespace Obsidian.Domain
 {
@@ -37,6 +39,12 @@ namespace Obsidian.Domain
 
         #endregion Props
 
+        private static Dictionary<string, MethodInfo> profileClaimGetters
+            = MetadataHelper.GetClaimPropertyGetters<UserProfile>();
+
+        private static Dictionary<string, MethodInfo> userClaimGetters
+            = MetadataHelper.GetClaimPropertyGetters<User>();
+
         private string _passwordHash;
 
 
@@ -51,10 +59,21 @@ namespace Obsidian.Domain
             throw new NotImplementedException();
         }
 
-        public IList<Claim> GetClaims()
+        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
         {
-            return new List<Claim>();
+            var types = scopes.SelectMany(s => s.ClaimTypes);
+            var userClaims = GetClaimsFromObject(types, this);
+            var profileClaims = GetClaimsFromObject(types, Profile);
+            return Enumerable.Union(userClaims, profileClaims);
         }
+
+        private static IEnumerable<Claim> GetClaimsFromObject(IEnumerable<string> requestedTypes, object obj) =>
+            userClaimGetters.Where(g => requestedTypes.Contains(g.Key)).Select(g =>
+             {
+                 var value = g.Value.Invoke(obj, null);
+                 return new Claim(g.Key, value?.ToString() ?? "");
+             });
+
 
         public void GrantClient(Client client, IList<PermissionScope> scopes)
         {

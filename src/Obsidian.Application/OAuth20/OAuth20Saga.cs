@@ -232,7 +232,7 @@ namespace Obsidian.Application.OAuth20
         {
             var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            var claims = _user.GetClaims();
+            var claims = _user.GetClaims(_grantedScopes);
             var jwt = new JwtSecurityToken(
                 issuer: "Obsidian",
                 audience: "ObsidianAud",
