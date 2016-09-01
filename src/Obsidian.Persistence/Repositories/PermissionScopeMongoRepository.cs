@@ -13,7 +13,7 @@ namespace Obsidian.Persistence.Repositories
 
         public PermissionScopeMongoRepository(IMongoDatabase database)
         {
-            _collection = database.GetCollection<PermissionScope>("PermissionScope");
+            _collection = database.GetCollection<PermissionScope>(MongoCollectionNames.PermissionScope);
         }
 
         protected override IMongoCollection<PermissionScope> Collection => _collection;

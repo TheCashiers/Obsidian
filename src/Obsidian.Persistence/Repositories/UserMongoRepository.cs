@@ -17,7 +17,7 @@ namespace Obsidian.Persistence.Repositories
 
         public UserMongoRepository(IMongoDatabase database)
         {
-            _collection = database.GetCollection<User>("User");
+            _collection = database.GetCollection<User>(MongoCollectionNames.Users);
         }
 
         static UserMongoRepository()

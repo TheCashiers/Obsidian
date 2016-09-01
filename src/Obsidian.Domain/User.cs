@@ -56,7 +56,14 @@ namespace Obsidian.Domain
 
         public bool IsClientAuthorized(Client client, IEnumerable<string> scopeNames)
         {
-            throw new NotImplementedException();
+            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.Client == client);
+            if (grantDetail != null)
+            {
+                var grantedScopeNames = grantDetail.Scopes.Select(s => s.ScopeName);
+                var inputSet = new HashSet<string>(scopeNames);
+                return inputSet.IsSubsetOf(grantedScopeNames);
+            }
+            return false;
         }
 
         public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
@@ -75,9 +82,21 @@ namespace Obsidian.Domain
              });
 
 
-        public void GrantClient(Client client, IList<PermissionScope> scopes)
+        public void GrantClient(Client client, IEnumerable<PermissionScope> scopes)
         {
-            throw new NotImplementedException();
+            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.Client == client);
+            if (grantDetail != null)
+            {
+                grantDetail.Scopes = scopes.ToList();
+            }
+            else
+            {
+                AuthorizedClients.Add(new ClientAuthorizationDetail
+                {
+                    Client = client,
+                    Scopes = scopes.ToList()
+                });
+            }
         }
     }
 }

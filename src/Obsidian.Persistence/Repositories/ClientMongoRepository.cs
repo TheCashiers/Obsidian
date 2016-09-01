@@ -15,7 +15,7 @@ namespace Obsidian.Persistence.Repositories
 
         public ClientMongoRepository(IMongoDatabase database)
         {
-            _collection = database.GetCollection<Client>("Client");
+            _collection = database.GetCollection<Client>(MongoCollectionNames.Clients);
         }
 
         protected override IMongoCollection<Client> Collection => _collection;
