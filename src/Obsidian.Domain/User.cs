@@ -98,5 +98,13 @@ namespace Obsidian.Domain
                 });
             }
         }
+
+        #region Equality
+
+        public override bool Equals(object obj) => this.EntityEquals(obj);
+
+        public override int GetHashCode() => Id.GetHashCode();
+
+        #endregion
     }
 }

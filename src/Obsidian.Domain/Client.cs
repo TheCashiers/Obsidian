@@ -1,5 +1,7 @@
 ﻿using System;
 using Obsidian.Domain.Shared;
+using Obsidian.Domain.Misc;
+
 namespace Obsidian.Domain
 {
     public class Client : IEntity, IAggregateRoot
@@ -14,5 +16,12 @@ namespace Obsidian.Domain
 
         public void UpdateSecret() => Secret = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
+        #region Equality
+
+        public override bool Equals(object obj) => this.EntityEquals(obj);
+
+        public override int GetHashCode() => Id.GetHashCode();
+
+        #endregion
     }
 }

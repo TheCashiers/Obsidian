@@ -1,4 +1,5 @@
-﻿using Obsidian.Domain.Shared;
+﻿using Obsidian.Domain.Misc;
+using Obsidian.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,13 @@ namespace Obsidian.Domain
                 DisplayName = displayName,
                 Description = description
             };
+
+        #region Equality
+
+        public override bool Equals(object obj) => this.EntityEquals(obj);
+
+        public override int GetHashCode() => Id.GetHashCode();
+
+        #endregion
     }
 }
