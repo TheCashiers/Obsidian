@@ -28,8 +28,8 @@ namespace Obsidian.Persistence.DependencyInjection
                 .Where(ia => ia.Attrs.Count() > 0)
                 .SelectMany(ia => ia.Attrs,
                            (ia, attr) => new { Svc = attr.ServiceType, Impl = ia.Type })
-                .AsParallel()
-                .ForAll(si => services.AddScoped(si.Svc, si.Impl));
+                .ToList()
+                .ForEach(si => services.AddScoped(si.Svc, si.Impl));
 
             return services.AddScoped(p => new MongoClient("mongodb://127.0.0.1:27017").GetDatabase("Obsidian"));
         }

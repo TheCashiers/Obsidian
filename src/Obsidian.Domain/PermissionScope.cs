@@ -25,7 +25,8 @@ namespace Obsidian.Domain
                 Id = id,
                 ScopeName = scopeName,
                 DisplayName = displayName,
-                Description = description
+                Description = description,
+                ClaimTypes = new List<string>()
             };
 
         #region Equality

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using AutoMapper;
+using System.Linq;
 using System.Reflection;
 
 namespace Obsidian.QueryModel.Mapping
@@ -14,12 +15,17 @@ namespace Obsidian.QueryModel.Mapping
                           from m in t.GetMethods()
                           where m.GetCustomAttribute<QueryModelMapperAttribute>() != null
                           where m.ReturnType == typeof(void)
-                          where m.GetParameters().Length == 0
                           where !m.ContainsGenericParameters
                           where m.IsStatic
                           select m;
 
-            mappers.AsParallel().ForAll(m => m.Invoke(null, null));
+            Mapper.Initialize(cfg =>
+            {
+                foreach (var m in mappers)
+                {
+                    m.Invoke(null, new[] { cfg });
+                }
+            });
         }
     }
 }

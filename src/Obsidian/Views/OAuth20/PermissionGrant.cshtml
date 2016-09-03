@@ -3,7 +3,7 @@
 @model PermissionGrantModel
 @{
     var client = ViewBag.Client as Client;
-    var scopes = ViewBag.Scopes as PermissionScope[];
+    var scopes = ViewBag.Scopes as IList<PermissionScope>;
     var i = 0;
 }
 @section scripts{

@@ -135,9 +135,8 @@ namespace Obsidian.Application.OAuth20
                 return await GrantPermissionAsync();
             }
             GoToState(OAuth20State.RequirePermissionGrant);
-            return StateResult();
+            return PermissionGrantRequiredResult();
         }
-
         private async Task<OAuth20Result> GrantPermissionAsync()
         {
             _user.GrantClient(_client, _grantedScopes);
@@ -169,6 +168,17 @@ namespace Obsidian.Application.OAuth20
                         SagaId = Id,
                         State = _state
                     };
+
+        private OAuth20Result PermissionGrantRequiredResult()
+        {
+            var result = StateResult();
+            result.PermissionGrant = new OAuth20Result.PermissionGrantResult
+            {
+                Client = _client,
+                Scopes = _requestedScopes
+            };
+            return result;
+        }
 
         private OAuth20Result AuthorizationCodeResult()
         {

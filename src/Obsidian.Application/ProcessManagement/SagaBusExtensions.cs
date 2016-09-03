@@ -1,4 +1,6 @@
-﻿using Obsidian.Application.OAuth20;
+﻿using Obsidian.Application.ClientManagement;
+using Obsidian.Application.OAuth20;
+using Obsidian.Application.ScopeManagement;
 using Obsidian.Application.UserManagement;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,8 @@ namespace Obsidian.Application.ProcessManagement
         {
             bus.Register<OAuth20Saga>();
             bus.Register<CreateUserSaga>();
+            bus.Register<CreateClientSaga>();
+            bus.Register<CreateScopeSaga>();
         }
     }
 }

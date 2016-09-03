@@ -141,11 +141,11 @@ namespace Obsidian.Controllers.OAuth
 
         [Route("oauth20/authorize")]
         [HttpPost]
-        public async Task<IActionResult> Authorize([FromBody]OAuthSignInModel model)
+        public async Task<IActionResult> Authorize([FromForm]OAuthSignInModel model)
         {
             Guid sagaId;
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (Guid.TryParse(context, out sagaId))
+            if (!Guid.TryParse(context, out sagaId))
             {
                 return BadRequest();
             }
@@ -199,7 +199,7 @@ namespace Obsidian.Controllers.OAuth
 
         [Route("oauth20/token")]
         [HttpPost]
-        public async Task<IActionResult> Token(AuthorizationCodeGrantRequestModel model)
+        public async Task<IActionResult> Token([FromBody]AuthorizationCodeGrantRequestModel model)
         {
             if (model.GrantType == "authorization_code")
             {

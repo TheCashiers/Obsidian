@@ -2,6 +2,7 @@
 using Obsidian.Application.ClientManagement;
 using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
+using Obsidian.Application.ScopeManagement;
 using Obsidian.Application.UserManagement;
 
 namespace Obsidian.Application.DependencyInjection
@@ -23,6 +24,7 @@ namespace Obsidian.Application.DependencyInjection
         public static IServiceCollection AddSaga(this IServiceCollection services)
             => services.AddTransient<OAuth20Saga>()
                        .AddTransient<CreateUserSaga>()
-                       .AddTransient<CreateClientSaga>();
+                       .AddTransient<CreateClientSaga>()
+                       .AddTransient<CreateScopeSaga>();
     }
 }

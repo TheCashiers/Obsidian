@@ -36,6 +36,7 @@ namespace Obsidian.Domain
         public UserProfile Profile { get; private set; } = new UserProfile();
 
         public IList<ClientAuthorizationDetail> AuthorizedClients { get; private set; }
+            = new List<ClientAuthorizationDetail>();
 
         #endregion Props
 
@@ -69,13 +70,14 @@ namespace Obsidian.Domain
         public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
         {
             var types = scopes.SelectMany(s => s.ClaimTypes);
-            var userClaims = GetClaimsFromObject(types, this);
-            var profileClaims = GetClaimsFromObject(types, Profile);
+            var userClaims = GetClaimsFromObject(userClaimGetters, types, this);
+            var profileClaims = GetClaimsFromObject(profileClaimGetters, types, Profile);
             return Enumerable.Union(userClaims, profileClaims);
         }
 
-        private static IEnumerable<Claim> GetClaimsFromObject(IEnumerable<string> requestedTypes, object obj) =>
-            userClaimGetters.Where(g => requestedTypes.Contains(g.Key)).Select(g =>
+        private static IEnumerable<Claim> GetClaimsFromObject(Dictionary<string, MethodInfo> getters,
+            IEnumerable<string> requestedTypes, object obj) =>
+            getters.Where(g => requestedTypes.Contains(g.Key)).Select(g =>
              {
                  var value = g.Value.Invoke(obj, null);
                  return new Claim(g.Key, value?.ToString() ?? "");
@@ -95,7 +97,7 @@ namespace Obsidian.Domain
                 {
                     ClientId = client.Id,
                     ScopeNames = scopes.Select(s => s.ScopeName).ToList()
-            });
+                });
             }
         }
 
