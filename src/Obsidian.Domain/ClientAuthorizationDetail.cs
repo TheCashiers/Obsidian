@@ -7,8 +7,8 @@ namespace Obsidian.Domain
 {
     public class ClientAuthorizationDetail
     {
-        public Client Client { get; set; }
+        public Guid ClientId { get; set; }
 
-        public IList<PermissionScope> Scopes { get; set; }
+        public IList<string> ScopeNames { get; set; }
     }
 }

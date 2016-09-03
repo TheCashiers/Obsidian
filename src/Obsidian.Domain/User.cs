@@ -56,10 +56,10 @@ namespace Obsidian.Domain
 
         public bool IsClientAuthorized(Client client, IEnumerable<string> scopeNames)
         {
-            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.Client == client);
+            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
             if (grantDetail != null)
             {
-                var grantedScopeNames = grantDetail.Scopes.Select(s => s.ScopeName);
+                var grantedScopeNames = grantDetail.ScopeNames;
                 var inputSet = new HashSet<string>(scopeNames);
                 return inputSet.IsSubsetOf(grantedScopeNames);
             }
@@ -84,18 +84,18 @@ namespace Obsidian.Domain
 
         public void GrantClient(Client client, IEnumerable<PermissionScope> scopes)
         {
-            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.Client == client);
+            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
             if (grantDetail != null)
             {
-                grantDetail.Scopes = scopes.ToList();
+                grantDetail.ScopeNames = scopes.Select(s => s.ScopeName).ToList();
             }
             else
             {
                 AuthorizedClients.Add(new ClientAuthorizationDetail
                 {
-                    Client = client,
-                    Scopes = scopes.ToList()
-                });
+                    ClientId = client.Id,
+                    ScopeNames = scopes.Select(s => s.ScopeName).ToList()
+            });
             }
         }
 
