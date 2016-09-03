@@ -54,14 +54,15 @@
 .check{
     border:2px solid rgba(255,255,255, .54) !important;
 }
-.form-group > label,.checkbox label, label{
+.form-group > label,.checkbox label, label {
     color:white;    
     font-size:large;
     font-weight:300;
     text-shadow:4px 4px 25px black;
 }
-.form-control{
-    color:white
+.form-control,h2{
+    color:white;
+    text-shadow:4px 4px 25px black;
 }
 .list-group-item-info{
     background-color:rgba(255,255,255,0.8) !important;
@@ -70,4 +71,12 @@
 }
 .list-group-item > p{
     padding-bottom:5px
+}
+.warning{
+    font-size: 200px;
+    float: right;
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    opacity: 0.6;
 }
