@@ -1,4 +1,4 @@
-﻿namespace Obsidian.Application.Commanding.CommandHandlers
+﻿namespace Obsidian.Application.OldCommanding.CommandHandlers
 {
     public class UserManagementService
     {

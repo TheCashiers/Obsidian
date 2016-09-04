@@ -7,12 +7,14 @@ import { CreateUser } from "../components/CreateUser";
 interface IUserCreationState {
     username?: string;
     password?: string;
+    isComplete?: boolean;
+    isError?:boolean;
 }
 
 export class UserCreationContainer extends React.Component<any, IUserCreationState> {
     constructor(props: any) {
         super(props);
-        this.state = { username: "", password: "" };
+        this.state = { username: "", password: "", isComplete: false ,isError:false};
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -27,7 +29,8 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
         let password: string = this.state.password.trim();
         if (username && password) {
             axios.post(api.configs.createUser.request_uri, { userName: username, password: password })
-                .catch((e) => console.warn(e));
+                .then(()=>this.setState({ isComplete: true }))
+                .catch((e) => this.setState({ isError: true }));
             this.setState({ username: "", password: "" });
         } else { return; }
     }
@@ -36,7 +39,8 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             username={this.state.username}
-            password={this.state.password}/>);
+            password={this.state.password}
+            isComplete={this.state.isComplete}/>);
     }
 };
 

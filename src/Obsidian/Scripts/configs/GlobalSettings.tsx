@@ -22,13 +22,8 @@ export const configs = {
         request_uri: "/api/users",
         request_type: REQUEST_TYPES.GET
     } as IServerConfig,
-    login: {
-        request_uri: "/api/login",
-        request_type: REQUEST_TYPES.POST
-    } as IServerConfig,
     createUser: {
         request_type: REQUEST_TYPES.POST,
         request_uri: "/api/users"
     } as IServerConfig
 }
-

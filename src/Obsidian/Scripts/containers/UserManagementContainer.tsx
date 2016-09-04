@@ -1,5 +1,4 @@
 ﻿import * as React from "react";
-
 import { UserList } from "../components/UserManagement";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";

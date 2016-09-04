@@ -1,0 +1,82 @@
+﻿body {
+    background: url("../images/obsidian_background.png") 0 / cover fixed;
+}
+
+.fullscreen {
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
+    position:absolute;
+    width:600px;
+    height:400px;
+    left:50%;
+    top:50%;
+    margin:-200px -300px;
+}
+.fullscreen::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: url("../images/obsidian_background.png") 0 / cover fixed;
+    filter: blur(20px);
+    -webkit-filter:blur(3px);
+    z-index: -1;
+}
+.left-div {
+    border-radius: inherit;
+    background-image: url('../images/obsidian_texture_1.jpg');
+    float: left;
+    height: 100%;
+    width: 200px;
+    color:white;
+}
+.left-div>h1{
+    padding-bottom:40px;
+}
+.form-padding{
+    padding-left:200px;
+    height:100%;
+}
+.text-padding{
+    padding:10px 10px 10px 10px;
+}
+.list-group-item-info{
+    opacity:0.7
+}
+.list-group-item-right{
+    position: absolute;
+    top:25%;
+    left:90%
+}
+.lg-checkbox{
+    height: 25px;
+    width: 25px;
+}
+.check{
+    border:2px solid rgba(255,255,255, .54) !important;
+}
+.form-group > label,.checkbox label, label {
+    color:white;    
+    font-size:large;
+    font-weight:300;
+    text-shadow:4px 4px 25px black;
+}
+.form-control,h2{
+    color:white;
+    text-shadow:4px 4px 25px black;
+}
+.list-group-item-info{
+    background-color:rgba(255,255,255,0.8) !important;
+    margin-bottom:1px;
+    border-radius:3px !important;
+}
+.list-group-item > p{
+    padding-bottom:5px
+}
+.warning{
+    font-size: 200px;
+    float: right;
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    opacity: 0.6;
+}

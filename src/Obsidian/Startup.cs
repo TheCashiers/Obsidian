@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Obsidian.Application.Commanding;
+using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.DependencyInjection;
+using Obsidian.Application.ProcessManagement;
 using Obsidian.Persistence.DependencyInjection;
+using Obsidian.QueryModel.Mapping;
+using System.Text;
 
 namespace Obsidian
 {
@@ -36,16 +39,16 @@ namespace Obsidian
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+            services.AddMemoryCache();
 
             //Add application components
-            services.AddDbContext();
-            services.AddCommandBus();
-            services.AddCommandHandlers();
-            services.AddRepositories();
+            services.AddSagaBus();
+            services.AddSaga();
+            services.AddMongoRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, CommandBus commandBus)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -66,14 +69,32 @@ namespace Obsidian
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            const string key = "Obsidian.OAuth20.SigningKey.Jwt";
+            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
+            var param = new TokenValidationParameters
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                AuthenticationType = "Bearer",
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = "Obsidian",
+                ValidAudience = "ObsidianAud"
+            };
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                TokenValidationParameters = param
             });
 
-            commandBus.RegisterHandlers();
+            app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
+
+            MappingConfig.ConfigureQueryModelMapping();
+            sagaBus.RegisterSagas();
         }
     }
 }
