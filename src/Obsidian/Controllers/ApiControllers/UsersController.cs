@@ -5,6 +5,7 @@ using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.UserManagement;
 using Obsidian.Domain.Repositories;
+using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
 
@@ -41,6 +42,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
             var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };

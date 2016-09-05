@@ -5,6 +5,7 @@ using Obsidian.Application.ClientManagement;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
+using Obsidian.Misc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,6 +43,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody] ClientCreationDto dto)
         {
             var cmd = new CreateClientCommand { DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };

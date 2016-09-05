@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain;
+using Obsidian.Misc;
 using Obsidian.Models;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,8 +23,8 @@ namespace Obsidian.Controllers.OAuth
             _sagaBus = bus;
         }
 
-        [Route("oauth20/authorize")]
-        [HttpGet]
+        [HttpGet("oauth20/authorize")]
+        [ValidateModel]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
             AuthorizationGrant grantType;
@@ -69,8 +71,8 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        [Route("oauth20/authorize")]
-        [HttpPost]
+        [HttpPost("oauth20/authorize")]
+        [ValidateModel]
         public async Task<IActionResult> SignIn([FromForm]OAuthSignInModel model)
         {
             Guid sagaId;
@@ -106,8 +108,8 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        [Route("oauth20/authorize/permission")]
-        [HttpPost]
+        [HttpPost("oauth20/authorize/permission")]
+        [ValidateModel]
         public async Task<IActionResult> PermissionGrant([FromForm]PermissionGrantModel model)
         {
             Guid sagaId;
@@ -116,7 +118,10 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-            var message = new PermissionGrantMessage(sagaId) { GrantedScopeNames = model.GrantedScopeNames };
+            var message = new PermissionGrantMessage(sagaId)
+            {
+                GrantedScopeNames = model.GrantedScopeNames ?? new List<string>()
+            };
             var result = await _sagaBus.SendAsync<PermissionGrantMessage, OAuth20Result>(message);
             switch (result.State)
             {
@@ -134,11 +139,11 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        [Route("oauth20/token")]
-        [HttpPost]
+        [HttpPost("oauth20/token")]
+        [ValidateModel]
         public async Task<IActionResult> Token([FromBody]AuthorizationCodeGrantRequestModel model)
         {
-            if (model.GrantType == "authorization_code")
+            if ("authorization_code".Equals(model.GrantType, StringComparison.OrdinalIgnoreCase))
             {
                 var message = new AccessTokenRequestMessage(model.Code)
                 {
@@ -218,7 +223,7 @@ namespace Obsidian.Controllers.OAuth
             ViewBag.Scopes = new[] {
                 PermissionScope.Create(Guid.NewGuid(),"obsidian.basicinfo","Basic Information","Includes you name and gender."),
                 PermissionScope.Create(Guid.NewGuid(),"obsidian.email","Email address","Your email address."),
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system."),
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system.")
             };
             return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
         }
