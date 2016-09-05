@@ -71,7 +71,7 @@ namespace Obsidian.Controllers.OAuth
             }
             else if ("token".Equals(model.ResponseType, StringComparison.OrdinalIgnoreCase))
             {
-                grantType = AuthorizationGrant.AuthorizationCode;
+                grantType = AuthorizationGrant.Implicit;
             }
             else
                 return BadRequest();
