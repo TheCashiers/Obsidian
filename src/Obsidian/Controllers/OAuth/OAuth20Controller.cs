@@ -5,7 +5,6 @@ using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain;
 using Obsidian.Models;
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,6 +68,7 @@ namespace Obsidian.Controllers.OAuth
                     return BadRequest();
             }
         }
+
         [Route("oauth20/authorize")]
         [HttpPost]
         public async Task<IActionResult> SignIn([FromForm]OAuthSignInModel model)
@@ -153,15 +153,7 @@ namespace Obsidian.Controllers.OAuth
                         return BadRequest();
 
                     case OAuth20State.Finished:
-                        return Ok(new AccessTokenResponseModel
-                        {
-                            TokenType = "bearer",
-                            AccessToken = result.Token.AccessToken,
-                            AuthrneticationToken = result.Token.AuthrneticationToken,
-                            ExpireInSecond = (long)result.Token.ExpireIn.TotalSeconds,
-                            Scope = string.Join(" ", result.Token.Scope.Select(s => s.ScopeName)),
-                            RefreshToken = result.Token.RefreshToken
-                        });
+                        return Ok(TokenResponseModel.FromOAuth20Result(result));
                 }
             }
             return BadRequest();
