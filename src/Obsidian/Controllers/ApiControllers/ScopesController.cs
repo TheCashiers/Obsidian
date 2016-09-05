@@ -51,7 +51,6 @@ namespace Obsidian.Controllers.ApiControllers
                 ScopeName = dto.ScopeName
             };
 
-
             var result = await _sagaBus.InvokeAsync<CreateScopeCommand, ScopeCreationResult>(cmd);
             if (result.Succeed)
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Models
 {
-    [ModelBinder(BinderType = typeof(AuthorizationCodeGrantRequestModelBinder))]
+    [ModelBinder(BinderType = typeof(JsonDeserializeModelBinder))]
     public class AuthorizationCodeGrantRequestModel
     {
         [JsonProperty("code")]
@@ -25,31 +25,5 @@ namespace Obsidian.Models
         [JsonProperty("grant_type")]
         public string GrantType { get; set; }
 
-
-        public class AuthorizationCodeGrantRequestModelBinder : IModelBinder
-        {
-            public Task BindModelAsync(ModelBindingContext bindingContext)
-            {
-                var request = bindingContext.HttpContext.Request;
-                using (var sr = new StreamReader(request.Body))
-                {
-                    using (var jr = new JsonTextReader(sr))
-                    {
-                        var serializer = new JsonSerializer();
-                        var model = serializer.Deserialize<AuthorizationCodeGrantRequestModel>(jr);
-                        if (model != null)
-                        {
-                            bindingContext.Result = ModelBindingResult.Success(model);
-                        }
-                        else
-                        {
-                            bindingContext.Result = ModelBindingResult.Failed();
-                        }
-                        return Task.FromResult(0);
-                    }
-                }
-
-            }
-        }
     }
 }

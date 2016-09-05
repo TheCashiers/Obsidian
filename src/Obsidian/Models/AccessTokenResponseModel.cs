@@ -1,25 +1,26 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace Obsidian.Models
 {
     public class AccessTokenResponseModel
     {
-        [DataMember(Name = "token_type")]
+        [JsonProperty("token_type")]
         public string TokenType { get; set; }
 
-        [DataMember(Name = "expire_in")]
+        [JsonProperty("expire_in")]
         public long ExpireInSecond { get; set; }
 
-        [DataMember(Name = "scope")]
+        [JsonProperty("scope")]
         public string Scope { get; set; }
 
-        [DataMember(Name ="access_token")]
+        [JsonProperty("access_token")]
         public string AccessToken { get; set; }
 
-        [DataMember(Name ="refresh_token")]
+        [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
 
-        [DataMember(Name ="authrentication_token")]
+        [JsonProperty("authrentication_token")]
         public string AuthrneticationToken { get; set; }
     }
 }

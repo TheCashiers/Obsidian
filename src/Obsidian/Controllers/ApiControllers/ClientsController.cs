@@ -5,9 +5,7 @@ using Obsidian.Application.ClientManagement;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
-using Obsidian.QueryModel.Mapping;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,7 +48,7 @@ namespace Obsidian.Controllers.ApiControllers
             var result = await _sagaBus.InvokeAsync<CreateClientCommand, ClientCreationResult>(cmd);
             if (result.Succeed)
             {
-                return Created(Url.Action(nameof(GetById),new { id = result.Id  }),null);
+                return Created(Url.Action(nameof(GetById), new { id = result.Id }), null);
             }
             return StatusCode(412, result.Message);
         }
