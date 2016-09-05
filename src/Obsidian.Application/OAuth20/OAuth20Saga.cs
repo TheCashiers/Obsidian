@@ -22,10 +22,9 @@ namespace Obsidian.Application.OAuth20
         private readonly IClientRepository _clientRepository;
         private readonly IPermissionScopeRepository _scopeRepository;
         private readonly IUserRepository _userRepository;
+        private readonly OAuth20Service _service;
 
         #endregion External Dependencies
-
-        private const string key = "Obsidian.OAuth20.SigningKey.Jwt";
 
         #region State Data
 
@@ -40,11 +39,13 @@ namespace Obsidian.Application.OAuth20
 
         public OAuth20Saga(IClientRepository clientRepo,
                            IUserRepository userRepo,
-                           IPermissionScopeRepository scopeRepo)
+                           IPermissionScopeRepository scopeRepo,
+                           OAuth20Service service)
         {
             _clientRepository = clientRepo;
             _userRepository = userRepo;
             _scopeRepository = scopeRepo;
+            _service = service;
         }
 
         #region Handlers
@@ -195,6 +196,7 @@ namespace Obsidian.Application.OAuth20
             result.Token = new OAuth20Result.TokenResult
             {
                 Scope = _grantedScopes,
+                ExpireIn = TimeSpan.FromMinutes(5),
                 AccessToken = GenerateAccessToken()
             };
             return result;
@@ -238,21 +240,7 @@ namespace Obsidian.Application.OAuth20
 
         #region Token Generators
 
-        private string GenerateAccessToken()
-        {
-            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            var claims = _user.GetClaims(_grantedScopes);
-            var jwt = new JwtSecurityToken(
-                issuer: "Obsidian",
-                audience: "ObsidianAud",
-                claims: claims,
-                signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddMinutes(5)
-                );
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return token;
-        }
+        private string GenerateAccessToken() => _service.GenerateAccessToken(_user, _grantedScopes);
 
         private Guid GenerateAuthorizationCode() => Id;
 

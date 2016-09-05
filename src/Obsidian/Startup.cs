@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.DependencyInjection;
+using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
@@ -48,7 +49,8 @@ namespace Obsidian
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus,
+            OAuth20Configuration oauthConfig)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -69,7 +71,7 @@ namespace Obsidian
 
             app.UseStaticFiles();
 
-            const string key = "Obsidian.OAuth20.SigningKey.Jwt";
+            var key = oauthConfig.GetTokenSigningKey();
             var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
             var param = new TokenValidationParameters
             {
@@ -77,8 +79,8 @@ namespace Obsidian
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,
                 ValidateIssuer = true,
-                ValidIssuer = "Obsidian",
-                ValidAudience = "ObsidianAud"
+                ValidIssuer = oauthConfig.GetTokenIssuer(),
+                ValidAudience = oauthConfig.GetTokenAudience()
             };
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions

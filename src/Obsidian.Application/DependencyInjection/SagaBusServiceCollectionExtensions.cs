@@ -22,7 +22,7 @@ namespace Obsidian.Application.DependencyInjection
         /// <param name="services">The <see cref="IServiceCollection"/> to add servicesto.</param>
         /// <returns>The same service collection so that multiple calls can be chained.</returns>
         public static IServiceCollection AddSaga(this IServiceCollection services)
-            => services.AddTransient<OAuth20Saga>()
+            => services.AddTransient<OAuth20Saga>().AddTransient<OAuth20Service>().AddTransient<OAuth20Configuration>()
                        .AddTransient<CreateUserSaga>()
                        .AddTransient<CreateClientSaga>()
                        .AddTransient<CreateScopeSaga>();
