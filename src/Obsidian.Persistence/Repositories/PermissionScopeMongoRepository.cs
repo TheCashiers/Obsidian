@@ -18,11 +18,11 @@ namespace Obsidian.Persistence.Repositories
 
         protected override IMongoCollection<PermissionScope> Collection => _collection;
 
-        public Task<PermissionScope> FindByScopeNameAsync(string scopeName)
+        public async Task<PermissionScope> FindByScopeNameAsync(string scopeName)
         {
             if (string.IsNullOrWhiteSpace(scopeName))
                 throw new ArgumentNullException(nameof(scopeName));
-            return Collection.Find(s => s.ScopeName == scopeName).SingleOrDefaultAsync();
+            return await Collection.Find(s => s.ScopeName == scopeName).SingleOrDefaultAsync();
         }
     }
 }

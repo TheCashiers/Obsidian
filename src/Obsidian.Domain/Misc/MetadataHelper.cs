@@ -25,7 +25,7 @@ namespace Obsidian.Domain.Misc
            .SelectMany(cg => cg.ClaimTypes, (cg, t) => new
            {
                ClaimType = t,
-               Getter = cg.Getter
+               cg.Getter
            })
            .ToDictionary(cg => cg.ClaimType, cg => cg.Getter);
 

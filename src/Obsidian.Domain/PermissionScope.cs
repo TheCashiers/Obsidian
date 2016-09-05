@@ -2,8 +2,6 @@
 using Obsidian.Domain.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Obsidian.Domain
 {
@@ -35,6 +33,6 @@ namespace Obsidian.Domain
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        #endregion
+        #endregion Equality
     }
 }
