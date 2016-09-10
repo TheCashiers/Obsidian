@@ -4,7 +4,7 @@
 import * as React from "react";
 
 export const CreateUser = (props) => (
-    <div className="content-wrapper">
+    <div className="content-wrapper well">
         <form onSubmit={props.onSubmit}>
             Username: <input type="text" name="username" onChange={props.onInputChange} value={props.username}></input>
             Password: <input type="password" name="password" onChange={props.onInputChange} value={props.password}></input>
@@ -20,11 +20,10 @@ export const CreateUser = (props) => (
             : null}
             {
                 props.isError ?
-                <div className="callout callout-failed lead">
-                    <h4>Error</h4>
-                    <p>
-                        User creation failed.
-                    </p>
+                <div className="alert alert-dismissible alert-danger">
+                    <button type="button" className="close" data-dismiss="alert">×</button>
+                    <strong>Error</strong><br/>
+                    An error occured when creating user.
                 </div>:null
             }
 
