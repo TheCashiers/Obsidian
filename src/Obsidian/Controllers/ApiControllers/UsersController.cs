@@ -54,5 +54,19 @@ namespace Obsidian.Controllers.ApiControllers
             // currently, the only reason for failure is that a user of the same username exists.
             return StatusCode(412, result.Message);
         }
+
+        [HttpPut("Password/{id:guid}")]
+        [ValidateModel]
+        public async Task<IActionResult> SetPassword([FromBody]UserPasswordSettingDto dto)
+        {
+            var cmd = new SetUserPasswordCommand { Password = dto.Password, UserId = dto.UserId };
+            var result = await _sagaBus.InvokeAsync<SetUserPasswordCommand, UserPasswordSettingResult>(cmd);
+            if(result.Succeed)
+            {
+                return Ok(Url.Action(nameof(SetPassword)));
+            }
+            //if user doesn't exist.
+            return BadRequest(result.Message);
+        }
     }
 }
