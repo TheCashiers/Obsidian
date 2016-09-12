@@ -21,7 +21,7 @@ namespace Obsidian.Application.UserManagement
         public async Task<UserPasswordSettingResult> StartAsync(SetUserPasswordCommand command)
         {
             _isCompleted = true;
-            //check username
+            //check user
             var user = await _repo.FindByIdAsync(command.UserId);
             if (user == null)
             {
@@ -31,7 +31,16 @@ namespace Obsidian.Application.UserManagement
                     Message = $"User of user id {command.UserId} doesn't exists."
                 };
             }
-            user.SetPassword(command.Password);
+            //validate old password
+            if(!user.VaildatePassword(command.OldPassword))
+            {
+                return new UserPasswordSettingResult
+                {
+                    Succeed = false,
+                    Message = $"Old password of user {command.UserId} doesn't match."
+                };
+            }
+            user.SetPassword(command.NewPassword);
             await _repo.SaveAsync(user);
             return new UserPasswordSettingResult
             {
