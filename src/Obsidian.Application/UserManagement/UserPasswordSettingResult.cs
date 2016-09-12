@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
-    public class UserEditionResult
+    public class UserPasswordSettingResult
     {
         public bool Succeed { get; set; }
         public string Message { get; set; }
