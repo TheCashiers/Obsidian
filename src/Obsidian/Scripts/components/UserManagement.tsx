@@ -4,6 +4,11 @@ import { Link } from "react-router";
 const UserItem = (props) => (
     <li>
         {props.username}
+        <Link to="/manage/users/edit/" id={props.id}>
+            <button className="btn btn-lg btn-primary btn-raised">
+                Edit
+            </button>    
+        </Link>
     </li>
 );
 

@@ -2,14 +2,11 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
+import {UserForm} from "./UserForm"
 
 export const CreateUser = (props) => (
     <div className="content-wrapper well">
-        <form onSubmit={props.onSubmit}>
-            Username: <input type="text" name="username" onChange={props.onInputChange} value={props.username}></input>
-            Password: <input type="password" name="password" onChange={props.onInputChange} value={props.password}></input>
-            <button className="btn btn-lg btn-success" type="submit">Create!</button>
-        </form>
+        <UserForm onSubmit={props.onSubmit} onInputChange={props.onInputChange} username={props.username} password={props.password} action="Create User"/>
         {props.isComplete ?
             <div className="callout callout-success lead">
                 <h4>Success</h4>
