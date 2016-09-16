@@ -16,7 +16,7 @@ export const routes = (
             <IndexRoute component={ Portal }/>
             <Route path="/manage/users" component={ UserManagementContainer } />
             <Route path="/manage/users/create" component={ UserCreationContainer } />
-            <Route path="/manage/users/edit/:id" component={UserEditContainer}/>
+            <Route path="/manage/users/edit/" component={UserEditContainer}/>
         </Route>
     </Router>
 );

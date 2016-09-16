@@ -4,7 +4,7 @@ import { Link } from "react-router";
 const UserItem = (props) => (
     <li>
         {props.username}
-        <Link to="/manage/users/edit/" id={props.id}>
+        <Link to="/manage/users/edit/" query={{username:props.username,id:props.id}}>
             <button className="btn btn-lg btn-primary btn-raised">
                 Edit
             </button>    
@@ -19,7 +19,7 @@ export const UserList = (props) => (
                 <h3 className="box-title">Users</h3>
             </div>
             <div className="box-body">
-            <ul>{props.users.map((user, index) => <UserItem username={user.userName} key={user.id}/>) }</ul>
+            <ul>{props.users.map((user, index) => <UserItem username={user.userName} id={user.id} key={user.id}/>) }</ul>
             </div>
         </div>
         <Link to="/manage/users/create">

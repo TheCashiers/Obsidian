@@ -8,12 +8,11 @@ export const CreateUser = (props) => (
     <div className="content-wrapper well">
         <UserForm onSubmit={props.onSubmit} onInputChange={props.onInputChange} username={props.username} password={props.password} action="Create User"/>
         {props.isComplete ?
-            <div className="callout callout-success lead">
-                <h4>Success</h4>
-                <p>
+            <div className="alert alert-dismissible alert-success">
+                    <button type="button" className="close" data-dismiss="alert">×</button>
+                    <strong>Success</strong><br/>
                     User created.
-                </p>
-            </div>
+                </div>
             : null}
             {
                 props.isError ?
