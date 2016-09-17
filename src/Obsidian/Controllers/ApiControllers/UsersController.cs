@@ -55,7 +55,14 @@ namespace Obsidian.Controllers.ApiControllers
             return StatusCode(412, result.Message);
         }
 
-        [HttpPut("Password/{id:guid}")]
+        [HttpPut("{id:guid}/Profile")]
+        [ValidateModel]
+        public async Task<IActionResult> UpdateProfile([FromBody]UpdateProfileDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut("{id:guid}/Password")]
         [ValidateModel]
         public async Task<IActionResult> SetPassword([FromBody]UserPasswordSettingDto dto)
         {
