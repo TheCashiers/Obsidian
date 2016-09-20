@@ -31,15 +31,6 @@ namespace Obsidian.Application.UserManagement
                     Message = $"User of user id {command.UserId} doesn't exists."
                 };
             }
-            //validate old password
-            if(!user.VaildatePassword(command.OldPassword))
-            {
-                return new UserPasswordSettingResult
-                {
-                    Succeed = false,
-                    Message = $"Old password of user {command.UserId} doesn't match."
-                };
-            }
             user.SetPassword(command.NewPassword);
             await _repo.SaveAsync(user);
             return new UserPasswordSettingResult
