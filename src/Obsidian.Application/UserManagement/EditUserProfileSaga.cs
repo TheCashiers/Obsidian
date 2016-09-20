@@ -19,14 +19,30 @@ namespace Obsidian.Application.UserManagement
             _repo = repo;
         }
 
-        public Task<UserProfileEditonResult> StartAsync(EditUserProfileCommand command)
+        public async Task<UserProfileEditonResult> StartAsync(EditUserProfileCommand command)
         {
-            throw new NotImplementedException();
+            _isCompleted = true;
+            //check user
+            var user = await _repo.FindByIdAsync(command.UserId);
+            if (user == null)
+            {
+                return new UserProfileEditonResult {
+                    Succeed = false,
+                    Message = $"User of user id {command.UserId} doesn't exist."
+                };
+            }
+            //edit profile
+            user.UpdateProfile(command.NewProfile);
+            await _repo.SaveAsync(user);
+            return new UserProfileEditonResult {
+                Succeed = true,
+                Message = $"Profile of User {user.Id} changed."
+            };
         }
 
         protected override bool IsProcessCompleted()
         {
-            throw new NotImplementedException();
+            return _isCompleted;
         }
     }
 }

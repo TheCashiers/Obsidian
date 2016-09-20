@@ -27,6 +27,11 @@ namespace Obsidian.Domain
             _passwordHash = _passwordHasher.HashPasword(password);
         }
 
+        public void UpdateProfile(UserProfile profile)
+        {
+            Profile = profile;
+        }
+
         /// <summary>
         /// Represents the username used to login.
         /// </summary>
