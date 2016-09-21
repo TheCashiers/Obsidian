@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
-    public class EditUserProfileSaga : Saga, IStartsWith<EditUserProfileCommand, UserProfileEditonResult>
+    public class EditUserProfileSaga : Saga, IStartsWith<EditUserProfileCommand, Result<EditUserProfileCommand>>
     {
 
         private bool _isCompleted;
@@ -19,14 +19,15 @@ namespace Obsidian.Application.UserManagement
             _repo = repo;
         }
 
-        public async Task<UserProfileEditonResult> StartAsync(EditUserProfileCommand command)
+        public async Task<Result<EditUserProfileCommand>> StartAsync(EditUserProfileCommand command)
         {
             _isCompleted = true;
             //check user
             var user = await _repo.FindByIdAsync(command.UserId);
             if (user == null)
             {
-                return new UserProfileEditonResult {
+                return new Result<EditUserProfileCommand>
+                {
                     Succeed = false,
                     Message = $"User of user id {command.UserId} doesn't exist."
                 };
@@ -34,7 +35,8 @@ namespace Obsidian.Application.UserManagement
             //edit profile
             user.UpdateProfile(command.NewProfile);
             await _repo.SaveAsync(user);
-            return new UserProfileEditonResult {
+            return new Result<EditUserProfileCommand>
+            {
                 Succeed = true,
                 Message = $"Profile of User {user.Id} changed."
             };
