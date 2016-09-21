@@ -68,7 +68,7 @@ namespace Obsidian.Controllers.ApiControllers
             return BadRequest(result.Message);
         }
 
-        [HttpPut("{id:guid/Secret}")]
+        [HttpPut("{id:guid}/Secret")]
         [ValidateModel]
         public async Task<IActionResult> UpdateSecret([FromBody]UpdateClientSecretDto dto)
         {
