@@ -59,7 +59,13 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> Put([FromBody] UpdateClientDto dto)
         {
-            throw new NotImplementedException();
+            var cmd = new UpdateClientCommand { ClientId = dto.ClientId , DisplayName = dto.DisplayName , RedirectUri = dto.RedirectUri };
+            var result = await _sagaBus.InvokeAsync<UpdateClientCommand, ClientUpdateResult>(cmd);
+            if(result.Succeed)
+            {
+                return Ok(Url.Action(result.Message));
+            }
+            return BadRequest(result.Message);
         }
     }
 }
