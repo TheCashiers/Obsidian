@@ -54,5 +54,12 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return StatusCode(412, result.Message);
         }
+
+        [HttpPut("{id:guid}")]
+        [ValidateModel]
+        public async Task<IActionResult> Put([FromBody] UpdateClientDto dto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
