@@ -57,7 +57,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}")]
         [ValidateModel]
-        public async Task<IActionResult> Put([FromBody] UpdateClientDto dto)
+        public async Task<IActionResult> Put([FromBody]UpdateClientDto dto)
         {
             var cmd = new UpdateClientCommand { ClientId = dto.ClientId , DisplayName = dto.DisplayName , RedirectUri = dto.RedirectUri };
             var result = await _sagaBus.InvokeAsync<UpdateClientCommand, ClientUpdateResult>(cmd);
@@ -67,5 +67,19 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpPut("{id:guid/Secret}")]
+        [ValidateModel]
+        public async Task<IActionResult> UpdateSecret([FromBody]UpdateClientSecretDto dto)
+        {
+            var cmd = new UpdateClientSecretCommand { ClientId = dto.ClientId };
+            var result = await _sagaBus.InvokeAsync<UpdateClientSecretCommand, ClientSecretUpdateResult>(cmd);
+            if(result.Succeed)
+            {
+                return Ok(Url.Action(nameof(UpdateSecret), new { Secret = result.Secret }));
+            }
+            return BadRequest(result.Message);
+        }
+
     }
 }
