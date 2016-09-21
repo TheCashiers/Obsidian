@@ -60,7 +60,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> UpdateProfile([FromBody]UpdateProfileDto dto)
         {
             var cmd = new EditUserProfileCommand { UserId = dto.UserId , NewProfile = dto.NewProfile };
-            var result = await _sagaBus.InvokeAsync<EditUserProfileCommand, Result<EditUserProfileCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<EditUserProfileCommand, UserProfileEditonResult>(cmd);
             if(result.Succeed)
             {
                 return Ok(Url.Action(nameof(UpdateProfile)));
