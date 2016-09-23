@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.UserManagement;
+using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
@@ -57,11 +58,11 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Profile")]
         [ValidateModel]
-        public async Task<IActionResult> UpdateProfile([FromBody]UpdateProfileDto dto)
+        public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
-            var cmd = new UpdateUserProfileCommand { UserId = dto.UserId , NewProfile = dto.NewProfile };
+            var cmd = new UpdateUserProfileCommand { UserId = id, NewProfile = profile };
             var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, Result<UpdateUserProfileCommand>>(cmd);
-            if(result.Succeed)
+            if (result.Succeed)
             {
                 return Ok(Url.Action(nameof(UpdateProfile)));
             }
@@ -71,9 +72,9 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Password")]
         [ValidateModel]
-        public async Task<IActionResult> SetPassword([FromBody]UserPasswordSettingDto dto)
+        public async Task<IActionResult> SetPassword([FromBody]string password, Guid id)
         {
-            var cmd = new UpdateUserPasswordCommand {  NewPassword = dto.NewPassword, UserId = dto.UserId };
+            var cmd = new UpdateUserPasswordCommand { NewPassword = password, UserId = id };
             var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, Result<UpdateUserPasswordCommand>>(cmd);
             if (result.Succeed)
             {
