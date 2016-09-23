@@ -78,5 +78,39 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpPost("{id:guid}/{claim:string}")]
+        [ValidateModel]
+        public async Task<IActionResult> AddClaim(Guid id,string claim)
+        {
+            var cmd = new UpdateScopeClaimsCommand {
+                 IsAdd = true,
+                 Id = id,
+                 Claim = claim 
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
+            if(result.Succeed)
+            {
+                return Ok();
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpDelete("{id:guid}/{claim:string}")]
+        [ValidateModel]
+        public async Task<IActionResult> RemoveClaim(Guid id, string claim)
+        {
+            var cmd = new UpdateScopeClaimsCommand
+            {
+                IsAdd = false,
+                Id = id,
+                Claim = claim
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
+            if (result.Succeed)
+            {
+                return Ok();
+            }
+            return BadRequest(result.Message);
+        }
     }
 }

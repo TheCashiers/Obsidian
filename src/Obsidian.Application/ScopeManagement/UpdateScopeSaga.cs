@@ -31,14 +31,36 @@ namespace Obsidian.Application.ScopeManagement
                     Message = $"PermissionScope of Id {command.Id} doesn't exist."
                 };
             //add
-            if (command.IsAdd&&!scope.ClaimTypes.Contains(command.Claim))scope.ClaimTypes.Add(command.Claim);
-            //remove
-            if (!command.IsAdd && scope.ClaimTypes.Contains(command.Claim)) scope.ClaimTypes.Remove(command.Claim);
-            return new MessageResult<UpdateScopeClaimsCommand>
+            if (command.IsAdd)
             {
-                Succeed = true,
-                Message = $"Claims of PermissionScope {scope.Id} changed."
-            };
+                if (scope.ClaimTypes.Contains(command.Claim))
+                    return new MessageResult<UpdateScopeClaimsCommand> {
+                        Succeed = false,
+                        Message = $"Claim {command.Claim} exists in PermissionScope {scope.Id}"
+                    };
+                scope.ClaimTypes.Add(command.Claim);
+                return new MessageResult<UpdateScopeClaimsCommand>
+                {
+                    Succeed = true,
+                    Message = $"Claims of PermissionScope {scope.Id} changed."
+                };
+            }
+            //remove
+            else
+            {
+                if(!scope.ClaimTypes.Contains(command.Claim))
+                    return new MessageResult<UpdateScopeClaimsCommand>
+                    {
+                        Succeed = false,
+                        Message = $"Claim {command.Claim} doesn't exist in PermissionScope {scope.Id}"
+                    };
+                scope.ClaimTypes.Remove(command.Claim);
+                return new MessageResult<UpdateScopeClaimsCommand>
+                {
+                    Succeed = true,
+                    Message = $"Claims of PermissionScope {scope.Id} changed."
+                };
+            }
         }
 
         public async Task<MessageResult<UpdateScopeInfoCommand>> StartAsync(UpdateScopeInfoCommand command)
