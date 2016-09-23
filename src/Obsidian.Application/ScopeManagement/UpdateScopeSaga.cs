@@ -20,9 +20,25 @@ namespace Obsidian.Application.ScopeManagement
             _repo = repo;
         }
 
-        public Task<MessageResult<UpdateScopeClaimsCommand>> StartAsync(UpdateScopeClaimsCommand command)
+        public async Task<MessageResult<UpdateScopeClaimsCommand>> StartAsync(UpdateScopeClaimsCommand command)
         {
-            throw new NotImplementedException();
+            _isCompleted = true;
+            var scope = await _repo.FindByIdAsync(command.Id);
+            if (scope == null)
+                return new MessageResult<UpdateScopeClaimsCommand>
+                {
+                    Succeed = false,
+                    Message = $"PermissionScope of Id {command.Id} doesn't exist."
+                };
+            //add
+            if (command.IsAdd&&!scope.ClaimTypes.Contains(command.Claim))scope.ClaimTypes.Add(command.Claim);
+            //remove
+            if (!command.IsAdd && scope.ClaimTypes.Contains(command.Claim)) scope.ClaimTypes.Remove(command.Claim);
+            return new MessageResult<UpdateScopeClaimsCommand>
+            {
+                Succeed = true,
+                Message = $"Claims of PermissionScope {scope.Id} changed."
+            };
         }
 
         public async Task<MessageResult<UpdateScopeInfoCommand>> StartAsync(UpdateScopeInfoCommand command)

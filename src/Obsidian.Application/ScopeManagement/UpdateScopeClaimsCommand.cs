@@ -8,7 +8,8 @@ namespace Obsidian.Application.ScopeManagement
 {
     public class UpdateScopeClaimsCommand : Command<MessageResult<UpdateScopeClaimsCommand>>
     {
+        public Guid Id { get; set; }
         public bool IsAdd { get; set; }
-        public IList<string> Claims { get; set; }
+        public string Claim { get; set; }
     }
 }
