@@ -60,5 +60,23 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return StatusCode(412, result.Message);
         }
+
+        [HttpPut("{id:guid}")]
+        [ValidateModel]
+        public async Task<IActionResult> Put([FromBody] UpdateScopeInfoDto dto, Guid id)
+        {
+            var cmd = new UpdateScopeInfoCommand
+            {
+                Id = id,
+                Description = dto.Description,
+                DisplayName = dto.DisplayName
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateScopeInfoCommand, MessageResult<UpdateScopeInfoCommand>>(cmd);
+            if(result.Succeed)
+            {
+                return Ok(Url.Action(result.Message));
+            }
+            return BadRequest(result.Message);
+        }
     }
 }
