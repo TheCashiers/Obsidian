@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.ClientManagement
 {
-    public class UpdateClientCommand : Command<Result<UpdateClientCommand>>
+    public class UpdateClientCommand : Command<MessageResult<UpdateClientCommand>>
     {
         public Guid ClientId { get; set; }
         public string DisplayName { get; set; }

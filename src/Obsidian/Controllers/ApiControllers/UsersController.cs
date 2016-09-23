@@ -61,7 +61,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
             var cmd = new UpdateUserProfileCommand { UserId = id, NewProfile = profile };
-            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, Result<UpdateUserProfileCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult<UpdateUserProfileCommand>>(cmd);
             if (result.Succeed)
             {
                 return Ok(Url.Action(nameof(UpdateProfile)));
@@ -75,7 +75,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> SetPassword([FromBody]string password, Guid id)
         {
             var cmd = new UpdateUserPasswordCommand { NewPassword = password, UserId = id };
-            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, Result<UpdateUserPasswordCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult<UpdateUserPasswordCommand>>(cmd);
             if (result.Succeed)
             {
                 return Ok(Url.Action(nameof(SetPassword)));

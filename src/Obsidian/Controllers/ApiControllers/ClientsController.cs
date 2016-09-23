@@ -60,7 +60,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> Put([FromBody]UpdateClientDto dto)
         {
             var cmd = new UpdateClientCommand { ClientId = dto.ClientId , DisplayName = dto.DisplayName , RedirectUri = dto.RedirectUri };
-            var result = await _sagaBus.InvokeAsync<UpdateClientCommand, Result<UpdateClientCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateClientCommand, MessageResult<UpdateClientCommand>>(cmd);
             if(result.Succeed)
             {
                 return Ok(Url.Action(result.Message));

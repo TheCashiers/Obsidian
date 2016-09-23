@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.ProcessManagement
 {
-    public class Result<TCommand>
+    public class MessageResult<TCommand>
     {
         public bool Succeed { get; set; }
         public string Message { get; set; }
