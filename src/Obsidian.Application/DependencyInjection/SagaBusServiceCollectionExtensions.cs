@@ -25,6 +25,10 @@ namespace Obsidian.Application.DependencyInjection
             => services.AddTransient<OAuth20Saga>().AddTransient<OAuth20Service>().AddTransient<OAuth20Configuration>()
                        .AddTransient<CreateUserSaga>()
                        .AddTransient<CreateClientSaga>()
-                       .AddTransient<CreateScopeSaga>();
+                       .AddTransient<CreateScopeSaga>()
+                       .AddTransient<EditUserProfileSaga>()
+                       .AddTransient<SetUserPasswordSaga>()
+                       .AddTransient<UpdateClientSaga>()
+                       .AddTransient<UpdateClientSecretSaga>();
     }
 }
