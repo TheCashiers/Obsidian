@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Obsidian.Application.ScopeManagement
 {
     public class UpdateScopeSaga : Saga, IStartsWith<UpdateScopeInfoCommand, MessageResult<UpdateScopeInfoCommand>>
+                                       , IStartsWith<UpdateScopeClaimsCommand,MessageResult<UpdateScopeClaimsCommand>>
     {
 
         private bool _isCompleted;
@@ -18,6 +19,12 @@ namespace Obsidian.Application.ScopeManagement
         {
             _repo = repo;
         }
+
+        public Task<MessageResult<UpdateScopeClaimsCommand>> StartAsync(UpdateScopeClaimsCommand command)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<MessageResult<UpdateScopeInfoCommand>> StartAsync(UpdateScopeInfoCommand command)
         {
             _isCompleted = true;

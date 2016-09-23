@@ -27,6 +27,7 @@ namespace Obsidian.Application.DependencyInjection
                        .AddTransient<CreateClientSaga>()
                        .AddTransient<CreateScopeSaga>()
                        .AddTransient<UpdateUserSaga>()
-                       .AddTransient<UpdateClientSaga>();
+                       .AddTransient<UpdateClientSaga>()
+                       .AddTransient<UpdateScopeSaga>();
     }
 }
