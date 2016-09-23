@@ -59,8 +59,8 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UpdateProfileDto dto)
         {
-            var cmd = new EditUserProfileCommand { UserId = dto.UserId , NewProfile = dto.NewProfile };
-            var result = await _sagaBus.InvokeAsync<EditUserProfileCommand, Result<EditUserProfileCommand>>(cmd);
+            var cmd = new UpdateUserProfileCommand { UserId = dto.UserId , NewProfile = dto.NewProfile };
+            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, Result<UpdateUserProfileCommand>>(cmd);
             if(result.Succeed)
             {
                 return Ok(Url.Action(nameof(UpdateProfile)));
@@ -73,8 +73,8 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> SetPassword([FromBody]UserPasswordSettingDto dto)
         {
-            var cmd = new SetUserPasswordCommand {  NewPassword = dto.NewPassword, UserId = dto.UserId };
-            var result = await _sagaBus.InvokeAsync<SetUserPasswordCommand, Result<SetUserPasswordCommand>>(cmd);
+            var cmd = new UpdateUserPasswordCommand {  NewPassword = dto.NewPassword, UserId = dto.UserId };
+            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, Result<UpdateUserPasswordCommand>>(cmd);
             if (result.Succeed)
             {
                 return Ok(Url.Action(nameof(SetPassword)));

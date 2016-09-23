@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
-    public class EditUserProfileCommand : Command<Result<EditUserProfileCommand>>
+    public class UpdateUserPasswordCommand : Command<Result<UpdateUserPasswordCommand>>
     {
         public Guid UserId { get; set; }
-        public UserProfile NewProfile { get; set; }
+        public string NewPassword { get; set; }
     }
 }
