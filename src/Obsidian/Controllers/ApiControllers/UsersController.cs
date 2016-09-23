@@ -74,7 +74,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> SetPassword([FromBody]UserPasswordSettingDto dto)
         {
             var cmd = new SetUserPasswordCommand {  NewPassword = dto.NewPassword, UserId = dto.UserId };
-            var result = await _sagaBus.InvokeAsync<SetUserPasswordCommand, UserPasswordSettingResult>(cmd);
+            var result = await _sagaBus.InvokeAsync<SetUserPasswordCommand, Result<SetUserPasswordCommand>>(cmd);
             if (result.Succeed)
             {
                 return Ok(Url.Action(nameof(SetPassword)));
