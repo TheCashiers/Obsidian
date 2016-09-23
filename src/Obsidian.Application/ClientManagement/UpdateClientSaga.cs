@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.ClientManagement
 {
-    public class UpdateClientSaga : Saga, IStartsWith<UpdateClientCommand, ClientUpdateResult>
+    public class UpdateClientSaga : Saga, IStartsWith<UpdateClientCommand, Result<UpdateClientCommand>>
 
     {
 
@@ -19,14 +19,14 @@ namespace Obsidian.Application.ClientManagement
             _repo = repo;
         }
 
-        public async Task<ClientUpdateResult> StartAsync(UpdateClientCommand command)
+        public async Task<Result<UpdateClientCommand>> StartAsync(UpdateClientCommand command)
         {
             _isCompleted = true;
             var client = await _repo.FindByIdAsync(command.ClientId);
             //not exist
             if (client == null)
             {
-                return new ClientUpdateResult
+                return new Result<UpdateClientCommand>
                 {
                     Succeed = false,
                     Message = $"Client of Client Id {command.ClientId} doesn't exist."
@@ -36,7 +36,8 @@ namespace Obsidian.Application.ClientManagement
             client.DisplayName = command.DisplayName;
             client.RedirectUri = new Uri(command.RedirectUri);
             await _repo.SaveAsync(client);
-            return new ClientUpdateResult {
+            return new Result<UpdateClientCommand>
+            {
                 Succeed =true,
                 Message = $"Info of Client {client.Id} changed."
             };
