@@ -79,7 +79,7 @@ namespace Obsidian.Controllers.ApiControllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("{id:guid}/{claim:string}")]
+        [HttpPost("{id:guid}/{claim}")]
         [ValidateModel]
         public async Task<IActionResult> AddClaim(Guid id,string claim)
         {
@@ -95,7 +95,7 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
-        [HttpDelete("{id:guid}/{claim:string}")]
+        [HttpDelete("{id:guid}/{claim}")]
         [ValidateModel]
         public async Task<IActionResult> RemoveClaim(Guid id, string claim)
         {
