@@ -63,7 +63,7 @@ namespace Obsidian.Controllers.ApiControllers
             var result = await _sagaBus.InvokeAsync<UpdateClientCommand, MessageResult<UpdateClientCommand>>(cmd);
             if (result.Succeed)
             {
-                return Ok();
+                return Created(Url.Action(), null);
             }
             return BadRequest(result.Message);
         }
@@ -72,11 +72,11 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> UpdateSecret(Guid id)
         {
-            var cmd = new UpdateClientSecretCommand { ClientId = id};
+            var cmd = new UpdateClientSecretCommand { ClientId = id };
             var result = await _sagaBus.InvokeAsync<UpdateClientSecretCommand, ClientSecretUpdateResult>(cmd);
             if (result.Succeed)
             {
-                return Ok();
+                return Created(Url.Action(), null);
             }
             return BadRequest(result.Message);
         }
