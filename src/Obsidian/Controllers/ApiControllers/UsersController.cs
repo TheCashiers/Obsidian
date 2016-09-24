@@ -64,7 +64,7 @@ namespace Obsidian.Controllers.ApiControllers
             var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult<UpdateUserProfileCommand>>(cmd);
             if (result.Succeed)
             {
-                return Ok(Url.Action(nameof(UpdateProfile)));
+                return Ok();
             }
             //if user doesn't exist.
             return BadRequest(result.Message);
@@ -78,7 +78,7 @@ namespace Obsidian.Controllers.ApiControllers
             var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult<UpdateUserPasswordCommand>>(cmd);
             if (result.Succeed)
             {
-                return Ok(Url.Action(nameof(SetPassword)));
+                return Ok();
             }
             //if user doesn't exist.
             return BadRequest(result.Message);
