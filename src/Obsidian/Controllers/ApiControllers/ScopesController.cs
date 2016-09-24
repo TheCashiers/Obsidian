@@ -72,26 +72,27 @@ namespace Obsidian.Controllers.ApiControllers
                 DisplayName = dto.DisplayName
             };
             var result = await _sagaBus.InvokeAsync<UpdateScopeInfoCommand, MessageResult<UpdateScopeInfoCommand>>(cmd);
-            if(result.Succeed)
+            if (result.Succeed)
             {
-                return Ok(Url.Action(result.Message));
+                return Created(Url.Action(), null);
             }
             return BadRequest(result.Message);
         }
 
         [HttpPost("{id:guid}/{claim}")]
         [ValidateModel]
-        public async Task<IActionResult> AddClaim(Guid id,string claim)
+        public async Task<IActionResult> AddClaim(Guid id, string claim)
         {
-            var cmd = new UpdateScopeClaimsCommand {
-                 IsAdd = true,
-                 Id = id,
-                 Claim = claim 
+            var cmd = new UpdateScopeClaimsCommand
+            {
+                IsAdd = true,
+                Id = id,
+                Claim = claim
             };
             var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
-            if(result.Succeed)
+            if (result.Succeed)
             {
-                return Ok();
+                return Created(Url.Action(), null);
             }
             return BadRequest(result.Message);
         }
@@ -108,7 +109,7 @@ namespace Obsidian.Controllers.ApiControllers
             var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
             if (result.Succeed)
             {
-                return Ok();
+                return NoContent();
             }
             return BadRequest(result.Message);
         }
