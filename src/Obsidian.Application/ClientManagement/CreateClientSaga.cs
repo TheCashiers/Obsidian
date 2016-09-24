@@ -21,6 +21,7 @@ namespace Obsidian.Application.ClientManagement
         {
             _isCompleted = true;
             var client = Client.Create(Guid.NewGuid(), command.RedirectUri);
+            client.DisplayName = command.DisplayName;
             client.UpdateSecret();
             await _repo.AddAsync(client);
             return new ClientCreationResult
