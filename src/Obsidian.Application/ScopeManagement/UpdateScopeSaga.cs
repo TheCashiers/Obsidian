@@ -39,6 +39,7 @@ namespace Obsidian.Application.ScopeManagement
                         Message = $"Claim {command.Claim} exists in PermissionScope {scope.Id}"
                     };
                 scope.ClaimTypes.Add(command.Claim);
+                await _repo.SaveAsync(scope);
                 return new MessageResult<UpdateScopeClaimsCommand>
                 {
                     Succeed = true,
@@ -55,6 +56,7 @@ namespace Obsidian.Application.ScopeManagement
                         Message = $"Claim {command.Claim} doesn't exist in PermissionScope {scope.Id}"
                     };
                 scope.ClaimTypes.Remove(command.Claim);
+                await _repo.SaveAsync(scope);
                 return new MessageResult<UpdateScopeClaimsCommand>
                 {
                     Succeed = true,
