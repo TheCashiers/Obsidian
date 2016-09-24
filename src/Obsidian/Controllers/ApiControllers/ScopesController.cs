@@ -79,9 +79,9 @@ namespace Obsidian.Controllers.ApiControllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("{id:guid}/{claim}")]
+        [HttpPost("{id:guid}/Claims")]
         [ValidateModel]
-        public async Task<IActionResult> AddClaim(Guid id, string claim)
+        public async Task<IActionResult> AddClaim(Guid id, [FromBody]string claim)
         {
             var cmd = new UpdateScopeClaimsCommand
             {
@@ -96,7 +96,7 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
-        [HttpDelete("{id:guid}/{claim}")]
+        [HttpDelete("{id:guid}/Claims/{claim}")]
         [ValidateModel]
         public async Task<IActionResult> RemoveClaim(Guid id, string claim)
         {
