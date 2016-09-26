@@ -25,5 +25,9 @@ export const configs = {
     createUser: {
         request_type: REQUEST_TYPES.POST,
         request_uri: "/api/users"
+    } as IServerConfig,
+    editUser:{
+        request_type:REQUEST_TYPES.PUT,
+        request_uri:"/api/users"
     } as IServerConfig
 }
