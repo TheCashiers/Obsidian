@@ -8,7 +8,7 @@ import { Main } from "../components/Main";
 import { UserManagementContainer } from "../containers/UserManagementContainer";
 import { Portal } from "../components/Portal";
 import { UserCreationContainer } from "../containers/UserCreationContainer"
-import {UserEditContainer} from "../containers/UserEditContainer"
+import { UserEditContainer } from "../containers/UserEditContainer"
 
 export const routes = (
     <Router history={ browserHistory }>
@@ -16,7 +16,7 @@ export const routes = (
             <IndexRoute component={ Portal }/>
             <Route path="/manage/users" component={ UserManagementContainer } />
             <Route path="/manage/users/create" component={ UserCreationContainer } />
-            <Route path="/manage/users/edit/" component={UserEditContainer}/>
+            <Route path="/manage/users/edit" component={ UserEditContainer }/>
         </Route>
     </Router>
 );

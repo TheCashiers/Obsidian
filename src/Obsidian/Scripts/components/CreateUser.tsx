@@ -5,8 +5,8 @@ import * as React from "react";
 import {UserForm} from "./UserForm"
 
 export const CreateUser = (props) => (
-    <div className="content-wrapper well">
-        <UserForm onSubmit={props.onSubmit} onInputChange={props.onInputChange} username={props.username} password={props.password} action="Create User"/>
+   /* <div className="content-wrapper well">
+        
         {props.isComplete ?
             <div className="alert alert-dismissible alert-success">
                     <button type="button" className="close" data-dismiss="alert">×</button>
@@ -23,5 +23,6 @@ export const CreateUser = (props) => (
                 </div>:null
             }
 
-    </div>
+    </div>*/
+    <UserForm onSubmit={props.onSubmit} onInputChange={props.onInputChange} username={props.username} password={props.password} action="Create User" isComplete={props.isComplete} isError={props.isError}/>
 );

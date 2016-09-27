@@ -14,7 +14,7 @@ interface IUserFormProps{
     target:api.IServerConfig;
 }
 
-export abstract class UserFormContainer extends React.Component<IUserFormProps, IUserCreationState> {
+export abstract class UserFormContainer extends React.Component<any, IUserCreationState> {
     constructor(props: IUserFormProps) {
         super(props);
         this.state = { username: "", password: "", isComplete: false ,isError:false};
@@ -26,16 +26,8 @@ export abstract class UserFormContainer extends React.Component<IUserFormProps, 
             [e.target.name]: e.target.value as string
         });
     }
-    request(data:any){
-        throw new Error("Not implemented request");
-    }
     handleSubmit(e) {
-        e.preventDefault();
-        let username: string = this.state.username.trim();
-        let password: string = this.state.password.trim();
-        if (username && password) {
-            this.request( { userName: username, password: password })
-        } else { return; }
+        e.preventDefault();        
     }
     
     public render() {
