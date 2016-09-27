@@ -63,6 +63,7 @@ namespace Obsidian.Application.UserManagement
                 };
             //set user name
             user.UpdateUserName(command.UserName);
+            await _repo.SaveAsync(user);
             return new MessageResult<UpdateUserNameCommand>
             {
                 Succeed = true,
