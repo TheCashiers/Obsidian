@@ -83,5 +83,23 @@ namespace Obsidian.Controllers.ApiControllers
             //if user doesn't exist.
             return BadRequest(result.Message);
         }
+
+        [HttpPut("{id:guid}/UserName")]
+        [ValidateModel]
+        public async Task<IActionResult> SetUserName([FromBody]string username, Guid id)
+        {
+            var cmd = new UpdateUserNameCommand
+            {
+                UserId = id,
+                UserName = username
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand,MessageResult<UpdateUserNameCommand>> (cmd);
+            if(result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            //if error
+            return BadRequest(result.Message);
+        }
     }
 }
