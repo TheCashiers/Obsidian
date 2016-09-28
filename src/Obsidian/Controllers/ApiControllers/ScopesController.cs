@@ -81,13 +81,13 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPost("{id:guid}/Claims")]
         [ValidateModel]
-        public async Task<IActionResult> AddClaim(Guid id, [FromBody]string claim)
+        public async Task<IActionResult> AddClaim(Guid id, [FromBody]AddClaimToScopeDto dto)
         {
             var cmd = new UpdateScopeClaimsCommand
             {
                 IsAdd = true,
                 Id = id,
-                Claim = claim
+                Claim = dto.Claim
             };
             var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
             if (result.Succeed)

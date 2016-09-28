@@ -72,9 +72,9 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Password")]
         [ValidateModel]
-        public async Task<IActionResult> SetPassword([FromBody]string password, Guid id)
+        public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
-            var cmd = new UpdateUserPasswordCommand { NewPassword = password, UserId = id };
+            var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
             var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult<UpdateUserPasswordCommand>>(cmd);
             if (result.Succeed)
             {
@@ -86,12 +86,12 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/UserName")]
         [ValidateModel]
-        public async Task<IActionResult> SetUserName([FromBody]string username, Guid id)
+        public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
         {
             var cmd = new UpdateUserNameCommand
             {
                 UserId = id,
-                UserName = username
+                UserName = dto.UserName
             };
             var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand,MessageResult<UpdateUserNameCommand>> (cmd);
             if(result.Succeed)
