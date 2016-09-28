@@ -41,7 +41,9 @@ export const PortalHeader = (props) => (
                 <div className="collapse navbar-collapse" id="navbar-collapse">
                     <ul className="nav navbar-nav">
                         <li><Link to="/manage/users">Users</Link></li>
-                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Clients</a></li>
+                        <li><a href="#">Scopes</a></li>
+                        <li><a href="#">Claims</a></li>
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
                             <ul className="dropdown-menu" role="menu">

@@ -9,8 +9,7 @@ export class UserEditContainer extends UserFormContainer
 {
     constructor(props) {
         super(props);
-        this.state={ username:props.location.query.username, password: "", isComplete: false ,isError:false};
-        console.log(this.state);
+        this.state={ username:props.location.query.username, password: "protectedContext", isComplete: false ,isError:false};
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -18,7 +17,7 @@ export class UserEditContainer extends UserFormContainer
         let username: string = this.state.username.trim();
         let password: string = this.state.password.trim();
         if (username && password) {
-            axios.put(api.configs.editUser.request_uri+this.props.location.query.id, { userName: username, password: password })
+            axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, username)
                 .then(()=>{
                     this.setState({ isComplete: true });
                 })

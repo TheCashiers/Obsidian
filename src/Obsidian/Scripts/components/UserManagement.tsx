@@ -14,6 +14,22 @@ const UserItem = (props) => (
 
 export const UserList = (props) => (
     <div className="content-wrapper content">
+
+        <div className="list-group-item">
+            <div className="row-action-primary">
+                <i className="fa fa-user"/>
+            </div>
+            <div className="row-content">
+                <div className="action-secondary"><i className="fa fa-user"/></div>
+                <h4 className="list-group-item-heading">Tile with an icon</h4>
+                <p className="list-group-item-text">Donec id elit non mi porta gravida at eget metus.</p>
+            </div>
+        </div>
+        <div className="list-group-separator"></div>
+
+
+
+    
         <div className="box box-solid box-info">
             <div className="box-header">
                 <h3 className="box-title">Users</h3>
