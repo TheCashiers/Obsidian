@@ -14,7 +14,6 @@ export class UserCreationContainer extends UserFormContainer
     }
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.props);
         let username: string = this.state.username.trim();
         let password: string = this.state.password.trim();
         if (username && password) {
