@@ -1,14 +1,15 @@
 ﻿import * as React from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import { UserInfoContainer } from "../containers/UserInfoContainer"
+import { styles } from "../styles"
 
 export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
             <span className="hidden-xs">{props.username}</span>
         </a>
-        <ul className="dropdown-menu">
-            <li className="user-header">
+        <ul className="dropdown-menu ">
+            <li style={styles.userCard}>
                 Obsidian Portal
                 <p>
                     {props.username} - {props.level}
