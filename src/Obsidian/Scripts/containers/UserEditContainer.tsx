@@ -13,16 +13,23 @@ export class UserEditContainer extends UserFormContainer
     }
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.props);
         let username: string = this.state.username.trim();
         let password: string = this.state.password.trim();
         if (username && password) {
-            axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, username)
+            axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, {username:username})
                 .then(()=>{
                     this.setState({ isComplete: true });
                 })
                 .catch((e) => this.setState({ isError: true }));
+            if( password!="protectedContext" ){
+                axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, {password:password})
+                .then(()=>{
+                    this.setState({ isComplete: true });
+                })
+                .catch((e) => this.setState({ isError: true }));
+            }
         } else { return; }
+        
     }
     public render() {
         return (<EditUser
