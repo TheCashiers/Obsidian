@@ -10,7 +10,7 @@ export class UserCreationContainer extends UserFormContainer
 {
     constructor(props) {
         super(props);
-        this.state={ username:props.location.query.username, password: "", isComplete: false ,isError:false};
+        this.state={ username:props.location.query.username, password: "", isComplete: false ,error:null};
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -22,7 +22,7 @@ export class UserCreationContainer extends UserFormContainer
                     this.setState({ isComplete: true });
                     this.setState({ username: "", password: "" });
                 })
-                .catch((e) => this.setState({ isError: true }));
+                .catch((e) => this.setState({ error: e }));
         } else { return; }
     }
     public render() {
@@ -32,7 +32,7 @@ export class UserCreationContainer extends UserFormContainer
             username={this.state.username}
             password={this.state.password}
             isComplete={this.state.isComplete}
-            isError={this.state.isError}
+            error={this.state.error}
             action={this.props.action}/>);
     }
 }

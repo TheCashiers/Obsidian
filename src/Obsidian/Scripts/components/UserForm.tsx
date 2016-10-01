@@ -15,11 +15,11 @@ export const UserForm = (props) => (
                 </div>
             : null}
             {
-                props.isError ?
+                props.error ?
                 <div className="alert alert-dismissible alert-danger">
                     <button type="button" className="close" data-dismiss="alert">×</button>
-                    <strong>Error</strong><br/>
-                    An error occured when {props.action}.
+                    <strong>An error occured when {props.action}.</strong><br/>
+                    {props.error}
                 </div>:null
             }
 

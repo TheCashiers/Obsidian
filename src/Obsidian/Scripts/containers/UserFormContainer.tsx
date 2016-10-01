@@ -3,24 +3,26 @@ import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import { UserForm } from "../components/UserForm";
 
-interface IUserCreationState {
+interface IUserFormState {
     username?: string;
     password?: string;
     isComplete?: boolean;
-    isError?:boolean;
+    error?:string;
 }
 interface IUserFormProps{
     action:string;
     target:api.IServerConfig;
 }
 
-export abstract class UserFormContainer extends React.Component<any, IUserCreationState> {
+export abstract class UserFormContainer extends React.Component<any, IUserFormState> {
     constructor(props: IUserFormProps) {
         super(props);
-        this.state = { username: "", password: "", isComplete: false ,isError:false};
+        this.state = { username: "", password: "", isComplete: false ,error:""};
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+
     handleInputChange(e) {
         this.setState({
             [e.target.name]: e.target.value as string
@@ -37,7 +39,7 @@ export abstract class UserFormContainer extends React.Component<any, IUserCreati
             username={this.state.username}
             password={this.state.password}
             isComplete={this.state.isComplete}
-            isError={this.state.isError}
+            error={this.state.error}
             action={this.props.action}/>);
     }
 };
