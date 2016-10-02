@@ -21,9 +21,9 @@ export class UserCreationContainer extends UserFormContainer
                 .then(()=>{
                     this.setState({ username: "", password: "" });
                     console.log(e);
-                    Notification.Service.push(`User creation success.`,Notification.NotificationState.success)
+                    Notification.Service.pushSuccess("User creation success.")
                 })
-                .catch((e) =>  Notification.Service.push(`User creation failed. ${e.toString()}.`,Notification.NotificationState.error));
+                .catch((e) =>  Notification.Service.pushError("User creation",e));
         } else { return; }
     }
     public render() {
