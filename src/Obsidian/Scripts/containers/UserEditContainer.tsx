@@ -10,7 +10,7 @@ export class UserEditContainer extends UserFormContainer
 {
     constructor(props) {
         super(props);
-        this.state={ username:props.location.query.username, password: "defaultState"};
+        this.state={ username:props.location.query.username, password: ""};
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -22,7 +22,7 @@ export class UserEditContainer extends UserFormContainer
                     Notification.Service.pushSuccess("Username changing");
                 })
                 .catch((e) => Notification.Service.pushError("Username changing",e));
-            if( password!="defaultState" ){
+            if( password!="" ){
                 axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, {password:password})
                 .then(()=>{
                     Notification.Service.pushSuccess("Password changing");
