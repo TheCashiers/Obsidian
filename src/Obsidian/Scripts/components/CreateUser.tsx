@@ -5,5 +5,5 @@ import * as React from "react";
 import { UserForm } from "./UserForm"
 
 export const CreateUser = (props) => (
-    <UserForm onSubmit={props.onSubmit} onInputChange={props.onInputChange} username={props.username} password={props.password} action="Create User" isComplete={props.isComplete} isError={props.isError}/>
+    <UserForm onSubmit={props.onSubmit} onInputChange={props.onInputChange} username={props.username} password={props.password} action="Create User"/>
 );

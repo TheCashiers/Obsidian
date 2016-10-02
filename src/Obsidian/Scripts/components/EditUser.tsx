@@ -6,8 +6,6 @@ export const EditUser = (props) => (
         onInputChange={props.onInputChange} 
         username={props.username} 
         password={props.password} 
-        action="Edit User" 
-        isComplete={props.isComplete} 
-        error={props.error}
+        action="Edit User"
     />
 );

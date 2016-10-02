@@ -6,8 +6,6 @@ import { UserForm } from "../components/UserForm";
 interface IUserFormState {
     username?: string;
     password?: string;
-    isComplete?: boolean;
-    error?:string;
 }
 interface IUserFormProps{
     action:string;
@@ -17,7 +15,7 @@ interface IUserFormProps{
 export abstract class UserFormContainer extends React.Component<any, IUserFormState> {
     constructor(props: IUserFormProps) {
         super(props);
-        this.state = { username: "", password: "", isComplete: false ,error:""};
+        this.state = { username: "", password: ""};
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -38,8 +36,6 @@ export abstract class UserFormContainer extends React.Component<any, IUserFormSt
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}
-            isComplete={this.state.isComplete}
-            error={this.state.error}
             action={this.props.action}/>);
     }
 };

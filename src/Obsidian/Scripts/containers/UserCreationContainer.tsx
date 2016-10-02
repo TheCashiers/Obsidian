@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-
+import * as Notification from "./NotificationContainer"
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import { CreateUser } from "../components/CreateUser";
@@ -10,7 +10,7 @@ export class UserCreationContainer extends UserFormContainer
 {
     constructor(props) {
         super(props);
-        this.state={ username:props.location.query.username, password: "", isComplete: false ,error:null};
+        this.state={ username:props.location.query.username, password: ""};
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -19,10 +19,11 @@ export class UserCreationContainer extends UserFormContainer
         if (username && password) {
             axios.post(api.configs.createUser.request_uri, { userName: username, password: password })
                 .then(()=>{
-                    this.setState({ isComplete: true });
                     this.setState({ username: "", password: "" });
+                    console.log(e);
+                    Notification.Service.push(`User creation success.`,Notification.NotificationState.success)
                 })
-                .catch((e) => this.setState({ error: e }));
+                .catch((e) =>  Notification.Service.push(`User creation failed. ${e.toString()}.`,Notification.NotificationState.error));
         } else { return; }
     }
     public render() {
@@ -31,8 +32,6 @@ export class UserCreationContainer extends UserFormContainer
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}
-            isComplete={this.state.isComplete}
-            error={this.state.error}
             action={this.props.action}/>);
     }
 }

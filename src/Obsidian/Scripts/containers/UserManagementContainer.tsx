@@ -3,6 +3,7 @@ import { UserList } from "../components/UserManagement";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import { Main } from "../components/Main";
+import * as Notification from "./NotificationContainer"
 
 interface UserManagementState {
     users: Array<any>; 
@@ -21,7 +22,7 @@ export class UserManagementContainer extends React.Component<any, UserManagement
     public componentDidMount() {
         axios.get(api.configs.getUser.request_uri)
             .then((info) => { this.setState({ users: info.data as Array<any>, isLoading: false }); })
-            .catch((e) => { console.warn("Obsidian Exception: " + e); });
+            .catch((e) =>  Notification.Service.push(`getUser failed. ${e.toString()}.`,Notification.NotificationState.error));
     }
     public render() {
         return (
