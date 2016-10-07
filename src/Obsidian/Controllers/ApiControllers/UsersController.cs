@@ -61,7 +61,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
             var cmd = new UpdateUserProfileCommand { UserId = id, NewProfile = profile };
-            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult<UpdateUserProfileCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(), null);
@@ -75,7 +75,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
             var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
-            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult<UpdateUserPasswordCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(), null);
@@ -93,7 +93,7 @@ namespace Obsidian.Controllers.ApiControllers
                 UserId = id,
                 UserName = dto.UserName
             };
-            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand,MessageResult<UpdateUserNameCommand>> (cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand,MessageResult> (cmd);
             if(result.Succeed)
             {
                 return Created(Url.Action(), null);

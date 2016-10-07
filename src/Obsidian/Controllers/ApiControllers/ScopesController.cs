@@ -71,7 +71,7 @@ namespace Obsidian.Controllers.ApiControllers
                 Description = dto.Description,
                 DisplayName = dto.DisplayName
             };
-            var result = await _sagaBus.InvokeAsync<UpdateScopeInfoCommand, MessageResult<UpdateScopeInfoCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateScopeInfoCommand, MessageResult>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(), null);
@@ -89,7 +89,7 @@ namespace Obsidian.Controllers.ApiControllers
                 Id = id,
                 Claim = dto.Claim
             };
-            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(), null);
@@ -106,7 +106,7 @@ namespace Obsidian.Controllers.ApiControllers
                 Id = id,
                 Claim = claim
             };
-            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult<UpdateScopeClaimsCommand>>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult>(cmd);
             if (result.Succeed)
             {
                 return NoContent();

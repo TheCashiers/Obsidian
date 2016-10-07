@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
-    public class UpdateUserNameCommand:Command<MessageResult<UpdateUserNameCommand>>
+    public class UpdateUserNameCommand:Command<MessageResult>
     {
         public Guid UserId { get; set; }
         public string UserName { get; set; }

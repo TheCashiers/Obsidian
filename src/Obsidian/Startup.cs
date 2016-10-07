@@ -43,8 +43,7 @@ namespace Obsidian
             services.AddMemoryCache();
 
             //Add application components
-            services.AddSagaBus();
-            services.AddSaga();
+            services.AddSagaBus().AddSaga();
             services.AddMongoRepositories();
         }
 

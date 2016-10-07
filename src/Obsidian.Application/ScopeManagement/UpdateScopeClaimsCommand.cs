@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.ScopeManagement
 {
-    public class UpdateScopeClaimsCommand : Command<MessageResult<UpdateScopeClaimsCommand>>
+    public class UpdateScopeClaimsCommand : Command<MessageResult>
     {
         public Guid Id { get; set; }
         public bool IsAdd { get; set; }

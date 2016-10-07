@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
-    public class UpdateUserPasswordCommand : Command<MessageResult<UpdateUserPasswordCommand>>
+    public class UpdateUserPasswordCommand : Command<MessageResult>
     {
         public Guid UserId { get; set; }
         public string NewPassword { get; set; }
