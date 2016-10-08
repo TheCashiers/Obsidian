@@ -28,7 +28,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> Get()
         {
             var query = await _clientRepository.QueryAllAsync();
-            return Ok(query.ToList().AsQueryable().ProjectTo<QueryModel.Client>(query));
+            return Ok(query.AsQueryable().ProjectTo<QueryModel.Client>(query));
         }
 
         [HttpGet("{id:guid}")]
