@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.OAuth20;
@@ -21,6 +22,7 @@ namespace Obsidian
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("obsidianconfig.json", optional: false)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -45,11 +47,14 @@ namespace Obsidian
             //Add application components
             services.AddSagaBus().AddSaga();
             services.AddMongoRepositories();
+
+            services.AddOptions();
+            services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus,
-            OAuth20Configuration oauthConfig)
+            IOptions<OAuth20Configuration> oauthOptions)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -70,7 +75,8 @@ namespace Obsidian
 
             app.UseStaticFiles();
 
-            var key = oauthConfig.GetTokenSigningKey();
+            var oauthConfig = oauthOptions.Value;
+            var key = oauthConfig.TokenSigningKey;
             var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
             var param = new TokenValidationParameters
             {
@@ -78,8 +84,8 @@ namespace Obsidian
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,
                 ValidateIssuer = true,
-                ValidIssuer = oauthConfig.GetTokenIssuer(),
-                ValidAudience = oauthConfig.GetTokenAudience()
+                ValidIssuer = oauthConfig.TokenIssuer,
+                ValidAudience = oauthConfig.TokenAudience
             };
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions

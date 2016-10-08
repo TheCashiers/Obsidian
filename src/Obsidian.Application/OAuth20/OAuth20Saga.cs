@@ -234,7 +234,7 @@ namespace Obsidian.Application.OAuth20
             && authorizationCode == Id;
 
         private bool IsPermissionGranted(User user, Client client, IList<PermissionScope> scopes)
-            => user.IsClientAuthorized(client, scopes.Select(s => s.ScopeName));
+            => user.IsClientGranted(client, scopes.Select(s => s.ScopeName));
 
         #endregion Percondictions
 

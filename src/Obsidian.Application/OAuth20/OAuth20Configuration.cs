@@ -7,8 +7,8 @@ namespace Obsidian.Application.OAuth20
 {
     public class OAuth20Configuration
     {
-        public string GetTokenSigningKey() => "Obsidian.OAuth20.SigningKey.Jwt";
-        public string GetTokenAudience() => "ObsidianAud";
-        public string GetTokenIssuer() => "Obsidian";
+        public string TokenSigningKey { get; set; }
+        public string TokenAudience { get; set; }
+        public string TokenIssuer { get; set; }
     }
 }
