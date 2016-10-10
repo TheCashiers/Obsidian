@@ -8,7 +8,7 @@ const UserItem = (props) => (
 
 <div className="list-group-item">
     <div className="row-action-primary">
-      <i className="fa fa-user"></i>
+      <i className="fa fa-user fa-2x"></i>
     </div>
     <div className="row-content">
       <div className="least-content">
@@ -30,6 +30,9 @@ const UserItem = (props) => (
 export const UserList = (props) => (
     <div className="content-wrapper content">
 
+
+
+
         <div className="list-group">
   {props.users.map((user, index) => <UserItem username={user.userName} id={user.id} key={user.id}/>) }
         </div>
@@ -37,10 +40,10 @@ export const UserList = (props) => (
 
 
     
+            <Link to="/manage/users/create">
+            <button className="btn btn-primary btn-lg">Create User</button>
+    </Link>
         
-        <Link to="/manage/users/create">
-            <button className="btn btn-lg btn-success">Create User</button>
-        </Link>
     </div>
 
 );

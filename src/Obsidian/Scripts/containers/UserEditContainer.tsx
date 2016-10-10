@@ -26,7 +26,7 @@ export class UserEditContainer extends UserFormContainer
                 axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, {password:password})
                 .then(()=>{
                     Notification.Service.pushSuccess("Password changing");
-                })
+                }) 
                 .catch((e) => Notification.Service.pushError("Password changing",e));
             }
         } else { return; }

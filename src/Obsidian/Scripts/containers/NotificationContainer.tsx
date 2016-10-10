@@ -1,4 +1,4 @@
-
+// snackbar has no declaration files, using var explicitly.
 declare var $;
 
 export enum NotificationState{
