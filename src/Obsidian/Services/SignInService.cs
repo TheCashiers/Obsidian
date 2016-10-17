@@ -11,6 +11,8 @@ namespace Obsidian.Services
     {
         private readonly HttpContext _httpContext;
 
+        const string Scheme = "Obsidian.Cookie";
+
         public SignInService(IHttpContextAccessor accessor)
         {
             _httpContext = accessor.HttpContext;
@@ -18,12 +20,10 @@ namespace Obsidian.Services
 
         public async Task CookieSignInAsync(User user, IList<PermissionScope> scopes)
         {
-            
-        }
-
-        public async Task CookieSignOutAsync(User user)
-        {
 
         }
+
+        public async Task CookieSignOutCurrentUserAsync()
+            => await _httpContext.Authentication.SignOutAsync(Scheme);
     }
 }
