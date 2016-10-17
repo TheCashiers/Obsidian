@@ -75,6 +75,13 @@ namespace Obsidian
 
             app.UseStaticFiles();
 
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Obsidian.Cookie",
+                AutomaticChallenge = false,
+                AutomaticAuthenticate = false
+            });
+
             var oauthConfig = oauthOptions.Value;
             var key = oauthConfig.TokenSigningKey;
             var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
@@ -90,7 +97,9 @@ namespace Obsidian
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
-                TokenValidationParameters = param
+                TokenValidationParameters = param,
+                AutomaticAuthenticate = false,
+                AutomaticChallenge = false
             });
 
             app.UseMvc(routes =>
