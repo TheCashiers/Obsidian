@@ -61,10 +61,10 @@ namespace Obsidian.Application.OAuth20
                     return await VerifyPermissionAsync();
                 }
                 GoToState(OAuth20State.RequireSignIn);
-                return StateResult();
+                return CurrentStateResult();
             }
             GoToState(OAuth20State.Failed);
-            return StateResult();
+            return CurrentStateResult();
         }
 
         public async Task<OAuth20Result> HandleAsync(SignInMessage message)
@@ -77,7 +77,7 @@ namespace Obsidian.Application.OAuth20
                     return await VerifyPermissionAsync();
                 }
             }
-            return StateResult();
+            return CurrentStateResult();
         }
 
         public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
@@ -87,7 +87,7 @@ namespace Obsidian.Application.OAuth20
                 return await GrantPermissionAsync();
             }
             GoToState(OAuth20State.UserDenied);
-            return StateResult();
+            return CurrentStateResult();
         }
 
         private bool TypLoadScopeFromNames(IList<string> grantedScopeNames, out IList<PermissionScope> scopes)
@@ -111,7 +111,7 @@ namespace Obsidian.Application.OAuth20
                 GoToState(OAuth20State.Finished);
                 return Task.FromResult(AccessTokenResult());
             }
-            return Task.FromResult(StateResult());
+            return Task.FromResult(CurrentStateResult());
         }
 
         #endregion Handlers
@@ -153,7 +153,7 @@ namespace Obsidian.Application.OAuth20
                 return AccessTokenResult();
             }
             GoToState(OAuth20State.Failed);
-            return StateResult();
+            return CurrentStateResult();
         }
 
         #endregion Process
@@ -163,7 +163,7 @@ namespace Obsidian.Application.OAuth20
 
         #region Results
 
-        private OAuth20Result StateResult()
+        private OAuth20Result CurrentStateResult()
                     => new OAuth20Result
                     {
                         SagaId = Id,
@@ -172,7 +172,7 @@ namespace Obsidian.Application.OAuth20
 
         private OAuth20Result PermissionGrantRequiredResult()
         {
-            var result = StateResult();
+            var result = CurrentStateResult();
             result.PermissionGrant = new OAuth20Result.PermissionGrantResult
             {
                 Client = _client,
@@ -183,7 +183,7 @@ namespace Obsidian.Application.OAuth20
 
         private OAuth20Result AuthorizationCodeResult()
         {
-            var result = StateResult();
+            var result = CurrentStateResult();
             result.RedirectUri = _client.RedirectUri.OriginalString;
             result.AuthorizationCode = GenerateAuthorizationCode();
             return result;
@@ -191,7 +191,7 @@ namespace Obsidian.Application.OAuth20
 
         private OAuth20Result AccessTokenResult()
         {
-            var result = StateResult();
+            var result = CurrentStateResult();
             result.RedirectUri = _client.RedirectUri.OriginalString;
             result.Token = new OAuth20Result.TokenResult
             {
