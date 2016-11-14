@@ -3,6 +3,7 @@ using Obsidian.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Obsidian.Services
@@ -20,7 +21,11 @@ namespace Obsidian.Services
 
         public async Task CookieSignInAsync(User user, IList<PermissionScope> scopes)
         {
-
+            await CookieSignOutCurrentUserAsync();
+            var claims = user.GetClaims(scopes);
+            var identity = new ClaimsIdentity(claims);
+            var principal = new ClaimsPrincipal(identity);
+            await _httpContext.Authentication.SignInAsync(Scheme, principal);
         }
 
         public async Task CookieSignOutCurrentUserAsync()
