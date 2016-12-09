@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Obsidian.Domain.Misc
 {
     public static class MetadataHelper
     {
-        public static Dictionary<string, MethodInfo> GetClaimPropertyGetters<T>() => GetClaimPropertyGetters(typeof(T));
-        public static Dictionary<string, MethodInfo> GetClaimPropertyGetters(Type type) =>
-           type.GetTypeInfo().GetProperties()
+        public static Dictionary<string, MethodInfo> GetClaimPropertyGetters<T>() =>
+           typeof(T).GetTypeInfo().GetProperties()
            .Where(p => p.CanRead)
            .Select(pi => new
            {

@@ -43,7 +43,6 @@ namespace Obsidian.Domain
         [ClaimType(ClaimTypes.Name)]
         public string UserName { get; private set; }
 
-        [ContainsClaims]
         public UserProfile Profile { get; private set; } = new UserProfile();
 
         public IList<ClientAuthorizationDetail> GrantedClients { get; private set; }
@@ -103,13 +102,6 @@ namespace Obsidian.Domain
                          var value = g.Value.Invoke(obj, null);
                          return new Claim(g.Key, value?.ToString() ?? "");
                      });
-
-        private static Dictionary<MethodInfo,Dictionary<string,MethodInfo>> GetClaimGetters()=>
-            typeof(User).GetTypeInfo().GetProperties()
-                .Where(p=>p.GetCustomAttribute(typeof(ContainsClaimsAttribute))!=null)
-                .ToDictionary(p=>p.GetGetMethod(),p=>MetadataHelper.GetClaimPropertyGetters(p.PropertyType));
-                // TOTO: Add accessor for User class itself.
-        
 
         public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
         {
