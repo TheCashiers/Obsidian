@@ -10,12 +10,12 @@ export const UserInfo = (props) => (
         </a>
         <ul className="dropdown-menu ">
             <li style={styles.userCard}>
-                Obsidian Portal
-                <p>
+                <h2>
                     {props.username} - {props.level}
-                    <hr/>
+                    <br/>
+
                     <small>{props.description}</small>
-                </p>
+                </h2>
             </li>
             <li className="user-footer">
                 <div className="pull-left">

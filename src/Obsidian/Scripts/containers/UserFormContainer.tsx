@@ -27,7 +27,7 @@ export abstract class UserFormContainer extends React.Component<any, IUserFormSt
         });
     }
     handleSubmit(e) {
-        e.preventDefault();        
+        e.preventDefault();
     }
     
     public render() {

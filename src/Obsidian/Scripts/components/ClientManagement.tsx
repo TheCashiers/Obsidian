@@ -21,10 +21,6 @@ export const ClientItem = (props) => (
                             <li><a href="javascript:void(0)">Separated link</a></li>
                         </ul>
                     </div>
-
-
-
-
                     <Link to="/manage/clients/edit/" query={{clientname:props.clientname,id:props.id}}>
                         <button className="btn btn-lg btn-primary btn-raised">
                             Edit
