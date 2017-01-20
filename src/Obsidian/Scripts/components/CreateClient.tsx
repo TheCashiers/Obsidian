@@ -3,20 +3,20 @@ export const CreateClient = (props) =>
 <div className="well bs-component col-md-6">
     <form className="form-horizontal">
         <fieldset>
-            <legend>Legend</legend>
+            <legend>Create client</legend>
             <div className="form-group">
-                <label for="inputEmail" className="col-md-2 control-label">Email</label>
+                <label for="inputDisplayName" className="col-md-2 control-label">Display Name</label>
 
                 <div className="col-md-10">
-                    <input type="email" className="form-control" id="inputEmail" placeholder="Email"/>
+                    <input type="text" className="form-control" id="inputDisplayName" placeholder="Display Name..."/>
                 </div>
             </div>
 
             <div className="form-group">
-                <label for="inputPassword" className="col-md-2 control-label">Password</label>
+                <label for="inputRedirectUri" className="col-md-2 control-label">Redirect Uri</label>
 
                 <div className="col-md-10">
-                    <input type="password" className="form-control" id="inputPassword" placeholder="Password"/>
+                    <input type="text" className="form-control" id="inputRedirectUri" placeholder="Redirect Uri"/>
                 </div>
             </div>
         
