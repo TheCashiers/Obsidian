@@ -6,5 +6,8 @@ export const styles={
         "text-align":'center',
         color:'black',
         "vertical-align":'center'
+    },
+    portalIndex:{
+        margin:'30px'  
     }
 }

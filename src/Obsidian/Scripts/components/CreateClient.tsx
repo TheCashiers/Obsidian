@@ -1,14 +1,15 @@
-import * as React from "react"
+import * as React from "react";
+import { Link } from "react-router";
 export const CreateClient = (props) => 
 <div className="well bs-component col-md-6">
-    <form className="form-horizontal">
+    <form onSubmit={props.onSubmit} className="form-horizontal">
         <fieldset>
             <legend>Create client</legend>
             <div className="form-group">
                 <label for="inputDisplayName" className="col-md-2 control-label">Display Name</label>
 
                 <div className="col-md-10">
-                    <input type="text" className="form-control" id="inputDisplayName" placeholder="Display Name..."/>
+                    <input type="text" name="displayName" className="form-control" onChange={props.onInputChange} value={props.displayName} placeholder="Display Name..."/>
                 </div>
             </div>
 
@@ -16,13 +17,15 @@ export const CreateClient = (props) =>
                 <label for="inputRedirectUri" className="col-md-2 control-label">Redirect Uri</label>
 
                 <div className="col-md-10">
-                    <input type="text" className="form-control" id="inputRedirectUri" placeholder="Redirect Uri"/>
+                    <input type="text" name="redirectUri" className="form-control" onChange={props.onInputChange} value={props.redirectUri} placeholder="Redirect Uri..."/>
                 </div>
             </div>
         
             <div className="form-group">
                 <div className="col-md-10 col-md-offset-2">
+                    <Link to="/manage/clients">
                     <button type="button" className="btn btn-default">Cancel</button>
+                    </Link>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </div>
