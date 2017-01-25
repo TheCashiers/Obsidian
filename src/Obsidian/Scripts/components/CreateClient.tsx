@@ -17,7 +17,7 @@ export const CreateClient = (props) =>
                 <label for="inputRedirectUri" className="col-md-2 control-label">Redirect Uri</label>
 
                 <div className="col-md-10">
-                    <input type="text" name="redirectUri" className="form-control" onChange={props.onInputChange} value={props.redirectUri} placeholder="Redirect Uri..."/>
+                    <input type="text" name="redirectUri" className="form-control" onChange={props.onInputChange} value={props.redirectUri} placeholder="http://example.com"/>
                 </div>
             </div>
         

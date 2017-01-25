@@ -42,7 +42,7 @@ export const PortalHeader = (props) => (
                     <ul className="nav navbar-nav">
                         <li><Link to="/manage/users">Users</Link></li>
                         <li><Link to="/manage/clients">Clients</Link></li>
-                        <li><a href="#">Scopes</a></li>
+                        <li><Link to="/manage/scopes">Scopes</Link></li>
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
                             <ul className="dropdown-menu" role="menu">
