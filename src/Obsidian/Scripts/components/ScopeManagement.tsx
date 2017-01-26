@@ -26,7 +26,7 @@ const ScopeItem = (props) => (
 
 export const ScopeList = (props) => (
     <div className="content-wrapper content">
-        <Link to="/manage/users/create">
+        <Link to="/manage/scopes/create">
             <button className="btn btn-primary btn-lg">Create Scope</button>
         </Link>
         

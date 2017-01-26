@@ -9,5 +9,11 @@ export const styles={
     },
     portalIndex:{
         margin:'30px'  
+    },
+    comboBox:{
+        "margin-right":'30px'
+    },
+    comboList:{
+        "padding-top":"16px"
     }
 }
