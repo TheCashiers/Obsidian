@@ -22,7 +22,9 @@ namespace Obsidian.Application.OAuth20
         private readonly IClientRepository _clientRepository;
         private readonly IPermissionScopeRepository _scopeRepository;
         private readonly IUserRepository _userRepository;
-        private readonly OAuth20Service _service;
+        private readonly OAuth20Service _oauth20Service;
+
+        private readonly ISignInService _signInservice;
 
         #endregion External Dependencies
 
@@ -40,12 +42,14 @@ namespace Obsidian.Application.OAuth20
         public OAuth20Saga(IClientRepository clientRepo,
                            IUserRepository userRepo,
                            IPermissionScopeRepository scopeRepo,
-                           OAuth20Service service)
+                           OAuth20Service oauth20Service,
+                           ISignInService signInService)
         {
             _clientRepository = clientRepo;
             _userRepository = userRepo;
             _scopeRepository = scopeRepo;
-            _service = service;
+            _oauth20Service = oauth20Service;
+            _signInservice = signInService;
         }
 
         #region Handlers
@@ -73,7 +77,7 @@ namespace Obsidian.Application.OAuth20
             {
                 if (_user.VaildatePassword(message.Password))
                 {
-                    //TODO: signin here
+                    await _signInservice.CookieSignInAsync(_user, message.RememberMe);
                     return await VerifyPermissionAsync();
                 }
             }
@@ -240,7 +244,7 @@ namespace Obsidian.Application.OAuth20
 
         #region Token Generators
 
-        private string GenerateAccessToken() => _service.GenerateAccessToken(_user, _grantedScopes);
+        private string GenerateAccessToken() => _oauth20Service.GenerateAccessToken(_user, _grantedScopes);
 
         private Guid GenerateAuthorizationCode() => Id;
 

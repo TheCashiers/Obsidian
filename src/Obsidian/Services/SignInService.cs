@@ -5,30 +5,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Authentication;
+using Obsidian.Application.OAuth20;
 
 namespace Obsidian.Services
 {
-    public class SignInService
+    public class SignInService : ISignInService
     {
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _accessor;
 
         const string Scheme = "Obsidian.Cookie";
 
         public SignInService(IHttpContextAccessor accessor)
         {
-            _httpContext = accessor.HttpContext;
+            _accessor = accessor;
         }
 
-        public async Task CookieSignInAsync(User user, IList<PermissionScope> scopes)
+        public async Task CookieSignInAsync(User user, bool isPersistent)
         {
             await CookieSignOutCurrentUserAsync();
-            var claims = user.GetClaims(scopes);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
-            await _httpContext.Authentication.SignInAsync(Scheme, principal);
+            var context = _accessor.HttpContext;
+            var props = new AuthenticationProperties{ IsPersistent = isPersistent };
+            await context.Authentication.SignInAsync(Scheme, principal, props);
         }
 
         public async Task CookieSignOutCurrentUserAsync()
-            => await _httpContext.Authentication.SignOutAsync(Scheme);
+            => await _accessor.HttpContext.Authentication.SignOutAsync(Scheme);
     }
 }

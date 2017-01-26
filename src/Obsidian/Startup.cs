@@ -11,6 +11,7 @@ using Obsidian.Application.ProcessManagement;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
 using System.Text;
+using Obsidian.Services;
 
 namespace Obsidian
 {
@@ -50,6 +51,9 @@ namespace Obsidian
 
             services.AddOptions();
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
+
+            //infrastructure services
+            services.AddTransient<ISignInService, SignInService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
