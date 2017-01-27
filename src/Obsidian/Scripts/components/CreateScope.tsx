@@ -31,7 +31,7 @@ export const CreateScope = (props) =>
                 <div className="form-group">
                     <label className="col-md-2 control-label">Claim Types</label>
                     <div style={styles.comboList} className="checkbox col-md-10">
-                        {props.claims.map((claim, index) => <Combobox name={claim.name} checked={claim.selected} onSelectChange={props.onSelectChange.bind(this,claim.name)} value={props.displayName} key={claim.name} />)}
+                        {props.claims.map((claim, index) => <Combobox name={claim.name} checked={claim.selected} onSelectChange={props.onSelectChange} value={props.displayName} key={claim.name} />)}
                     </div>
                 </div>
                 <div className="form-group">
