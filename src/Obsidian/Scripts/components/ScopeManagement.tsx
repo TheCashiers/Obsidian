@@ -5,7 +5,7 @@ const ScopeItem = (props) => (
     <div>
         <div className="list-group-item">
             <div className="row-action-primary">
-                <i className="fa fa-user fa-2x"></i>
+                <i className="fa fa-puzzle-piece fa-2x"></i>
             </div>
             <div className="row-content">
                 <div className="least-content">

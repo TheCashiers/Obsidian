@@ -256,5 +256,5 @@ paket-files/
 .idea/
 *.sln.iml
 
-
-
+# Visual Studio Code assert file
+src/Obsidian/.vscode/
