@@ -26,6 +26,10 @@ export const configs = {
         request_uri: "/api/clients",
         request_type: REQUEST_TYPES.GET
     } as IServerConfig,
+    getScope: {
+        request_uri: "/api/scopes",
+        request_type: REQUEST_TYPES.GET
+    } as IServerConfig,
     createUser: {
         request_type: REQUEST_TYPES.POST,
         request_uri: "/api/users"
@@ -33,5 +37,17 @@ export const configs = {
     editUser:{
         request_type:REQUEST_TYPES.PUT,
         request_uri:"/api/users/"
+    } as IServerConfig,
+    createClient: {
+        request_uri:"/api/clients/",
+        request_type:REQUEST_TYPES.POST
+    } as IServerConfig,
+    editClient:{
+        request_uri:"/api/clients/",
+        request_type:REQUEST_TYPES.PUT
+    } as IServerConfig,
+    createScope:{
+        request_uri:"/api/scopes/",
+        request_type:REQUEST_TYPES.POST
     } as IServerConfig
 }

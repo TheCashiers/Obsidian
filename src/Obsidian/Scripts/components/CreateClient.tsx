@@ -1,28 +1,31 @@
-import * as React from "react"
+import * as React from "react";
+import { Link } from "react-router";
 export const CreateClient = (props) => 
 <div className="well bs-component col-md-6">
-    <form className="form-horizontal">
+    <form onSubmit={props.onSubmit} className="form-horizontal">
         <fieldset>
-            <legend>Legend</legend>
+            <legend>Create client</legend>
             <div className="form-group">
-                <label for="inputEmail" className="col-md-2 control-label">Email</label>
+                <label for="inputDisplayName" className="col-md-2 control-label">Display Name</label>
 
                 <div className="col-md-10">
-                    <input type="email" className="form-control" id="inputEmail" placeholder="Email"/>
+                    <input type="text" name="displayName" className="form-control" onChange={props.onInputChange} value={props.displayName} placeholder="Display Name..."/>
                 </div>
             </div>
 
             <div className="form-group">
-                <label for="inputPassword" className="col-md-2 control-label">Password</label>
+                <label for="inputRedirectUri" className="col-md-2 control-label">Redirect Uri</label>
 
                 <div className="col-md-10">
-                    <input type="password" className="form-control" id="inputPassword" placeholder="Password"/>
+                    <input type="text" name="redirectUri" className="form-control" onChange={props.onInputChange} value={props.redirectUri} placeholder="http://example.com"/>
                 </div>
             </div>
         
             <div className="form-group">
                 <div className="col-md-10 col-md-offset-2">
+                    <Link to="/manage/clients">
                     <button type="button" className="btn btn-default">Cancel</button>
+                    </Link>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </div>

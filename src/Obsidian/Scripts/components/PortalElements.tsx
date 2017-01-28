@@ -10,12 +10,12 @@ export const UserInfo = (props) => (
         </a>
         <ul className="dropdown-menu ">
             <li style={styles.userCard}>
-                Obsidian Portal
-                <p>
+                <h2>
                     {props.username} - {props.level}
-                    <hr/>
+                    <br/>
+
                     <small>{props.description}</small>
-                </p>
+                </h2>
             </li>
             <li className="user-footer">
                 <div className="pull-left">
@@ -42,8 +42,7 @@ export const PortalHeader = (props) => (
                     <ul className="nav navbar-nav">
                         <li><Link to="/manage/users">Users</Link></li>
                         <li><Link to="/manage/clients">Clients</Link></li>
-                        <li><a href="#">Scopes</a></li>
-                        <li><a href="#">Claims</a></li>
+                        <li><Link to="/manage/scopes">Scopes</Link></li>
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
                             <ul className="dropdown-menu" role="menu">
@@ -69,3 +68,9 @@ export const PortalHeader = (props) => (
             </div>
         </nav>
     </header>);
+
+    const Combobox = (props) =>
+        <label style={styles.comboBox}>
+            <input type="checkbox" onChange={props.onSelectChange}/>
+            {props.name}
+        </label>

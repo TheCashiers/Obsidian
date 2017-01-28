@@ -9,8 +9,10 @@ import { UserManagementContainer } from "../containers/UserManagementContainer";
 import { Portal } from "../components/Portal";
 import { UserCreationContainer } from "../containers/UserCreationContainer";
 import { ClientCreationContainer } from "../containers/ClientCreationContainer"
+import { ScopeCreationContainer } from "../containers/ScopeCreationContainer"
 import { UserEditContainer } from "../containers/UserEditContainer";
 import { ClientManagementContainer } from "../containers/ClientManagementContainer";
+import { ScopeManagementContainer } from "../containers/ScopeManagementContainer"
 
 export const routes = (
     <Router history={ browserHistory }>
@@ -21,6 +23,8 @@ export const routes = (
             <Route path="/manage/users/edit" component={ UserEditContainer } />
             <Route path="/manage/clients" component={ ClientManagementContainer } />
             <Route path="/manage/clients/create" component={ ClientCreationContainer } />
+            <Route path="/manage/scopes" component={ ScopeManagementContainer } />
+            <Route path="/manage/scopes/create" component={ ScopeCreationContainer } />
         </Route>
     </Router>
 );
