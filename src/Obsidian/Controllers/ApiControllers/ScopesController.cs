@@ -5,6 +5,7 @@ using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.ScopeManagement;
 using Obsidian.Domain.Repositories;
+using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
 
@@ -41,6 +42,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody]ScopeCreationDto dto)
         {
             var cmd = new CreateScopeCommand
@@ -51,13 +53,65 @@ namespace Obsidian.Controllers.ApiControllers
                 ScopeName = dto.ScopeName
             };
 
-
             var result = await _sagaBus.InvokeAsync<CreateScopeCommand, ScopeCreationResult>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(nameof(GetById), new { id = result.Id }), null);
             }
             return StatusCode(412, result.Message);
+        }
+
+        [HttpPut("{id:guid}")]
+        [ValidateModel]
+        public async Task<IActionResult> Put([FromBody] UpdateScopeInfoDto dto, Guid id)
+        {
+            var cmd = new UpdateScopeInfoCommand
+            {
+                Id = id,
+                Description = dto.Description,
+                DisplayName = dto.DisplayName
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateScopeInfoCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("{id:guid}/Claims")]
+        [ValidateModel]
+        public async Task<IActionResult> AddClaim(Guid id, [FromBody]AddClaimToScopeDto dto)
+        {
+            var cmd = new UpdateScopeClaimsCommand
+            {
+                IsAdd = true,
+                Id = id,
+                Claim = dto.Claim
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpDelete("{id:guid}/Claims/{claim}")]
+        [ValidateModel]
+        public async Task<IActionResult> RemoveClaim(Guid id, string claim)
+        {
+            var cmd = new UpdateScopeClaimsCommand
+            {
+                IsAdd = false,
+                Id = id,
+                Claim = claim
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return NoContent();
+            }
+            return BadRequest(result.Message);
         }
     }
 }

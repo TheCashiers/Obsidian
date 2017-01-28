@@ -1,0 +1,19 @@
+export const styles={
+    userCard:{
+        width:'400px',
+        background:'#EEE',
+        height:'200px',
+        "text-align":'center',
+        color:'black',
+        "vertical-align":'center'
+    },
+    portalIndex:{
+        margin:'30px'  
+    },
+    comboBox:{
+        "margin-right":'30px'
+    },
+    comboList:{
+        "padding-top":"16px"
+    }
+}

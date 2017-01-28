@@ -5,9 +5,8 @@ using Obsidian.Application.ClientManagement;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
-using Obsidian.QueryModel.Mapping;
+using Obsidian.Misc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,7 +28,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> Get()
         {
             var query = await _clientRepository.QueryAllAsync();
-            return Ok(query.ToList().AsQueryable().ProjectTo<QueryModel.Client>(query));
+            return Ok(query.AsQueryable().ProjectTo<QueryModel.Client>(query));
         }
 
         [HttpGet("{id:guid}")]
@@ -44,15 +43,43 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody] ClientCreationDto dto)
         {
             var cmd = new CreateClientCommand { DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
             var result = await _sagaBus.InvokeAsync<CreateClientCommand, ClientCreationResult>(cmd);
             if (result.Succeed)
             {
-                return Created(Url.Action(nameof(GetById),new { id = result.Id  }),null);
+                return Created(Url.Action(nameof(GetById), new { id = result.Id }), null);
             }
             return StatusCode(412, result.Message);
         }
+
+        [HttpPut("{id:guid}")]
+        [ValidateModel]
+        public async Task<IActionResult> Put([FromBody]UpdateClientDto dto, Guid id)
+        {
+            var cmd = new UpdateClientCommand { ClientId = id, DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
+            var result = await _sagaBus.InvokeAsync<UpdateClientCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPut("{id:guid}/Secret")]
+        [ValidateModel]
+        public async Task<IActionResult> UpdateSecret(Guid id)
+        {
+            var cmd = new UpdateClientSecretCommand { ClientId = id };
+            var result = await _sagaBus.InvokeAsync<UpdateClientSecretCommand, ClientSecretUpdateResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            return BadRequest(result.Message);
+        }
+
     }
 }

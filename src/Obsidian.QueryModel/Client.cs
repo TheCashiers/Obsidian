@@ -11,6 +11,6 @@ namespace Obsidian.QueryModel
 
         public string DisplayName { get; set; }
 
-        public string RedirectUri { get; set; }
+        public Uri RedirectUri { get; set; }
     }
 }

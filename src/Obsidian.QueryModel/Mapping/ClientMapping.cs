@@ -10,7 +10,6 @@ namespace Obsidian.QueryModel.Mapping
     {
         [QueryModelMapper]
         public static void Map(IMapperConfigurationExpression cfg) =>
-            cfg.CreateMap<Domain.Client, Client>()
-            .ForMember(c => c.RedirectUri, c => c.MapFrom(d => d.RedirectUri.OriginalString));
+            cfg.CreateMap<Domain.Client, Client>();
     }
 }

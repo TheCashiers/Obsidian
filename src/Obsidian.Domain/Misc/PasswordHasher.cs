@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,7 +12,7 @@ namespace Obsidian.Domain.Misc
             {
                 var buffer = Encoding.UTF8.GetBytes(password);
                 hash.Initialize();
-                var result= hash.ComputeHash(buffer);
+                var result = hash.ComputeHash(buffer);
                 for (int i = 0; i < 5; i++)
                 {
                     result = hash.ComputeHash(result);
@@ -22,6 +21,6 @@ namespace Obsidian.Domain.Misc
             }
         }
 
-        private string ByteToString(byte[] buffer) => string.Join("",buffer.Select(b => $"{b:X2}"));
+        private string ByteToString(byte[] buffer) => string.Join("", buffer.Select(b => $"{b:X2}"));
     }
 }

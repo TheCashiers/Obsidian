@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Obsidian.Models
 {
@@ -6,6 +7,7 @@ namespace Obsidian.Models
     {
         public IList<string> GrantedScopeNames { get; set; }
 
+        [Required]
         public string ProtectedOAuthContext { get; set; }
     }
 }

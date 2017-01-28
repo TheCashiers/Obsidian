@@ -9,13 +9,12 @@ namespace Obsidian.Controllers.ViewControllers
     public class ManageController : Controller
     {
         [Route("[controller]/{*path}")]
-        public IActionResult Index([FromQuery]Guid code, string path = "")
+        public IActionResult Index(string path = "")
         {
-            if (!User.Identity.IsAuthenticated || code == Guid.Empty)
+            if (!User.Identity.IsAuthenticated)
             {
                 //TODO: redirect to oauth
             }
-            //TODO: generate access token from code
             //TODO: check user permission
             ViewData["FrontendRoute"] = path;
             return View();

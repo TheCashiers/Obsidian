@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.DependencyInjection;
+using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
 using System.Text;
+using Obsidian.Services;
 
 namespace Obsidian
 {
@@ -20,6 +23,7 @@ namespace Obsidian
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("obsidianconfig.json", optional: false)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -42,13 +46,19 @@ namespace Obsidian
             services.AddMemoryCache();
 
             //Add application components
-            services.AddSagaBus();
-            services.AddSaga();
+            services.AddSagaBus().AddSaga();
             services.AddMongoRepositories();
+
+            services.AddOptions();
+            services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
+
+            //infrastructure services
+            services.AddTransient<ISignInService, SignInService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus,
+            IOptions<OAuth20Configuration> oauthOptions)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -69,7 +79,15 @@ namespace Obsidian
 
             app.UseStaticFiles();
 
-            const string key = "Obsidian.OAuth20.SigningKey.Jwt";
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Obsidian.Cookie",
+                AutomaticChallenge = false,
+                AutomaticAuthenticate = false
+            });
+
+            var oauthConfig = oauthOptions.Value;
+            var key = oauthConfig.TokenSigningKey;
             var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
             var param = new TokenValidationParameters
             {
@@ -77,13 +95,15 @@ namespace Obsidian
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,
                 ValidateIssuer = true,
-                ValidIssuer = "Obsidian",
-                ValidAudience = "ObsidianAud"
+                ValidIssuer = oauthConfig.TokenIssuer,
+                ValidAudience = oauthConfig.TokenAudience
             };
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
-                TokenValidationParameters = param
+                TokenValidationParameters = param,
+                AutomaticAuthenticate = false,
+                AutomaticChallenge = false
             });
 
             app.UseMvc(routes =>

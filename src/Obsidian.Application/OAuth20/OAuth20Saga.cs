@@ -22,10 +22,11 @@ namespace Obsidian.Application.OAuth20
         private readonly IClientRepository _clientRepository;
         private readonly IPermissionScopeRepository _scopeRepository;
         private readonly IUserRepository _userRepository;
+        private readonly OAuth20Service _oauth20Service;
+
+        private readonly ISignInService _signInservice;
 
         #endregion External Dependencies
-
-        private const string key = "Obsidian.OAuth20.SigningKey.Jwt";
 
         #region State Data
 
@@ -40,11 +41,15 @@ namespace Obsidian.Application.OAuth20
 
         public OAuth20Saga(IClientRepository clientRepo,
                            IUserRepository userRepo,
-                           IPermissionScopeRepository scopeRepo)
+                           IPermissionScopeRepository scopeRepo,
+                           OAuth20Service oauth20Service,
+                           ISignInService signInService)
         {
             _clientRepository = clientRepo;
             _userRepository = userRepo;
             _scopeRepository = scopeRepo;
+            _oauth20Service = oauth20Service;
+            _signInservice = signInService;
         }
 
         #region Handlers
@@ -60,10 +65,10 @@ namespace Obsidian.Application.OAuth20
                     return await VerifyPermissionAsync();
                 }
                 GoToState(OAuth20State.RequireSignIn);
-                return StateResult();
+                return CurrentStateResult();
             }
             GoToState(OAuth20State.Failed);
-            return StateResult();
+            return CurrentStateResult();
         }
 
         public async Task<OAuth20Result> HandleAsync(SignInMessage message)
@@ -72,11 +77,11 @@ namespace Obsidian.Application.OAuth20
             {
                 if (_user.VaildatePassword(message.Password))
                 {
-                    //TODO: signin here
+                    await _signInservice.CookieSignInAsync(_user, message.RememberMe);
                     return await VerifyPermissionAsync();
                 }
             }
-            return StateResult();
+            return CurrentStateResult();
         }
 
         public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
@@ -86,7 +91,7 @@ namespace Obsidian.Application.OAuth20
                 return await GrantPermissionAsync();
             }
             GoToState(OAuth20State.UserDenied);
-            return StateResult();
+            return CurrentStateResult();
         }
 
         private bool TypLoadScopeFromNames(IList<string> grantedScopeNames, out IList<PermissionScope> scopes)
@@ -110,7 +115,7 @@ namespace Obsidian.Application.OAuth20
                 GoToState(OAuth20State.Finished);
                 return Task.FromResult(AccessTokenResult());
             }
-            return Task.FromResult(StateResult());
+            return Task.FromResult(CurrentStateResult());
         }
 
         #endregion Handlers
@@ -152,7 +157,7 @@ namespace Obsidian.Application.OAuth20
                 return AccessTokenResult();
             }
             GoToState(OAuth20State.Failed);
-            return StateResult();
+            return CurrentStateResult();
         }
 
         #endregion Process
@@ -162,7 +167,7 @@ namespace Obsidian.Application.OAuth20
 
         #region Results
 
-        private OAuth20Result StateResult()
+        private OAuth20Result CurrentStateResult()
                     => new OAuth20Result
                     {
                         SagaId = Id,
@@ -171,7 +176,7 @@ namespace Obsidian.Application.OAuth20
 
         private OAuth20Result PermissionGrantRequiredResult()
         {
-            var result = StateResult();
+            var result = CurrentStateResult();
             result.PermissionGrant = new OAuth20Result.PermissionGrantResult
             {
                 Client = _client,
@@ -182,7 +187,7 @@ namespace Obsidian.Application.OAuth20
 
         private OAuth20Result AuthorizationCodeResult()
         {
-            var result = StateResult();
+            var result = CurrentStateResult();
             result.RedirectUri = _client.RedirectUri.OriginalString;
             result.AuthorizationCode = GenerateAuthorizationCode();
             return result;
@@ -190,11 +195,12 @@ namespace Obsidian.Application.OAuth20
 
         private OAuth20Result AccessTokenResult()
         {
-            var result = StateResult();
+            var result = CurrentStateResult();
             result.RedirectUri = _client.RedirectUri.OriginalString;
             result.Token = new OAuth20Result.TokenResult
             {
                 Scope = _grantedScopes,
+                ExpireIn = TimeSpan.FromMinutes(5),
                 AccessToken = GenerateAccessToken()
             };
             return result;
@@ -232,27 +238,13 @@ namespace Obsidian.Application.OAuth20
             && authorizationCode == Id;
 
         private bool IsPermissionGranted(User user, Client client, IList<PermissionScope> scopes)
-            => user.IsClientAuthorized(client, scopes.Select(s => s.ScopeName));
+            => user.IsClientGranted(client, scopes.Select(s => s.ScopeName));
 
         #endregion Percondictions
 
         #region Token Generators
 
-        private string GenerateAccessToken()
-        {
-            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            var claims = _user.GetClaims(_grantedScopes);
-            var jwt = new JwtSecurityToken(
-                issuer: "Obsidian",
-                audience: "ObsidianAud",
-                claims: claims,
-                signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddMinutes(5)
-                );
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return token;
-        }
+        private string GenerateAccessToken() => _oauth20Service.GenerateAccessToken(_user, _grantedScopes);
 
         private Guid GenerateAuthorizationCode() => Id;
 

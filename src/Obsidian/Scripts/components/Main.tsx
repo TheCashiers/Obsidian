@@ -29,7 +29,6 @@ const fixLayout = function () {
 export let Main = React.createClass({
     componentDidUpdate: () => {
         fixLayout();
-        console.log("re-rendered layout.")
     },
     render: function () {
         return (

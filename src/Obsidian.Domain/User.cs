@@ -2,9 +2,9 @@
 using Obsidian.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
-using System.Linq;
 
 namespace Obsidian.Domain
 {
@@ -27,6 +27,16 @@ namespace Obsidian.Domain
             _passwordHash = _passwordHasher.HashPasword(password);
         }
 
+        public void UpdateUserName(string username)
+        {
+            UserName = username;
+        }
+
+        public void UpdateProfile(UserProfile profile)
+        {
+            Profile = profile;
+        }
+
         /// <summary>
         /// Represents the username used to login.
         /// </summary>
@@ -35,19 +45,12 @@ namespace Obsidian.Domain
 
         public UserProfile Profile { get; private set; } = new UserProfile();
 
-        public IList<ClientAuthorizationDetail> AuthorizedClients { get; private set; }
+        public IList<ClientAuthorizationDetail> GrantedClients { get; private set; }
             = new List<ClientAuthorizationDetail>();
 
         #endregion Props
 
-        private static Dictionary<string, MethodInfo> profileClaimGetters
-            = MetadataHelper.GetClaimPropertyGetters<UserProfile>();
-
-        private static Dictionary<string, MethodInfo> userClaimGetters
-            = MetadataHelper.GetClaimPropertyGetters<User>();
-
         private string _passwordHash;
-
 
         public bool VaildatePassword(string password)
         {
@@ -55,9 +58,9 @@ namespace Obsidian.Domain
             return hash == _passwordHash;
         }
 
-        public bool IsClientAuthorized(Client client, IEnumerable<string> scopeNames)
+        public bool IsClientGranted(Client client, IEnumerable<string> scopeNames)
         {
-            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
+            var grantDetail = GrantedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
             if (grantDetail != null)
             {
                 var grantedScopeNames = grantDetail.ScopeNames;
@@ -67,33 +70,16 @@ namespace Obsidian.Domain
             return false;
         }
 
-        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
-        {
-            var types = scopes.SelectMany(s => s.ClaimTypes);
-            var userClaims = GetClaimsFromObject(userClaimGetters, types, this);
-            var profileClaims = GetClaimsFromObject(profileClaimGetters, types, Profile);
-            return Enumerable.Union(userClaims, profileClaims);
-        }
-
-        private static IEnumerable<Claim> GetClaimsFromObject(Dictionary<string, MethodInfo> getters,
-            IEnumerable<string> requestedTypes, object obj) =>
-            getters.Where(g => requestedTypes.Contains(g.Key)).Select(g =>
-             {
-                 var value = g.Value.Invoke(obj, null);
-                 return new Claim(g.Key, value?.ToString() ?? "");
-             });
-
-
         public void GrantClient(Client client, IEnumerable<PermissionScope> scopes)
         {
-            var grantDetail = AuthorizedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
+            var grantDetail = GrantedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
             if (grantDetail != null)
             {
                 grantDetail.ScopeNames = scopes.Select(s => s.ScopeName).ToList();
             }
             else
             {
-                AuthorizedClients.Add(new ClientAuthorizationDetail
+                GrantedClients.Add(new ClientAuthorizationDetail
                 {
                     ClientId = client.Id,
                     ScopeNames = scopes.Select(s => s.ScopeName).ToList()
@@ -101,12 +87,38 @@ namespace Obsidian.Domain
             }
         }
 
+        #region Claim Generation
+
+        private static Dictionary<string, MethodInfo> userClaimGetters
+                    = MetadataHelper.GetClaimPropertyGetters<User>();
+
+        private static Dictionary<string, MethodInfo> profileClaimGetters
+                    = MetadataHelper.GetClaimPropertyGetters<UserProfile>();
+
+        private static IEnumerable<Claim> GetClaimsFromObject(Dictionary<string, MethodInfo> getters,
+                    IEnumerable<string> requestedTypes, object obj) =>
+                    getters.Where(g => requestedTypes.Contains(g.Key)).Select(g =>
+                     {
+                         var value = g.Value.Invoke(obj, null);
+                         return new Claim(g.Key, value?.ToString() ?? "");
+                     });
+
+        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
+        {
+            var claimTypes = scopes.SelectMany(s => s.ClaimTypes);
+            var userClaims = GetClaimsFromObject(userClaimGetters, claimTypes, this);
+            var profileClaims = GetClaimsFromObject(profileClaimGetters, claimTypes, Profile);
+            return Enumerable.Union(userClaims, profileClaims);
+        }
+
+        #endregion Claim Generation
+
         #region Equality
 
         public override bool Equals(object obj) => this.EntityEquals(obj);
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        #endregion
+        #endregion Equality
     }
 }

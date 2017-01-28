@@ -27,11 +27,11 @@ namespace Obsidian.Persistence.Repositories
 
         protected override IMongoCollection<User> Collection => _collection;
 
-        public Task<User> FindByUserNameAsync(string userName)
+        public async Task<User> FindByUserNameAsync(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new ArgumentNullException(nameof(userName));
-            return Collection.Find(u => u.UserName == userName).SingleOrDefaultAsync();
+            return await Collection.Find(u => u.UserName == userName).SingleOrDefaultAsync();
         }
     }
 }

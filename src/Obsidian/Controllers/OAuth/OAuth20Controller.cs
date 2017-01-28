@@ -1,20 +1,14 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain;
-using Obsidian.Domain.Repositories;
+using Obsidian.Misc;
 using Obsidian.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-//TODO: remove this when implemented
-#pragma warning disable CS1998
-
 
 namespace Obsidian.Controllers.OAuth
 {
@@ -29,39 +23,8 @@ namespace Obsidian.Controllers.OAuth
             _sagaBus = bus;
         }
 
-        [Route("oauth20/authorize/frontend/signin")]
-        [HttpGet]
-        public IActionResult FrontEndSignInDebug()
-        {
-            return View("SignIn");
-        }
-
-
-        [Route("oauth20/authorize/frontend/grant")]
-        [HttpGet]
-        public IActionResult FrontEndGrantDebug()
-        {
-            var context = _dataProtector.Protect(Guid.NewGuid().ToString());
-            var client = Client.Create(Guid.NewGuid(), "http://za-pt.org/exchange");
-            client.DisplayName = "iTech";
-            ViewBag.Client = client;
-            ViewBag.Scopes = new[] {
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.basicinfo","Basic Information","Includes you name and gender."),
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.email","Email address","Your email address."),
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system."),
-            };
-            return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
-        }
-
-        [Route("oauth20/authorize/frontend/denied")]
-        [HttpGet]
-        public IActionResult FrontEndDeniedDebug()
-        {
-            return View("UserDenied");
-        }
-
-        [Route("oauth20/authorize")]
-        [HttpGet]
+        [HttpGet("oauth20/authorize")]
+        [ValidateModel]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
             AuthorizationGrant grantType;
@@ -71,7 +34,7 @@ namespace Obsidian.Controllers.OAuth
             }
             else if ("token".Equals(model.ResponseType, StringComparison.OrdinalIgnoreCase))
             {
-                grantType = AuthorizationGrant.AuthorizationCode;
+                grantType = AuthorizationGrant.Implicit;
             }
             else
                 return BadRequest();
@@ -93,16 +56,130 @@ namespace Obsidian.Controllers.OAuth
             {
                 case OAuth20State.RequireSignIn:
                     return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
+
                 case OAuth20State.RequirePermissionGrant:
                     return PermissionGrantView(result);
+
                 case OAuth20State.AuthorizationCodeGenerated:
                     return AuthorizationCodeRedirect(result);
+
                 case OAuth20State.Finished:
                     return ImplictRedirect(result);
+
                 default:
                     return BadRequest();
             }
         }
+
+        [HttpPost("oauth20/authorize")]
+        [ValidateModel]
+        public async Task<IActionResult> SignIn([FromForm]OAuthSignInModel model)
+        {
+            Guid sagaId;
+            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
+            if (!Guid.TryParse(context, out sagaId))
+            {
+                return BadRequest();
+            }
+            var message = new SignInMessage(sagaId)
+            {
+                UserName = model.UserName,
+                Password = model.Password,
+                RememberMe = model.RememberMe
+            };
+            var result = await _sagaBus.SendAsync<SignInMessage, OAuth20Result>(message);
+            switch (result.State)
+            {
+                case OAuth20State.RequireSignIn:
+                    ModelState.AddModelError(string.Empty, "Singin failed");
+                    return View("SignIn");
+
+                case OAuth20State.RequirePermissionGrant:
+                    return PermissionGrantView(result);
+
+                case OAuth20State.AuthorizationCodeGenerated:
+                    return AuthorizationCodeRedirect(result);
+
+                case OAuth20State.Finished:
+                    return ImplictRedirect(result);
+
+                default:
+                    return BadRequest();
+            }
+        }
+
+        [HttpPost("oauth20/authorize/permission")]
+        [ValidateModel]
+        public async Task<IActionResult> PermissionGrant([FromForm]PermissionGrantModel model)
+        {
+            Guid sagaId;
+            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
+            if (!Guid.TryParse(context, out sagaId))
+            {
+                return BadRequest();
+            }
+            var message = new PermissionGrantMessage(sagaId)
+            {
+                GrantedScopeNames = model.GrantedScopeNames ?? new List<string>()
+            };
+            var result = await _sagaBus.SendAsync<PermissionGrantMessage, OAuth20Result>(message);
+            switch (result.State)
+            {
+                case OAuth20State.AuthorizationCodeGenerated:
+                    return AuthorizationCodeRedirect(result);
+
+                case OAuth20State.Finished:
+                    return ImplictRedirect(result);
+
+                case OAuth20State.UserDenied:
+                    return View("UserDenied");
+
+                default:
+                    return BadRequest();
+            }
+        }
+
+        [HttpPost("oauth20/token")]
+        [ValidateModel]
+        public async Task<IActionResult> Token([FromBody]AuthorizationCodeGrantRequestModel model)
+        {
+            if ("authorization_code".Equals(model.GrantType, StringComparison.OrdinalIgnoreCase))
+            {
+                var message = new AccessTokenRequestMessage(model.Code)
+                {
+                    ClientId = model.ClientId,
+                    ClientSecret = model.ClientSecret,
+                    Code = model.Code
+                };
+                var result = await _sagaBus.SendAsync<AccessTokenRequestMessage, OAuth20Result>(message);
+                switch (result.State)
+                {
+                    case OAuth20State.AuthorizationCodeGenerated:
+                        return BadRequest();
+
+                    case OAuth20State.Finished:
+                        return Ok(TokenResponseModel.FromOAuth20Result(result));
+                }
+            }
+            return BadRequest();
+        }
+
+        private static string BuildImplictReturnUri(OAuth20Result result)
+        {
+            var sb = new StringBuilder($"{result.RedirectUri}?access_token={result.Token.AccessToken}");
+            if (result.Token.AuthrneticationToken != null)
+            {
+                sb.Append($"&authentication_token={result.Token.AuthrneticationToken}");
+            }
+            if (result.Token.RefreshToken != null)
+            {
+                sb.Append($"&refresh_token={result.Token.RefreshToken}");
+            }
+            var tokenRedirectUri = sb.ToString();
+            return tokenRedirectUri;
+        }
+
+        #region Results
 
         private IActionResult PermissionGrantView(OAuth20Result result)
         {
@@ -124,108 +201,40 @@ namespace Obsidian.Controllers.OAuth
             return Redirect(codeRedirectUri);
         }
 
-        private static string BuildImplictReturnUri(OAuth20Result result)
+        #endregion Results
+
+        #region Front-end debug
+
+        [Route("oauth20/authorize/frontend/signin")]
+        [HttpGet]
+        public IActionResult FrontEndSignInDebug()
         {
-            var sb = new StringBuilder($"{result.RedirectUri}?access_token={result.Token.AccessToken}");
-            if (result.Token.AuthrneticationToken != null)
-            {
-                sb.Append($"&authentication_token={result.Token.AuthrneticationToken}");
-            }
-            if (result.Token.RefreshToken != null)
-            {
-                sb.Append($"&refresh_token={result.Token.RefreshToken}");
-            }
-            var tokenRedirectUri = sb.ToString();
-            return tokenRedirectUri;
+            return View("SignIn");
         }
 
-        [Route("oauth20/authorize")]
-        [HttpPost]
-        public async Task<IActionResult> Authorize([FromForm]OAuthSignInModel model)
+        [Route("oauth20/authorize/frontend/grant")]
+        [HttpGet]
+        public IActionResult FrontEndGrantDebug()
         {
-            Guid sagaId;
-            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (!Guid.TryParse(context, out sagaId))
-            {
-                return BadRequest();
-            }
-            var message = new SignInMessage(sagaId)
-            {
-                UserName = model.UserName,
-                Password = model.Password,
-                RememberMe = model.RememberMe
+            var context = _dataProtector.Protect(Guid.NewGuid().ToString());
+            var client = Client.Create(Guid.NewGuid(), "http://za-pt.org/exchange");
+            client.DisplayName = "iTech";
+            ViewBag.Client = client;
+            ViewBag.Scopes = new[] {
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.basicinfo","Basic Information","Includes you name and gender."),
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.email","Email address","Your email address."),
+                PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system.")
             };
-            var result = await _sagaBus.SendAsync<SignInMessage, OAuth20Result>(message);
-            switch (result.State)
-            {
-                case OAuth20State.RequireSignIn:
-                    ModelState.AddModelError(string.Empty, "Singin failed");
-                    return View("SignIn");
-                case OAuth20State.RequirePermissionGrant:
-                    return PermissionGrantView(result);
-                case OAuth20State.AuthorizationCodeGenerated:
-                    return AuthorizationCodeRedirect(result);
-                case OAuth20State.Finished:
-                    return ImplictRedirect(result);
-                default:
-                    return BadRequest();
-            }
+            return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
         }
 
-        [Route("oauth20/authorize/permission")]
-        [HttpPost]
-        public async Task<IActionResult> PermissionGrant([FromForm]PermissionGrantModel model)
+        [Route("oauth20/authorize/frontend/denied")]
+        [HttpGet]
+        public IActionResult FrontEndDeniedDebug()
         {
-            Guid sagaId;
-            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (!Guid.TryParse(context, out sagaId))
-            {
-                return BadRequest();
-            }
-            var message = new PermissionGrantMessage(sagaId) { GrantedScopeNames = model.GrantedScopeNames };
-            var result = await _sagaBus.SendAsync<PermissionGrantMessage, OAuth20Result>(message);
-            switch (result.State)
-            {
-                case OAuth20State.AuthorizationCodeGenerated:
-                    return AuthorizationCodeRedirect(result);
-                case OAuth20State.Finished:
-                    return ImplictRedirect(result);
-                case OAuth20State.UserDenied:
-                    return View("UserDenied");
-                default:
-                    return BadRequest();
-            }
+            return View("UserDenied");
         }
 
-        [Route("oauth20/token")]
-        [HttpPost]
-        public async Task<IActionResult> Token([FromBody]AuthorizationCodeGrantRequestModel model)
-        {
-            if (model.GrantType == "authorization_code")
-            {
-                var message = new AccessTokenRequestMessage(model.Code)
-                {
-                    ClientId = model.ClientId,
-                    ClientSecret = model.ClientSecret
-                };
-                var result = await _sagaBus.SendAsync<AccessTokenRequestMessage, OAuth20Result>(message);
-                switch (result.State)
-                {
-                    case OAuth20State.AuthorizationCodeGenerated:
-                        return BadRequest();
-                    case OAuth20State.Finished:
-                        return Ok(new AccessTokenResponseModel
-                        {
-                            TokenType = "bearer",
-                            AccessToken = result.Token.AccessToken,
-                            AuthrneticationToken = result.Token.AuthrneticationToken,
-                            ExpireInSecond = (long)result.Token.ExpireIn.TotalSeconds,
-                            Scope = string.Join(" ", result.Token.Scope.Select(s => s.ScopeName)),
-                            RefreshToken = result.Token.RefreshToken
-                        });
-                }
-            }
-            return BadRequest();
-        }
+        #endregion Front-end debug
     }
 }

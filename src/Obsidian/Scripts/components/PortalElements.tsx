@@ -1,20 +1,21 @@
 ﻿import * as React from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import { UserInfoContainer } from "../containers/UserInfoContainer"
+import { styles } from "../styles"
 
 export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
             <span className="hidden-xs">{props.username}</span>
         </a>
-        <ul className="dropdown-menu">
-            <li className="user-header">
-                Obsidian Portal
-                <p>
+        <ul className="dropdown-menu ">
+            <li style={styles.userCard}>
+                <h2>
                     {props.username} - {props.level}
-                    <hr/>
+                    <br/>
+
                     <small>{props.description}</small>
-                </p>
+                </h2>
             </li>
             <li className="user-footer">
                 <div className="pull-left">
@@ -40,7 +41,8 @@ export const PortalHeader = (props) => (
                 <div className="collapse navbar-collapse" id="navbar-collapse">
                     <ul className="nav navbar-nav">
                         <li><Link to="/manage/users">Users</Link></li>
-                        <li><a href="#">Link</a></li>
+                        <li><Link to="/manage/clients">Clients</Link></li>
+                        <li><Link to="/manage/scopes">Scopes</Link></li>
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
                             <ul className="dropdown-menu" role="menu">
@@ -66,3 +68,9 @@ export const PortalHeader = (props) => (
             </div>
         </nav>
     </header>);
+
+    const Combobox = (props) =>
+        <label style={styles.comboBox}>
+            <input type="checkbox" onChange={props.onSelectChange}/>
+            {props.name}
+        </label>

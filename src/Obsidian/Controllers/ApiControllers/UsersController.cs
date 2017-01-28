@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.UserManagement;
+using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
 
@@ -41,6 +43,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
             var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };
@@ -51,6 +54,52 @@ namespace Obsidian.Controllers.ApiControllers
             }
             // currently, the only reason for failure is that a user of the same username exists.
             return StatusCode(412, result.Message);
+        }
+
+        [HttpPut("{id:guid}/Profile")]
+        [ValidateModel]
+        public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
+        {
+            var cmd = new UpdateUserProfileCommand { UserId = id, NewProfile = profile };
+            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            //if user doesn't exist.
+            return BadRequest(result.Message);
+        }
+
+        [HttpPut("{id:guid}/Password")]
+        [ValidateModel]
+        public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
+        {
+            var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
+            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            //if user doesn't exist.
+            return BadRequest(result.Message);
+        }
+
+        [HttpPut("{id:guid}/UserName")]
+        [ValidateModel]
+        public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
+        {
+            var cmd = new UpdateUserNameCommand
+            {
+                UserId = id,
+                UserName = dto.UserName
+            };
+            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand,MessageResult> (cmd);
+            if(result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            //if error
+            return BadRequest(result.Message);
         }
     }
 }

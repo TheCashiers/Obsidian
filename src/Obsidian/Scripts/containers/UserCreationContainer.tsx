@@ -1,27 +1,16 @@
 ﻿import * as React from "react";
-
+import * as Notification from "./NotificationContainer"
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import { CreateUser } from "../components/CreateUser";
+import { UserFormContainer } from "../containers/UserFormContainer"
 
-interface IUserCreationState {
-    username?: string;
-    password?: string;
-    isComplete?: boolean;
-    isError?:boolean;
-}
 
-export class UserCreationContainer extends React.Component<any, IUserCreationState> {
-    constructor(props: any) {
+export class UserCreationContainer extends UserFormContainer
+{
+    constructor(props) {
         super(props);
-        this.state = { username: "", password: "", isComplete: false ,isError:false};
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    handleInputChange(e) {
-        this.setState({
-            [e.target.name]: e.target.value as string
-        });
+        this.state={ username:"", password: ""};
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -29,9 +18,12 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
         let password: string = this.state.password.trim();
         if (username && password) {
             axios.post(api.configs.createUser.request_uri, { userName: username, password: password })
-                .then(()=>this.setState({ isComplete: true }))
-                .catch((e) => this.setState({ isError: true }));
-            this.setState({ username: "", password: "" });
+                .then(()=>{
+                    this.setState({ username: "", password: "" });
+                    console.log(e);
+                    Notification.Service.pushSuccess("User creation")
+                })
+                .catch((e) =>  Notification.Service.pushError("User creation",e));
         } else { return; }
     }
     public render() {
@@ -40,7 +32,7 @@ export class UserCreationContainer extends React.Component<any, IUserCreationSta
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}
-            isComplete={this.state.isComplete}/>);
+            action={this.props.action}/>);
     }
-};
+}
 

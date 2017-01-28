@@ -2,24 +2,37 @@
 import { Link } from "react-router";
 
 const UserItem = (props) => (
-    <li>
-        {props.username}
-    </li>
+    <div>
+        <div className="list-group-item">
+            <div className="row-action-primary">
+                <i className="fa fa-user fa-2x"></i>
+            </div>
+            <div className="row-content">
+                <div className="least-content">
+                    <Link to="/manage/users/edit/" query={{ username: props.username, id: props.id }}>
+                        <button className="btn btn-lg btn-primary btn-raised">
+                            Edit
+            </button>
+                    </Link>
+                </div>
+                <h4 className="list-group-item-heading">{props.username}</h4>
+
+                <p className="list-group-item-text">{props.id}</p>
+            </div>
+        </div>
+        <div className="list-group-separator"></div>
+    </div>
 );
 
 export const UserList = (props) => (
     <div className="content-wrapper content">
-        <div className="box box-solid box-info">
-            <div className="box-header">
-                <h3 className="box-title">Users</h3>
-            </div>
-            <div className="box-body">
-            <ul>{props.users.map((user, index) => <UserItem username={user.userName} key={user.id}/>) }</ul>
-            </div>
-        </div>
         <Link to="/manage/users/create">
-            <button className="btn btn-lg btn-success">Create User</button>
+            <button className="btn btn-primary btn-lg">Create User</button>
         </Link>
+        
+        <div className="list-group">
+            {props.users.map((user, index) => <UserItem username={user.userName} id={user.id} key={user.id} />)}
+        </div>
     </div>
 
 );

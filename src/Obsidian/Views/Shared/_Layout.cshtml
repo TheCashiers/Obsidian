@@ -10,6 +10,7 @@
         <link href="~/lib/bootstrap-material-design/dist/css/bootstrap-material-design.css" rel="stylesheet" />
         <link href="~/lib/bootstrap-material-design/dist/css/ripples.css" rel="stylesheet" />
         <link href="~/lib/fontawesome/css/font-awesome.css" rel="stylesheet" />
+        <link href="~/lib/snackbarjs/dist/snackbar.css" rel="stylesheet" />
     </environment>
 
     <environment names="Staging,Production">
@@ -19,6 +20,7 @@
         <link href="~/lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css" rel="stylesheet" />
         <link href="~/lib/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet" />
         <link href="~/lib/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="~/lib/snackbarjs/dist/snackbar.min.css" rel="stylesheet" />
     </environment>
 
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
@@ -30,20 +32,24 @@
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/react/react.js"></script>
         <script src="~/lib/react/react-dom.js"></script>
         <script src="~/lib/bootstrap-material-design/dist/js/material.js"></script>
         <script src="~/lib/bootstrap-material-design/dist/js/ripples.js"></script>
+        <script src="~/lib/snackbarjs/dist/snackbar.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="~/lib/react/react.min.js"></script>
         <script src="~/lib/react/react-dom.min.js"></script>
         <script src="~/lib/bootstrap-material-design/dist/js/material.min.js"></script>
         <script src="~/lib/bootstrap-material-design/dist/js/ripples.min.js"></script>
+        <script src="~/lib/snackbarjs/dist/snackbar.min.js"></script>
     </environment>
 
     @RenderSection("scripts", required: false)

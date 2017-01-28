@@ -9,6 +9,10 @@
     "react": "15.2.0",
     "react-router": "^2.6.0",
     "fontawesome": "^4.6.3",
-    "bootstrap-material-design": "0.5.10"
+    "bootstrap-material-design": "0.5.10",
+    "snackbarjs": "^1.1.0"
+  },
+  "resolutions": {
+    "jquery": ">= 1.7.2"
   }
 }

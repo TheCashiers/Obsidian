@@ -25,11 +25,11 @@ namespace Obsidian.Persistence.Repositories
             await Collection.DeleteOneAsync(c => c.Id == aggregate.Id);
         }
 
-        public virtual Task<TAggregate> FindByIdAsync(Guid id)
+        public virtual async Task<TAggregate> FindByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 throw new ArgumentNullException(nameof(id));
-            return Collection.Find(c => c.Id == id).SingleOrDefaultAsync();
+            return await Collection.Find(a => a.Id == id).SingleOrDefaultAsync();
         }
 
         public virtual Task<IQueryable<TAggregate>> QueryAllAsync() => Task.FromResult<IQueryable<TAggregate>>(Collection.AsQueryable());
