@@ -45,6 +45,9 @@ export const configs = {
     editClient:{
         request_uri:"/api/clients/",
         request_type:REQUEST_TYPES.PUT
-    }
-
+    } as IServerConfig,
+    createScope:{
+        request_uri:"/api/scopes/",
+        request_type:REQUEST_TYPES.POST
+    } as IServerConfig
 }

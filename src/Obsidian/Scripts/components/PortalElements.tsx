@@ -68,3 +68,9 @@ export const PortalHeader = (props) => (
             </div>
         </nav>
     </header>);
+
+    const Combobox = (props) =>
+        <label style={styles.comboBox}>
+            <input type="checkbox" onChange={props.onSelectChange}/>
+            {props.name}
+        </label>
