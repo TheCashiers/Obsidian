@@ -24,23 +24,22 @@ namespace Obsidian.Controllers.OAuth
             _sagaBus = bus;
         }
 
+
         [HttpGet("oauth20/authorize")]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes ="Obsidian.Cookie")]
+        [Authorize(ActiveAuthenticationSchemes = "Obsidian.Cookie")]
         [AllowAnonymous]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
             AuthorizationGrant grantType;
-            if ("code".Equals(model.ResponseType, StringComparison.OrdinalIgnoreCase))
+            try
             {
-                grantType = AuthorizationGrant.AuthorizationCode;
+                grantType = ParseGrantType(model.ResponseType);
             }
-            else if ("token".Equals(model.ResponseType, StringComparison.OrdinalIgnoreCase))
+            catch (ArgumentOutOfRangeException)
             {
-                grantType = AuthorizationGrant.Implicit;
-            }
-            else
                 return BadRequest();
+            }
             var command = new AuthorizeCommand
             {
                 ClientId = model.ClientId,
@@ -166,6 +165,23 @@ namespace Obsidian.Controllers.OAuth
             }
             return BadRequest();
         }
+
+        
+        private AuthorizationGrant ParseGrantType(string responseType)
+        {
+            if ("code".Equals(responseType, StringComparison.OrdinalIgnoreCase))
+            {
+                return AuthorizationGrant.AuthorizationCode;
+            }
+            else if ("token".Equals(responseType, StringComparison.OrdinalIgnoreCase))
+            {
+                return AuthorizationGrant.Implicit;
+            }
+            else
+                throw new ArgumentOutOfRangeException(nameof(responseType), 
+                            "Only code and token can be accepted as response type.");
+        }
+
 
         private static string BuildImplictReturnUri(OAuth20Result result)
         {
