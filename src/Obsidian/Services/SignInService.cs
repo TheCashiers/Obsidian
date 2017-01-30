@@ -29,10 +29,10 @@ namespace Obsidian.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
-            var identity = new ClaimsIdentity(claims);
+            var identity = new ClaimsIdentity(claims, Scheme);
             var principal = new ClaimsPrincipal(identity);
             var context = _accessor.HttpContext;
-            var props = new AuthenticationProperties{ IsPersistent = isPersistent };
+            var props = new AuthenticationProperties { IsPersistent = isPersistent };
             await context.Authentication.SignInAsync(Scheme, principal, props);
         }
 
