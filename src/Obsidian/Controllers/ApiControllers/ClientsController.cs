@@ -60,8 +60,7 @@ namespace Obsidian.Controllers.ApiControllers
         [HttpPost]
         [ValidateModel]
         [SwaggerResponse(201, typeof(CreatedResult))]
-        [SwaggerResponse(400)]
-        [SwaggerResponse(412)]        
+        [SwaggerResponse(400), SwaggerResponse(412)]
         public async Task<IActionResult> Post([FromBody] ClientCreationDto dto)
         {
             var cmd = new CreateClientCommand { DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
@@ -69,7 +68,7 @@ namespace Obsidian.Controllers.ApiControllers
             if (result.Succeed)
             {
                 var url = Url.Action(nameof(GetById), new { id = result.Id });
-                return Created(url,null);
+                return Created(url, null);
             }
             return StatusCode(412, result.Message);
         }
