@@ -28,7 +28,8 @@
     "Obsidian.Persistence": "1.0.0-*",
     "Obsidian.Application": "1.0.0-*",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
-    "AutoMapper": "5.1.1"
+    "AutoMapper": "5.1.1",
+    "Swashbuckle.AspNetCore":"1.0.0-rc1"
   },
 
   "tools": {
@@ -48,7 +49,8 @@
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
-    "debugType": "portable"
+    "debugType": "portable",
+    "xmlDoc":true
   },
 
   "runtimeOptions": {

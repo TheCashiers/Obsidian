@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Obsidian.Controllers.OAuth
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class OAuth20Controller : Controller
     {
         private readonly IDataProtector _dataProtector;

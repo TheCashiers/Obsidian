@@ -12,6 +12,9 @@ using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
 using System.Text;
 using Obsidian.Services;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
 
 namespace Obsidian
 {
@@ -48,6 +51,15 @@ namespace Obsidian
             //Add application components
             services.AddSagaBus().AddSaga();
             services.AddMongoRepositories();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Obsidian API", Version = "v1" });       
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "Obsidian.xml"); 
+                c.IncludeXmlComments(xmlPath);     
+            });
+
 
             services.AddOptions();
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
@@ -115,6 +127,12 @@ namespace Obsidian
 
             MappingConfig.ConfigureQueryModelMapping();
             sagaBus.RegisterSagas();
+
+            app.UseSwagger();
+            app.UseSwaggerUi(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Obsidian API");
+            });
         }
     }
 }

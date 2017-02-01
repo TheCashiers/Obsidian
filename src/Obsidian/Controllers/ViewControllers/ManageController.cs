@@ -6,6 +6,7 @@ using System;
 
 namespace Obsidian.Controllers.ViewControllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ManageController : Controller
     {
         [Route("[controller]/{*path}")]

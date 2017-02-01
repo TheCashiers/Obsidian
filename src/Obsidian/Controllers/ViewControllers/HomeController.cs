@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Obsidian.Controllers.ViewControllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         public IActionResult Index()
