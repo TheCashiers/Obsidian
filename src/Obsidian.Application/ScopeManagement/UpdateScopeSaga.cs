@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.ScopeManagement
 {
-    public class UpdateScopeSaga : Saga, IStartsWith<UpdateScopeInfoCommand, MessageResult>
+    public class UpdateScopeSaga : Saga, IStartsWith<UpdateScopeCommand, MessageResult>
                                        , IStartsWith<UpdateScopeClaimsCommand,MessageResult>
     {
 
@@ -65,7 +65,7 @@ namespace Obsidian.Application.ScopeManagement
             }
         }
 
-        public async Task<MessageResult> StartAsync(UpdateScopeInfoCommand command)
+        public async Task<MessageResult> StartAsync(UpdateScopeCommand command)
         {
             _isCompleted = true;
             var scope = await _repo.FindByIdAsync(command.Id);
@@ -77,6 +77,7 @@ namespace Obsidian.Application.ScopeManagement
             //update
             scope.Description = command.Description;
             scope.DisplayName = command.DisplayName;
+            scope.ClaimTypes = command.ClaimTypes;
             await _repo.SaveAsync(scope);
             return new MessageResult {
                 Succeed = true,
