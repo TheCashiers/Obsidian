@@ -2,7 +2,7 @@ import * as React from "react";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer";
-import { CreateScope } from "../components/CreateScope"
+import { ScopeForm } from "../components/Form"
 
 export class ScopeCreationContainer extends React.Component<any, any>
 {
@@ -55,7 +55,8 @@ export class ScopeCreationContainer extends React.Component<any, any>
         } else { return; }
     }
     render(){
-        return <CreateScope
+        return <ScopeForm
+            action="Create Scope"
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             scopeName={this.state.scopeName}

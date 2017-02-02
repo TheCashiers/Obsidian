@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CreateClient } from "../components/CreateClient";
+import { ClientForm } from "../components/Form";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer"
@@ -33,7 +33,8 @@ export class ClientCreationContainer extends React.Component<any, any>
         } else { return; }
     }
     render(){
-        return <CreateClient
+        return <ClientForm
+            action="Create Client"
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             displayName={this.state.displayName}

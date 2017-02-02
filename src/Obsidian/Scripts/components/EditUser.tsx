@@ -1,5 +1,5 @@
 import * as React from "react"
-import {UserForm} from "./UserForm"
+import {UserForm} from "./Form"
 
 export const EditUser = (props) => (
     <UserForm onSubmit={props.onSubmit} 
