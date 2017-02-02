@@ -6,21 +6,23 @@ import * as axios from "axios";
 import * as Notification from "./NotificationContainer"
 
 
-export class ScopeEditContainer extends React.Component<any,any> {
+export class ScopeEditContainer extends React.Component<any, any> {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             id: props.location.query.id,
-            scopeName:"",
-            displayName:"",
-            description:"",
-            claimTypes:""
-         };
+            scopeName: "",
+            displayName: "",
+            description: "",
+            claimTypes: []
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public componentDidMount(){
-        axios.get(api.configs.getScope.request_uri+"/"+this.state.id)
-            .then((info) => {console.log(info); this.setState(info.data); })
-            .catch((e) =>  Notification.Service.pushError("getClient",e));
+    public componentDidMount() {
+        axios.get(api.configs.getScope.request_uri + this.state.id)
+            .then((info) => { console.log(info); this.setState(info.data); })
+            .catch((e) => Notification.Service.pushError("getClient", e));
     }
     handleInputChange(e) {
         this.setState({
@@ -29,22 +31,23 @@ export class ScopeEditContainer extends React.Component<any,any> {
     }
     handleSubmit(e) {
         e.preventDefault();
-        let username: string = this.state.username.trim();
-        let password: string = this.state.password.trim();
-        if (username && password) {
-            if (username)
-                axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, { username: username })
-                    .then(() => {
-                        Notification.Service.pushSuccess("Username changing");
-                    })
-                    .catch((e) => Notification.Service.pushError("Username changing", e));
-            if (password != "") {
-                axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, { password: password })
-                    .then(() => {
-                        Notification.Service.pushSuccess("Password changing");
-                    })
-                    .catch((e) => Notification.Service.pushError("Password changing", e));
+        let scopeName: string = this.state.scopeName.trim();
+        let displayName: string = this.state.displayName.trim();
+        let description: string = this.state.description.trim();
+        let claimTypes: string[] = this.state.claimTypes
+        if (scopeName && displayName && description && claimTypes) {
+            let jsonObject = {
+                displayName: displayName,
+                scopeName: scopeName,
+                description: description,
+                claimTypes: claimTypes
             }
+            axios
+            axios.put(api.configs.getScope.request_uri + this.state.id, jsonObject)
+                .then(() => {
+                    Notification.Service.pushSuccess("Scope editing")
+                })
+                .catch((e) => Notification.Service.pushError("Scope editing", e));
         } else { return; }
     }
     public render() {

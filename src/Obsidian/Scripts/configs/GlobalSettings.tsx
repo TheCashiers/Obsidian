@@ -19,20 +19,20 @@ export interface IDefaultProps {
 
 export const configs = {
     getUser: {
-        request_uri: "/api/users",
+        request_uri: "/api/users/",
         request_type: REQUEST_TYPES.GET
     } as IServerConfig,
     getClient: {
-        request_uri: "/api/clients",
+        request_uri: "/api/clients/",
         request_type: REQUEST_TYPES.GET
     } as IServerConfig,
     getScope: {
-        request_uri: "/api/scopes",
+        request_uri: "/api/scopes/",
         request_type: REQUEST_TYPES.GET
     } as IServerConfig,
     createUser: {
         request_type: REQUEST_TYPES.POST,
-        request_uri: "/api/users"
+        request_uri: "/api/users/"
     } as IServerConfig,
     editUser:{
         request_type:REQUEST_TYPES.PUT,
