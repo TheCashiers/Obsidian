@@ -9,7 +9,7 @@ const ScopeItem = (props) => (
             </div>
             <div className="row-content">
                 <div className="least-content">
-                    <Link to="/manage/scopes/edit/" query={{ scopeName: props.scopeName, id: props.id }}>
+                    <Link to="/manage/scopes/edit/" query={{ id: props.id }}>
                         <button className="btn btn-lg btn-primary btn-raised">
                             Edit
             </button>

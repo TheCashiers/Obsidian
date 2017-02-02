@@ -13,7 +13,7 @@ import { ScopeCreationContainer } from "../containers/ScopeCreationContainer"
 import { UserEditContainer } from "../containers/UserEditContainer";
 import { ClientManagementContainer } from "../containers/ClientManagementContainer";
 import { ScopeManagementContainer } from "../containers/ScopeManagementContainer"
-
+import { ScopeEditContainer } from "../containers/ScopeEditContainer"
 export const routes = (
     <Router history={ browserHistory }>
         <Route path="/manage" component={ Main }>
@@ -25,6 +25,7 @@ export const routes = (
             <Route path="/manage/clients/create" component={ ClientCreationContainer } />
             <Route path="/manage/scopes" component={ ScopeManagementContainer } />
             <Route path="/manage/scopes/create" component={ ScopeCreationContainer } />
+            <Route path="/manage/scopes/edit" component={ ScopeEditContainer } />
         </Route>
     </Router>
 );

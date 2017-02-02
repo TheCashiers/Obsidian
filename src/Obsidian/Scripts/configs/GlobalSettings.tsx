@@ -49,5 +49,9 @@ export const configs = {
     createScope:{
         request_uri:"/api/scopes/",
         request_type:REQUEST_TYPES.POST
-    } as IServerConfig
+    } as IServerConfig,
+    editScope:{
+        request_uri:"/api/scopes/",
+        request_type:REQUEST_TYPES.PUT
+    }
 }
