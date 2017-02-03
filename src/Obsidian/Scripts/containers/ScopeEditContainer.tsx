@@ -34,7 +34,7 @@ export class ScopeEditContainer extends React.Component<any, any> {
         let scopeName: string = this.state.scopeName.trim();
         let displayName: string = this.state.displayName.trim();
         let description: string = this.state.description.trim();
-        let claimTypes: string[] = this.state.claimTypes
+        let claimTypes: string[] = (this.state.claimTypes as string).split(",");
         if (scopeName && displayName && description && claimTypes) {
             let jsonObject = {
                 displayName: displayName,
