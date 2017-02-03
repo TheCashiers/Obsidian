@@ -19,7 +19,7 @@ export class ScopeEditContainer extends React.Component<any, any> {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public componentDidMount() {
+    public componentWillMount() {
         axios.get(api.configs.getScope.request_uri + this.state.id)
             .then((info) => { this.setState(info.data); })
             .catch((e) => Notification.Service.pushError("getClient", e));
