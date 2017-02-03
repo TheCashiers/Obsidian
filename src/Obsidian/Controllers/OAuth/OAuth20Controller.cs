@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
+#pragma warning disable CS1591
 namespace Obsidian.Controllers.OAuth
 {
     [ApiExplorerSettings(IgnoreApi = true)]
