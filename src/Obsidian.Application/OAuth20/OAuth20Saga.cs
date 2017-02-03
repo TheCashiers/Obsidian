@@ -13,7 +13,7 @@ namespace Obsidian.Application.OAuth20
 {
     public class OAuth20Saga : Saga,
         IStartsWith<AuthorizeCommand, OAuth20Result>,
-        IHandlerOf<SignInMessage, OAuth20Result>,
+        IHandlerOf<OAuth20SignInMessage, OAuth20Result>,
         IHandlerOf<PermissionGrantMessage, OAuth20Result>,
         IHandlerOf<AccessTokenRequestMessage, OAuth20Result>
     {
@@ -71,15 +71,11 @@ namespace Obsidian.Application.OAuth20
             return CurrentStateResult();
         }
 
-        public async Task<OAuth20Result> HandleAsync(SignInMessage message)
+        public async Task<OAuth20Result> HandleAsync(OAuth20SignInMessage message)
         {
             if (TryLoadUser(message.UserName, out _user))
             {
-                if (_user.VaildatePassword(message.Password))
-                {
-                    await _signInservice.CookieSignInAsync(_user, message.RememberMe);
-                    return await VerifyPermissionAsync();
-                }
+                return await VerifyPermissionAsync();
             }
             return CurrentStateResult();
         }
@@ -122,7 +118,7 @@ namespace Obsidian.Application.OAuth20
 
         #region Should Handle
 
-        public bool ShouldHandle(SignInMessage message) => _state == OAuth20State.RequireSignIn;
+        public bool ShouldHandle(OAuth20SignInMessage message) => _state == OAuth20State.RequireSignIn;
 
         public bool ShouldHandle(PermissionGrantMessage message) => _state == OAuth20State.RequirePermissionGrant;
 

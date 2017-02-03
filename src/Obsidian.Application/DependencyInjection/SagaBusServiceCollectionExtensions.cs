@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Application.Authentication;
 using Obsidian.Application.ClientManagement;
 using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
@@ -28,6 +29,7 @@ namespace Obsidian.Application.DependencyInjection
                        .AddTransient<CreateScopeSaga>()
                        .AddTransient<UpdateUserSaga>()
                        .AddTransient<UpdateClientSaga>()
-                       .AddTransient<UpdateScopeSaga>();
+                       .AddTransient<UpdateScopeSaga>()
+                       .AddTransient<PasswordSignInSaga>();
     }
 }

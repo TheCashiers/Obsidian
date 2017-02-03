@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Obsidian.Application.Authentication;
 
 #pragma warning disable CS1591
 namespace Obsidian.Controllers.OAuth
@@ -85,27 +86,33 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-            var message = new SignInMessage(sagaId)
+            var command = new PasswordSignInCommand
             {
                 UserName = model.UserName,
                 Password = model.Password,
-                RememberMe = model.RememberMe
+                IsPresistent = model.RememberMe
             };
-            var result = await _sagaBus.SendAsync<SignInMessage, OAuth20Result>(message);
-            switch (result.State)
+            var authResult = await _sagaBus.InvokeAsync<PasswordSignInCommand, AuthenticationResult>(command);
+            if (!authResult.IsCredentialVaild)
             {
-                case OAuth20State.RequireSignIn:
-                    ModelState.AddModelError(string.Empty, "Singin failed");
+                ModelState.AddModelError(string.Empty, "Singin failed");
                     return View("SignIn");
-
+            }
+            var message = new OAuth20SignInMessage(sagaId)
+            {
+                UserName = model.UserName,
+            };
+            var oauth20Result = await _sagaBus.SendAsync<OAuth20SignInMessage, OAuth20Result>(message);
+            switch (oauth20Result.State)
+            {
                 case OAuth20State.RequirePermissionGrant:
-                    return PermissionGrantView(result);
+                    return PermissionGrantView(oauth20Result);
 
                 case OAuth20State.AuthorizationCodeGenerated:
-                    return AuthorizationCodeRedirect(result);
+                    return AuthorizationCodeRedirect(oauth20Result);
 
                 case OAuth20State.Finished:
-                    return ImplictRedirect(result);
+                    return ImplictRedirect(oauth20Result);
 
                 default:
                     return BadRequest();
@@ -168,7 +175,7 @@ namespace Obsidian.Controllers.OAuth
             return BadRequest();
         }
 
-        
+
         private AuthorizationGrant ParseGrantType(string responseType)
         {
             if ("code".Equals(responseType, StringComparison.OrdinalIgnoreCase))
@@ -180,7 +187,7 @@ namespace Obsidian.Controllers.OAuth
                 return AuthorizationGrant.Implicit;
             }
             else
-                throw new ArgumentOutOfRangeException(nameof(responseType), 
+                throw new ArgumentOutOfRangeException(nameof(responseType),
                             "Only code and token can be accepted as response type.");
         }
 
