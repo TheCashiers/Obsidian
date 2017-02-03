@@ -12,11 +12,6 @@ namespace Obsidian.Controllers.ViewControllers
         [Route("[controller]/{*path}")]
         public IActionResult Index(string path = "")
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                //TODO: redirect to oauth
-            }
-            //TODO: check user permission
             ViewData["FrontendRoute"] = path;
             return View();
         }
