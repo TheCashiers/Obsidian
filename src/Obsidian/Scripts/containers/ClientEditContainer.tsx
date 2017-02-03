@@ -35,7 +35,7 @@ export class ClientEditContainer extends React.Component<any, any> {
                 .then(()=>{
                     Notification.Service.pushSuccess("Client editing")
                 })
-                .catch((e) =>  Notification.Service.pushError("Client creation",e));
+                .catch((e) =>  Notification.Service.pushError("Client editing",e));
         } else { return; }
     }
     public render() {
