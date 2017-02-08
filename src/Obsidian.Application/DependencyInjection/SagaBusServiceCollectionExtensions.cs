@@ -30,6 +30,6 @@ namespace Obsidian.Application.DependencyInjection
                        .AddTransient<UpdateUserSaga>()
                        .AddTransient<UpdateClientSaga>()
                        .AddTransient<UpdateScopeSaga>()
-                       .AddTransient<PasswordSignInSaga>();
+                       .AddTransient<PasswordAuthenticateSaga>();
     }
 }

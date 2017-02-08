@@ -21,10 +21,13 @@ namespace Obsidian.Controllers.OAuth
         private readonly IDataProtector _dataProtector;
         private readonly SagaBus _sagaBus;
 
-        public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus)
+        private readonly ISignInService _signinService;
+
+        public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus, ISignInService signinService)
         {
             _dataProtector = dataProtectionProvicer.CreateProtector("Obsidian.OAuth.Context.Key");
             _sagaBus = bus;
+            _signinService = signinService;
         }
 
 
@@ -86,18 +89,19 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-            var command = new PasswordSignInCommand
+            var command = new PasswordAuthenticateCommand
             {
                 UserName = model.UserName,
-                Password = model.Password,
-                IsPresistent = model.RememberMe
+                Password = model.Password
             };
-            var authResult = await _sagaBus.InvokeAsync<PasswordSignInCommand, AuthenticationResult>(command);
+            var authResult = await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(command);
             if (!authResult.IsCredentialVaild)
             {
                 ModelState.AddModelError(string.Empty, "Singin failed");
-                    return View("SignIn");
+                return View("SignIn");
             }
+            await _signinService.CookieSignInAsync(authResult.User, model.RememberMe);
+
             var message = new OAuth20SignInMessage(sagaId)
             {
                 UserName = model.UserName,
@@ -170,6 +174,41 @@ namespace Obsidian.Controllers.OAuth
 
                     case OAuth20State.Finished:
                         return Ok(TokenResponseModel.FromOAuth20Result(result));
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("oauth20/token_resource_owner_credential")]
+        [ValidateModel]
+        public async Task<IActionResult> Token([FromBody]ResourceOwnerPasswordCredentialsGrantRequestModel model)
+        {
+            if ("password".Equals(model.GrantType, StringComparison.OrdinalIgnoreCase))
+            {
+                var signinCommand = new PasswordAuthenticateCommand
+                {
+                    UserName = model.UserName,
+                    Password = model.Password
+                };
+                var authResult = await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(signinCommand);
+                if (!authResult.IsCredentialVaild)
+                {
+                    return Unauthorized();
+                }
+                var authorizeCommand = new AuthorizeCommand
+                {
+                    GrantType = AuthorizationGrant.ResourceOwnerPasswordCredentials,
+                    ClientId = model.ClientId,
+                    UserName = authResult.User.UserName,
+                    ScopeNames = model.Scope.Split(' ')
+                };
+                var oauthResult = await _sagaBus.InvokeAsync<AuthorizeCommand, OAuth20Result>(authorizeCommand);
+                switch (oauthResult.State)
+                {
+                    case OAuth20State.Finished:
+                        return Ok(TokenResponseModel.FromOAuth20Result(oauthResult));
+                    default:
+                        return BadRequest();
                 }
             }
             return BadRequest();

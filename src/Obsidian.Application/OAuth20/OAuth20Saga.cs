@@ -62,6 +62,13 @@ namespace Obsidian.Application.OAuth20
             {
                 if (command.UserName != null && TryLoadUser(command.UserName, out _user))
                 {
+                    if (_grantType == AuthorizationGrant.ResourceOwnerPasswordCredentials)
+                    {
+                        _grantedScopes = _requestedScopes;
+                        _user.GrantClient(_client, _grantedScopes);
+                        GoToState(OAuth20State.Finished);
+                        return AccessTokenResult();
+                    }
                     return await VerifyPermissionAsync();
                 }
                 GoToState(OAuth20State.RequireSignIn);

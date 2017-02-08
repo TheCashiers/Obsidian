@@ -21,7 +21,7 @@ namespace Obsidian.Application.ProcessManagement
             bus.Register<UpdateUserSaga>();
             bus.Register<UpdateClientSaga>();
             bus.Register<UpdateScopeSaga>();
-            bus.Register<PasswordSignInSaga>();
+            bus.Register<PasswordAuthenticateSaga>();
         }
     }
 }
