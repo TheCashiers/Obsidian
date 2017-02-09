@@ -4,7 +4,6 @@ using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain;
 using Obsidian.Misc;
-using Obsidian.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +13,8 @@ using Obsidian.Application.Authentication;
 using Obsidian.Application.OAuth20.AuthorizationCodeGrant;
 using Obsidian.Application.OAuth20.ImplicitGrant;
 using Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant;
+using Obsidian.Models.OAuth;
+using Obsidian.Application.Services;
 
 #pragma warning disable CS1591
 namespace Obsidian.Controllers.OAuth
@@ -99,7 +100,7 @@ namespace Obsidian.Controllers.OAuth
             {
                 ClientId = model.ClientId,
                 ScopeNames = model.Scope.Split(' '),
-                RedirectUri = model.RedirectUri                
+                RedirectUri = model.RedirectUri
             };
 
             if (User.Identity.IsAuthenticated)
@@ -143,10 +144,11 @@ namespace Obsidian.Controllers.OAuth
             var authResult = await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(command);
             if (!authResult.IsCredentialVaild)
             {
-                ModelState.AddModelError(string.Empty, "Singin failed");
+                ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
+                ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
                 return View("SignIn");
             }
-            await _signinService.CookieSignInAsync(authResult.User, model.RememberMe);
+            await _signinService.CookieSignInAsync(AuthenticationSchemes.OAuth20Cookie, authResult.User, model.RememberMe);
 
             var message = new OAuth20SignInMessage(sagaId)
             {

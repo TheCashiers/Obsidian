@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Obsidian.Misc;
 
-namespace Obsidian.Models
+namespace Obsidian.Models.OAuth
 {
     [ModelBinder(BinderType = typeof(JsonDeserializeModelBinder<ResourceOwnerPasswordCredentialsGrantRequestModel>))]
     public class ResourceOwnerPasswordCredentialsGrantRequestModel

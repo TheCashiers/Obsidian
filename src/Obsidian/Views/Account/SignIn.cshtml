@@ -1,1 +1,25 @@
-<h1>SignIn to Obsidian Portal</h1>
+@model Obsidian.Models.Account.SignInViewModel
+
+<div>
+    <form role="form" class="text-padding" asp-action="SignIn" asp-controller="Account">
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control" type="text" placeholder="Enter your E-mail address" required/>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" asp-for="Password"></label>
+            <input class="form-control" asp-for="Password" type="password" placeholder="Enter your password" required/>
+        </div>
+
+        <div class="checkbox checkbox-primary">
+            <label asp-for="RememberMe">
+                <input type="checkbox" asp-for="RememberMe"/>
+                Remember Me
+            </label>
+        </div>
+        <br/>
+        <input asp-for="ReturnUrl" type="hidden" />
+        <button class="btn btn-lg btn-primary btn-block btn-raised" type="submit">Sign In</button>
+    </form>
+</div>
