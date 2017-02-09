@@ -36,7 +36,7 @@ namespace Obsidian.Controllers.OAuth
 
         [HttpGet("oauth20/authorize")]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes = "Obsidian.Cookie")]
+        [Authorize(ActiveAuthenticationSchemes = AuthenticationSchemes.OAuth20Cookie)]
         [AllowAnonymous]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {

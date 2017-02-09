@@ -93,7 +93,7 @@ namespace Obsidian
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationScheme = "Obsidian.Cookie",
+                AuthenticationScheme = AuthenticationSchemes.OAuth20Cookie,
                 AutomaticChallenge = false,
                 AutomaticAuthenticate = false
             });
