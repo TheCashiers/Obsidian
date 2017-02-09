@@ -14,6 +14,9 @@ namespace Obsidian.Application.OAuth20
         {
         }
 
+
+        protected string _redirectUri;
+
         public abstract Task<OAuth20Result> HandleAsync(PermissionGrantMessage message);
 
         public async Task<OAuth20Result> HandleAsync(OAuth20SignInMessage message)

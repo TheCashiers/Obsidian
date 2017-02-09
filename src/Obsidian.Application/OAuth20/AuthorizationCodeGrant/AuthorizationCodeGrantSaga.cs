@@ -22,6 +22,7 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 
         public async Task<OAuth20Result> StartAsync(AuthorizationCodeGrantCommand command)
         {
+            _redirectUri = command.RedirectUri;
             //check client and scopes
             var precondiction = TryLoadClient(command.ClientId, out _client)
                && TryLoadScopes(command.ScopeNames, out _requestedScopes);
@@ -42,7 +43,7 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
             return CurrentStateResult();
         }
 
-    
+
         public async override Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
         {
             //check granted scopes
@@ -68,7 +69,7 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
         private OAuth20Result AuthorizationCodeResult()
         {
             var result = CurrentStateResult();
-            result.RedirectUri = _client.RedirectUri.OriginalString;
+            result.RedirectUri = _redirectUri;
             result.AuthorizationCode = GenerateAuthorizationCode();
             return result;
         }
@@ -78,10 +79,12 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 
         public Task<OAuth20Result> HandleAsync(AccessTokenRequestMessage message)
         {
-            if (VerifyAccessTokenRequest(message.ClientId, message.ClientSecret, message.Code))
+            if (VerifyAccessTokenRequest(message.ClientId, message.ClientSecret, message.Code, message.RedirectUri))
             {
                 GoToState(OAuth20State.Finished);
-                return Task.FromResult(AccessTokenResult());
+                var result = AccessTokenResult();
+                result.RedirectUri = _redirectUri;
+                return Task.FromResult(result);
             }
             return Task.FromResult(CurrentStateResult());
         }
@@ -89,10 +92,11 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
         public bool ShouldHandle(AccessTokenRequestMessage message) => _state == OAuth20State.AuthorizationCodeGenerated && message.SagaId == Id;
 
 
-        private bool VerifyAccessTokenRequest(Guid clientId, string clientSecret, Guid authorizationCode)
+        private bool VerifyAccessTokenRequest(Guid clientId, string clientSecret, Guid authorizationCode, string redirectUri)
             => clientId == _client.Id
             && clientSecret == _client.Secret
-            && authorizationCode == Id;
+            && authorizationCode == Id
+            && redirectUri == _redirectUri;
 
     }
 }

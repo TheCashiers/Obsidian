@@ -74,7 +74,6 @@ namespace Obsidian.Application.OAuth20
         protected OAuth20Result AccessTokenResult()
         {
             var result = CurrentStateResult();
-            result.RedirectUri = _client.RedirectUri.OriginalString;
             result.Token = new OAuth20Result.TokenResult
             {
                 Scope = _grantedScopes,

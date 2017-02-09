@@ -12,5 +12,7 @@ namespace Obsidian.Application.OAuth20
         public Guid Code { get; set; }
         public Guid ClientId { get; set; }
         public string ClientSecret { get; set; }
+
+        public string RedirectUri { get; set; }
     }
 }

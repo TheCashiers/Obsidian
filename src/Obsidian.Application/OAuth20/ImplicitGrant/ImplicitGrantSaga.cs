@@ -19,6 +19,7 @@ namespace Obsidian.Application.OAuth20.ImplicitGrant
 
         public async Task<OAuth20Result> StartAsync(ImplicitGrantCommand command)
         {
+            _redirectUri = command.RedirectUri;
             //check client and scopes
             var precondiction = TryLoadClient(command.ClientId, out _client)
                && TryLoadScopes(command.ScopeNames, out _requestedScopes);
@@ -60,7 +61,9 @@ namespace Obsidian.Application.OAuth20.ImplicitGrant
             _user.GrantClient(_client, _grantedScopes);
             await SaveUserAsync();
             GoToState(OAuth20State.Finished);
-            return AccessTokenResult();
+            var result= AccessTokenResult();
+            result.RedirectUri = _redirectUri;
+            return result;
         }
 
     }
