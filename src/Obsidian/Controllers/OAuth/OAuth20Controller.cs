@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Obsidian.Application.Authentication;
+using Obsidian.Application.OAuth20.AuthorizationCodeGrant;
+using Obsidian.Application.OAuth20.ImplicitGrant;
+using Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant;
 
 #pragma warning disable CS1591
 namespace Obsidian.Controllers.OAuth
@@ -40,17 +43,31 @@ namespace Obsidian.Controllers.OAuth
             AuthorizationGrant grantType;
             try
             {
-                grantType = ParseGrantType(model.ResponseType);
+                grantType = ParseGrantTypeFromResponseType(model.ResponseType);
             }
             catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }
-            var command = new AuthorizeCommand
+
+            switch (grantType)
+            {
+                case AuthorizationGrant.AuthorizationCode:
+                    return await HandleAuthorizationCodeGrantAsync(model);
+                case AuthorizationGrant.Implicit:
+                    return await HandleImplicitGrantAsync(model);
+                default:
+                    return BadRequest();
+            }
+        }
+
+        private async Task<IActionResult> HandleImplicitGrantAsync(AuthorizationRequestModel model)
+        {
+            var command = new ImplicitGrantCommand
             {
                 ClientId = model.ClientId,
                 ScopeNames = model.Scope.Split(' '),
-                GrantType = grantType
+                RedirectUri = model.RedirectUri
             };
 
             if (User.Identity.IsAuthenticated)
@@ -58,7 +75,39 @@ namespace Obsidian.Controllers.OAuth
                 command.UserName = User.Identity.Name;
             }
 
-            var result = await _sagaBus.InvokeAsync<AuthorizeCommand, OAuth20Result>(command);
+            var result = await _sagaBus.InvokeAsync<ImplicitGrantCommand, OAuth20Result>(command);
+            var context = _dataProtector.Protect(result.SagaId.ToString());
+            switch (result.State)
+            {
+                case OAuth20State.RequireSignIn:
+                    return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
+
+                case OAuth20State.RequirePermissionGrant:
+                    return PermissionGrantView(result);
+
+                case OAuth20State.Finished:
+                    return ImplictRedirect(result);
+
+                default:
+                    return BadRequest();
+            }
+        }
+
+        private async Task<IActionResult> HandleAuthorizationCodeGrantAsync(AuthorizationRequestModel model)
+        {
+            var command = new AuthorizationCodeGrantCommand
+            {
+                ClientId = model.ClientId,
+                ScopeNames = model.Scope.Split(' '),
+                RedirectUri = model.RedirectUri                
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                command.UserName = User.Identity.Name;
+            }
+
+            var result = await _sagaBus.InvokeAsync<AuthorizationCodeGrantCommand, OAuth20Result>(command);
             var context = _dataProtector.Protect(result.SagaId.ToString());
             switch (result.State)
             {
@@ -70,9 +119,6 @@ namespace Obsidian.Controllers.OAuth
 
                 case OAuth20State.AuthorizationCodeGenerated:
                     return AuthorizationCodeRedirect(result);
-
-                case OAuth20State.Finished:
-                    return ImplictRedirect(result);
 
                 default:
                     return BadRequest();
@@ -195,14 +241,14 @@ namespace Obsidian.Controllers.OAuth
                 {
                     return Unauthorized();
                 }
-                var authorizeCommand = new AuthorizeCommand
+                var authorizeCommand = new ResourceOwnerPasswordCredentialsGrantCommand
                 {
-                    GrantType = AuthorizationGrant.ResourceOwnerPasswordCredentials,
                     ClientId = model.ClientId,
                     UserName = authResult.User.UserName,
+                    ClientSecret = model.ClientSecret,
                     ScopeNames = model.Scope.Split(' ')
                 };
-                var oauthResult = await _sagaBus.InvokeAsync<AuthorizeCommand, OAuth20Result>(authorizeCommand);
+                var oauthResult = await _sagaBus.InvokeAsync<ResourceOwnerPasswordCredentialsGrantCommand, OAuth20Result>(authorizeCommand);
                 switch (oauthResult.State)
                 {
                     case OAuth20State.Finished:
@@ -215,7 +261,7 @@ namespace Obsidian.Controllers.OAuth
         }
 
 
-        private AuthorizationGrant ParseGrantType(string responseType)
+        private AuthorizationGrant ParseGrantTypeFromResponseType(string responseType)
         {
             if ("code".Equals(responseType, StringComparison.OrdinalIgnoreCase))
             {

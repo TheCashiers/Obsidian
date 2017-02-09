@@ -18,7 +18,7 @@ namespace Obsidian.Application.ProcessManagement
             _serviceProvider = provider;
         }
 
-        public void Register<TSaga>() where TSaga : Saga
+        public SagaBus Register<TSaga>() where TSaga : Saga
         {
             var sagaType = typeof(TSaga);
             var implementedInterfaces = sagaType.GetInterfaces();
@@ -26,6 +26,7 @@ namespace Obsidian.Application.ProcessManagement
                 .Where(i => i.GetGenericTypeDefinition() == typeof(IStartsWith<,>))
                 .Select(i => i.GetGenericArguments().First()).ToList();
             commandTypes.ForEach(ct => _sagaStarterRegistry.Add(ct, sagaType));
+            return this;
         }
 
         public async Task<TResult> InvokeAsync<TCommand, TResult>(TCommand command)
