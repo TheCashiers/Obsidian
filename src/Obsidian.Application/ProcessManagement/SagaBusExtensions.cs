@@ -1,11 +1,6 @@
 ﻿using Obsidian.Application.ClientManagement;
-using Obsidian.Application.OAuth20;
 using Obsidian.Application.ScopeManagement;
 using Obsidian.Application.UserManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Obsidian.Application.Authentication;
 using Obsidian.Application.OAuth20.AuthorizationCodeGrant;
 using Obsidian.Application.OAuth20.ImplicitGrant;

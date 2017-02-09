@@ -1,12 +1,8 @@
 ﻿using Obsidian.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Obsidian.Domain.Repositories;
 using Obsidian.Persistence.Repositories;
-using Moq;
-using MongoDB.Driver;
 using Xunit;
 
 namespace Obsidian.Persistence.Test.Repositories

@@ -8,7 +8,6 @@ using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
-using System.Linq;
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]

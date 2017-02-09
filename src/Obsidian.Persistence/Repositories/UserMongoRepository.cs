@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Persistence.Mappings;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.Repositories

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using Obsidian.Domain.Repositories;
 using Obsidian.Persistence.Repositories;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.DependencyInjection
 {
