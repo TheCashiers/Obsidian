@@ -18,27 +18,7 @@ namespace Obsidian.Application.OAuth20.ImplicitGrant
         }
 
         public async Task<OAuth20Result> StartAsync(ImplicitGrantCommand command)
-        {
-            _redirectUri = command.RedirectUri;
-            //check client and scopes
-            var precondiction = TryLoadClient(command.ClientId, out _client)
-               && TryLoadScopes(command.ScopeNames, out _requestedScopes);
-            if (!precondiction)
-            {
-                GoToState(OAuth20State.Failed);
-                return CurrentStateResult();
-            }
-
-            //check user
-            if (TryLoadUser(command.UserName, out _user))
-            {
-                //if user logged in, skip next step
-                await VerifyPermissionAsync();
-            }
-            //next step
-            GoToState(OAuth20State.RequireSignIn);
-            return CurrentStateResult();
-        }
+            => await StartSagaAsync(command);
 
 
 
