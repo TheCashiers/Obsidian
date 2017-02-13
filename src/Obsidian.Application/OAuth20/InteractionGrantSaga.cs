@@ -29,7 +29,7 @@ namespace Obsidian.Application.OAuth20
             }
 
             //check user
-            if (!string.IsNullOrWhiteSpace(command.UserName) 
+            if (!string.IsNullOrWhiteSpace(command.UserName)
                 && TryLoadUser(command.UserName, out _user))
             {
                 //if user logged in, skip next step
@@ -47,11 +47,11 @@ namespace Obsidian.Application.OAuth20
             //check user
             if (TryLoadUser(message.UserName, out _user))
             {
-                //current state is RequireSignIn
-                return CurrentStateResult();
+                //next step
+                return await VerifyPermissionAsync();
             }
-            //next step
-            return await VerifyPermissionAsync();
+            //current state is RequireSignIn
+            return CurrentStateResult();
         }
 
 
