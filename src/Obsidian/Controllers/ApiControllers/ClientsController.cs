@@ -53,6 +53,17 @@ namespace Obsidian.Controllers.ApiControllers
             return Ok(Mapper.Map<QueryModel.Client>(client));
         }
 
+        [HttpGet("{id:guid}/Secret")]
+        public async Task<IActionResult> GetSecretById(Guid id)
+        {
+            var client = await _clientRepository.FindByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound();
+            }
+            return Ok(new { Secret = client.Secret });
+        }
+
         /// <summary>
         /// Create a Client
         /// </summary>
