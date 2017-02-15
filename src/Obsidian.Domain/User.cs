@@ -48,6 +48,9 @@ namespace Obsidian.Domain
         public IList<ClientAuthorizationDetail> GrantedClients { get; private set; }
             = new List<ClientAuthorizationDetail>();
 
+        public IList<Claim> Claims { get; private set; }
+            = new List<Claim>();
+
         #endregion Props
 
         private string _passwordHash;
@@ -103,13 +106,16 @@ namespace Obsidian.Domain
                          return new Claim(g.Key, value?.ToString() ?? "");
                      });
 
-        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
+        public IEnumerable<Claim> GetClaims(IEnumerable<String> claimTypes)
         {
-            var claimTypes = scopes.SelectMany(s => s.ClaimTypes);
             var userClaims = GetClaimsFromObject(userClaimGetters, claimTypes, this);
             var profileClaims = GetClaimsFromObject(profileClaimGetters, claimTypes, Profile);
-            return Enumerable.Union(userClaims, profileClaims);
+            var customClaims = Claims.Where(c => claimTypes.Contains(c.Type));
+            return Enumerable.Union(userClaims, profileClaims).Union(customClaims);
         }
+
+        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
+            =>GetClaims(scopes.SelectMany(s => s.ClaimTypes));
 
         #endregion Claim Generation
 

@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Application.Authentication;
 using Obsidian.Application.ClientManagement;
 using Obsidian.Application.OAuth20;
+using Obsidian.Application.OAuth20.AuthorizationCodeGrant;
+using Obsidian.Application.OAuth20.ImplicitGrant;
+using Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.ScopeManagement;
 using Obsidian.Application.UserManagement;
@@ -22,12 +26,16 @@ namespace Obsidian.Application.DependencyInjection
         /// <param name="services">The <see cref="IServiceCollection"/> to add servicesto.</param>
         /// <returns>The same service collection so that multiple calls can be chained.</returns>
         public static IServiceCollection AddSaga(this IServiceCollection services)
-            => services.AddTransient<OAuth20Saga>().AddTransient<OAuth20Service>().AddTransient<OAuth20Configuration>()
+            => services.AddTransient<AuthorizationCodeGrantSaga>()
+                       .AddTransient<ImplicitGrantSaga>()
+                       .AddTransient<ResourceOwnerPasswordCredentialsGrantSaga>()
+                       .AddTransient<OAuth20Service>().AddTransient<OAuth20Configuration>()
                        .AddTransient<CreateUserSaga>()
                        .AddTransient<CreateClientSaga>()
                        .AddTransient<CreateScopeSaga>()
                        .AddTransient<UpdateUserSaga>()
                        .AddTransient<UpdateClientSaga>()
-                       .AddTransient<UpdateScopeSaga>();
+                       .AddTransient<UpdateScopeSaga>()
+                       .AddTransient<PasswordAuthenticateSaga>();
     }
 }

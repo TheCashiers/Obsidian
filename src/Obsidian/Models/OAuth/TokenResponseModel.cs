@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Obsidian.Application.OAuth20;
 using System.Linq;
-using System.Runtime.Serialization;
 
-namespace Obsidian.Models
+namespace Obsidian.Models.OAuth
 {
     public class TokenResponseModel
     {

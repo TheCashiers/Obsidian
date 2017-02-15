@@ -2,7 +2,6 @@
 using Obsidian.Domain.Repositories;
 using Obsidian.Persistence.Repositories;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 

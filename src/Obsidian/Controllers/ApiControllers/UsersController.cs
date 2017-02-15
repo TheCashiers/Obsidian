@@ -9,7 +9,7 @@ using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -56,6 +56,20 @@ namespace Obsidian.Controllers.ApiControllers
             return StatusCode(412, result.Message);
         }
 
+        [HttpPut("{id:guid}/Claims")]
+        [ValidateModel]
+        public async Task<IActionResult> UpdateClaims([FromBody]UpdateUserClaimsDto dto, Guid id)
+        {
+            var cmd = new UpdateUserClaimCommand { UserId = id, Claims = dto.Claims.ToDictionary(t => t.ClaimType, v => v.ClaimValue) };
+            var result = await _sagaBus.InvokeAsync<UpdateUserClaimCommand, MessageResult>(cmd);
+            if (result.Succeed)
+            {
+                return Created(Url.Action(), null);
+            }
+            //if user doesn't exist.
+            return BadRequest(result.Message);
+        }
+
         [HttpPut("{id:guid}/Profile")]
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
@@ -93,8 +107,8 @@ namespace Obsidian.Controllers.ApiControllers
                 UserId = id,
                 UserName = dto.UserName
             };
-            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand,MessageResult> (cmd);
-            if(result.Succeed)
+            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand, MessageResult>(cmd);
+            if (result.Succeed)
             {
                 return Created(Url.Action(), null);
             }

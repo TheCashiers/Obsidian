@@ -1,9 +1,4 @@
-﻿using Obsidian.Domain.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
 namespace Obsidian.Domain
 {

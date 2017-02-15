@@ -1,6 +1,4 @@
-﻿using Obsidian.Domain;
-
-namespace Obsidian.Domain
+﻿namespace Obsidian.Domain
 {
     /// <summary>
     /// Represents the gender of a <see cref="User"/>.

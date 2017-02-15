@@ -1,9 +1,6 @@
 ﻿using MongoDB.Bson.Serialization;
 using Obsidian.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Obsidian.Persistence.Mappings
 {
@@ -11,6 +8,13 @@ namespace Obsidian.Persistence.Mappings
     {
         internal static void MapUser()
         {
+            BsonClassMap.RegisterClassMap<Claim>(cm =>
+            {
+                cm.MapCreator(c => new Claim(c.Type, c.Value));
+                cm.MapProperty(c => c.Type);
+                cm.MapProperty(c => c.Value);
+            });
+
             BsonClassMap.RegisterClassMap<User>(cm =>
             {
                 cm.AutoMap();

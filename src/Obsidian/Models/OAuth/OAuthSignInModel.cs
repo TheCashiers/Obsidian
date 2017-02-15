@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Obsidian.Models
+namespace Obsidian.Models.OAuth
 {
     public class OAuthSignInModel
     {
