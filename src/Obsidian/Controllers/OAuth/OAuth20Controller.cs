@@ -15,6 +15,7 @@ using Obsidian.Application.OAuth20.ImplicitGrant;
 using Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant;
 using Obsidian.Models.OAuth;
 using Obsidian.Application.Services;
+using Obsidian.Application.OAuth20.TokenVerification;
 
 #pragma warning disable CS1591
 namespace Obsidian.Controllers.OAuth
@@ -261,6 +262,19 @@ namespace Obsidian.Controllers.OAuth
                 }
             }
             return BadRequest();
+        }
+
+        [HttpPost("oauth20/token/verify")]
+        [ValidateModel]
+        public async Task<IActionResult> VerifyToken(TokenVerificationModel model)
+        {
+            var command = new VerifyTokenCommand
+            {
+                ClientId = model.ClientId,
+                Token = model.Token
+            };
+            var result = await _sagaBus.InvokeAsync<VerifyTokenCommand,bool>(command);
+            return Ok(result);
         }
 
 
