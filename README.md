@@ -5,10 +5,12 @@
 1. Make sure these following tools are installed:
   - .NET Core 1.0
 2. Run the following commands.
-    - cd ./src/Obsidian/
-    - dotnet restore
-    - dotnet --verbose build
-	- npm install -g typescript webpack typings
-	- npm link typescript
-	- npm update
-	- typings install
+  ```bash
+      cd ./src/Obsidian/
+      dotnet restore
+      dotnet --verbose build
+      npm install -g typescript webpack typings
+      npm link typescript
+      npm update
+      typings install
+  ```
