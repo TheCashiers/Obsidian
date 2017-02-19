@@ -214,7 +214,7 @@ namespace Obsidian.Controllers.OAuth
                     ClientId = model.ClientId,
                     ClientSecret = model.ClientSecret,
                     Code = model.Code,
-                    RedirectUri = model.ClientSecret
+                    RedirectUri = model.RedirectUri
                 };
                 var result = await _sagaBus.SendAsync<AccessTokenRequestMessage, OAuth20Result>(message);
                 switch (result.State)
