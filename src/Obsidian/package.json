@@ -14,12 +14,13 @@
   },
   "scripts": {
     "pack": "webpack"
-    },
+  },
   "dependencies": {
     "@types/jquery": "^2.0.40",
     "@types/react": "^15.0.11",
     "@types/react-router": "^3.0.4",
     "axios": "^0.13.1",
+    "bootstrap": "^3.3.7",
     "bootstrap-material-design": "^0.5.10",
     "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
