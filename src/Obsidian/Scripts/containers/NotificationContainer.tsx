@@ -1,4 +1,4 @@
-// snackbar has no declaration files, using var explicitly.
+/// <reference path="../configs/global.d.ts" />
 import * as $ from "jquery";
 
 export enum NotificationState{
@@ -33,7 +33,7 @@ export class Service{
             timeout: 3000, // time in milliseconds after the snackbar autohides, 0 is disabled
             htmlAllowed: true, // allows HTML as content value
         };
-        ($ as any).snackbar(options);
+        $.snackbar(options);
     }
     static pushError(desc:string,error:Error){
         this.push(`${desc} failed. ${error.toString()}.`,NotificationState.error)

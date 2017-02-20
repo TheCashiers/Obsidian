@@ -1,4 +1,5 @@
-﻿import * as React from "react";
+﻿/// <reference path="../configs/global.d.ts" />
+import * as React from "react";
 import * as $ from "jquery"
 import { PortalHeader } from "./PortalElements";
 const fixLayout = function () {
@@ -30,7 +31,7 @@ const fixLayout = function () {
 export let Main = React.createClass({
     componentDidUpdate: () => {
         fixLayout();
-        ($ as any).material.init();
+        $.material.init();
     },
     render: function () {
         return (
