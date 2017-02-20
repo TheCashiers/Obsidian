@@ -68,9 +68,7 @@
   },
   "scripts": {
     "prepublish": [
-      "bower install",
-      "npm update",
-      "typings install"
+      "npm update"
     ],
     "precompile": [
       "webpack"
