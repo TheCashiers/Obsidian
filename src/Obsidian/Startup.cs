@@ -99,13 +99,6 @@ namespace Obsidian
                 AutomaticAuthenticate = false
             });
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = AuthenticationSchemes.PortalCookie,
-                AutomaticChallenge = false,
-                AutomaticAuthenticate = false
-            });
-
             var oauthConfig = oauthOptions.Value;
             var key = oauthConfig.TokenSigningKey;
             var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
