@@ -17,6 +17,7 @@ before_script:
     - dotnet restore
     - cd ./Obsidian/
     - npm update
+    - npm pack
 
 script:
     - dotnet --verbose build

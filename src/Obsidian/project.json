@@ -67,9 +67,6 @@
     ]
   },
   "scripts": {
-    "prepublish": [
-      "npm update"
-    ],
     "postcompile": [
       "npm pack"
     ],
