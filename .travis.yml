@@ -10,7 +10,6 @@ before_install:
         
 install:
     - sudo apt-get install -y dotnet-dev-1.0.0-preview2-003121 mongodb-org
-    - npm install -g typescript webpack typings bower
 
 before_script:
     - sudo service mongod start
@@ -18,13 +17,10 @@ before_script:
     - dotnet restore
     - cd ./Obsidian/
     - npm update
-    - npm link typescript
-    - typings install
-    - bower install
+    - node_modules/.bin/webpack
 
 script:
     - dotnet --verbose build
-    - webpack
     - cd ../../
     - chmod +x ./test.sh
     - ./test.sh

@@ -4,24 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Obsidian</title>
-
-    <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link href="~/lib/bootstrap-material-design/dist/css/bootstrap-material-design.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap-material-design/dist/css/ripples.css" rel="stylesheet" />
-        <link href="~/lib/fontawesome/css/font-awesome.css" rel="stylesheet" />
-        <link href="~/lib/snackbarjs/dist/snackbar.css" rel="stylesheet" />
-    </environment>
-
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link href="~/lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet" />
-        <link href="~/lib/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="~/lib/snackbarjs/dist/snackbar.min.css" rel="stylesheet" />
-    </environment>
+    <link href="~/lib/styles.css" rel="stylesheet" />
 
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
@@ -29,28 +12,7 @@
     <div class="body-content">
         @RenderBody()
     </div>
-
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/react/react.js"></script>
-        <script src="~/lib/react/react-dom.js"></script>
-        <script src="~/lib/bootstrap-material-design/dist/js/material.js"></script>
-        <script src="~/lib/bootstrap-material-design/dist/js/ripples.js"></script>
-        <script src="~/lib/snackbarjs/dist/snackbar.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
-        </script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/lib/react/react.min.js"></script>
-        <script src="~/lib/react/react-dom.min.js"></script>
-        <script src="~/lib/bootstrap-material-design/dist/js/material.min.js"></script>
-        <script src="~/lib/bootstrap-material-design/dist/js/ripples.min.js"></script>
-        <script src="~/lib/snackbarjs/dist/snackbar.min.js"></script>
-    </environment>
+    
 
     @RenderSection("scripts", required: false)
 </body>

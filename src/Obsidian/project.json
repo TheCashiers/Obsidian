@@ -67,13 +67,8 @@
     ]
   },
   "scripts": {
-    "prepublish": [
-      "bower install",
-      "npm update",
-      "typings install"
-    ],
-    "precompile": [
-      "webpack"
+    "postcompile": [
+      "npm pack"
     ],
     "postpublish": [
       "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"

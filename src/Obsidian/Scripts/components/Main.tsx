@@ -1,4 +1,6 @@
-﻿import * as React from "react";
+﻿/// <reference path="../configs/global.d.ts" />
+import * as React from "react";
+import * as $ from "jquery"
 import { PortalHeader } from "./PortalElements";
 const fixLayout = function () {
     //Get window height and the wrapper height
@@ -29,6 +31,7 @@ const fixLayout = function () {
 export let Main = React.createClass({
     componentDidUpdate: () => {
         fixLayout();
+        $.material.init();
     },
     render: function () {
         return (

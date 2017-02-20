@@ -2,7 +2,6 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
-
 import { Router, Route, IndexRoute, browserHistory } from "react-router";
 import { Main } from "../components/Main";
 import { UserManagementContainer } from "../containers/UserManagementContainer";
