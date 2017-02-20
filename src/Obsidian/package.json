@@ -13,7 +13,7 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
-    "webpack": "webpack"
+    "start": "webpack"
   },
   "dependencies": {
     "@types/jquery": "^2.0.40",
