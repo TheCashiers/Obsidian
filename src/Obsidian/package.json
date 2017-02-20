@@ -16,9 +16,10 @@
   "dependencies": {
     "@types/jquery": "^2.0.40",
     "@types/react": "^15.0.11",
+    "@types/react-router": "^3.0.4",
     "axios": "^0.13.1",
     "bootstrap-material-design": "^0.5.10",
-    "fontawesome": "^4.7.0",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.2.1",
