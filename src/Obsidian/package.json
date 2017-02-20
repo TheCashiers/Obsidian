@@ -12,7 +12,9 @@
     "typescript": "^2.1.6",
     "webpack": "^2.2.1"
   },
-  "scripts": {},
+  "scripts": {
+    "pack": "webpack"
+    },
   "dependencies": {
     "@types/jquery": "^2.0.40",
     "@types/react": "^15.0.11",
