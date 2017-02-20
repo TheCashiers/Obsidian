@@ -8,9 +8,10 @@ namespace Obsidian.Application.Dto
 {
     public class ClientCreationDto
     {
+        [Required]
         public string DisplayName { get; set; }
 
-        [Url]
+        [Required, Url]
         public string RedirectUri { get; set; }
     }
 }

@@ -1,17 +1,25 @@
 import * as React from "react";
 import { ClientForm } from "../components/Form";
-import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
+import * as axios from "axios";
 import * as Notification from "./NotificationContainer"
 
 
-export class ClientCreationContainer extends React.Component<any, any>
-{
-    constructor(props: any) {
+export class ClientEditContainer extends React.Component<any, any> {
+    constructor(props) {
         super(props);
-        this.state = { displayName:"", redirectUri:""};
+        this.state = {
+            id: props.location.query.id,
+            displayName: "",
+            redirectUri: ""
+        };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    public componentWillMount() {
+        axios.get(api.configs.getClient.request_uri + this.state.id)
+            .then((info) => { this.setState(info.data); })
+            .catch((e) => Notification.Service.pushError("getClient", e));
     }
     handleInputChange(e) {
         this.setState({
@@ -25,20 +33,17 @@ export class ClientCreationContainer extends React.Component<any, any>
         if (displayName && redirectUri) {
             axios.post(api.configs.createClient.request_uri, { displayName: displayName, redirectUri: redirectUri })
                 .then(()=>{
-                    this.setState({ displayName: "", redirectUri: "" });
-                    console.log(e);
-                    Notification.Service.pushSuccess("Client creation")
+                    Notification.Service.pushSuccess("Client editing")
                 })
-                .catch((e) =>  Notification.Service.pushError("Client creation",e));
+                .catch((e) =>  Notification.Service.pushError("Client editing",e));
         } else { return; }
     }
-    render(){
-        return <ClientForm
-            action="Create Client"
+    public render() {
+        return (<ClientForm
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
-            displayName={this.state.displayName}
             redirectUri={this.state.redirectUri}
-        />
+            displayName={this.state.displayName}
+            action="Edit Client" />);
     }
 }

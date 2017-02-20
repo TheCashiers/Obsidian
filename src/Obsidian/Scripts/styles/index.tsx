@@ -3,17 +3,17 @@ export const styles={
         width:'400px',
         background:'#EEE',
         height:'200px',
-        "text-align":'center',
+        textAlign:'center',
         color:'black',
-        "vertical-align":'center'
+        verticalAlign:'center'
     },
     portalIndex:{
         margin:'30px'  
     },
     comboBox:{
-        "margin-right":'30px'
+        marginRight:'30px'
     },
     comboList:{
-        "padding-top":"16px"
+        paddingTop:"16px"
     }
 }

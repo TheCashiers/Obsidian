@@ -2,7 +2,7 @@
 import * as Notification from "./NotificationContainer"
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
-import { CreateUser } from "../components/CreateUser";
+import { UserForm } from "../components/Form";
 import { UserFormContainer } from "../containers/UserFormContainer"
 
 
@@ -27,12 +27,12 @@ export class UserCreationContainer extends UserFormContainer
         } else { return; }
     }
     public render() {
-        return (<CreateUser
+        return (<UserForm
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}
-            action={this.props.action}/>);
+            action="Create User"/>);
     }
 }
 

@@ -8,7 +8,7 @@ using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -63,15 +63,16 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}")]
         [ValidateModel]
-        public async Task<IActionResult> Put([FromBody] UpdateScopeInfoDto dto, Guid id)
+        public async Task<IActionResult> Put([FromBody] UpdateScopeDto dto, Guid id)
         {
-            var cmd = new UpdateScopeInfoCommand
+            var cmd = new UpdateScopeCommand
             {
                 Id = id,
                 Description = dto.Description,
-                DisplayName = dto.DisplayName
+                DisplayName = dto.DisplayName,
+                ClaimTypes = dto.ClaimTypes
             };
-            var result = await _sagaBus.InvokeAsync<UpdateScopeInfoCommand, MessageResult>(cmd);
+            var result = await _sagaBus.InvokeAsync<UpdateScopeCommand, MessageResult>(cmd);
             if (result.Succeed)
             {
                 return Created(Url.Action(), null);
@@ -79,39 +80,5 @@ namespace Obsidian.Controllers.ApiControllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("{id:guid}/Claims")]
-        [ValidateModel]
-        public async Task<IActionResult> AddClaim(Guid id, [FromBody]AddClaimToScopeDto dto)
-        {
-            var cmd = new UpdateScopeClaimsCommand
-            {
-                IsAdd = true,
-                Id = id,
-                Claim = dto.Claim
-            };
-            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult>(cmd);
-            if (result.Succeed)
-            {
-                return Created(Url.Action(), null);
-            }
-            return BadRequest(result.Message);
-        }
-        [HttpDelete("{id:guid}/Claims/{claim}")]
-        [ValidateModel]
-        public async Task<IActionResult> RemoveClaim(Guid id, string claim)
-        {
-            var cmd = new UpdateScopeClaimsCommand
-            {
-                IsAdd = false,
-                Id = id,
-                Claim = claim
-            };
-            var result = await _sagaBus.InvokeAsync<UpdateScopeClaimsCommand, MessageResult>(cmd);
-            if (result.Succeed)
-            {
-                return NoContent();
-            }
-            return BadRequest(result.Message);
-        }
     }
 }

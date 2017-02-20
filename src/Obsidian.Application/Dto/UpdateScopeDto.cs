@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.Dto
 {
-    public class UpdateScopeInfoDto
+    public class UpdateScopeDto
     {
         public string DisplayName { get; set; }
         public string Description { get; set; }
+        public IList<string> ClaimTypes { get; set; }
     }
 }

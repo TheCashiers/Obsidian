@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
-import { UserForm } from "../components/UserForm";
+import { UserForm } from "../components/Form";
 
 interface IUserFormState {
     username?: string;

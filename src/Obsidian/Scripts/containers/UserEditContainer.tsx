@@ -1,6 +1,6 @@
 import * as React from "react"
 import { UserFormContainer } from "./UserFormContainer"
-import { EditUser } from "../components/EditUser";
+import { UserForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
 import * as axios from "axios";
 import * as Notification from "./NotificationContainer"
@@ -32,14 +32,13 @@ export class UserEditContainer extends UserFormContainer {
                     .catch((e) => Notification.Service.pushError("Password changing", e));
             }
         } else { return; }
-
     }
     public render() {
-        return (<EditUser
+        return (<UserForm
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}
-            action={this.props.action} />);
+            action="Edit User" />);
     }
 }

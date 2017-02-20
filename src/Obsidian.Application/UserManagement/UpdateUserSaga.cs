@@ -3,6 +3,7 @@ using Obsidian.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
@@ -10,6 +11,7 @@ namespace Obsidian.Application.UserManagement
     public class UpdateUserSaga : Saga, IStartsWith<UpdateUserProfileCommand, MessageResult>
                                       , IStartsWith<UpdateUserPasswordCommand, MessageResult>
                                       , IStartsWith<UpdateUserNameCommand, MessageResult>
+                                      , IStartsWith<UpdateUserClaimCommand, MessageResult>
     {
 
         private bool _isCompleted;
@@ -19,6 +21,30 @@ namespace Obsidian.Application.UserManagement
         public UpdateUserSaga(IUserRepository repo)
         {
             _repo = repo;
+        }
+
+        public async Task<MessageResult> StartAsync(UpdateUserClaimCommand command)
+        {
+            _isCompleted = true;
+            //check user
+            var user = await _repo.FindByIdAsync(command.UserId);
+            if (user == null)
+            {
+                return new MessageResult
+                {
+                    Succeed = false,
+                    Message = $"User of user id {command.UserId} doesn't exist."
+                };
+            }
+            //edit claims
+            user.Claims.Clear();
+            command.Claims.Select(c => new Claim(c.Key, c.Value)).ToList().ForEach(cm => user.Claims.Add(cm));
+            await _repo.SaveAsync(user);
+            return new MessageResult
+            {
+                Succeed = true,
+                Message = $"Claims of User {user.Id} changed."
+            };
         }
 
         public async Task<MessageResult> StartAsync(UpdateUserProfileCommand command)

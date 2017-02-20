@@ -23,7 +23,7 @@ const UserItem = (props) => (
         <div className="list-group-separator"></div>
     </div>
 );
-
+ 
 export const UserList = (props) => (
     <div className="content-wrapper content">
         <Link to="/manage/users/create">

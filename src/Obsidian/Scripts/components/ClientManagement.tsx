@@ -10,7 +10,7 @@ export const ClientItem = (props) => (
             </div>
             <div className="row-content">
                 <div className="least-content">
-                    <Link to="/manage/clients/edit/" query={{ clientname: props.clientname, id: props.id }}>
+                    <Link to="/manage/clients/edit/" query={{ id: props.id }}>
                         <button className="btn btn-lg btn-primary btn-raised">
                             Edit
                         </button>

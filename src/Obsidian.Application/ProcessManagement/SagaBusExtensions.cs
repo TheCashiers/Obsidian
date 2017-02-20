@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Obsidian.Application.Authentication;
 
 namespace Obsidian.Application.ProcessManagement
 {
@@ -20,6 +21,7 @@ namespace Obsidian.Application.ProcessManagement
             bus.Register<UpdateUserSaga>();
             bus.Register<UpdateClientSaga>();
             bus.Register<UpdateScopeSaga>();
+            bus.Register<PasswordSignInSaga>();
         }
     }
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer";
-import { CreateScope } from "../components/CreateScope"
+import { ScopeForm } from "../components/Form"
 
 export class ScopeCreationContainer extends React.Component<any, any>
 {
@@ -37,14 +37,16 @@ export class ScopeCreationContainer extends React.Component<any, any>
         let scopeName: string = this.state.scopeName.trim();
         let displayName: string = this.state.displayName.trim();
         let description: string = this.state.description.trim();
-        let claimTypes:string = this.state.claimTypes.trim();
+        let claimTypes:string[] = (this.state.claimTypes as string).split(",");
         if (scopeName&&displayName&&description&&claimTypes) {
-            axios.post(api.configs.createScope.request_uri, { 
+            let jsonObject = { 
                 displayName: displayName,
                 scopeName:scopeName,
                 description:description,
                 claimTypes:claimTypes
-             })
+             }
+             axios
+            axios.post(api.configs.createScope.request_uri,jsonObject )
                 .then(()=>{
                     console.log(e);
                     Notification.Service.pushSuccess("Scope creation")
@@ -53,7 +55,8 @@ export class ScopeCreationContainer extends React.Component<any, any>
         } else { return; }
     }
     render(){
-        return <CreateScope
+        return <ScopeForm
+            action="Create Scope"
             onInputChange={this.handleInputChange}
             onSubmit={this.handleSubmit}
             scopeName={this.state.scopeName}

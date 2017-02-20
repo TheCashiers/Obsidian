@@ -1,5 +1,5 @@
 // snackbar has no declaration files, using var explicitly.
-declare var $;
+import * as $ from "jquery";
 
 export enum NotificationState{
     info,
@@ -32,8 +32,8 @@ export class Service{
             style: `alert ${ncStyle}`, // add a custom class to your snackbar
             timeout: 3000, // time in milliseconds after the snackbar autohides, 0 is disabled
             htmlAllowed: true, // allows HTML as content value
-        }
-        $.snackbar(options);
+        };
+        ($ as any).snackbar(options);
     }
     static pushError(desc:string,error:Error){
         this.push(`${desc} failed. ${error.toString()}.`,NotificationState.error)

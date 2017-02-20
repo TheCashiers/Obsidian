@@ -4,15 +4,26 @@
   "private": true,
   "devDependencies": {
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "file-loader": "^0.10.0",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
-    "ts-loader": "^0.8.2"
+    "ts-loader": "^0.8.2",
+    "typescript": "^2.1.6",
+    "webpack": "^2.2.1"
   },
   "scripts": {},
   "dependencies": {
+    "@types/jquery": "^2.0.40",
+    "@types/react": "^15.0.11",
     "axios": "^0.13.1",
+    "bootstrap-material-design": "^0.5.10",
+    "fontawesome": "^4.7.0",
+    "jquery": "^3.1.1",
+    "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.2.1",
-    "react-router": "^2.6.0",
-    "react": "^15.2.1"
+    "react-dom": "^15.4.2",
+    "react-router": "^2.8.1",
+    "snackbarjs": "^1.1.0"
   }
 }
