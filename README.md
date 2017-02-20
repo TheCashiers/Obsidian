@@ -5,9 +5,10 @@
 1. Make sure these following tools are installed:
   - .NET Core 1.0
 2. Run the following commands.
-  ```bash
-      cd ./src/Obsidian/
-      dotnet restore
-      dotnet --verbose build
-      npm update
-  ```
+
+    ```bash
+        cd ./src/Obsidian/
+        dotnet restore
+        dotnet --verbose build
+        npm update
+    ```
