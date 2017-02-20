@@ -68,7 +68,7 @@
   },
   "scripts": {
     "postcompile": [
-      "npm pack"
+      "npm webpack"
     ],
     "postpublish": [
       "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
