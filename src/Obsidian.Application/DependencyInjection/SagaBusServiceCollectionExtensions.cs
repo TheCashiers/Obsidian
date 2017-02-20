@@ -5,6 +5,7 @@ using Obsidian.Application.OAuth20;
 using Obsidian.Application.OAuth20.AuthorizationCodeGrant;
 using Obsidian.Application.OAuth20.ImplicitGrant;
 using Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant;
+using Obsidian.Application.OAuth20.TokenVerification;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.ScopeManagement;
 using Obsidian.Application.UserManagement;
@@ -36,6 +37,7 @@ namespace Obsidian.Application.DependencyInjection
                        .AddTransient<UpdateUserSaga>()
                        .AddTransient<UpdateClientSaga>()
                        .AddTransient<UpdateScopeSaga>()
-                       .AddTransient<PasswordAuthenticateSaga>();
+                       .AddTransient<PasswordAuthenticateSaga>()
+                       .AddTransient<VerifyTokenSaga>();
     }
 }
