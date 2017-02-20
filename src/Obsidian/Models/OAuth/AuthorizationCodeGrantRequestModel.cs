@@ -4,7 +4,7 @@ using Obsidian.Misc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Obsidian.Models
+namespace Obsidian.Models.OAuth
 {
     [ModelBinder(BinderType = typeof(JsonDeserializeModelBinder<AuthorizationCodeGrantRequestModel>))]
     public class AuthorizationCodeGrantRequestModel

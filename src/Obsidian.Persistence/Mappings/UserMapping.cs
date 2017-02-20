@@ -1,11 +1,6 @@
 ﻿using MongoDB.Bson.Serialization;
 using Obsidian.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Security.Claims;
-using System.Reflection;
 
 namespace Obsidian.Persistence.Mappings
 {

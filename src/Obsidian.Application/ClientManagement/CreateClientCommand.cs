@@ -1,5 +1,4 @@
 ﻿using Obsidian.Application.ProcessManagement;
-using System;
 
 namespace Obsidian.Application.ClientManagement
 {

@@ -2,8 +2,6 @@
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement

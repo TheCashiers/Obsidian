@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Obsidian.Application.OAuth20
+﻿namespace Obsidian.Application.OAuth20
 {
     public class OAuth20Configuration
     {

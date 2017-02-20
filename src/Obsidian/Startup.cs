@@ -15,6 +15,7 @@ using Obsidian.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
+using Obsidian.Application.Services;
 
 namespace Obsidian
 {
@@ -93,7 +94,14 @@ namespace Obsidian
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationScheme = "Obsidian.Cookie",
+                AuthenticationScheme = AuthenticationSchemes.OAuth20Cookie,
+                AutomaticChallenge = false,
+                AutomaticAuthenticate = false
+            });
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = AuthenticationSchemes.PortalCookie,
                 AutomaticChallenge = false,
                 AutomaticAuthenticate = false
             });
