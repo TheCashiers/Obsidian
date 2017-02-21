@@ -26,7 +26,6 @@ module.exports = {
             { test: /\.tsx?$/, loader: "ts-loader" },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-                loader: 'file-loader?name=wwwroot/lib/fonts/[name].[ext]'
             },
             { test: /\.js$/, loader: "source-map-loader", enforce: 'pre' }
         ]
@@ -35,7 +34,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vendor','styles']
         }),
-        new ExtractTextPlugin("/wwwroot/lib/styles.css"),
+        new ExtractTextPlugin("./wwwroot/lib/styles.css"),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
