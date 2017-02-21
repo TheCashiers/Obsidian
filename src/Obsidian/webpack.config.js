@@ -5,13 +5,12 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
     entry: {
         app: "./Scripts/UserPortalPage.tsx",
-        vendor: ["react", "react-dom", "react-router","snackbarjs","bootstrap","bootstrap-material-design","jquery"],
-        styles: "./Scripts/styles/vendor.js"
+        vendor: ["react", "react-dom", "react-router","snackbarjs","jquery"],
+        styles: ["bootstrap","bootstrap-material-design","./Scripts/styles/vendor.js"]
     },
     output: {
         filename: "./wwwroot/js/[name].bundle.js",
     },
-
     resolve: {
         extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css"]
     },
@@ -34,7 +33,7 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
+            name: ['vendor','styles']
         }),
         new ExtractTextPlugin("/wwwroot/lib/styles.css"),
         new webpack.ProvidePlugin({
