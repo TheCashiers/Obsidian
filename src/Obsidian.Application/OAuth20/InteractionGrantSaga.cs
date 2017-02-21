@@ -33,7 +33,7 @@ namespace Obsidian.Application.OAuth20
                 && TryLoadUser(command.UserName, out _user))
             {
                 //if user logged in, skip next step
-                await VerifyPermissionAsync();
+                return await VerifyPermissionAsync();
             }
             //next step
             GoToState(OAuth20State.RequireSignIn);
