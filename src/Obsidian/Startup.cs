@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
 using Obsidian.Application.Services;
+using Obsidian.Config;
 
 namespace Obsidian
 {
@@ -64,6 +65,7 @@ namespace Obsidian
 
             services.AddOptions();
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
+            services.Configure<PortalConfig>(Configuration.GetSection("Portal"));
 
             //infrastructure services
             services.AddTransient<ISignInService, SignInService>();
