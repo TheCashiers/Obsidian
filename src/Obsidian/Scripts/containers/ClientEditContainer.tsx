@@ -31,7 +31,7 @@ export class ClientEditContainer extends React.Component<any, any> {
         let displayName: string = this.state.displayName.trim();
         let redirectUri: string = this.state.redirectUri.trim();
         if (displayName && redirectUri) {
-            axios.put(api.configs.createClient.request_uri, { displayName: displayName, redirectUri: redirectUri })
+            axios.put(api.configs.createClient.request_uri+this.state.id, { displayName: displayName, redirectUri: redirectUri })
                 .then(()=>{
                     Notification.Service.pushSuccess("Client editing")
                 })
