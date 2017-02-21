@@ -26,6 +26,7 @@ module.exports = {
             { test: /\.tsx?$/, loader: "ts-loader" },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                loader: 'file-loader?name=[name].[ext]&publicPath=fonts/&outputPath=wwwroot/lib/fonts/'
             },
             { test: /\.js$/, loader: "source-map-loader", enforce: 'pre' }
         ]
