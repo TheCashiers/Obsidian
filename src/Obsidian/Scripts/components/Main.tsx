@@ -31,7 +31,6 @@ const fixLayout = function () {
 export let Main = React.createClass({
     componentDidUpdate: () => {
         fixLayout();
-        $.material.init();
     },
     render: function () {
         return (
