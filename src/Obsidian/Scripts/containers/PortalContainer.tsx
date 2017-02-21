@@ -1,7 +1,7 @@
-﻿/// <reference path="../configs/global.d.ts" />
-import * as React from "react";
+/// <reference path="../configs/global.d.ts" />
 import * as $ from "jquery"
-import { PortalHeader } from "./PortalElements";
+import * as React from "react";
+import { Portal } from "../components/Portal"
 const fixLayout = function () {
     //Get window height and the wrapper height
     var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
@@ -28,15 +28,26 @@ const fixLayout = function () {
         }
     }
 };
-export let Main = React.createClass({
-    componentDidUpdate: () => {
-        fixLayout();
-    },
-    render: function () {
-        return (
-            <div className="layout-top-nav wrapper skin-purple">
-                <PortalHeader currentPath={this.props.route.path}/>
-                {this.props.children}
-            </div>)
+
+export class PortalContainer extends React.Component<any, any>{
+    constructor(props) {
+        super(props);
+        this.state={ token: "" };
     }
-});
+    public componentWillMount(){
+        this.state.token = this.props.location.query.access_token;
+        if(this.state.token) 
+            window.history.pushState(null, null, "?authorized");
+    }
+    public componentDidUpdate() {
+        fixLayout();
+    }
+
+    public render() {
+        return (
+                <Portal token={this.state.token}>
+                    {this.props.children}
+                </Portal>
+        );
+    }
+}

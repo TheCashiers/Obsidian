@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 import { Router, Route, IndexRoute, browserHistory } from "react-router";
-import { Main } from "../components/Main";
+import { PortalIndex } from "../components/PortalIndex";
 import { UserManagementContainer } from "../containers/UserManagementContainer";
 import { Portal } from "../components/Portal";
 import { UserCreationContainer } from "../containers/UserCreationContainer";
@@ -16,8 +16,7 @@ import { ScopeEditContainer } from "../containers/ScopeEditContainer";
 import { ClientEditContainer } from "../containers/ClientEditContainer"
 export const routes = (
     <Router history={ browserHistory }>
-        <Route path="/manage" component={ Main }>
-            <IndexRoute component={ Portal }/>
+            <IndexRoute component={ PortalIndex }/>
             <Route path="/manage/users" component={ UserManagementContainer } />
             <Route path="/manage/users/create" component={ UserCreationContainer } />
             <Route path="/manage/users/edit" component={ UserEditContainer } />
