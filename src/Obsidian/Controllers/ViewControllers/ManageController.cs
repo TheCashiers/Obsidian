@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Obsidian.Services;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 #pragma warning disable CS1591
 namespace Obsidian.Controllers.ViewControllers
 {
@@ -22,7 +21,9 @@ namespace Obsidian.Controllers.ViewControllers
             if (string.IsNullOrWhiteSpace(accessToken))
             {
                 //Redirect to oauth login.
-                return Ok("Execution\nExecution\nExecution\nExecution\nExecution\nPlease Provide Access Token\nExecution\nExecution\nExecution\nExecution\nExecution\nExecution\n");
+                var portalUrl = $"{Request.Scheme}://{Request.Host.Value}{Request.Path.Value}";
+                var authUrl = _portalService.AuthorizeUriForAdminPortal(portalUrl);
+                return Redirect(authUrl);
             }
             ViewData["FrontendRoute"] = path;
             return View();
