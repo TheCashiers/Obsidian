@@ -8,8 +8,12 @@ namespace Obsidian.Controllers.ViewControllers
     public class ManageController : Controller
     {
         [Route("[controller]/{*path}")]
-        public IActionResult Index(string path = "")
+        public IActionResult Index([FromQuery(Name = "access_token")]string accessToken = "", string path = "")
         {
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+                //Redirect to oauth login.
+            }
             ViewData["FrontendRoute"] = path;
             return View();
         }
