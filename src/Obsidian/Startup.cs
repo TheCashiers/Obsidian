@@ -28,15 +28,16 @@ namespace Obsidian
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile("obsidianconfig.json", optional: false)
                 .AddEnvironmentVariables();
-
+            var obsidianConfigFileName = "obsidianconfig.json";
             if (env.IsDevelopment())
             {
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
+                obsidianConfigFileName = "obsidianconfig.dev.json";
             }
             Configuration = builder.Build();
+            builder.AddJsonFile(obsidianConfigFileName, optional: false);
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -53,13 +54,13 @@ namespace Obsidian
             //Add application components
             services.AddSagaBus().AddSaga();
             services.AddMongoRepositories();
-            
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Obsidian API", Version = "v1" });       
+                c.SwaggerDoc("v1", new Info { Title = "Obsidian API", Version = "v1" });
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var xmlPath = Path.Combine(basePath, "Obsidian.xml"); 
-                c.IncludeXmlComments(xmlPath);     
+                var xmlPath = Path.Combine(basePath, "Obsidian.xml");
+                c.IncludeXmlComments(xmlPath);
             });
 
 
