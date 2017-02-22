@@ -23,21 +23,6 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
         public async Task<OAuth20Result> StartAsync(AuthorizationCodeGrantCommand command)
             => await StartSagaAsync(command);
 
-
-        public async override Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
-        {
-            //check granted scopes
-            if (!TypLoadScopeFromNames(message.GrantedScopeNames, out _grantedScopes))
-            {
-                GoToState(OAuth20State.UserDenied);
-                return CurrentStateResult();
-            }
-
-            //next step
-            return await GrantPermissionAsync();
-
-        }
-
         protected override async Task<OAuth20Result> GrantPermissionAsync()
         {
             _user.GrantClient(_client, _grantedScopes);

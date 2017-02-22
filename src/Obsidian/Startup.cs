@@ -36,8 +36,8 @@ namespace Obsidian
                 builder.AddApplicationInsightsSettings(developerMode: true);
                 obsidianConfigFileName = "obsidianconfig.dev.json";
             }
-            Configuration = builder.Build();
             builder.AddJsonFile(obsidianConfigFileName, optional: false);
+            Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }

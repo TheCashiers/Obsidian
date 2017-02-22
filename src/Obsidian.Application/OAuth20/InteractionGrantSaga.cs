@@ -40,7 +40,19 @@ namespace Obsidian.Application.OAuth20
             return CurrentStateResult();
         }
 
-        public abstract Task<OAuth20Result> HandleAsync(PermissionGrantMessage message);
+        public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
+        {
+            //check granted scopes
+            if (message.GrantedScopeNames.Count == 0 
+                || !TypLoadScopeFromNames(message.GrantedScopeNames, out _grantedScopes))
+            {
+                GoToState(OAuth20State.UserDenied);
+                return CurrentStateResult();
+            }
+
+            //next step
+            return await GrantPermissionAsync();
+        }
 
         public async Task<OAuth20Result> HandleAsync(OAuth20SignInMessage message)
         {
