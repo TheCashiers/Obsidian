@@ -7,8 +7,8 @@
     "target": "es5",
     "jsx": "react",
     "outDir": "wwwroot/js",
-    "types": [
-      "Scripts/configs/global.d.ts"
+    "typeRoots": [
+      "./Scripts/configs/"
     ],
     "allowSyntheticDefaultImports": true
   },

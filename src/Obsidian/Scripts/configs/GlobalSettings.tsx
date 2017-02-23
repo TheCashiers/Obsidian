@@ -53,5 +53,9 @@ export const configs = {
     editScope:{
         request_uri:"/api/scopes/",
         request_type:REQUEST_TYPES.PUT
-    }
+    } as IServerConfig,
+    signOut:{
+        request_uri:"/oauth20/signout/",
+        request_type:REQUEST_TYPES.GET
+    } as IServerConfig
 }
