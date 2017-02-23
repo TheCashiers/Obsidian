@@ -281,7 +281,7 @@ namespace Obsidian.Controllers.OAuth
         public async Task<IActionResult> SignOut()
         {
             await _signinService.CookieSignOutCurrentUserAsync(AuthenticationSchemes.OAuth20Cookie);
-            return View("SignOut");
+            return Ok();
         }
 
 
