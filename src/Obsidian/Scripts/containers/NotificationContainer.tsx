@@ -1,4 +1,3 @@
-/// <reference path="../configs/global.d.ts" />
 import * as $ from "jquery";
 
 export enum NotificationState{
