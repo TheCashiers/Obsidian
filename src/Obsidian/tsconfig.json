@@ -6,7 +6,11 @@
     "sourceMap": true,
     "target": "es5",
     "jsx": "react",
-    "outDir": "wwwroot/js"
+    "outDir": "wwwroot/js",
+    "types": [
+      "Scripts/configs/global.d.ts"
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",
