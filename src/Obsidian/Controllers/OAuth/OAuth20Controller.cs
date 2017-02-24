@@ -203,6 +203,30 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
+        [HttpPost("oauth20/cancel")]
+        [ValidateModel]
+        public async Task<IActionResult> Cancel([FromForm]CancelModel model)
+        {
+            Guid sagaId;
+            var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
+            if (!Guid.TryParse(context, out sagaId))
+            {
+                return BadRequest();
+            }
+            var message = new CancelMessage(sagaId);
+            var result = await _sagaBus.SendAsync<CancelMessage, OAuth20Result>(message);
+            switch (result.State)
+            {
+                case OAuth20State.Cancelled:
+                    return Redirect(CancelRedirectUrl(result.CancelData));
+                default:
+                    return BadRequest();
+            }
+        }
+
+        private string CancelRedirectUrl(OAuth20Result.CancelInfo cancelData)
+            => $"/oauth20/authorize?response_type={cancelData.ResponseType}&redirect_uri={cancelData.RedirectUri}&client_id={cancelData.ClientId}&scope={string.Join(" ", cancelData.Scopes)}";
+
         [HttpPost("oauth20/token")]
         [ValidateModel]
         public async Task<IActionResult> Token([FromBody]AuthorizationCodeGrantRequestModel model)
@@ -273,7 +297,7 @@ namespace Obsidian.Controllers.OAuth
                 ClientId = model.ClientId,
                 Token = model.Token
             };
-            var result = await _sagaBus.InvokeAsync<VerifyTokenCommand,bool>(command);
+            var result = await _sagaBus.InvokeAsync<VerifyTokenCommand, bool>(command);
             return Ok(result);
         }
 

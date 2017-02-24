@@ -13,6 +13,16 @@ namespace Obsidian.Application.OAuth20
         public Guid AuthorizationCode { get; set; }
         public string RedirectUri { get; set; }
 
+        public CancelInfo CancelData { get; set; }
+
+        public class CancelInfo
+        {
+            public Guid ClientId { get; set; }
+            public string ResponseType { get; set; }
+            public IList<string> Scopes { get; set; }
+            public string RedirectUri { get; set; }
+        }
+
         public class TokenResult
         {
             public string AccessToken { get; set; }

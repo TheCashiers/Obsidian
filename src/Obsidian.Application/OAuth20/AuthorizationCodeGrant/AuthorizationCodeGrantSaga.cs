@@ -63,5 +63,6 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
             && authorizationCode == Id
             && redirectUri == _redirectUri;
 
+        protected override string GetResponseType() => "code";
     }
 }

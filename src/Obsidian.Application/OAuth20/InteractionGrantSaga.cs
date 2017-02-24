@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
@@ -6,7 +8,8 @@ namespace Obsidian.Application.OAuth20
 {
     public abstract class InteractionGrantSaga : OAuth20Saga,
                                     IHandlerOf<OAuth20SignInMessage, OAuth20Result>,
-                                    IHandlerOf<PermissionGrantMessage, OAuth20Result>
+                                    IHandlerOf<PermissionGrantMessage, OAuth20Result>,
+                                    IHandlerOf<CancelMessage, OAuth20Result>
 
     {
         public InteractionGrantSaga(IClientRepository clientRepo, IUserRepository userRepo, IPermissionScopeRepository scopeRepo, OAuth20Service oauth20Service) : base(clientRepo, userRepo, scopeRepo, oauth20Service)
@@ -43,7 +46,7 @@ namespace Obsidian.Application.OAuth20
         public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
         {
             //check granted scopes
-            if (message.GrantedScopeNames.Count == 0 
+            if (message.GrantedScopeNames.Count == 0
                 || !TypLoadScopeFromNames(message.GrantedScopeNames, out _grantedScopes))
             {
                 GoToState(OAuth20State.UserDenied);
@@ -66,6 +69,21 @@ namespace Obsidian.Application.OAuth20
             return CurrentStateResult();
         }
 
+        public Task<OAuth20Result> HandleAsync(CancelMessage message)
+        {
+            GoToState(OAuth20State.Cancelled);
+            var result = CurrentStateResult();
+            result.CancelData = new OAuth20Result.CancelInfo
+            {
+                ClientId = _client.Id,
+                ResponseType = GetResponseType(),
+                Scopes = _requestedScopes.Select(s=>s.ScopeName).ToList(),
+                RedirectUri = _redirectUri
+            };
+            return Task.FromResult(result);
+        }
+
+        protected abstract string GetResponseType();
 
         protected async Task<OAuth20Result> VerifyPermissionAsync()
         {
@@ -94,6 +112,7 @@ namespace Obsidian.Application.OAuth20
 
         public bool ShouldHandle(OAuth20SignInMessage message) => _state == OAuth20State.RequireSignIn && message.SagaId == Id;
 
+        public bool ShouldHandle(CancelMessage message) => _state == OAuth20State.RequirePermissionGrant && message.SagaId == Id;
 
     }
 }
