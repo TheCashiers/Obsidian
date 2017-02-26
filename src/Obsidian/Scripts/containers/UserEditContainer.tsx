@@ -10,8 +10,18 @@ export class UserEditContainer extends UserFormContainer {
     public defaultUsername: string;
     constructor(props) {
         super(props);
-        this.state = { username: props.location.query.username, password: "" };
+        this.state = { username: "", password: "", id: props.location.query.id };
         this.defaultUsername = props.location.query.username;
+    }
+    public componentWillMount() {
+        if (this.state.id)
+            axios.get(api.configs.getUser.request_uri + this.state.id)
+                .then((info) => { this.setState({ username: info.data.userName }); })
+                .catch((e) => Notification.Service.pushError("getClient", e));
+        else {
+            history.pushState(null,null,"/manage")
+            history.go();
+        }
     }
     handleSubmit(e) {
         e.preventDefault();

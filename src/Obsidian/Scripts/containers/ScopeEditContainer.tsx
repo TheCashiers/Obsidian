@@ -2,11 +2,12 @@ import * as React from "react"
 import { UserFormContainer } from "./UserFormContainer"
 import { ScopeForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
+import { FormContainer } from "./FormContainer";
 import * as axios from "axios";
 import * as Notification from "./NotificationContainer"
 
 
-export class ScopeEditContainer extends React.Component<any, any> {
+export class ScopeEditContainer extends FormContainer {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,18 +17,12 @@ export class ScopeEditContainer extends React.Component<any, any> {
             description: "",
             claimTypes: []
         };
-        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     public componentWillMount() {
         axios.get(api.configs.getScope.request_uri + this.state.id)
             .then((info) => { this.setState(info.data); })
             .catch((e) => Notification.Service.pushError("getClient", e));
-    }
-    handleInputChange(e) {
-        this.setState({
-            [e.target.name]: e.target.value as string
-        });
     }
     handleSubmit(e) {
         e.preventDefault();

@@ -1,22 +1,17 @@
 import * as React from "react";
 import { ClientForm } from "../components/Form";
+import { FormContainer } from "./FormContainer";
 import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer"
 
 
-export class ClientCreationContainer extends React.Component<any, any>
+export class ClientCreationContainer extends FormContainer
 {
     constructor(props: any) {
         super(props);
         this.state = { displayName:"", redirectUri:""};
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    handleInputChange(e) {
-        this.setState({
-            [e.target.name]: e.target.value as string
-        });
     }
     handleSubmit(e) {
         e.preventDefault();

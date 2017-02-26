@@ -35,9 +35,9 @@ export class Service{
         $.snackbar(options);
     }
     static pushError(desc:string,error:axios.Response){
-        this.push(`${desc} failed. ${error.data}.`,NotificationState.error)
+        this.push(`${desc} failed. ${error}.`,NotificationState.error);
     }
     static pushSuccess(desc:string){
-        this.push(`${desc} success.`,NotificationState.success)
+        this.push(`${desc} success.`,NotificationState.success);
     }
 }

@@ -6,6 +6,7 @@ import { UserForm } from "../components/Form";
 interface IUserFormState {
     username?: string;
     password?: string;
+    id?:string;
 }
 interface IUserFormProps{
     action:string;

@@ -1,38 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router";
+import { List } from "./List"
 
-const ScopeItem = (props) => (
-    <div>
-        <div className="list-group-item">
-            <div className="row-action-primary">
-                <i className="fa fa-puzzle-piece fa-2x"></i>
-            </div>
-            <div className="row-content">
-                <div className="least-content">
-                    <Link to={{pathname:"/manage/scopes/edit/",query:{ id: props.id }}}>
-                        <button className="btn btn-lg btn-primary btn-raised">
-                            Edit
-            </button>
-                    </Link>
-                </div>
-                <h4 className="list-group-item-heading">{props.scopeName}</h4>
-
-                <p className="list-group-item-text">{props.id}</p>
-            </div>
-        </div>
-        <div className="list-group-separator"></div>
-    </div>
-);
-
-export const ScopeList = (props) => (
-    <div className="content-wrapper content">
-        <Link to="/manage/scopes/create">
-            <button className="btn btn-primary btn-lg">Create Scope</button>
-        </Link>
-        
-        <div className="list-group">
-            {props.scopes.map((scope, index) => <ScopeItem scopeName={scope.scopeName} id={scope.id} key={scope.id} />)}
-        </div>
-    </div>
-
-);
+export const ScopeList = (props) =>(
+    <List createLink="/manage/scopes/create"
+        editLink="/manage/scopes/edit"
+        action="Create Scope"
+        items={props.scopes}
+        icon="fa-puzzle-piece"
+    ></List>
+)

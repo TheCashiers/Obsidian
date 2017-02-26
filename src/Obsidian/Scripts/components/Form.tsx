@@ -20,7 +20,7 @@ export const MaterialForm = (props) => (
     </div>
 )
 
-export const Input = (props) => (
+export const MaterialInput = (props) => (
     <div className="form-group">
         <label className="col-md-2 control-label">{props.label}</label>
         <div className="col-md-10">
@@ -29,6 +29,7 @@ export const Input = (props) => (
                 onChange={props.onInputChange}
                 value={props.value}
                 placeholder={props.placeholder}
+                required
                 />
         </div>
     </div>
@@ -37,13 +38,13 @@ export const UserForm = (props) => (
     <MaterialForm action={props.action}
         origin="/manage/users"
         onSubmit={props.onSubmit}>
-        <Input name="username"
+        <MaterialInput name="username"
             label="Username"
             onInputChange={props.onInputChange}
             value={props.username}
             placeholder="Username..."
             type="text" />
-        <Input name="password"
+        <MaterialInput name="password"
             label="Password"
             onInputChange={props.onInputChange}
             value={props.password}
@@ -56,25 +57,25 @@ export const ScopeForm = (props) => (
     <MaterialForm action={props.action}
         origin="/manage/scopes"
         onSubmit={props.onSubmit}>
-    <Input name="scopeName"
+    <MaterialInput name="scopeName"
             label="Scope Name"
             onInputChange={props.onInputChange}
             value={props.scopeName}
             placeholder="Scope Name..."
             type="text" />
-    <Input name="displayName"
+    <MaterialInput name="displayName"
             label="Display Name"
             onInputChange={props.onInputChange}
             value={props.displayName}
             placeholder="Display Name..."
             type="text" />
-    <Input name="description"
+    <MaterialInput name="description"
             label="Description"
             onInputChange={props.onInputChange}
             value={props.description}
             placeholder="Description..."
             type="text" />
-     <Input name="claimTypes"
+     <MaterialInput name="claimTypes"
             label="Claim Types"
             onInputChange={props.onInputChange}
             value={props.claimTypes}
@@ -87,13 +88,13 @@ export const ClientForm = (props)=>(
     <MaterialForm action={props.action}
         origin="/manage/clients"
         onSubmit={props.onSubmit}>
-        <Input name="displayName"
+        <MaterialInput name="displayName"
             label="Display Name"
             onInputChange={props.onInputChange}
             value={props.displayName}
             placeholder="Display Name..."
             type="text" />
-        <Input name="redirectUri"
+        <MaterialInput name="redirectUri"
             label="Redirect Uri"
             onInputChange={props.onInputChange}
             value={props.redirectUri}

@@ -2,6 +2,7 @@
 @using Obsidian.Models.OAuth
 @model PermissionGrantModel
 @{
+    ViewData["Title"] = "Grant Permissions";
     var client = ViewBag.Client as Client;
     var scopes = ViewBag.Scopes as IList<PermissionScope>;
     var i = 0;
