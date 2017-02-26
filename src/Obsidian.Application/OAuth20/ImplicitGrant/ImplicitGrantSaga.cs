@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
@@ -20,13 +21,14 @@ namespace Obsidian.Application.OAuth20.ImplicitGrant
         public async Task<OAuth20Result> StartAsync(ImplicitGrantCommand command)
             => await StartSagaAsync(command);
 
+        protected override string GetResponseType() => "token";
 
         protected override async Task<OAuth20Result> GrantPermissionAsync()
         {
             _user.GrantClient(_client, _grantedScopes);
             await SaveUserAsync();
             GoToState(OAuth20State.Finished);
-            var result= AccessTokenResult();
+            var result = AccessTokenResult();
             result.RedirectUri = _redirectUri;
             return result;
         }

@@ -60,7 +60,7 @@ namespace Obsidian.Application.OAuth20
         protected async Task SaveUserAsync() => await _userRepository.SaveAsync(_user);
 
         protected override bool IsProcessCompleted()
-            => _state == OAuth20State.Finished || _state == OAuth20State.UserDenied;
+            => _state == OAuth20State.Finished || _state == OAuth20State.UserDenied || _state == OAuth20State.Cancelled;
 
         #region Results
 
@@ -113,7 +113,7 @@ namespace Obsidian.Application.OAuth20
             => user.IsClientGranted(client, scopes.Select(s => s.ScopeName));
 
         #endregion Percondictions
-        
+
         private string GenerateAccessToken() => _oauth20Service.GenerateAccessToken(_user, _grantedScopes);
 
 

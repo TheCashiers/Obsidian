@@ -8,6 +8,7 @@
         AuthorizationCodeGenerated,
         Finished,
         UserDenied,
+        Cancelled,
         Failed
     }
 }
