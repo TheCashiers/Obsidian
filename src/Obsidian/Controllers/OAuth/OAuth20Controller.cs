@@ -155,6 +155,7 @@ namespace Obsidian.Controllers.OAuth
             {
                 UserName = model.UserName,
             };
+            
             var oauth20Result = await _sagaBus.SendAsync<OAuth20SignInMessage, OAuth20Result>(message);
             switch (oauth20Result.State)
             {
