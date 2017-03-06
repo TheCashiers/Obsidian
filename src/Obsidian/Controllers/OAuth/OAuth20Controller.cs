@@ -301,14 +301,6 @@ namespace Obsidian.Controllers.OAuth
             return Ok(result);
         }
 
-        [HttpGet("oauth20/signout")]
-        public async Task<IActionResult> SignOut()
-        {
-            await _signinService.CookieSignOutCurrentUserAsync(AuthenticationSchemes.OAuth20Cookie);
-            return Ok();
-        }
-
-
         private AuthorizationGrant ParseGrantTypeFromResponseType(string responseType)
         {
             if ("code".Equals(responseType, StringComparison.OrdinalIgnoreCase))
