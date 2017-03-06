@@ -48,6 +48,7 @@ namespace Obsidian.Controllers.ViewControllers
             return View();
         }
 
+        [Route("[controller]/signout")]
         public IActionResult SignOut()
         {
             Response.Cookies.Delete(CookieKey);
