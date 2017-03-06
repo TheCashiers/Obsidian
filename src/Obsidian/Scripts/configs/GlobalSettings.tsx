@@ -55,7 +55,7 @@ export const configs = {
         request_type:REQUEST_TYPES.PUT
     } as IServerConfig,
     signOut:{
-        request_uri:"/oauth20/signout/",
+        request_uri:"/manage/signout/",
         request_type:REQUEST_TYPES.GET
     } as IServerConfig
 }
