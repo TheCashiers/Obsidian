@@ -74,7 +74,7 @@ namespace Obsidian.Controllers.OAuth
 
             if (User.Identity.IsAuthenticated)
             {
-                command.UserName = User.Identity.Name;
+                //add user info to login page
             }
 
             var result = await _sagaBus.InvokeAsync<ImplicitGrantCommand, OAuth20Result>(command);
@@ -106,7 +106,7 @@ namespace Obsidian.Controllers.OAuth
 
             if (User.Identity.IsAuthenticated)
             {
-                command.UserName = User.Identity.Name;
+                //add user info to login page
             }
 
             var result = await _sagaBus.InvokeAsync<AuthorizationCodeGrantCommand, OAuth20Result>(command);

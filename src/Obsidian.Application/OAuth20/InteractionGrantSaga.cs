@@ -19,7 +19,7 @@ namespace Obsidian.Application.OAuth20
 
         protected string _redirectUri;
 
-        protected async Task<OAuth20Result> StartSagaAsync(InteractionGrantCommand command)
+        protected Task<OAuth20Result> StartSagaAsync(InteractionGrantCommand command)
         {
             _redirectUri = command.RedirectUri;
             //check client and scopes
@@ -28,19 +28,12 @@ namespace Obsidian.Application.OAuth20
             if (!precondiction)
             {
                 GoToState(OAuth20State.Failed);
-                return CurrentStateResult();
+                return Task.FromResult(CurrentStateResult());
             }
 
-            //check user
-            if (!string.IsNullOrWhiteSpace(command.UserName)
-                && TryLoadUser(command.UserName, out _user))
-            {
-                //if user logged in, skip next step
-                return await VerifyPermissionAsync();
-            }
             //next step
             GoToState(OAuth20State.RequireSignIn);
-            return CurrentStateResult();
+            return Task.FromResult(CurrentStateResult());
         }
 
         public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)

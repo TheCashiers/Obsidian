@@ -6,7 +6,6 @@ namespace Obsidian.Application.OAuth20
     public class AuthorizationGrantCommand : Command<OAuth20Result>
     {
         public Guid ClientId { get; set; }
-        public string UserName { get; set; }
         public string[] ScopeNames { get; set; }
     }
 }
