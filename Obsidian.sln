@@ -1,18 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{39F43A57-A505-4A82-A002-71F58516A75C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72272094-C59C-446F-AA02-EFD33C75789D}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
-		global.json = global.json
 		test.sh = test.sh
 	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian", "src\Obsidian\Obsidian.xproj", "{EF87CD30-2BAD-4749-A888-CEC416A41121}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{40E0AD8A-A93C-4F78-B9F7-E1A0D5613122}"
 EndProject
@@ -20,21 +17,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{414DB6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{8DD41211-FB28-46C8-91F2-F3653483D5AB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Domain", "src\Obsidian.Domain\Obsidian.Domain.xproj", "{4098D370-D7FB-4A99-849F-B2003641D8F2}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.QueryModel", "src\Obsidian.QueryModel\Obsidian.QueryModel.xproj", "{D723555C-E8AE-4E9E-9DB2-1ED7F4C7A006}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Persistence", "src\Obsidian.Persistence\Obsidian.Persistence.xproj", "{945CC761-2E0D-4921-A954-A11D41C51B1D}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Application", "src\Obsidian.Application\Obsidian.Application.xproj", "{3F00572F-7AE4-4F5A-840A-E9C84DCACE2F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F18CD5BA-A962-44AF-AEA3-B24CC81669B4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Persistence.Test", "test\Obsidian.Persistence.Test\Obsidian.Persistence.Test.xproj", "{77401641-D954-4AC9-BB8A-410CF853A375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian", "src\Obsidian\Obsidian.csproj", "{EF87CD30-2BAD-4749-A888-CEC416A41121}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Domain.Test", "test\Obsidian.Domain.Test\Obsidian.Domain.Test.xproj", "{FF8B3AC9-7A39-4943-A45C-034CA525EE38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Domain", "src\Obsidian.Domain\Obsidian.Domain.csproj", "{4098D370-D7FB-4A99-849F-B2003641D8F2}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Obsidian.Application.Test", "test\Obsidian.Application.Test\Obsidian.Application.Test.xproj", "{D18C03EE-DB97-419F-90AD-3502EE65D18D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.QueryModel", "src\Obsidian.QueryModel\Obsidian.QueryModel.csproj", "{D723555C-E8AE-4E9E-9DB2-1ED7F4C7A006}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Persistence", "src\Obsidian.Persistence\Obsidian.Persistence.csproj", "{945CC761-2E0D-4921-A954-A11D41C51B1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Application", "src\Obsidian.Application\Obsidian.Application.csproj", "{3F00572F-7AE4-4F5A-840A-E9C84DCACE2F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Persistence.Test", "test\Obsidian.Persistence.Test\Obsidian.Persistence.Test.csproj", "{77401641-D954-4AC9-BB8A-410CF853A375}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Domain.Test", "test\Obsidian.Domain.Test\Obsidian.Domain.Test.csproj", "{FF8B3AC9-7A39-4943-A45C-034CA525EE38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Application.Test", "test\Obsidian.Application.Test\Obsidian.Application.Test.csproj", "{D18C03EE-DB97-419F-90AD-3502EE65D18D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,10 +78,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EF87CD30-2BAD-4749-A888-CEC416A41121} = {40E0AD8A-A93C-4F78-B9F7-E1A0D5613122}
 		{40E0AD8A-A93C-4F78-B9F7-E1A0D5613122} = {39F43A57-A505-4A82-A002-71F58516A75C}
 		{414DB6F8-3D06-40B6-BDED-8FF9E5C2971E} = {39F43A57-A505-4A82-A002-71F58516A75C}
 		{8DD41211-FB28-46C8-91F2-F3653483D5AB} = {39F43A57-A505-4A82-A002-71F58516A75C}
+		{EF87CD30-2BAD-4749-A888-CEC416A41121} = {40E0AD8A-A93C-4F78-B9F7-E1A0D5613122}
 		{4098D370-D7FB-4A99-849F-B2003641D8F2} = {414DB6F8-3D06-40B6-BDED-8FF9E5C2971E}
 		{D723555C-E8AE-4E9E-9DB2-1ED7F4C7A006} = {414DB6F8-3D06-40B6-BDED-8FF9E5C2971E}
 		{945CC761-2E0D-4921-A954-A11D41C51B1D} = {8DD41211-FB28-46C8-91F2-F3653483D5AB}
