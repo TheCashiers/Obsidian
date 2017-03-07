@@ -9,7 +9,7 @@
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.8.2",
-    "typescript": "^2.1.6",
+    "typescript": "^2.2.1",
     "webpack": "^2.2.1"
   },
   "scripts": {

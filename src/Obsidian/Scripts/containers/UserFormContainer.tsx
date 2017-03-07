@@ -27,7 +27,7 @@ export abstract class UserFormContainer extends React.Component<any, IUserFormSt
             [e.target.name]: e.target.value as string
         });
     }
-    handleSubmit(e) {
+    handleSubmit(e:Event) {
         e.preventDefault();
     }
     
