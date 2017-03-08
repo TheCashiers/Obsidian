@@ -8,5 +8,7 @@ namespace Obsidian.Application.Services
         Task CookieSignInAsync(string scheme, User user, bool isPersistent);
 
         Task CookieSignOutCurrentUserAsync(string scheme);
+
+        Task<User> GetCurrentUserAsync();
     }
 }

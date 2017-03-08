@@ -54,15 +54,15 @@ namespace Obsidian.Controllers.OAuth
             switch (grantType)
             {
                 case AuthorizationGrant.AuthorizationCode:
-                    return await HandleAuthorizationCodeGrantAsync(model);
+                    return await StartAuthorizationCodeGrantAsync(model);
                 case AuthorizationGrant.Implicit:
-                    return await HandleImplicitGrantAsync(model);
+                    return await StartImplicitGrantAsync(model);
                 default:
                     return BadRequest();
             }
         }
 
-        private async Task<IActionResult> HandleImplicitGrantAsync(AuthorizationRequestModel model)
+        private async Task<IActionResult> StartImplicitGrantAsync(AuthorizationRequestModel model)
         {
             var command = new ImplicitGrantCommand
             {
@@ -88,7 +88,7 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        private async Task<IActionResult> HandleAuthorizationCodeGrantAsync(AuthorizationRequestModel model)
+        private async Task<IActionResult> StartAuthorizationCodeGrantAsync(AuthorizationRequestModel model)
         {
             var command = new AuthorizationCodeGrantCommand
             {
@@ -118,9 +118,8 @@ namespace Obsidian.Controllers.OAuth
         [ValidateModel]
         public async Task<IActionResult> SignIn([FromForm]OAuthSignInModel model)
         {
-            Guid sagaId;
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (!Guid.TryParse(context, out sagaId))
+            if (!Guid.TryParse(context, out var sagaId))
             {
                 return BadRequest();
             }
@@ -174,9 +173,8 @@ namespace Obsidian.Controllers.OAuth
         [ValidateModel]
         public async Task<IActionResult> PermissionGrant([FromForm]PermissionGrantModel model)
         {
-            Guid sagaId;
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (!Guid.TryParse(context, out sagaId))
+            if (!Guid.TryParse(context, out var sagaId))
             {
                 return BadRequest();
             }
@@ -353,39 +351,5 @@ namespace Obsidian.Controllers.OAuth
         }
 
         #endregion Results
-
-        #region Front-end debug
-
-        [Route("oauth20/authorize/frontend/signin")]
-        [HttpGet]
-        public IActionResult FrontEndSignInDebug()
-        {
-            return View("SignIn");
-        }
-
-        [Route("oauth20/authorize/frontend/grant")]
-        [HttpGet]
-        public IActionResult FrontEndGrantDebug()
-        {
-            var context = _dataProtector.Protect(Guid.NewGuid().ToString());
-            var client = Client.Create(Guid.NewGuid(), "http://za-pt.org/exchange");
-            client.DisplayName = "iTech";
-            ViewBag.Client = client;
-            ViewBag.Scopes = new[] {
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.basicinfo","Basic Information","Includes you name and gender."),
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.email","Email address","Your email address."),
-                PermissionScope.Create(Guid.NewGuid(),"obsidian.admin","Admin access","Manage the system.")
-            };
-            return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
-        }
-
-        [Route("oauth20/authorize/frontend/denied")]
-        [HttpGet]
-        public IActionResult FrontEndDeniedDebug()
-        {
-            return View("UserDenied");
-        }
-
-        #endregion Front-end debug
     }
 }
