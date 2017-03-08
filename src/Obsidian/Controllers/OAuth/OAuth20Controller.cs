@@ -25,7 +25,6 @@ namespace Obsidian.Controllers.OAuth
     {
         private readonly IDataProtector _dataProtector;
         private readonly SagaBus _sagaBus;
-
         private readonly ISignInService _signinService;
 
         public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus, ISignInService signinService)
@@ -71,12 +70,6 @@ namespace Obsidian.Controllers.OAuth
                 ScopeNames = model.Scope.Split(' '),
                 RedirectUri = model.RedirectUri
             };
-
-            if (User.Identity.IsAuthenticated)
-            {
-                //add user info to login page
-            }
-
             var result = await _sagaBus.InvokeAsync<ImplicitGrantCommand, OAuth20Result>(command);
             var context = _dataProtector.Protect(result.SagaId.ToString());
             switch (result.State)
@@ -103,12 +96,6 @@ namespace Obsidian.Controllers.OAuth
                 ScopeNames = model.Scope.Split(' '),
                 RedirectUri = model.RedirectUri
             };
-
-            if (User.Identity.IsAuthenticated)
-            {
-                //add user info to login page
-            }
-
             var result = await _sagaBus.InvokeAsync<AuthorizationCodeGrantCommand, OAuth20Result>(command);
             var context = _dataProtector.Protect(result.SagaId.ToString());
             switch (result.State)
@@ -137,25 +124,25 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-            var command = new PasswordAuthenticateCommand
-            {
-                UserName = model.UserName,
-                Password = model.Password
-            };
-            var authResult = await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(command);
+            var authResult = await PasswordautnenticateAsync(model.UserName, model.Password);
             if (!authResult.IsCredentialVaild)
             {
                 ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
                 ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
                 return View("SignIn");
             }
-            await _signinService.CookieSignInAsync(AuthenticationSchemes.OAuth20Cookie, authResult.User, model.RememberMe);
+            return await OAuth20SignInCore(sagaId, authResult.User, model.RememberMe);
+        }
+
+        private async Task<IActionResult> OAuth20SignInCore(Guid sagaId, User user, bool isPersistent)
+        {
+            await _signinService.CookieSignInAsync(AuthenticationSchemes.OAuth20Cookie, user, isPersistent);
 
             var message = new OAuth20SignInMessage(sagaId)
             {
-                UserName = model.UserName,
+                UserName = user.UserName
             };
-            
+
             var oauth20Result = await _sagaBus.SendAsync<OAuth20SignInMessage, OAuth20Result>(message);
             switch (oauth20Result.State)
             {
@@ -171,6 +158,16 @@ namespace Obsidian.Controllers.OAuth
                 default:
                     return BadRequest();
             }
+        }
+
+        private async Task<AuthenticationResult> PasswordautnenticateAsync(string userName, string password)
+        {
+            var command = new PasswordAuthenticateCommand
+            {
+                UserName = userName,
+                Password = password
+            };
+            return await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(command);
         }
 
         [HttpPost("oauth20/authorize/permission")]
