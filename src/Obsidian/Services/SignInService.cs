@@ -42,7 +42,7 @@ namespace Obsidian.Services
         public async Task<User> GetCurrentUserAsync()
         {
             var claim = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (Guid.TryParse(claim.Value, out var userId))
+            if (claim is Claim c && Guid.TryParse(c.Value, out var userId))
             {
                 return await _userRepo.FindByIdAsync(userId);
             }

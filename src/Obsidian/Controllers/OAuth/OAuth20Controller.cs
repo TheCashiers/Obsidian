@@ -21,6 +21,7 @@ using Obsidian.Application.OAuth20.TokenVerification;
 namespace Obsidian.Controllers.OAuth
 {
     [ApiExplorerSettings(IgnoreApi = true)]
+    [Authorize(ActiveAuthenticationSchemes = AuthenticationSchemes.OAuth20Cookie)]
     public class OAuth20Controller : Controller
     {
         private readonly IDataProtector _dataProtector;
@@ -37,7 +38,6 @@ namespace Obsidian.Controllers.OAuth
 
         [HttpGet("oauth20/authorize")]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes = AuthenticationSchemes.OAuth20Cookie)]
         [AllowAnonymous]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
@@ -101,6 +101,7 @@ namespace Obsidian.Controllers.OAuth
 
         [HttpPost("oauth20/authorize")]
         [ValidateModel]
+        [AllowAnonymous]
         public async Task<IActionResult> SignIn([FromForm]OAuthSignInModel model)
         {
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
