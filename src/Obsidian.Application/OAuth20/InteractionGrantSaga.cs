@@ -12,7 +12,11 @@ namespace Obsidian.Application.OAuth20
                                     IHandlerOf<CancelMessage, OAuth20Result>
 
     {
-        public InteractionGrantSaga(IClientRepository clientRepo, IUserRepository userRepo, IPermissionScopeRepository scopeRepo, OAuth20Service oauth20Service) : base(clientRepo, userRepo, scopeRepo, oauth20Service)
+        public InteractionGrantSaga(IClientRepository clientRepo,
+                                    IUserRepository userRepo,
+                                    IPermissionScopeRepository scopeRepo,
+                                    OAuth20Service oauth20Service)
+                                    : base(clientRepo, userRepo, scopeRepo, oauth20Service)
         {
         }
 
@@ -52,14 +56,9 @@ namespace Obsidian.Application.OAuth20
 
         public async Task<OAuth20Result> HandleAsync(OAuth20SignInMessage message)
         {
-            //check user
-            if (TryLoadUser(message.UserName, out _user))
-            {
-                //next step
-                return await VerifyPermissionAsync();
-            }
-            //current state is RequireSignIn
-            return CurrentStateResult();
+            _user = message.User;
+            //next step
+            return await VerifyPermissionAsync();
         }
 
         public Task<OAuth20Result> HandleAsync(CancelMessage message)
@@ -70,7 +69,7 @@ namespace Obsidian.Application.OAuth20
             {
                 ClientId = _client.Id,
                 ResponseType = GetResponseType(),
-                Scopes = _requestedScopes.Select(s=>s.ScopeName).ToList(),
+                Scopes = _requestedScopes.Select(s => s.ScopeName).ToList(),
                 RedirectUri = _redirectUri
             };
             return Task.FromResult(result);

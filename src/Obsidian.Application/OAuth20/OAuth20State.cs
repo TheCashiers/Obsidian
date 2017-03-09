@@ -2,7 +2,6 @@
 {
     public enum OAuth20State
     {
-        Initial,
         RequireSignIn,
         RequirePermissionGrant,
         AuthorizationCodeGenerated,

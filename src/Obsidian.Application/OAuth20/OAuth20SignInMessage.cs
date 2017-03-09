@@ -1,5 +1,6 @@
 ﻿using System;
 using Obsidian.Application.ProcessManagement;
+using Obsidian.Domain;
 
 namespace Obsidian.Application.OAuth20
 {
@@ -9,6 +10,6 @@ namespace Obsidian.Application.OAuth20
         {
         }
 
-        public string UserName { get; set; }
+        public User User { get; set; }
     }
 }

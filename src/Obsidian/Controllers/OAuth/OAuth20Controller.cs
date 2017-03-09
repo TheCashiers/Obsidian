@@ -50,19 +50,25 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-
+            OAuth20Result result;
             switch (grantType)
             {
                 case AuthorizationGrant.AuthorizationCode:
-                    return await StartAuthorizationCodeGrantAsync(model);
+                    result = await StartAuthorizationCodeGrantAsync(model);
+                    break;
+
                 case AuthorizationGrant.Implicit:
-                    return await StartImplicitGrantAsync(model);
+                    result = await StartImplicitGrantAsync(model);
+                    break;
+
                 default:
                     return BadRequest();
             }
+            var context = _dataProtector.Protect(result.SagaId.ToString());
+            return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
         }
 
-        private async Task<IActionResult> StartImplicitGrantAsync(AuthorizationRequestModel model)
+        private async Task<OAuth20Result> StartImplicitGrantAsync(AuthorizationRequestModel model)
         {
             var command = new ImplicitGrantCommand
             {
@@ -70,25 +76,11 @@ namespace Obsidian.Controllers.OAuth
                 ScopeNames = model.Scope.Split(' '),
                 RedirectUri = model.RedirectUri
             };
-            var result = await _sagaBus.InvokeAsync<ImplicitGrantCommand, OAuth20Result>(command);
-            var context = _dataProtector.Protect(result.SagaId.ToString());
-            switch (result.State)
-            {
-                case OAuth20State.RequireSignIn:
-                    return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
+            return await _sagaBus.InvokeAsync<ImplicitGrantCommand, OAuth20Result>(command);
 
-                case OAuth20State.RequirePermissionGrant:
-                    return PermissionGrantView(result);
-
-                case OAuth20State.Finished:
-                    return ImplictRedirect(result);
-
-                default:
-                    return BadRequest();
-            }
         }
 
-        private async Task<IActionResult> StartAuthorizationCodeGrantAsync(AuthorizationRequestModel model)
+        private async Task<OAuth20Result> StartAuthorizationCodeGrantAsync(AuthorizationRequestModel model)
         {
             var command = new AuthorizationCodeGrantCommand
             {
@@ -96,22 +88,7 @@ namespace Obsidian.Controllers.OAuth
                 ScopeNames = model.Scope.Split(' '),
                 RedirectUri = model.RedirectUri
             };
-            var result = await _sagaBus.InvokeAsync<AuthorizationCodeGrantCommand, OAuth20Result>(command);
-            var context = _dataProtector.Protect(result.SagaId.ToString());
-            switch (result.State)
-            {
-                case OAuth20State.RequireSignIn:
-                    return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
-
-                case OAuth20State.RequirePermissionGrant:
-                    return PermissionGrantView(result);
-
-                case OAuth20State.AuthorizationCodeGenerated:
-                    return AuthorizationCodeRedirect(result);
-
-                default:
-                    return BadRequest();
-            }
+            return await _sagaBus.InvokeAsync<AuthorizationCodeGrantCommand, OAuth20Result>(command);
         }
 
         [HttpPost("oauth20/authorize")]
@@ -123,14 +100,27 @@ namespace Obsidian.Controllers.OAuth
             {
                 return BadRequest();
             }
-            var authResult = await PasswordautnenticateAsync(model.UserName, model.Password);
-            if (!authResult.IsCredentialVaild)
+            User currentUser;
+            if (model.IsAutoSignIn)
             {
-                ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
-                ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
-                return View("SignIn");
+                currentUser = await _signinService.GetCurrentUserAsync();
+                if (currentUser.UserName != model.UserName)
+                {
+                    return BadRequest();
+                }
             }
-            return await OAuth20SignInCore(sagaId, authResult.User, model.RememberMe);
+            else
+            {
+                var authResult = await PasswordautnenticateAsync(model.UserName, model.Password);
+                if (!authResult.IsCredentialVaild)
+                {
+                    ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
+                    ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
+                    return View("SignIn");
+                }
+                currentUser = authResult.User;
+            }
+            return await OAuth20SignInCore(sagaId, currentUser, model.RememberMe);
         }
 
         private async Task<IActionResult> OAuth20SignInCore(Guid sagaId, User user, bool isPersistent)
@@ -139,7 +129,7 @@ namespace Obsidian.Controllers.OAuth
 
             var message = new OAuth20SignInMessage(sagaId)
             {
-                UserName = user.UserName
+                User = user
             };
 
             var oauth20Result = await _sagaBus.SendAsync<OAuth20SignInMessage, OAuth20Result>(message);
@@ -152,7 +142,7 @@ namespace Obsidian.Controllers.OAuth
                     return AuthorizationCodeRedirect(oauth20Result);
 
                 case OAuth20State.Finished:
-                    return ImplictRedirect(oauth20Result);
+                    return ImplictTokenRedirect(oauth20Result);
 
                 default:
                     return BadRequest();
@@ -189,7 +179,7 @@ namespace Obsidian.Controllers.OAuth
                     return AuthorizationCodeRedirect(result);
 
                 case OAuth20State.Finished:
-                    return ImplictRedirect(result);
+                    return ImplictTokenRedirect(result);
 
                 case OAuth20State.UserDenied:
                     return View("UserDenied");
@@ -203,9 +193,8 @@ namespace Obsidian.Controllers.OAuth
         [ValidateModel]
         public async Task<IActionResult> Cancel([FromForm]CancelModel model)
         {
-            Guid sagaId;
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
-            if (!Guid.TryParse(context, out sagaId))
+            if (!Guid.TryParse(context, out var sagaId))
             {
                 return BadRequest();
             }
@@ -214,6 +203,7 @@ namespace Obsidian.Controllers.OAuth
             switch (result.State)
             {
                 case OAuth20State.Cancelled:
+                    await _signinService.CookieSignOutCurrentUserAsync(AuthenticationSchemes.OAuth20Cookie);
                     return Redirect(CancelRedirectUrl(result.CancelData));
                 default:
                     return BadRequest();
@@ -338,7 +328,7 @@ namespace Obsidian.Controllers.OAuth
             return View("PermissionGrant", new PermissionGrantModel { ProtectedOAuthContext = context });
         }
 
-        private IActionResult ImplictRedirect(OAuth20Result result)
+        private IActionResult ImplictTokenRedirect(OAuth20Result result)
         {
             var tokenRedirectUri = BuildImplictReturnUri(result);
             return Redirect(tokenRedirectUri);
