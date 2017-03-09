@@ -15,6 +15,7 @@ namespace Obsidian.Models.OAuth
         [Required]
         public bool RememberMe { get; set; }
 
+        [Required]
         public bool IsAutoSignIn { get; set; }
 
         [Required]

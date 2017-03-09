@@ -41,15 +41,11 @@ namespace Obsidian.Controllers.OAuth
         [AllowAnonymous]
         public async Task<IActionResult> Authorize([FromQuery]AuthorizationRequestModel model)
         {
-            AuthorizationGrant grantType;
-            try
-            {
-                grantType = ParseGrantTypeFromResponseType(model.ResponseType);
-            }
-            catch (ArgumentOutOfRangeException)
+            if (!TryConvertToGrantType(model.ResponseType, out var grantType))
             {
                 return BadRequest();
             }
+
             OAuth20Result result;
             switch (grantType)
             {
@@ -64,8 +60,20 @@ namespace Obsidian.Controllers.OAuth
                 default:
                     return BadRequest();
             }
+            return await SignInPageView(result);
+        }
+
+        private async Task<IActionResult> SignInPageView(OAuth20Result result)
+        {
             var context = _dataProtector.Protect(result.SagaId.ToString());
-            return View("SignIn", new OAuthSignInModel { ProtectedOAuthContext = context });
+            var currentUser = await _signinService.GetCurrentUserAsync();
+            var model = new OAuthSignInModel { ProtectedOAuthContext = context };
+            if (currentUser != null)
+            {
+                model.IsAutoSignIn = true;
+                model.UserName = currentUser.UserName;
+            }
+            return base.View("SignIn", model);
         }
 
         private async Task<OAuth20Result> StartImplicitGrantAsync(AuthorizationRequestModel model)
@@ -127,10 +135,7 @@ namespace Obsidian.Controllers.OAuth
         {
             await _signinService.CookieSignInAsync(AuthenticationSchemes.OAuth20Cookie, user, isPersistent);
 
-            var message = new OAuth20SignInMessage(sagaId)
-            {
-                User = user
-            };
+            var message = new OAuth20SignInMessage(sagaId, user);
 
             var oauth20Result = await _sagaBus.SendAsync<OAuth20SignInMessage, OAuth20Result>(message);
             switch (oauth20Result.State)
@@ -287,19 +292,21 @@ namespace Obsidian.Controllers.OAuth
             return Ok(result);
         }
 
-        private AuthorizationGrant ParseGrantTypeFromResponseType(string responseType)
+        private bool TryConvertToGrantType(string responseType, out AuthorizationGrant grantType)
         {
             if ("code".Equals(responseType, StringComparison.OrdinalIgnoreCase))
             {
-                return AuthorizationGrant.AuthorizationCode;
+                grantType = AuthorizationGrant.AuthorizationCode;
+                return true;
             }
             else if ("token".Equals(responseType, StringComparison.OrdinalIgnoreCase))
             {
-                return AuthorizationGrant.Implicit;
+                grantType = AuthorizationGrant.Implicit;
+                return true;
             }
             else
-                throw new ArgumentOutOfRangeException(nameof(responseType),
-                            "Only code and token can be accepted as response type.");
+                grantType = default(AuthorizationGrant);
+            return false;
         }
 
 
