@@ -112,7 +112,7 @@ namespace Obsidian.Controllers.OAuth
             else
             {
                 var authResult = await PasswordautnenticateAsync(model.UserName, model.Password);
-                if (!authResult.IsCredentialVaild)
+                if (!authResult.IsCredentialValid)
                 {
                     ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
                     ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
@@ -251,7 +251,7 @@ namespace Obsidian.Controllers.OAuth
                     Password = model.Password
                 };
                 var authResult = await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(signinCommand);
-                if (!authResult.IsCredentialVaild)
+                if (!authResult.IsCredentialValid)
                 {
                     return Unauthorized();
                 }
