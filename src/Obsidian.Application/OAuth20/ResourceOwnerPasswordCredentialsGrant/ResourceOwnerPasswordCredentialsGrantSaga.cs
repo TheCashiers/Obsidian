@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
+using System.Threading.Tasks;
 
 namespace Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant
 {
@@ -17,12 +17,12 @@ namespace Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant
 
         public async Task<OAuth20Result> StartAsync(ResourceOwnerPasswordCredentialsGrantCommand command)
         {
+            _user = command.User;
             //check client and scopes
             var precondiction =
                 TryLoadClient(command.ClientId, out _client)
                 && TryLoadScopes(command.ScopeNames, out _requestedScopes)
-                && _client.Secret == command.ClientSecret
-                && TryLoadUser(command.UserName, out _user);
+                && _client.Secret == command.ClientSecret;
 
             if (!precondiction)
             {
@@ -38,7 +38,7 @@ namespace Obsidian.Application.OAuth20.ResourceOwnerPasswordCredentialsGrant
         protected override async Task<OAuth20Result> GrantPermissionAsync()
         {
             _grantedScopes = _requestedScopes;
-            if (!IsClientAuthorized(_user, _client, _grantedScopes))
+            if (!IsClientGranted(_user, _client, _grantedScopes))
             {
                 _user.GrantClient(_client, _requestedScopes);
                 await SaveUserAsync();

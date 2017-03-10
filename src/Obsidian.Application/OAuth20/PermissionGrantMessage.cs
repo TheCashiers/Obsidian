@@ -1,5 +1,5 @@
-﻿using System;
-using Obsidian.Application.ProcessManagement;
+﻿using Obsidian.Application.ProcessManagement;
+using System;
 using System.Collections.Generic;
 
 namespace Obsidian.Application.OAuth20

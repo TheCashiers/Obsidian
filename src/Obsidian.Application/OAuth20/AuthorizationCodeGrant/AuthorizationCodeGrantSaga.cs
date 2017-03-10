@@ -1,7 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
+using System;
+using System.Threading.Tasks;
 
 namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 {
@@ -41,7 +41,6 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 
         private Guid GenerateAuthorizationCode() => Id;
 
-
         public Task<OAuth20Result> HandleAsync(AccessTokenRequestMessage message)
         {
             if (VerifyAccessTokenRequest(message.ClientId, message.ClientSecret, message.Code, message.RedirectUri))
@@ -55,7 +54,6 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
         }
 
         public bool ShouldHandle(AccessTokenRequestMessage message) => _state == OAuth20State.AuthorizationCodeGenerated && message.SagaId == Id;
-
 
         private bool VerifyAccessTokenRequest(Guid clientId, string clientSecret, Guid authorizationCode, string redirectUri)
             => clientId == _client.Id

@@ -17,7 +17,6 @@ namespace Obsidian.Application.OAuth20
         private readonly IUserRepository _userRepository;
         private readonly OAuth20Service _oauth20Service;
 
-
         #endregion External Dependencies
 
         #region State Data
@@ -109,13 +108,12 @@ namespace Obsidian.Application.OAuth20
 
         #region Percondictions
 
-        protected bool IsClientAuthorized(User user, Client client, IList<PermissionScope> scopes)
+        protected bool IsClientGranted(User user, Client client, IList<PermissionScope> scopes)
             => user.IsClientGranted(client, scopes.Select(s => s.ScopeName));
 
         #endregion Percondictions
 
         private string GenerateAccessToken() => _oauth20Service.GenerateAccessToken(_user, _grantedScopes);
-
 
         protected void GoToState(OAuth20State state) => _state = state;
     }

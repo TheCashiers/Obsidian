@@ -46,8 +46,7 @@ namespace Obsidian.Application.OAuth20
                 ValidIssuer = _config.TokenIssuer,
                 ValidAudience = _config.TokenAudience
             };
-            SecurityToken vt;
-            var principal = handler.ValidateToken(token, param, out vt);
+            var principal = handler.ValidateToken(token, param, out var vt);
             return principal != null;
         }
     }

@@ -79,7 +79,7 @@ namespace Obsidian.Application.OAuth20
 
         protected async Task<OAuth20Result> VerifyPermissionAsync()
         {
-            if (IsClientAuthorized(_user, _client, _requestedScopes))
+            if (IsClientGranted(_user, _client, _requestedScopes))
             {
                 _grantedScopes = _requestedScopes;
                 return await GrantPermissionAsync();

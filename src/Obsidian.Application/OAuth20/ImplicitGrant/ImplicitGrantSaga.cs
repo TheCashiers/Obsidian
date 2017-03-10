@@ -1,7 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
+using System.Threading.Tasks;
 
 namespace Obsidian.Application.OAuth20.ImplicitGrant
 {
@@ -32,6 +31,5 @@ namespace Obsidian.Application.OAuth20.ImplicitGrant
             result.RedirectUri = _redirectUri;
             return result;
         }
-
     }
 }

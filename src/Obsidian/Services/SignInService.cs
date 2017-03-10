@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Authentication;
+using Obsidian.Application.Services;
 using Obsidian.Domain;
+using Obsidian.Domain.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Authentication;
-using Obsidian.Application.Services;
-using System;
-using Obsidian.Domain.Repositories;
 
 namespace Obsidian.Services
 {

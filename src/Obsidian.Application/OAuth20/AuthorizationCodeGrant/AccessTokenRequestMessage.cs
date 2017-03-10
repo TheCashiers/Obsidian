@@ -1,5 +1,5 @@
-﻿using System;
-using Obsidian.Application.ProcessManagement;
+﻿using Obsidian.Application.ProcessManagement;
+using System;
 
 namespace Obsidian.Application.OAuth20
 {
@@ -12,7 +12,6 @@ namespace Obsidian.Application.OAuth20
         public Guid Code { get; set; }
         public Guid ClientId { get; set; }
         public string ClientSecret { get; set; }
-
         public string RedirectUri { get; set; }
     }
 }
