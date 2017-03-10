@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Obsidian.Domain;
+using System;
 
 namespace Obsidian.Application.ProcessManagement
 {
-    public abstract class Message<TResult>
+    public abstract class Message<TResult> : IValidatable
     {
 
         public Message(Guid sagaId)
@@ -11,5 +12,7 @@ namespace Obsidian.Application.ProcessManagement
         }
 
         public Guid SagaId { get; }
+
+        public virtual bool Validate() => true;
     }
 }

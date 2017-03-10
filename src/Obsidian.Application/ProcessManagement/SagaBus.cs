@@ -12,7 +12,6 @@ namespace Obsidian.Application.ProcessManagement
         private readonly Dictionary<Type, Type> _sagaStarterRegistry = new Dictionary<Type, Type>();
         private readonly List<Saga> _sagaCache = new List<Saga>();
 
-
         public SagaBus(IServiceProvider provider)
         {
             _serviceProvider = provider;
@@ -32,22 +31,36 @@ namespace Obsidian.Application.ProcessManagement
         public async Task<TResult> InvokeAsync<TCommand, TResult>(TCommand command)
             where TCommand : Command<TResult>
         {
-            var sagaType = _sagaStarterRegistry[typeof(TCommand)];
-            var saga = (Saga)_serviceProvider.GetService(sagaType);
-            var result = await ((IStartsWith<TCommand, TResult>)saga).StartAsync(command);
-            if (!saga.IsCompleted)
+            if (!command.Validate())
             {
-                _sagaCache.Add(saga);
+                throw new ArgumentException("Command validation failed.", nameof(command));
             }
-            return result;
+            if (_sagaStarterRegistry.ContainsKey(typeof(TCommand)))
+            {
+                var sagaType = _sagaStarterRegistry[typeof(TCommand)];
+                var service = _serviceProvider.GetService(sagaType);
+                if (service is Saga saga && service is IStartsWith<TCommand, TResult> handler)
+                {
+                    var result = await handler.StartAsync(command);
+                    if (!saga.IsCompleted)
+                    {
+                        _sagaCache.Add(saga);
+                    }
+                    return result;
+                }
+            }
+            throw new SagaNotFoundException();
         }
 
         public async Task<TResult> SendAsync<TMessage, TResult>(TMessage message)
              where TMessage : Message<TResult>
         {
-            var saga = _sagaCache.Single(s => s.Id == message.SagaId);
-            var handler = (IHandlerOf<TMessage, TResult>)saga;
-            if (handler.ShouldHandle(message))
+            if (!message.Validate())
+            {
+                throw new ArgumentException("Message validation failed.", nameof(message));
+            }
+            var saga = _sagaCache.SingleOrDefault(s => s.Id == message.SagaId);
+            if (saga is IHandlerOf<TMessage, TResult> handler && handler.ShouldHandle(message))
             {
                 var result = await handler.HandleAsync(message);
                 if (saga.IsCompleted)
@@ -56,7 +69,7 @@ namespace Obsidian.Application.ProcessManagement
                 }
                 return result;
             }
-            throw new InvalidOperationException();
+            throw new SagaNotFoundException();
         }
     }
 }
