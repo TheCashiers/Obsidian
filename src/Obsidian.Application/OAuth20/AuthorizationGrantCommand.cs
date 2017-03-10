@@ -7,5 +7,7 @@ namespace Obsidian.Application.OAuth20
     {
         public Guid ClientId { get; set; }
         public string[] ScopeNames { get; set; }
+
+        public override bool Validate() => ScopeNames != null;
     }
 }
