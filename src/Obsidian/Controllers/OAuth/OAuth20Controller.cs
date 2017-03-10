@@ -178,6 +178,7 @@ namespace Obsidian.Controllers.OAuth
 
         [HttpPost("oauth20/token_resource_owner_credential")]
         [ValidateModel]
+        [AllowAnonymous]
         public async Task<IActionResult> Token([FromBody]ResourceOwnerPasswordCredentialsGrantRequestModel model)
         {
             if ("password".Equals(model.GrantType, StringComparison.OrdinalIgnoreCase))
@@ -214,6 +215,7 @@ namespace Obsidian.Controllers.OAuth
 
         [HttpPost("oauth20/token/verify")]
         [ValidateModel]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyToken(TokenVerificationModel model)
         {
             var command = new VerifyTokenCommand

@@ -17,6 +17,8 @@ using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
 using Obsidian.Application.Services;
 using Obsidian.Config;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Threading.Tasks;
 
 namespace Obsidian
 {
@@ -100,7 +102,15 @@ namespace Obsidian
             {
                 AuthenticationScheme = AuthenticationSchemes.OAuth20Cookie,
                 AutomaticChallenge = false,
-                AutomaticAuthenticate = false
+                AutomaticAuthenticate = false,
+                Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = ctx =>
+                    {
+                        ctx.Response.StatusCode = 401;
+                        return Task.FromResult(0);
+                    }
+                }
             });
 
             var oauthConfig = oauthOptions.Value;
