@@ -128,9 +128,9 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        [HttpPost("oauth20/cancel")]
+        [HttpPost("oauth20/singout")]
         [ValidateModel]
-        public async Task<IActionResult> Cancel([FromForm]CancelModel model)
+        public async Task<IActionResult> SignOut([FromForm]OAuthSignOutModel model)
         {
             var context = _dataProtector.Unprotect(model.ProtectedOAuthContext);
             if (!Guid.TryParse(context, out var sagaId))
@@ -329,6 +329,7 @@ namespace Obsidian.Controllers.OAuth
             if (currentUser != null)
             {
                 model.IsAutoSignIn = true;
+                model.RememberMe = true;
                 model.UserName = currentUser.UserName;
             }
             return base.View("SignIn", model);

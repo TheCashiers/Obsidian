@@ -104,7 +104,10 @@ namespace Obsidian.Application.OAuth20
 
         public bool ShouldHandle(OAuth20SignInMessage message) => _state == OAuth20State.RequireSignIn && message.SagaId == Id;
 
-        public bool ShouldHandle(CancelMessage message) => _state == OAuth20State.RequirePermissionGrant && message.SagaId == Id;
+        public bool ShouldHandle(CancelMessage message) =>
+            (_state == OAuth20State.RequireSignIn ||
+            _state == OAuth20State.RequirePermissionGrant)
+            && message.SagaId == Id;
 
     }
 }
