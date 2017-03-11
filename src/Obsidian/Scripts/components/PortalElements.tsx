@@ -62,7 +62,7 @@ export const PortalHeader = (props) => (
                         </div>
                     </form>
                     <ul className="nav navbar-nav navbar-right">
-                        <UserInfoContainer/>
+                        <UserInfoContainer token={props.token}/>
                     </ul>
                 </div>
             </div>

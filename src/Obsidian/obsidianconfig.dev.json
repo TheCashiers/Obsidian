@@ -5,7 +5,7 @@
     "TokenIssuer": "Obsidian"
   },
   "Portal": {
-    "AdminPortalClientId": "02c7469f-c2a4-486d-898a-9f30acccb787",
+    "AdminPortalClientId": "ee397414-fc60-422a-aa93-a4649f2f087b",
     "AdminPortalScopes": [
       "ob.basic"
     ]
