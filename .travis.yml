@@ -13,8 +13,8 @@ install:
 
 before_script:
     - sudo service mongod start
-    - cd ./src/
     - dotnet restore
+    - cd ./src/
     - cd ./Obsidian/
     - npm update
 
