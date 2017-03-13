@@ -35,6 +35,7 @@ namespace Obsidian
                 obsidianConfigFileName = "obsidianconfig.dev.json";
             }
             builder.AddJsonFile(obsidianConfigFileName, optional: false);
+            builder.AddJsonFile("authorizationpolicy.json", optional: false);
             Configuration = builder.Build();
         }
 
@@ -64,13 +65,15 @@ namespace Obsidian
             services.AddOptions();
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
             services.Configure<PortalConfig>(Configuration.GetSection("Portal"));
-
+            services.Configure<AuthorizationPolicyConfig>(Configuration.GetSection("AuthorizationPolicy"));
             //infrastructure services
             services.AddTransient<ISignInService, SignInService>();
             services.AddTransient<PortalService>();
 
             //Add claims-based authorization
-            services.ConfigClaimsBasedAuthorization();
+            var policyConfig = new AuthorizationPolicyConfig();
+            Configuration.GetSection("AuthorizationPolicy").Bind(policyConfig);
+            services.ConfigClaimsBasedAuthorization(policyConfig);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
