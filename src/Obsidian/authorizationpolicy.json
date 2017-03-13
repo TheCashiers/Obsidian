@@ -1,9 +1,14 @@
 ﻿{
   "AuthorizationPolicy": {
-    "Policies":[
+    "Policies": [
       {
-        "Policy": "NameIdentifierPolicy",
-        "ClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        "PolicyName": "NameIdentifierPolicy",
+        "Claims": [
+          {
+            "ClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            "Values": []
+          }
+        ]
       }
     ]
   }

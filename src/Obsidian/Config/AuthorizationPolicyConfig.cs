@@ -9,8 +9,14 @@ namespace Obsidian.Config
     {
         public class PolicyClaimTypePair
         {
-            public string Policy { get; set; }
-            public string ClaimType { get; set; }
+            public class ClaimItem
+            {
+                public string ClaimType { get; set; }
+                public List<string> Values { get; set; }
+            }
+
+            public string PolicyName { get; set; }
+            public List<ClaimItem> Claims { get; set; }
         }
         public List<PolicyClaimTypePair> Policies { get; set; }
  
