@@ -4,21 +4,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.PlatformAbstractions;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
-using Obsidian.Persistence.DependencyInjection;
-using Obsidian.QueryModel.Mapping;
-using System.Text;
-using Obsidian.Services;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.Extensions.PlatformAbstractions;
-using System.IO;
 using Obsidian.Application.Services;
 using Obsidian.Config;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
+using Obsidian.Persistence.DependencyInjection;
+using Obsidian.QueryModel.Mapping;
+using Obsidian.Services;
+using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace Obsidian
 {
@@ -65,7 +61,6 @@ namespace Obsidian
                 c.IncludeXmlComments(xmlPath);
             });
 
-
             services.AddOptions();
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
             services.Configure<PortalConfig>(Configuration.GetSection("Portal"));
@@ -97,48 +92,14 @@ namespace Obsidian
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = AuthenticationSchemes.OAuth20Cookie,
-                AutomaticChallenge = false,
-                AutomaticAuthenticate = false,
-                Events = new CookieAuthenticationEvents()
-                {
-                    OnRedirectToLogin = ctx =>
-                    {
-                        ctx.Response.StatusCode = 401;
-                        return Task.FromResult(0);
-                    }
-                }
-            });
-
-            var oauthConfig = oauthOptions.Value;
-            var key = oauthConfig.TokenSigningKey;
-            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
-            var param = new TokenValidationParameters
-            {
-                AuthenticationType = "Bearer",
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ValidateIssuer = true,
-                ValidIssuer = oauthConfig.TokenIssuer,
-                ValidAudience = oauthConfig.TokenAudience
-            };
-
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                TokenValidationParameters = param,
-                AutomaticAuthenticate = false,
-                AutomaticChallenge = false
-            });
+            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions);
 
             app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Home}/{action=Index}/{id?}");
-                });
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             MappingConfig.ConfigureQueryModelMapping();
             sagaBus.RegisterSagas();
