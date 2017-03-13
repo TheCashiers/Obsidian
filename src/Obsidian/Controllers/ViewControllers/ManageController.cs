@@ -53,7 +53,7 @@ namespace Obsidian.Controllers.ViewControllers
 
 
         [Route("[controller]/signout")]
-        public IActionResult SignOut([FromQuery(Name = "signout_oauth")]bool signOutOauth = false)
+        public IActionResult SignOut([FromQuery(Name = "signout_oauth")]bool signOutOauth = true)
         {
             Response.Cookies.Delete(CookieKey);
             if (signOutOauth)
