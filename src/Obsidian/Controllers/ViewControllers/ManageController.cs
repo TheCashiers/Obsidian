@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Obsidian.Controllers.OAuth;
 using Obsidian.Services;
 
 #pragma warning disable CS1591
@@ -37,7 +38,7 @@ namespace Obsidian.Controllers.ViewControllers
                 else
                 {
                     //Redirect to oauth login.
-                    var portalUrl = $"{Request.Scheme}://{Request.Host.Value}{Request.Path.Value}";
+                    var portalUrl = GetPortalUrl(path);
                     var authUrl = _portalService.AuthorizeUriForAdminPortal(portalUrl);
                     return Redirect(authUrl);
                 }
@@ -48,11 +49,22 @@ namespace Obsidian.Controllers.ViewControllers
             return View();
         }
 
+        private string GetPortalUrl(string path) => Url.Action(nameof(Index), "Manage", new { path = path }, Request.Scheme, Request.Host.Value);
+
+
         [Route("[controller]/signout")]
-        public IActionResult SignOut()
+        public IActionResult SignOut([FromQuery(Name = "signout_oauth")]bool signOutOauth = false)
         {
             Response.Cookies.Delete(CookieKey);
-            return RedirectToAction(nameof(Index));
+            if (signOutOauth)
+            {
+                var portalUrl = GetPortalUrl(null);
+                return RedirectToAction(nameof(OAuth20Controller.SignOut), "OAuth20", new { redurect_uri = portalUrl });
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

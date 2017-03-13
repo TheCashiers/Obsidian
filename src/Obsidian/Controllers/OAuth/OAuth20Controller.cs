@@ -14,6 +14,7 @@ using Obsidian.Misc;
 using Obsidian.Models.OAuth;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -128,7 +129,15 @@ namespace Obsidian.Controllers.OAuth
             }
         }
 
-        [HttpPost("oauth20/singout")]
+        [HttpGet("oauth20/signout")]
+        [ValidateModel]
+        public async Task<IActionResult> SignOut([FromQuery(Name = "redurect_uri"), Url]string redirectUri)
+        {
+            await _signinService.CookieSignOutCurrentUserAsync(AuthenticationSchemes.OAuth20Cookie);
+            return Redirect(redirectUri);
+        }
+
+        [HttpPost("oauth20/switchuser")]
         [ValidateModel]
         public async Task<IActionResult> SignOut([FromForm]OAuthSignOutModel model)
         {
@@ -285,7 +294,16 @@ namespace Obsidian.Controllers.OAuth
         }
 
         private string CancelRedirectUrl(OAuth20Result.CancelInfo cancelData)
-            => $"/oauth20/authorize?response_type={cancelData.ResponseType}&redirect_uri={cancelData.RedirectUri}&client_id={cancelData.ClientId}&scope={string.Join(" ", cancelData.Scopes)}";
+        {
+            var routeValues = new
+            {
+                response_type = cancelData.ResponseType,
+                redirect_uri = cancelData.RedirectUri,
+                client_id = cancelData.ClientId,
+                scope = string.Join(" ", cancelData.Scopes)
+            };
+            return Url.Action(nameof(Authorize), "OAuth20", routeValues, Request.Scheme, Request.Host.Value);
+        }
 
         private bool TryConvertToGrantType(string responseType, out AuthorizationGrant grantType)
         {
