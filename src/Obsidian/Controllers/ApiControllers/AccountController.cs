@@ -4,11 +4,11 @@ using System;
 using System.Threading.Tasks;
 namespace Obsidian.Controllers.ApiControllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class AccountController : Controller
     {
 
-        [Authorize(Policy = "NameIdentifierPolicy")]
+        [Authorize(Policy = "NameIdentifierPolicy", ActiveAuthenticationSchemes = "Bearer")]
         [HttpGet]
         [Route("Id")]
         public Task<ActionResult> GetUserId()
