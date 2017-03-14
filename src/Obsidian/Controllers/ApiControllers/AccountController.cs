@@ -4,6 +4,10 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Obsidian.Domain.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using Obsidian.Domain;
+
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -17,15 +21,16 @@ namespace Obsidian.Controllers.ApiControllers
             _userRepository = repo;
         }
 
-        [Authorize(Policy = "GetUsernamePolicy", ActiveAuthenticationSchemes = "Bearer")]
+        [Authorize(Policy = "NameIdentifierPolicy", ActiveAuthenticationSchemes = "Bearer")]
         [HttpGet]
-        [Route("Username")]
-        public async Task<ActionResult> GetUserName()
+        [Route("Profile")]
+        public async Task<ActionResult> GetProfile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _userRepository.FindByIdAsync(new Guid(userId));
-            return Ok(new { Username = user.UserName });
+            var dic = new Dictionary<string, string>();
+            var claims = user.GetClaims(User.Claims.Select(c=>c.Type)).ToDictionary(cm=>cm.Type,cn=>cn.Value);
+            return Ok(claims);
         }
-
     }
 }
