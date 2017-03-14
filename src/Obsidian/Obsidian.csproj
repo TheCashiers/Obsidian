@@ -52,4 +52,6 @@
     <Exec Command="npm start --color" />
   </Target>
 
+  <ProjectExtensions><VisualStudio><UserProperties authorizationpolicy_1json__JSONSchema="http://json.schemastore.org/contribute" /></VisualStudio></ProjectExtensions>
+
 </Project>

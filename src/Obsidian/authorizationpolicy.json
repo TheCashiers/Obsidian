@@ -5,7 +5,20 @@
         "PolicyName": "NameIdentifierPolicy",
         "Claims": [
           {
-            "ClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            "ClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+            "Values": []
+          }
+        ]
+      },
+      {
+        "PolicyName": "GetUsernamePolicy",
+        "Claims": [
+          {
+            "ClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+            "Values": []
+          },
+          {
+            "ClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
             "Values": []
           }
         ]
