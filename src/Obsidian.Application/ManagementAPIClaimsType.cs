@@ -11,16 +11,14 @@ namespace Obsidian.Application
     {
         private const string _obsidianManagementAPIPrefix = "http://schema.za-pt.org/Obsidian/ManagementAPI/";
 
-        public const string UpdateUserName = _obsidianManagementAPIPrefix + "User/UpdateUserName";
-        public const string UpdatePassword = _obsidianManagementAPIPrefix + "User/UpdatePassword";
-        public const string UpdateProfile = _obsidianManagementAPIPrefix + "User/UpdateProfile";
-        public const string UpdateClaims = _obsidianManagementAPIPrefix + "User/UpdateClaims";
-        public const string AddUser = _obsidianManagementAPIPrefix + "User/AddUser";
-        public const string GetUser = _obsidianManagementAPIPrefix + "User/GetUser";
+        public const string UserName = _obsidianManagementAPIPrefix + "User/UserName";
+        public const string Password = _obsidianManagementAPIPrefix + "User/Password";
+        public const string Profile = _obsidianManagementAPIPrefix + "User/Profile";
+        public const string Claims = _obsidianManagementAPIPrefix + "User/Claims";
+        public const string User = _obsidianManagementAPIPrefix + "User";
 
-        public const string GetClient = _obsidianManagementAPIPrefix + "Client/GetClient";
-        public const string GetClientSecret = _obsidianManagementAPIPrefix + "Client/GetClientSecret";
-        public const string AddClient = _obsidianManagementAPIPrefix + "Client/AddClient";
+        public const string Client = _obsidianManagementAPIPrefix + "Client";
+        public const string ClientSecret = _obsidianManagementAPIPrefix + "Client/Secret";
         public const string UpdateClient = _obsidianManagementAPIPrefix + "Client/UpdateClient";
         public const string UpdateClientSecret = _obsidianManagementAPIPrefix + "Client/UpdateClientSecret";
 
