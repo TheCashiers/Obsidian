@@ -12,7 +12,7 @@
         dotnet --verbose build
         npm update
     ```
-## Naming conversions
+## Naming convention
 
 ### For C# code
 
