@@ -19,11 +19,7 @@ namespace Obsidian.Application
 
         public const string Client = _obsidianManagementAPIPrefix + "Client";
         public const string ClientSecret = _obsidianManagementAPIPrefix + "Client/Secret";
-        public const string UpdateClient = _obsidianManagementAPIPrefix + "Client/UpdateClient";
-        public const string UpdateClientSecret = _obsidianManagementAPIPrefix + "Client/UpdateClientSecret";
 
-        public const string GetScope = _obsidianManagementAPIPrefix + "Scope/GetScope";
-        public const string AddScope = _obsidianManagementAPIPrefix + "Scope/AddScope";
-        public const string UpdateScope = _obsidianManagementAPIPrefix + "Scope/UpdateScope";
+        public const string Scope = _obsidianManagementAPIPrefix + "Scope";
     }
 }
