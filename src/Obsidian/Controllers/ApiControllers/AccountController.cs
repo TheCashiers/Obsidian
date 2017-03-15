@@ -21,7 +21,7 @@ namespace Obsidian.Controllers.ApiControllers
             _userRepository = repo;
         }
         [Authorize(ActiveAuthenticationSchemes = "Bearer")]
-        [ClaimAuthorize(ClaimTypes.NameIdentifier,null)]
+        [RequireClaim(ClaimTypes.NameIdentifier,null)]
         [HttpGet]
         [Route("Profile")]
         public async Task<ActionResult> GetProfile()

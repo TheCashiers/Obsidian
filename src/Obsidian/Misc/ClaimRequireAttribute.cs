@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Misc
 {
-    public class ClaimAuthorizeAttribute : TypeFilterAttribute
+    public class RequireClaimAttribute : TypeFilterAttribute
     {
-        private class ClaimAuthorizeFilter : IAsyncActionFilter
+        private class RequireClaimFilter : IAsyncActionFilter
         {
             public readonly Claim _claim;
             public readonly bool _isValueNull;
-            public ClaimAuthorizeFilter(NullableClaim claim)
+            public RequireClaimFilter(NullableClaim claim)
             {
                 if(claim.Value == null)
                 {
@@ -45,7 +45,7 @@ namespace Obsidian.Misc
             public string Value { get; set; }
         }
 
-        public ClaimAuthorizeAttribute(string claimType, string claimValue) : base(typeof(ClaimAuthorizeFilter))
+        public RequireClaimAttribute(string claimType, string claimValue) : base(typeof(RequireClaimFilter))
         {
             Arguments = new object[] { new NullableClaim(claimType, claimValue) };
         }
