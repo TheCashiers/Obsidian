@@ -7,7 +7,7 @@ using Obsidian.Domain.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using Obsidian.Domain;
-
+using Obsidian.Misc;
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -20,8 +20,8 @@ namespace Obsidian.Controllers.ApiControllers
         {
             _userRepository = repo;
         }
-
-        [Authorize(Policy = "NameIdentifierPolicy", ActiveAuthenticationSchemes = "Bearer")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [ClaimAuthorize(ClaimTypes.NameIdentifier,null)]
         [HttpGet]
         [Route("Profile")]
         public async Task<ActionResult> GetProfile()
