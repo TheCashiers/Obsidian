@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Obsidian.Application;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.ScopeManagement;
@@ -23,6 +25,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Scope, "Get")]
         public async Task<IActionResult> Get()
         {
             var query = await _scopeRepository.QueryAllAsync();
@@ -30,6 +34,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Scope, "Get")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var scope = await _scopeRepository.FindByIdAsync(id);
@@ -42,6 +48,8 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPost]
         [ValidateModel]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Scope, "Add")]
         public async Task<IActionResult> Post([FromBody]ScopeCreationDto dto)
         {
             var cmd = new CreateScopeCommand
@@ -62,6 +70,8 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}")]
         [ValidateModel]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Scope, "Update")]
         public async Task<IActionResult> Put([FromBody] UpdateScopeDto dto, Guid id)
         {
             var cmd = new UpdateScopeCommand

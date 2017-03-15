@@ -10,6 +10,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Obsidian.Application;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -30,6 +32,8 @@ namespace Obsidian.Controllers.ApiControllers
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, typeof(IQueryable<QueryModel.Client>))]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Client, "Get")]
         public async Task<IActionResult> Get()
         {
             var query = await _clientRepository.QueryAllAsync();
@@ -43,6 +47,8 @@ namespace Obsidian.Controllers.ApiControllers
         [HttpGet("{id:guid}")]
         [SwaggerResponse(200, typeof(QueryModel.Client))]
         [SwaggerResponse(404)]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Client, "Get")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var client = await _clientRepository.FindByIdAsync(id);
@@ -54,6 +60,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}/Secret")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.ClientSecret, "Get")]
         public async Task<IActionResult> GetSecretById(Guid id)
         {
             var client = await _clientRepository.FindByIdAsync(id);
@@ -72,6 +80,8 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         [SwaggerResponse(201, typeof(CreatedResult))]
         [SwaggerResponse(400), SwaggerResponse(412)]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Client, "Add")]
         public async Task<IActionResult> Post([FromBody] ClientCreationDto dto)
         {
             var cmd = new CreateClientCommand { DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
@@ -85,6 +95,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.Client, "Update")]
         [ValidateModel]
         public async Task<IActionResult> Put([FromBody]UpdateClientDto dto, Guid id)
         {
@@ -98,6 +110,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}/Secret")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.ClientSecret, "Update")]
         [ValidateModel]
         public async Task<IActionResult> UpdateSecret(Guid id)
         {

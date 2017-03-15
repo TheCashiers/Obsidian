@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application.Dto;
+using Obsidian.Application;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.UserManagement;
 using Obsidian.Domain;
@@ -10,6 +11,8 @@ using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -25,6 +28,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.User, "Get")]
         public async Task<IActionResult> Get()
         {
             var query = await _userRepository.QueryAllAsync();
@@ -32,6 +37,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.User, "Get")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = await _userRepository.FindByIdAsync(id);
@@ -42,8 +49,11 @@ namespace Obsidian.Controllers.ApiControllers
             return Ok(Mapper.Map<QueryModel.User>(user));
         }
 
+
         [HttpPost]
         [ValidateModel]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.User, "Add")]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
             var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };
@@ -58,6 +68,8 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Claims")]
         [ValidateModel]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.UserClaims, "Update")]
         public async Task<IActionResult> UpdateClaims([FromBody]UpdateUserClaimsDto dto, Guid id)
         {
             var cmd = new UpdateUserClaimCommand { UserId = id, Claims = dto.Claims.ToDictionary(t => t.ClaimType, v => v.ClaimValue) };
@@ -71,6 +83,8 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}/Profile")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.UserProfile, "Update")]
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
@@ -86,6 +100,8 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Password")]
         [ValidateModel]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.UserPassword, "Update")]
         public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
             var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
@@ -100,6 +116,8 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/UserName")]
         [ValidateModel]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ManagementAPIClaimsType.UserName, "Update")]
         public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
         {
             var cmd = new UpdateUserNameCommand

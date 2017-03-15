@@ -12,9 +12,9 @@ namespace Obsidian.Application
         private const string _obsidianManagementAPIPrefix = "http://schema.za-pt.org/Obsidian/ManagementAPI/";
 
         public const string UserName = _obsidianManagementAPIPrefix + "User/UserName";
-        public const string Password = _obsidianManagementAPIPrefix + "User/Password";
-        public const string Profile = _obsidianManagementAPIPrefix + "User/Profile";
-        public const string Claims = _obsidianManagementAPIPrefix + "User/Claims";
+        public const string UserPassword = _obsidianManagementAPIPrefix + "User/Password";
+        public const string UserProfile = _obsidianManagementAPIPrefix + "User/Profile";
+        public const string UserClaims = _obsidianManagementAPIPrefix + "User/Claims";
         public const string User = _obsidianManagementAPIPrefix + "User";
 
         public const string Client = _obsidianManagementAPIPrefix + "Client";
