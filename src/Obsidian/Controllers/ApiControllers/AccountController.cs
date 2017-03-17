@@ -1,25 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Obsidian.Domain;
-using Obsidian.Misc;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-
         private readonly IUserRepository _userRepository;
 
         public AccountController(IUserRepository repo)
         {
             _userRepository = repo;
         }
+
         //[Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ClaimTypes.NameIdentifier, null)]
         [HttpGet]

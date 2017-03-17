@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 
-namespace Obsidian.Misc
+namespace Obsidian.Authorization
 {
     public interface IClaimRequirementData
     {

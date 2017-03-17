@@ -6,10 +6,12 @@ using Obsidian.Application;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.ScopeManagement;
+using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
+
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -88,6 +90,5 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
-
     }
 }

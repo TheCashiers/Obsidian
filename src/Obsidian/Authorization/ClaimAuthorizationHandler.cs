@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Obsidian
+namespace Obsidian.Authorization
 {
     public class ClaimAuthorizationHandler : AuthorizationHandler<ClaimRequirement>
     {

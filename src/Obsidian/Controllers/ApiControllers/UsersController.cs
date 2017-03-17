@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Obsidian.Application.Dto;
 using Obsidian.Application;
+using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.UserManagement;
+using Obsidian.Authorization;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -48,7 +49,6 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return Ok(Mapper.Map<QueryModel.User>(user));
         }
-
 
         [HttpPost]
         [ValidateModel]

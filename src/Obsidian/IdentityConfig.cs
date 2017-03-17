@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.OAuth20;
-using Obsidian.Misc;
+using Obsidian.Authorization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,6 +65,5 @@ namespace Obsidian
             services.AddSingleton<IAuthorizationHandler, ClaimAuthorizationHandler>();
             return services;
         }
-
     }
 }

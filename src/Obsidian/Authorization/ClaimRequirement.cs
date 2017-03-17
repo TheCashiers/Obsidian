@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Obsidian
+namespace Obsidian.Authorization
 {
     public class ClaimRequirement: IAuthorizationRequirement
     {

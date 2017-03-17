@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Obsidian.Application;
 using Obsidian.Application.ClientManagement;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
+using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Obsidian.Application;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -123,6 +124,5 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
-
     }
 }
