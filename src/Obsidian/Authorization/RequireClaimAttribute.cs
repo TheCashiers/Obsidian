@@ -8,16 +8,13 @@ namespace Obsidian.Authorization
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
     public class RequireClaimAttribute : AuthorizeAttribute, IClaimRequirementData
     {
-        public const string RequireClaimPolicyName = "Obsidian_RequireClaim_Authorization";
+        public const string RequireClaimPolicyName = "Obsidian_RequireClaim_Authorization_Policy";
 
-        public RequireClaimAttribute(string claimType, string commaSepratedClaimValues)
+        public RequireClaimAttribute(string claimType, params string[] claimValues)
             : base(RequireClaimPolicyName)
         {
             ActiveAuthenticationSchemes = AuthenticationSchemes.Bearer;
-            ClaimValues = commaSepratedClaimValues?.Split(',')
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Trim()).ToList()
-                ?? new List<string>();
+            ClaimValues = claimValues?.ToList() ?? new List<string>();
         }
 
         public string ClaimType { get; set; }
