@@ -14,7 +14,9 @@ namespace Obsidian.Misc
             : base(RequireClaimPolicyName)
         {
             ActiveAuthenticationSchemes = AuthenticationSchemes.Bearer;
-            ClaimValues = commaSepratedClaimValues?.Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).ToList()
+            ClaimValues = commaSepratedClaimValues?.Split(',')
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s => s.Trim()).ToList()
                 ?? new List<string>();
         }
 
