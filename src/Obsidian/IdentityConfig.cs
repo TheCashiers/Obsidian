@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.OAuth20;
+using Obsidian.Misc;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +52,19 @@ namespace Obsidian
                     }
                 }
             });
+
+        public static IServiceCollection ConfigClaimsBasedAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(opt =>
+                opt.AddPolicy(RequireClaimAttribute.RequireClaimPolicyName,
+                builder =>
+                {
+                    //builder.RequireAuthenticatedUser();
+                    builder.AddRequirements(new ClaimRequirement());
+                }));
+            services.AddSingleton<IAuthorizationHandler, ClaimAuthorizationHandler>();
+            return services;
+        }
 
     }
 }

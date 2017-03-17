@@ -20,8 +20,8 @@ namespace Obsidian.Controllers.ApiControllers
         {
             _userRepository = repo;
         }
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
-        [RequireClaim(ClaimTypes.NameIdentifier,null)]
+        //[Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        [RequireClaim(ClaimTypes.NameIdentifier, null)]
         [HttpGet]
         [Route("Profile")]
         public async Task<ActionResult> GetProfile()
@@ -29,7 +29,7 @@ namespace Obsidian.Controllers.ApiControllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _userRepository.FindByIdAsync(new Guid(userId));
             var dic = new Dictionary<string, string>();
-            var claims = user.GetClaims(User.Claims.Select(c=>c.Type)).ToDictionary(cm=>cm.Type,cn=>cn.Value);
+            var claims = user.GetClaims(User.Claims.Select(c => c.Type)).ToDictionary(cm => cm.Type, cn => cn.Value);
             return Ok(claims);
         }
     }
