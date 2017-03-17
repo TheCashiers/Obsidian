@@ -19,7 +19,7 @@ namespace Obsidian.Controllers.ApiControllers
             _userRepository = repo;
         }
 
-        //[Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        //
         [RequireClaim(ClaimTypes.NameIdentifier, null)]
         [HttpGet]
         [Route("Profile")]

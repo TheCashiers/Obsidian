@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Obsidian.Application;
 using Obsidian.Application.Dto;
@@ -29,7 +28,6 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.User, "Get")]
         public async Task<IActionResult> Get()
         {
@@ -38,7 +36,6 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}")]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.User, "Get")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -52,7 +49,6 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPost]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.User, "Add")]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
@@ -68,7 +64,6 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Claims")]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.UserClaims, "Update")]
         public async Task<IActionResult> UpdateClaims([FromBody]UpdateUserClaimsDto dto, Guid id)
         {
@@ -83,7 +78,6 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}/Profile")]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.UserProfile, "Update")]
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
@@ -100,7 +94,6 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Password")]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.UserPassword, "Update")]
         public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
@@ -116,7 +109,6 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/UserName")]
         [ValidateModel]
-        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         [RequireClaim(ManagementAPIClaimsType.UserName, "Update")]
         public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
         {
