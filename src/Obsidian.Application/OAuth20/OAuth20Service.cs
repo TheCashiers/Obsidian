@@ -22,7 +22,7 @@ namespace Obsidian.Application.OAuth20
             _config = options.Value;
             _claimService = claimSvc;
             _rsaService = signingService;
-            _signingKey = new RsaSecurityKey(_rsaService.GetPublicAndPrivateKey());
+            _signingKey = new RsaSecurityKey(_rsaService.GetPrivateKey());
         }
 
         public string GenerateAccessToken(User user, IEnumerable<PermissionScope> scopes)

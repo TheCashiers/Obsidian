@@ -1,42 +1,21 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Obsidian.Application.Cryptography
 {
     public class RsaSigningService
     {
-        private static readonly RSACryptoServiceProvider _provider;
+        private readonly RSA _privateKey;
 
-        static RsaSigningService()
+        private readonly RSA _publicKey;
+
+        public RsaSigningService()
         {
-            const string fileName = "key.bin";
-            if (!File.Exists(fileName))
-            {
-                using (var fs = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write))
-                {
-                    using (var writer = new BinaryWriter(fs))
-                    {
-                        var rsa = GenerateNew();
-                        var data = rsa.ExportCspBlob(true);
-                        writer.Write(data);
-                        _provider = rsa;
-                    }
-                }
-            }
-            else
-            {
-                using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        fs.CopyTo(ms);
-                        var data = ms.ToArray();
-                        var rsa = GenerateNew();
-                        rsa.ImportCspBlob(data);
-                        _provider = rsa;
-                    }
-                }
-            }
+            const string fileName = "key.pfx";
+            var cert = new X509Certificate2(fileName, "Obsidian.Cert.Pwd");
+            _privateKey = cert.GetRSAPrivateKey();
+            _publicKey = cert.GetRSAPublicKey();
         }
 
         private static RSACryptoServiceProvider GenerateNew()
@@ -46,18 +25,12 @@ namespace Obsidian.Application.Cryptography
 
         public RSA GetPublicKey()
         {
-            var publicParameter = _provider.ExportParameters(false);
-            var result = new RSACryptoServiceProvider();
-            result.ImportParameters(publicParameter);
-            return result;
+            return _publicKey;
         }
 
-        public RSA GetPublicAndPrivateKey()
+        public RSA GetPrivateKey()
         {
-            var privateAndPublicParameter = _provider.ExportParameters(true);
-            var result = new RSACryptoServiceProvider();
-            result.ImportParameters(privateAndPublicParameter);
-            return result;
+            return _privateKey;
         }
     }
 }
