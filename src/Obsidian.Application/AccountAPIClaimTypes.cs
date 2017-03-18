@@ -8,6 +8,6 @@ namespace Obsidian.Application
     {
         private const string _prefix = "http://schema.za-pt.org/Obsidian/AccountAPI/";
 
-        public const string Profile = _prefix + "UserPrfile";
+        public const string Profile = _prefix + "UserProfile";
     }
 }
