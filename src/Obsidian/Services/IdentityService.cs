@@ -48,5 +48,20 @@ namespace Obsidian.Services
             }
             return null;
         }
+
+        public async Task SetCurrentUserPasswordAsync(string oldPassword, string newPassword)
+        {
+            var claim = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim is Claim c && Guid.TryParse(c.Value, out var userId))
+            {
+                var user = await _userRepo.FindByIdAsync(userId);
+                if (user.VaildatePassword(oldPassword))
+                {
+                    user.SetPassword(newPassword);
+                    await _userRepo.SaveAsync(user);
+                }
+                    
+            }
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace Obsidian.Application.Services
         Task CookieSignOutCurrentUserAsync(string scheme);
 
         Task<User> GetCurrentUserAsync();
+
+        Task SetCurrentUserPasswordAsync(string oldPassword,string newPassword);
     }
 }
