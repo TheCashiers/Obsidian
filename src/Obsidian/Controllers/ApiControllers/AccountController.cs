@@ -37,5 +37,15 @@ namespace Obsidian.Controllers.ApiControllers
             await _identityService.SetCurrentUserPasswordAsync(dto.OldPassword, dto.NewPassword);
             return NoContent();
         }
+
+        [RequireClaim(AccountAPIClaimTypes.Username,"Update")]
+        [ValidateModel]
+        [HttpPut("Username")]
+        public async Task<IActionResult> SetUsername([FromBody]UpdateAccountUsernameDto dto)
+        {
+            await _identityService.SetCurrentUsernameAsync(dto.NewUsername);
+            return NoContent();
+        }
+
     }
 }
