@@ -12,12 +12,9 @@ namespace Obsidian.Domain.Services
                 => GetClaims(user, scopes.SelectMany(s => s.ClaimTypes).Distinct());
 
         public IEnumerable<Claim> GetClaims(User user, IEnumerable<string> claimTypes)
-                => GetAllClaims(user).Join(claimTypes, c => c.Type, ct => ct, (c, ct) => c);
-
-        private IEnumerable<Claim> GetAllClaims(User user)
         {
-            var userClaims = GetClaimsFromObject(userClaimGetters, user);
-            var profileClaims = GetClaimsFromObject(userProfileClaimGetters, user.Profile);
+            var userClaims = GetClaimsFromObjectByType(userClaimGetters, claimTypes, user);
+            var profileClaims = GetClaimsFromObjectByType(userProfileClaimGetters, claimTypes, user.Profile);
             return userClaims.Union(profileClaims).Union(user.Claims);
         }
 
@@ -27,7 +24,7 @@ namespace Obsidian.Domain.Services
         private static IEnumerable<PropertyClaimGetter> userProfileClaimGetters
                     = MetadataHelper.GetClaimPropertyGetters<UserProfile>();
 
-        private static IEnumerable<Claim> GetClaimsFromObject(IEnumerable<PropertyClaimGetter> getters, object obj)
-                => getters.Select(g => g.GetClaim(obj));
+        private static IEnumerable<Claim> GetClaimsFromObjectByType(IEnumerable<PropertyClaimGetter> getters, IEnumerable<string> claimTypes, object obj)
+                => getters.Join(claimTypes, g => g.ClaimType, ct => ct, (g, ct) => g).Select(g => g.GetClaim(obj));
     }
 }
