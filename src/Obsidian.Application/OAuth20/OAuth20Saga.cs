@@ -59,7 +59,7 @@ namespace Obsidian.Application.OAuth20
         protected async Task SaveUserAsync() => await _userRepository.SaveAsync(_user);
 
         protected override bool IsProcessCompleted()
-            => _state == OAuth20State.Finished || _state == OAuth20State.UserDenied || _state == OAuth20State.Cancelled;
+            => _state == OAuth20State.Finished || _state == OAuth20State.UserDenied || _state == OAuth20State.Cancelled || _state == OAuth20State.Failed;
 
         #region Results
 

@@ -63,7 +63,12 @@ namespace Obsidian.Controllers.OAuth
                 default:
                     return BadRequest();
             }
-            return await SignInPageView(result);
+            if (result.State == OAuth20State.RequireSignIn)
+            {
+
+                return await SignInPageView(result);
+            }
+            return BadRequest();
         }
 
         [HttpPost("oauth20/authorize")]
