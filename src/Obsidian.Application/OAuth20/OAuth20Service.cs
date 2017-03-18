@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Domain;
+using Obsidian.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,17 +13,19 @@ namespace Obsidian.Application.OAuth20
     {
         private readonly SymmetricSecurityKey _signingKey;
         private readonly OAuth20Configuration _config;
+        private readonly ClaimService _claimService;
 
-        public OAuth20Service(IOptions<OAuth20Configuration> options)
+        public OAuth20Service(IOptions<OAuth20Configuration> options, ClaimService claimSvc)
         {
             _config = options.Value;
+            _claimService = claimSvc;
             _signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(_config.TokenSigningKey));
         }
 
         public string GenerateAccessToken(User user, IEnumerable<PermissionScope> scopes)
         {
             var signingCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
-            var claims = user.GetClaims(scopes);
+            var claims = _claimService.GetClaims(user, scopes);
             var jwt = new JwtSecurityToken(
                 issuer: _config.TokenIssuer,
                 audience: _config.TokenAudience,
@@ -39,7 +42,7 @@ namespace Obsidian.Application.OAuth20
             var handler = new JwtSecurityTokenHandler();
             var param = new TokenValidationParameters
             {
-                AuthenticationType = "Bearer",
+                AuthenticationType = AuthenticationSchemes.Bearer,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = _signingKey,
                 ValidateIssuer = true,
