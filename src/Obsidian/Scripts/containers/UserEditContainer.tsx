@@ -29,13 +29,13 @@ export class UserEditContainer extends UserFormContainer {
         let password: string = this.state.password.trim();
         if (username && password) {
             if (username != this.defaultUsername)
-                axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, { username: username })
+                axios.getAxios(this.props.token).put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, { username: username })
                     .then(() => {
                         Notification.Service.pushSuccess("Username changing");
                     })
                     .catch((e) => Notification.Service.pushError("Username changing", e));
             if (password != "") {
-                axios.put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, { password: password })
+                axios.getAxios(this.props.token).put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, { password: password })
                     .then(() => {
                         Notification.Service.pushSuccess("Password changing");
                     })

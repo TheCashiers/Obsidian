@@ -37,8 +37,7 @@ export class ScopeEditContainer extends FormContainer {
                 description: description,
                 claimTypes: claimTypes
             }
-            axios
-            axios.put(api.configs.getScope.request_uri + this.state.id, jsonObject)
+            axios.getAxios(this.props.token).put(api.configs.getScope.request_uri + this.state.id, jsonObject)
                 .then(() => {
                     Notification.Service.pushSuccess("Scope editing")
                 })

@@ -26,7 +26,7 @@ export class ClientEditContainer extends FormContainer {
         let displayName: string = this.state.displayName.trim();
         let redirectUri: string = this.state.redirectUri.trim();
         if (displayName && redirectUri) {
-            axios.put(api.configs.createClient.request_uri+this.state.id, { displayName: displayName, redirectUri: redirectUri })
+            axios.getAxios(this.props.token).put(api.configs.createClient.request_uri+this.state.id, { displayName: displayName, redirectUri: redirectUri })
                 .then(()=>{
                     Notification.Service.pushSuccess("Client editing")
                 })
