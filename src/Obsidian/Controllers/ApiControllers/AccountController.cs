@@ -20,8 +20,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [RequireClaim(AccountAPIClaimTypes.Profile, "Get")]
-        [HttpGet]
-        [Route("Profile")]
+        [HttpGet("Profile")]
         public async Task<IActionResult> GetProfile()
         {
             var user = await _identityService.GetCurrentUserAsync();
