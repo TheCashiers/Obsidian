@@ -28,7 +28,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
-        [RequireClaim(ManagementAPIClaimsType.User, "Get")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserAcquirer, "Yes")]
         public async Task<IActionResult> Get()
         {
             var query = await _userRepository.QueryAllAsync();
@@ -36,7 +36,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}")]
-        [RequireClaim(ManagementAPIClaimsType.User, "Get")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserAcquirer, "Yes")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = await _userRepository.FindByIdAsync(id);
@@ -49,7 +49,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPost]
         [ValidateModel]
-        [RequireClaim(ManagementAPIClaimsType.User, "Add")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserCreator, "Yes")]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
             var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };
@@ -64,7 +64,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Claims")]
         [ValidateModel]
-        [RequireClaim(ManagementAPIClaimsType.UserClaims, "Update")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserClaimsEditor, "Yes")]
         public async Task<IActionResult> UpdateClaims([FromBody]UpdateUserClaimsDto dto, Guid id)
         {
             var cmd = new UpdateUserClaimCommand { UserId = id, Claims = dto.Claims.ToDictionary(t => t.ClaimType, v => v.ClaimValue) };
@@ -78,7 +78,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}/Profile")]
-        [RequireClaim(ManagementAPIClaimsType.UserProfile, "Update")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserProfileEditor, "Yes")]
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
@@ -94,7 +94,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/Password")]
         [ValidateModel]
-        [RequireClaim(ManagementAPIClaimsType.UserPassword, "Update")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserPasswordEditor, "Yes")]
         public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
             var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
@@ -109,7 +109,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}/UserName")]
         [ValidateModel]
-        [RequireClaim(ManagementAPIClaimsType.UserName, "Update")]
+        [RequireClaim(ManagementAPIClaimsType.IsUserNameEditor, "Yes")]
         public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
         {
             var cmd = new UpdateUserNameCommand
