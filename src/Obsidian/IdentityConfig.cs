@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Obsidian.Application.Cryptography;
 using Obsidian.Application.OAuth20;
 using Obsidian.Authorization;
 using System.Text;
@@ -13,11 +14,11 @@ namespace Obsidian
 {
     public static class IdentityConfig
     {
-        public static IApplicationBuilder ConfigJwtAuthentication(this IApplicationBuilder app, IOptions<OAuth20Configuration> oauthOptions)
+        public static IApplicationBuilder ConfigJwtAuthentication(this IApplicationBuilder app, IOptions<OAuth20Configuration> oauthOptions, RsaSigningService signingService)
         {
             var oauthConfig = oauthOptions.Value;
             var key = oauthConfig.TokenSigningKey;
-            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
+            var signingKey = new RsaSecurityKey(signingService.GetPublicKey());
             var param = new TokenValidationParameters
             {
                 AuthenticationType = AuthenticationSchemes.Bearer,

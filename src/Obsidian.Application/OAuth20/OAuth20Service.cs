@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Obsidian.Application.Cryptography;
 using Obsidian.Domain;
 using Obsidian.Domain.Services;
 using System;
@@ -11,20 +12,22 @@ namespace Obsidian.Application.OAuth20
 {
     public class OAuth20Service
     {
-        private readonly SymmetricSecurityKey _signingKey;
+        private readonly AsymmetricSecurityKey _signingKey;
         private readonly OAuth20Configuration _config;
         private readonly ClaimService _claimService;
+        private readonly RsaSigningService _rsaService;
 
-        public OAuth20Service(IOptions<OAuth20Configuration> options, ClaimService claimSvc)
+        public OAuth20Service(IOptions<OAuth20Configuration> options, ClaimService claimSvc, RsaSigningService signingService)
         {
             _config = options.Value;
             _claimService = claimSvc;
-            _signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(_config.TokenSigningKey));
+            _rsaService = signingService;
+            _signingKey = new RsaSecurityKey(_rsaService.GetPublicAndPrivateKey());
         }
 
         public string GenerateAccessToken(User user, IEnumerable<PermissionScope> scopes)
         {
-            var signingCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            var signingCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.RsaSha512Signature);
             var claims = _claimService.GetClaims(user, scopes);
             var jwt = new JwtSecurityToken(
                 issuer: _config.TokenIssuer,

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using Obsidian.Application.Cryptography;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
@@ -69,12 +70,13 @@ namespace Obsidian
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<PortalService>();
             services.AddSingleton<ClaimService>();
+            services.AddSingleton<RsaSigningService>();
 
             services.ConfigClaimsBasedAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<OAuth20Configuration> oauthOptions)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<OAuth20Configuration> oauthOptions, RsaSigningService signingService)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -94,7 +96,7 @@ namespace Obsidian
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
-            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions);
+            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions,signingService);
 
             app.UseMvc(routes =>
             {
