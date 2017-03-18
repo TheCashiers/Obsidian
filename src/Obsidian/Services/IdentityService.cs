@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Services
 {
-    public class SignInService : ISignInService
+    public class IdentityService : IIdentityService
     {
         private readonly IHttpContextAccessor _accessor;
         private readonly IUserRepository _userRepo;
 
-        public SignInService(IHttpContextAccessor accessor, IUserRepository repo)
+        public IdentityService(IHttpContextAccessor accessor, IUserRepository repo)
         {
             _accessor = accessor;
             _userRepo = repo;

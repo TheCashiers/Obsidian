@@ -10,6 +10,7 @@ using Obsidian.Application.OAuth20;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.Services;
 using Obsidian.Config;
+using Obsidian.Domain.Services;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
 using Obsidian.Services;
@@ -65,8 +66,9 @@ namespace Obsidian
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
             services.Configure<PortalConfig>(Configuration.GetSection("Portal"));
             //infrastructure services
-            services.AddTransient<ISignInService, SignInService>();
+            services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<PortalService>();
+            services.AddSingleton<ClaimService>();
 
             services.ConfigClaimsBasedAuthorization();
         }

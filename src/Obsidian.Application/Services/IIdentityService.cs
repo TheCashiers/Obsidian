@@ -3,7 +3,7 @@ using Obsidian.Domain;
 
 namespace Obsidian.Application.Services
 {
-    public interface ISignInService
+    public interface IIdentityService
     {
         Task CookieSignInAsync(string scheme, User user, bool isPersistent);
 

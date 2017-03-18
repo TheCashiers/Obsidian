@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Obsidian.Application;
+using Obsidian.Application.Services;
 using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Obsidian.Controllers.ApiControllers
@@ -13,23 +11,21 @@ namespace Obsidian.Controllers.ApiControllers
     public class AccountController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IIdentityService _identityService;
 
-        public AccountController(IUserRepository repo)
+        public AccountController(IUserRepository repo, IIdentityService identityService)
         {
             _userRepository = repo;
+            _identityService = identityService;
         }
 
-        //
-        [RequireClaim(ClaimTypes.NameIdentifier, null)]
+        [RequireClaim(AccountAPIClaimTypes.Profile, "Get")]
         [HttpGet]
         [Route("Profile")]
-        public async Task<ActionResult> GetProfile()
+        public async Task<IActionResult> GetProfile()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _userRepository.FindByIdAsync(new Guid(userId));
-            var dic = new Dictionary<string, string>();
-            var claims = user.GetClaims(User.Claims.Select(c => c.Type)).ToDictionary(cm => cm.Type, cn => cn.Value);
-            return Ok(claims);
+            var user = await _identityService.GetCurrentUserAsync();
+            return Ok(user.Profile);
         }
     }
 }

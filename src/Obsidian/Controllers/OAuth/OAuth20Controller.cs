@@ -28,9 +28,9 @@ namespace Obsidian.Controllers.OAuth
     {
         private readonly IDataProtector _dataProtector;
         private readonly SagaBus _sagaBus;
-        private readonly ISignInService _signinService;
+        private readonly IIdentityService _signinService;
 
-        public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus, ISignInService signinService)
+        public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus, IIdentityService signinService)
         {
             _dataProtector = dataProtectionProvicer.CreateProtector("Obsidian.OAuth.Context.Key");
             _sagaBus = bus;

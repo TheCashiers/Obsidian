@@ -90,34 +90,6 @@ namespace Obsidian.Domain
             }
         }
 
-        #region Claim Generation
-
-        private static Dictionary<string, MethodInfo> userClaimGetters
-                    = MetadataHelper.GetClaimPropertyGetters<User>();
-
-        private static Dictionary<string, MethodInfo> profileClaimGetters
-                    = MetadataHelper.GetClaimPropertyGetters<UserProfile>();
-
-        private static IEnumerable<Claim> GetClaimsFromObject(Dictionary<string, MethodInfo> getters,
-                    IEnumerable<string> requestedTypes, object obj) =>
-                    getters.Where(g => requestedTypes.Contains(g.Key)).Select(g =>
-                     {
-                         var value = g.Value.Invoke(obj, null);
-                         return new Claim(g.Key, value?.ToString() ?? "");
-                     });
-
-        public IEnumerable<Claim> GetClaims(IEnumerable<String> claimTypes)
-        {
-            var userClaims = GetClaimsFromObject(userClaimGetters, claimTypes, this);
-            var profileClaims = GetClaimsFromObject(profileClaimGetters, claimTypes, Profile);
-            var customClaims = Claims.Where(c => claimTypes.Contains(c.Type));
-            return Enumerable.Union(userClaims, profileClaims).Union(customClaims);
-        }
-
-        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
-            =>GetClaims(scopes.SelectMany(s => s.ClaimTypes));
-
-        #endregion Claim Generation
 
         #region Equality
 
