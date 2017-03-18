@@ -15,7 +15,8 @@ namespace Obsidian.Domain.Services
         {
             var userClaims = GetClaimsFromObjectByType(userClaimGetters, claimTypes, user);
             var profileClaims = GetClaimsFromObjectByType(userProfileClaimGetters, claimTypes, user.Profile);
-            return userClaims.Union(profileClaims).Union(user.Claims);
+            var extraClaims = user.Claims.Join(claimTypes, c => c.Type, ct => ct, (c, ct) => c);
+            return userClaims.Union(profileClaims).Union(extraClaims);
         }
 
         private static IEnumerable<PropertyClaimGetter> userClaimGetters
