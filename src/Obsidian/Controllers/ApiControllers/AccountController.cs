@@ -6,6 +6,7 @@ using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using System.Threading.Tasks;
 using Obsidian.Misc;
+using Obsidian.Domain;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -47,5 +48,13 @@ namespace Obsidian.Controllers.ApiControllers
             return NoContent();
         }
 
+        [RequireClaim(AccountAPIClaimTypes.Profile,"Update")]
+        [ValidateModel]
+        [HttpPut]
+        public async Task<IActionResult> SetProfile([FromBody]UserProfile dto)
+        {
+            await _identityService.SetCurrentUserProfile(dto);
+            return NoContent();
+        }
     }
 }

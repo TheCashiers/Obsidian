@@ -74,5 +74,17 @@ namespace Obsidian.Services
                     
             }
         }
+
+        public async Task SetCurrentUserProfile(UserProfile profile)
+        {
+            var claim = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim is Claim c && Guid.TryParse(c.Value, out var userId))
+            {
+                var user = await _userRepo.FindByIdAsync(userId);
+                user.UpdateProfile(profile);
+                await _userRepo.SaveAsync(user);
+            }
+        }
+
     }
 }
