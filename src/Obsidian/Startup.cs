@@ -51,7 +51,7 @@ namespace Obsidian
             services.AddMemoryCache();
 
             //Add application components
-            services.AddSagaBus().AddSaga();
+            services.AddSagaBus().AddSagas();
             services.AddMongoRepositories();
 
             services.AddSwaggerGen(c =>
@@ -74,8 +74,7 @@ namespace Obsidian
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus,
-            IOptions<OAuth20Configuration> oauthOptions)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<OAuth20Configuration> oauthOptions)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -105,7 +104,6 @@ namespace Obsidian
             });
 
             MappingConfig.ConfigureQueryModelMapping();
-            sagaBus.RegisterSagas();
 
             app.UseSwagger();
             app.UseSwaggerUi(c =>

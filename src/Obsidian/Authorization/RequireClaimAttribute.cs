@@ -12,6 +12,11 @@ namespace Obsidian.Authorization
         public RequireClaimAttribute(string claimType, params string[] claimValues)
             : base(RequireClaimPolicyName)
         {
+            if (string.IsNullOrWhiteSpace(claimType))
+            {
+                throw new ArgumentNullException(nameof(claimType));
+            }
+            ClaimType = claimType;
             ClaimValues = claimValues?.ToList() ?? new List<string>();
         }
 

@@ -20,6 +20,11 @@ namespace Obsidian.Application.ProcessManagement
         public SagaBus Register<TSaga>() where TSaga : Saga
         {
             var sagaType = typeof(TSaga);
+            return Register(sagaType);
+        }
+
+        public SagaBus Register(Type sagaType)
+        {
             var implementedInterfaces = sagaType.GetInterfaces();
             var commandTypes = implementedInterfaces
                 .Where(i => i.GetGenericTypeDefinition() == typeof(IStartsWith<,>))
