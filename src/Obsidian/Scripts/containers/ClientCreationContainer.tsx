@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ClientForm } from "../components/Form";
 import { FormContainer } from "./FormContainer";
-import * as axios from "axios";
+import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer"
 
@@ -18,7 +18,10 @@ export class ClientCreationContainer extends FormContainer
         let displayName: string = this.state.displayName.trim();
         let redirectUri: string = this.state.redirectUri.trim();
         if (displayName && redirectUri) {
-            axios.post(api.configs.createClient.request_uri, { displayName: displayName, redirectUri: redirectUri })
+            axios.getAxios(this.props.token).post(api.configs.createClient.request_uri,
+                { displayName: displayName, redirectUri: redirectUri },
+                
+            )
                 .then(()=>{
                     this.setState({ displayName: "", redirectUri: "" });
                     console.log(e);

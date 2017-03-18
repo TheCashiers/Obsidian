@@ -2,7 +2,7 @@ import * as React from "react";
 import { ClientForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
 import { FormContainer } from "./FormContainer";
-import * as axios from "axios";
+import * as axios from "../configs/AxiosInstance";
 import * as Notification from "./NotificationContainer"
 
 
@@ -17,7 +17,7 @@ export class ClientEditContainer extends FormContainer {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     public componentWillMount() {
-        axios.get(api.configs.getClient.request_uri + this.state.id)
+        axios.getAxios(this.props.token).get(api.configs.getClient.request_uri + this.state.id)
             .then((info) => { this.setState(info.data); })
             .catch((e) => Notification.Service.pushError("getClient", e));
     }

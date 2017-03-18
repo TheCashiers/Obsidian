@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as axios from "axios";
+import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 import { FormContainer } from "./FormContainer";
 import * as Notification from "./NotificationContainer";
@@ -29,7 +29,7 @@ export class ScopeCreationContainer extends FormContainer {
                 description: description,
                 claimTypes: claimTypes
             };
-            axios.post(api.configs.createScope.request_uri, jsonObject)
+            axios.getAxios(this.props.token).post(api.configs.createScope.request_uri, jsonObject)
                 .then(() => {
                     console.log(e);
                     Notification.Service.pushSuccess("Scope creation")

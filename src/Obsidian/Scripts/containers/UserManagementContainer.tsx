@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import { UserList } from "../components/UserManagement";
-import * as axios from "axios";
+import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer"
 
@@ -17,7 +17,7 @@ export class UserManagementContainer extends React.Component<any, UserManagement
         };
     }
     public componentDidMount() {
-        axios.get(api.configs.getUser.request_uri)
+        axios.getAxios(this.props.token).get(api.configs.getUser.request_uri)
             .then((info) => { this.setState({ users: info.data as Array<any> }); })
             .catch((e) =>  Notification.Service.pushError("getUser",e));
     }

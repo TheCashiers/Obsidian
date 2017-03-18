@@ -2,7 +2,7 @@ import * as React from "react"
 import { UserFormContainer } from "./UserFormContainer"
 import { UserForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
-import * as axios from "axios";
+import * as axios from "../configs/AxiosInstance";
 import * as Notification from "./NotificationContainer"
 
 
@@ -15,7 +15,7 @@ export class UserEditContainer extends UserFormContainer {
     }
     public componentWillMount() {
         if (this.state.id)
-            axios.get(api.configs.getUser.request_uri + this.state.id)
+            axios.getAxios(this.props.token).get(api.configs.getUser.request_uri + this.state.id)
                 .then((info) => { this.setState({ username: info.data.userName }); })
                 .catch((e) => Notification.Service.pushError("getClient", e));
         else {

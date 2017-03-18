@@ -19,13 +19,23 @@
         @if (Model.IsAutoSignIn)
             {
             <form role="form" class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
-                <h2>@Model.UserName</h2>
+                <h3 class="center">Hello @Model.UserName!</h3>
+                
+                    <div class="face-wrapper">
+                        <div class="bouncer">:)</div>
+                    </div>
+                <script>
+                    setTimeout(function(){
+                        $("form").submit();
+                    },3000);
+                </script>
                 <input asp-for="UserName" type="hidden" />
                 <input asp-for="ProtectedOAuthContext" type="hidden" />
                 <input asp-for="RememberMe" type="hidden" />
                 <input asp-for="IsAutoSignIn" type="hidden" />
                 <button class="btn btn-lg btn-primary btn-block btn-raised" type="submit">Sign In</button>
             </form>
+
             <form role="form" class="text-padding" asp-action="SignOut" asp-controller="OAuth20">
                 <input asp-for="ProtectedOAuthContext" type="hidden" />
                 <button class="btn btn-lg btn-primary btn-block btn-raised" type="submit">Switch user / Sign out</button>
