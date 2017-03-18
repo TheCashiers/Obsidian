@@ -11,15 +11,22 @@ namespace Obsidian.Application
     {
         private const string _obsidianManagementAPIPrefix = "http://schema.za-pt.org/Obsidian/ManagementAPI/";
 
-        public const string UserName = _obsidianManagementAPIPrefix + "User/UserName";
-        public const string UserPassword = _obsidianManagementAPIPrefix + "User/Password";
-        public const string UserProfile = _obsidianManagementAPIPrefix + "User/Profile";
-        public const string UserClaims = _obsidianManagementAPIPrefix + "User/Claims";
-        public const string User = _obsidianManagementAPIPrefix + "User";
+        public const string IsUserNameEditor = _obsidianManagementAPIPrefix + "User/Username/IsEditor";
+        public const string IsUserPasswordEditor = _obsidianManagementAPIPrefix + "User/Password/IsEditor";
+        public const string IsUserProfileEditor = _obsidianManagementAPIPrefix + "User/Profile/IsEditor";
+        public const string IsUserClaimsEditor = _obsidianManagementAPIPrefix + "User/Claims/IsEditor";
+        public const string IsUserAcquirer = _obsidianManagementAPIPrefix + "User/IsAcquirer";
+        public const string IsUserEditor = _obsidianManagementAPIPrefix + "User/IsEditor";
+        public const string IsUserCreator = _obsidianManagementAPIPrefix + "User/IsCreator";
 
-        public const string Client = _obsidianManagementAPIPrefix + "Client";
-        public const string ClientSecret = _obsidianManagementAPIPrefix + "Client/Secret";
+        public const string IsClientAcquirer = _obsidianManagementAPIPrefix + "Client/IsAcquirer";
+        public const string IsClientEditor = _obsidianManagementAPIPrefix + "Client/IsEditor";
+        public const string IsClientCreator = _obsidianManagementAPIPrefix + "Client/IsCreator";
+        public const string IsClientSecretEditor = _obsidianManagementAPIPrefix + "Client/Secret/IsEditor";
+        public const string IsClientSecretAcquirer = _obsidianManagementAPIPrefix + "Client/Secret/IsAcquirer";
 
-        public const string Scope = _obsidianManagementAPIPrefix + "Scope";
+        public const string IsScopeAcquirer = _obsidianManagementAPIPrefix + "Scope/IsAcquirer";
+        public const string IsScopeCreator = _obsidianManagementAPIPrefix + "Scope/IsCreator";
+        public const string IsScopeEditor = _obsidianManagementAPIPrefix + "Scope/IsEditor";
     }
 }
