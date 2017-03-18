@@ -49,6 +49,17 @@ namespace Obsidian.Services
             return null;
         }
 
+        public async Task SetCurrentUsernameAsync(string newUsername)
+        {
+            var claim = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim is Claim c && Guid.TryParse(c.Value, out var userId))
+            {
+                var user = await _userRepo.FindByIdAsync(userId);
+                user.UpdateUserName(newUsername);
+                await _userRepo.SaveAsync(user);
+            }
+        }
+
         public async Task SetCurrentUserPasswordAsync(string oldPassword, string newPassword)
         {
             var claim = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -63,5 +74,17 @@ namespace Obsidian.Services
                     
             }
         }
+
+        public async Task SetCurrentUserProfile(UserProfile profile)
+        {
+            var claim = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim is Claim c && Guid.TryParse(c.Value, out var userId))
+            {
+                var user = await _userRepo.FindByIdAsync(userId);
+                user.UpdateProfile(profile);
+                await _userRepo.SaveAsync(user);
+            }
+        }
+
     }
 }

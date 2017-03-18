@@ -12,5 +12,9 @@ namespace Obsidian.Application.Services
         Task<User> GetCurrentUserAsync();
 
         Task SetCurrentUserPasswordAsync(string oldPassword,string newPassword);
+
+        Task SetCurrentUsernameAsync(string newUsername);
+
+        Task SetCurrentUserProfile(UserProfile profile);
     }
 }

@@ -6,6 +6,7 @@ using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using System.Threading.Tasks;
 using Obsidian.Misc;
+using Obsidian.Domain;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -35,6 +36,24 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> SetPassword([FromBody]UpdateAccountPasswordDto dto)
         {
             await _identityService.SetCurrentUserPasswordAsync(dto.OldPassword, dto.NewPassword);
+            return NoContent();
+        }
+
+        [RequireClaim(AccountAPIClaimTypes.Username,"Update")]
+        [ValidateModel]
+        [HttpPut("Username")]
+        public async Task<IActionResult> SetUsername([FromBody]UpdateAccountUsernameDto dto)
+        {
+            await _identityService.SetCurrentUsernameAsync(dto.NewUsername);
+            return NoContent();
+        }
+
+        [RequireClaim(AccountAPIClaimTypes.Profile,"Update")]
+        [ValidateModel]
+        [HttpPut]
+        public async Task<IActionResult> SetProfile([FromBody]UserProfile dto)
+        {
+            await _identityService.SetCurrentUserProfile(dto);
             return NoContent();
         }
     }
