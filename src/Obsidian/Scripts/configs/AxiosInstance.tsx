@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import * as Axios from 'axios';
 
 
 
