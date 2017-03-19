@@ -12,6 +12,7 @@ export class ClientCreationContainer extends FormContainer
         super(props);
         this.state = { displayName:"", redirectUri:""};
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e) {
         e.preventDefault();

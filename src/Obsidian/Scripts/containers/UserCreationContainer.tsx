@@ -10,7 +10,8 @@ export class UserCreationContainer extends UserFormContainer
 {
     constructor(props) {
         super(props);
-        this.state={ username:"", password: ""};
+        this.state = { username: "", password: "" };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e) {
         e.preventDefault();
