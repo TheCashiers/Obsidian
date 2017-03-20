@@ -1,5 +1,7 @@
 ﻿import * as React from "react";
-import { UserInfo } from "../components/PortalElements"
+import { UserInfo } from "../components/PortalElements";
+import * as axios from 'axios';
+import * as api from "../configs/GlobalSettings";
 
 interface IUserInfoState {
     username: string;
@@ -17,10 +19,13 @@ export class UserInfoContainer extends React.Component<any, IUserInfoState>{
         this.setState({ description: "A real boss.", level: "Administrator", username: "Henry Chu" });
         
     }
-
+    public handleSignout(){
+        axios.get(api.configs.signOut.request_uri)
+            .then(()=>{location.reload();});
+    }
     public render() {
         return (
-                <UserInfo username={this.state.username} level={this.state.level} description={this.state.description} />
+                <UserInfo username={this.state.username} level={this.state.level} description={this.state.description} onSignout={this.handleSignout} />
         );
     }
 }

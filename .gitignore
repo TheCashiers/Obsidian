@@ -258,3 +258,6 @@ paket-files/
 
 # Visual Studio Code assert file
 src/Obsidian/.vscode/
+
+src/Obsidian/obsidianconfig.dev.json
+!src/Obsidian/key.pfx

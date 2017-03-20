@@ -2,11 +2,10 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
-
 import { Router, Route, IndexRoute, browserHistory } from "react-router";
-import { Main } from "../components/Main";
+import { PortalContainer } from "../containers/PortalContainer";
 import { UserManagementContainer } from "../containers/UserManagementContainer";
-import { Portal } from "../components/Portal";
+import { PortalIndex } from "../components/PortalIndex";
 import { UserCreationContainer } from "../containers/UserCreationContainer";
 import { ClientCreationContainer } from "../containers/ClientCreationContainer"
 import { ScopeCreationContainer } from "../containers/ScopeCreationContainer"
@@ -17,8 +16,8 @@ import { ScopeEditContainer } from "../containers/ScopeEditContainer";
 import { ClientEditContainer } from "../containers/ClientEditContainer"
 export const routes = (
     <Router history={ browserHistory }>
-        <Route path="/manage" component={ Main }>
-            <IndexRoute component={ Portal }/>
+        <Route path="/manage" component={ PortalContainer }>
+            <IndexRoute component={ PortalIndex }/>
             <Route path="/manage/users" component={ UserManagementContainer } />
             <Route path="/manage/users/create" component={ UserCreationContainer } />
             <Route path="/manage/users/edit" component={ UserEditContainer } />

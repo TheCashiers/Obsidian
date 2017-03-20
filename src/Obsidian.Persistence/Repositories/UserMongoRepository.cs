@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Persistence.Mappings;

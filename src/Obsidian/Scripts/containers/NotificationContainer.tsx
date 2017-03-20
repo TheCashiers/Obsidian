@@ -1,5 +1,4 @@
-// snackbar has no declaration files, using var explicitly.
-declare var $;
+import * as $ from "jquery";
 
 export enum NotificationState{
     info,
@@ -26,19 +25,19 @@ export class Service{
                 break;
             default:
                 ncStyle="alert-info";
-        }
+        };
         var options =  {
             content: content, // text of the snackbar
             style: `alert ${ncStyle}`, // add a custom class to your snackbar
             timeout: 3000, // time in milliseconds after the snackbar autohides, 0 is disabled
             htmlAllowed: true, // allows HTML as content value
-        }
+        };
         $.snackbar(options);
     }
-    static pushError(desc:string,error:Error){
-        this.push(`${desc} failed. ${error.toString()}.`,NotificationState.error)
+    static pushError(desc:string,error:axios.Response){
+        this.push(`${desc} failed. ${error}.`,NotificationState.error);
     }
     static pushSuccess(desc:string){
-        this.push(`${desc} success.`,NotificationState.success)
+        this.push(`${desc} success.`,NotificationState.success);
     }
 }

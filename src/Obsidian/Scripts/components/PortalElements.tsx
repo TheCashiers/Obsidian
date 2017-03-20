@@ -22,7 +22,7 @@ export const UserInfo = (props) => (
                     <a href="#" className="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div className="pull-right">
-                    <a href="#" className="btn btn-default btn-flat">Sign out</a>
+                    <button onClick={props.onSignout} className="btn btn-default btn-flat">Sign out</button>
                 </div>
             </li>
         </ul>
@@ -62,7 +62,7 @@ export const PortalHeader = (props) => (
                         </div>
                     </form>
                     <ul className="nav navbar-nav navbar-right">
-                        <UserInfoContainer/>
+                        <UserInfoContainer token={props.token}/>
                     </ul>
                 </div>
             </div>

@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Obsidian.Application;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.ScopeManagement;
+using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
+
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
@@ -23,6 +26,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet]
+        [RequireClaim(ManagementAPIClaimsType.IsScopeAcquirer, "Yes")]
         public async Task<IActionResult> Get()
         {
             var query = await _scopeRepository.QueryAllAsync();
@@ -30,6 +34,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}")]
+        [RequireClaim(ManagementAPIClaimsType.IsScopeAcquirer, "Yes")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var scope = await _scopeRepository.FindByIdAsync(id);
@@ -42,6 +47,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPost]
         [ValidateModel]
+        [RequireClaim(ManagementAPIClaimsType.IsScopeCreator, "Yes")]
         public async Task<IActionResult> Post([FromBody]ScopeCreationDto dto)
         {
             var cmd = new CreateScopeCommand
@@ -62,6 +68,7 @@ namespace Obsidian.Controllers.ApiControllers
 
         [HttpPut("{id:guid}")]
         [ValidateModel]
+        [RequireClaim(ManagementAPIClaimsType.IsScopeEditor, "Yes")]
         public async Task<IActionResult> Put([FromBody] UpdateScopeDto dto, Guid id)
         {
             var cmd = new UpdateScopeCommand
@@ -78,6 +85,5 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
-
     }
 }

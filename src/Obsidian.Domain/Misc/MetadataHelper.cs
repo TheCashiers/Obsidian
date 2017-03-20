@@ -6,7 +6,7 @@ namespace Obsidian.Domain.Misc
 {
     public static class MetadataHelper
     {
-        public static Dictionary<string, MethodInfo> GetClaimPropertyGetters<T>() =>
+        public static IEnumerable<PropertyClaimGetter> GetClaimPropertyGetters<T>() =>
            typeof(T).GetTypeInfo().GetProperties()
            .Where(p => p.CanRead)
            .Select(pi => new
@@ -25,7 +25,7 @@ namespace Obsidian.Domain.Misc
                ClaimType = t,
                cg.Getter
            })
-           .ToDictionary(cg => cg.ClaimType, cg => cg.Getter);
+           .Select(cg => new PropertyClaimGetter(cg.ClaimType, cg.Getter));
 
     }
 }

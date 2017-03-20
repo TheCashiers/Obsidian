@@ -4,7 +4,7 @@ namespace Obsidian.Application.Authentication
 {
     public class AuthenticationResult
     {
-        public bool IsCredentialVaild { get; set; }
+        public bool IsCredentialValid { get; set; }
 
         public User User { get; set; }
     }

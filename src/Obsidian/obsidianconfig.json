@@ -3,5 +3,11 @@
     "TokenSigningKey": "Obsidian.OAuth20.SigningKey.Jwt",
     "TokenAudience": "ObsidianAud",
     "TokenIssuer": "Obsidian"
+  },
+  "Portal": {
+    "AdminPortalClientId": "02c7469f-c2a4-486d-898a-9f30acccb787",
+    "AdminPortalScopes": [
+      "ob.basic"
+    ]
   }
 }

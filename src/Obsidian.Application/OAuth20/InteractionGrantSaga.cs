@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
@@ -6,17 +8,22 @@ namespace Obsidian.Application.OAuth20
 {
     public abstract class InteractionGrantSaga : OAuth20Saga,
                                     IHandlerOf<OAuth20SignInMessage, OAuth20Result>,
-                                    IHandlerOf<PermissionGrantMessage, OAuth20Result>
+                                    IHandlerOf<PermissionGrantMessage, OAuth20Result>,
+                                    IHandlerOf<CancelMessage, OAuth20Result>
 
     {
-        public InteractionGrantSaga(IClientRepository clientRepo, IUserRepository userRepo, IPermissionScopeRepository scopeRepo, OAuth20Service oauth20Service) : base(clientRepo, userRepo, scopeRepo, oauth20Service)
+        public InteractionGrantSaga(IClientRepository clientRepo,
+                                    IUserRepository userRepo,
+                                    IPermissionScopeRepository scopeRepo,
+                                    OAuth20Service oauth20Service)
+                                    : base(clientRepo, userRepo, scopeRepo, oauth20Service)
         {
         }
 
 
         protected string _redirectUri;
 
-        protected async Task<OAuth20Result> StartSagaAsync(InteractionGrantCommand command)
+        protected Task<OAuth20Result> StartSagaAsync(InteractionGrantCommand command)
         {
             _redirectUri = command.RedirectUri;
             //check client and scopes
@@ -25,39 +32,54 @@ namespace Obsidian.Application.OAuth20
             if (!precondiction)
             {
                 GoToState(OAuth20State.Failed);
+                return Task.FromResult(CurrentStateResult());
+            }
+
+            //next step
+            GoToState(OAuth20State.RequireSignIn);
+            return Task.FromResult(CurrentStateResult());
+        }
+
+        public async Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
+        {
+            //check granted scopes
+            if (message.GrantedScopeNames.Count == 0
+                || !TypLoadScopeFromNames(message.GrantedScopeNames, out _grantedScopes))
+            {
+                GoToState(OAuth20State.UserDenied);
                 return CurrentStateResult();
             }
 
-            //check user
-            if (!string.IsNullOrWhiteSpace(command.UserName)
-                && TryLoadUser(command.UserName, out _user))
-            {
-                //if user logged in, skip next step
-                await VerifyPermissionAsync();
-            }
             //next step
-            GoToState(OAuth20State.RequireSignIn);
-            return CurrentStateResult();
+            return await GrantPermissionAsync();
         }
-
-        public abstract Task<OAuth20Result> HandleAsync(PermissionGrantMessage message);
 
         public async Task<OAuth20Result> HandleAsync(OAuth20SignInMessage message)
         {
-            //check user
-            if (TryLoadUser(message.UserName, out _user))
-            {
-                //next step
-                return await VerifyPermissionAsync();
-            }
-            //current state is RequireSignIn
-            return CurrentStateResult();
+            _user = message.User;
+            //next step
+            return await VerifyPermissionAsync();
         }
 
+        public Task<OAuth20Result> HandleAsync(CancelMessage message)
+        {
+            GoToState(OAuth20State.Cancelled);
+            var result = CurrentStateResult();
+            result.CancelData = new OAuth20Result.CancelInfo
+            {
+                ClientId = _client.Id,
+                ResponseType = GetResponseType(),
+                Scopes = _requestedScopes.Select(s => s.ScopeName).ToList(),
+                RedirectUri = _redirectUri
+            };
+            return Task.FromResult(result);
+        }
+
+        protected abstract string GetResponseType();
 
         protected async Task<OAuth20Result> VerifyPermissionAsync()
         {
-            if (IsClientAuthorized(_user, _client, _requestedScopes))
+            if (IsClientGranted(_user, _client, _requestedScopes))
             {
                 _grantedScopes = _requestedScopes;
                 return await GrantPermissionAsync();
@@ -82,6 +104,10 @@ namespace Obsidian.Application.OAuth20
 
         public bool ShouldHandle(OAuth20SignInMessage message) => _state == OAuth20State.RequireSignIn && message.SagaId == Id;
 
+        public bool ShouldHandle(CancelMessage message) =>
+            (_state == OAuth20State.RequireSignIn ||
+            _state == OAuth20State.RequirePermissionGrant)
+            && message.SagaId == Id;
 
     }
 }

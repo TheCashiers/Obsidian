@@ -4,18 +4,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.PlatformAbstractions;
+using Obsidian.Application.Cryptography;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.OAuth20;
-using Obsidian.Application.ProcessManagement;
+using Obsidian.Application.Services;
+using Obsidian.Config;
+using Obsidian.Domain.Services;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
-using System.Text;
 using Obsidian.Services;
 using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
-using Obsidian.Application.Services;
 
 namespace Obsidian
 {
@@ -27,14 +27,15 @@ namespace Obsidian
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile("obsidianconfig.json", optional: false)
                 .AddEnvironmentVariables();
-
+            var obsidianConfigFileName = "obsidianconfig.json";
             if (env.IsDevelopment())
             {
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
+                obsidianConfigFileName = "obsidianconfig.dev.json";
             }
+            builder.AddJsonFile(obsidianConfigFileName, optional: false);
             Configuration = builder.Build();
         }
 
@@ -50,33 +51,34 @@ namespace Obsidian
             services.AddMemoryCache();
 
             //Add application components
-            services.AddSagaBus().AddSaga();
+            services.AddSagaBus().AddSagas();
             services.AddMongoRepositories();
-            
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Obsidian API", Version = "v1" });       
+                c.SwaggerDoc("v1", new Info { Title = "Obsidian API", Version = "v1" });
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var xmlPath = Path.Combine(basePath, "Obsidian.xml"); 
-                c.IncludeXmlComments(xmlPath);     
+                var xmlPath = Path.Combine(basePath, "Obsidian.xml");
+                c.IncludeXmlComments(xmlPath);
             });
-
 
             services.AddOptions();
             services.Configure<OAuth20Configuration>(Configuration.GetSection("OAuth20"));
-
+            services.Configure<PortalConfig>(Configuration.GetSection("Portal"));
             //infrastructure services
-            services.AddTransient<ISignInService, SignInService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<PortalService>();
+            services.AddSingleton<ClaimService>();
+            services.AddSingleton<RsaSigningService>();
+
+            services.ConfigClaimsBasedAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, SagaBus sagaBus,
-            IOptions<OAuth20Configuration> oauthOptions)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<OAuth20Configuration> oauthOptions, RsaSigningService signingService)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
             {
@@ -88,53 +90,17 @@ namespace Obsidian
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = AuthenticationSchemes.OAuth20Cookie,
-                AutomaticChallenge = false,
-                AutomaticAuthenticate = false
-            });
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = AuthenticationSchemes.PortalCookie,
-                AutomaticChallenge = false,
-                AutomaticAuthenticate = false
-            });
-
-            var oauthConfig = oauthOptions.Value;
-            var key = oauthConfig.TokenSigningKey;
-            var signingKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(key));
-            var param = new TokenValidationParameters
-            {
-                AuthenticationType = "Bearer",
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ValidateIssuer = true,
-                ValidIssuer = oauthConfig.TokenIssuer,
-                ValidAudience = oauthConfig.TokenAudience
-            };
-
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                TokenValidationParameters = param,
-                AutomaticAuthenticate = false,
-                AutomaticChallenge = false
-            });
+            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions, signingService);
 
             app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Home}/{action=Index}/{id?}");
-                });
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             MappingConfig.ConfigureQueryModelMapping();
-            sagaBus.RegisterSagas();
 
             app.UseSwagger();
             app.UseSwaggerUi(c =>

@@ -2,12 +2,12 @@
 {
     public enum OAuth20State
     {
-        Initial,
         RequireSignIn,
         RequirePermissionGrant,
         AuthorizationCodeGenerated,
         Finished,
         UserDenied,
+        Cancelled,
         Failed
     }
 }

@@ -1,11 +1,11 @@
 import * as React from "react";
-import * as axios from "axios";
 import * as api from "../configs/GlobalSettings";
 import { UserForm } from "../components/Form";
 
 interface IUserFormState {
     username?: string;
     password?: string;
+    id?:string;
 }
 interface IUserFormProps{
     action:string;
@@ -26,7 +26,7 @@ export abstract class UserFormContainer extends React.Component<any, IUserFormSt
             [e.target.name]: e.target.value as string
         });
     }
-    handleSubmit(e) {
+    handleSubmit(e:Event) {
         e.preventDefault();
     }
     

@@ -20,7 +20,7 @@ namespace Obsidian.Application.Authentication
             User user;
             return Task.FromResult(new AuthenticationResult
             {
-                IsCredentialVaild = TryLoadUser(command.UserName, out user)
+                IsCredentialValid = TryLoadUser(command.UserName, out user)
                 && user.VaildatePassword(command.Password),
                 User = user
             });

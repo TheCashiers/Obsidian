@@ -61,7 +61,7 @@
     font-weight:300;
     text-shadow:4px 4px 25px black;
 }
-.form-control,h2{
+.form-control,h2,h3{
     color:white;
     text-shadow:4px 4px 25px black;
 }
@@ -80,4 +80,103 @@
     top: 50%;
     left: 65%;
     opacity: 0.6;
+}
+
+.center{
+    text-align: center;
+}
+.face-wrapper {
+    position: relative;
+    height: 100px;
+    width: 100%;
+    display: inline-block;
+    margin: 0 5px 10px;
+    cursor: pointer;
+}
+
+.bouncer{
+    position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 38px;
+  color: #ccc;
+  padding: 0 0 8px;
+  border-radius: 50%;
+  margin: 100px auto;
+  font-size: 32px;
+  font-family: "comic sans ms";
+  font-weight: bold;
+	
+  transition: color .25s linear;
+  transition: border-color .25s linear;
+  transform: rotate(90deg);
+  animation: jump 0.5s infinite alternate;
+	
+  -o-transition: color .25s linear;
+  -o-transition: border-color .25s linear;
+  -o-transform: rotate(90deg);
+  -o-animation: jump 0.5s infinite alternate;
+	
+  -ms-transition: color .25s linear;
+  -ms-transition: border-color .25s linear;
+  -ms-transform: rotate(90deg);
+  -ms-animation: jump 0.5s infinite alternate;
+	
+  -moz-transition: color .25s linear;
+  -moz-transition: border-color .25s linear;
+  -moz-transform: rotate(90deg);
+  -moz-animation: jump 0.5s infinite alternate;
+	
+  -webkit-transition: color .25s linear;
+  -webkit-transition: border-color .25s linear;
+  -webkit-transform: rotate(90deg);
+  -webkit-animation: jump 0.5s infinite alternate;
+}
+@keyframes jump {
+  0% {
+		top: -40px;
+        -moz-transform: scale(1,0.7) rotate(90deg);
+  }
+  30% {-moz-transform: scale(1,1) rotate(90deg);}
+  100% {top: -70px;}
+}
+
+@-o-keyframes jump {
+  0% {
+		top: -40px;
+        -moz-transform: scale(1,0.7) rotate(90deg);
+  }
+  30% {-moz-transform: scale(1,1) rotate(90deg);}
+  100% {top: -70px;}
+}
+
+@-ms-keyframes jump {
+  0% {
+		top: -40px;
+        -moz-transform: scale(1,0.7) rotate(90deg);
+  }
+  30% {-moz-transform: scale(1,1) rotate(90deg);}
+  100% {top: -70px;}
+}
+
+@-moz-keyframes jump {
+  0% {
+		top: -40px;
+        -moz-transform: scale(1,0.7) rotate(90deg);
+  }
+  30% {-moz-transform: scale(1,1) rotate(90deg);}
+  100% {top: -70px;}
+}
+
+@-webkit-keyframes jump {
+  0% {
+      top: -40px;
+      -webkit-transform: scale(1,0.7) rotate(90deg);
+  }
+  30% {-webkit-transform: scale(1,1) rotate(90deg);}
+  100% {top: -70px;}
 }

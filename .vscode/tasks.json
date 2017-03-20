@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}\\src\\Obsidian\\project.json"
+                "${workspaceRoot}\\src\\Obsidian"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

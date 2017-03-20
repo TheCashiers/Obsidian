@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Obsidian.Application;
 using Obsidian.Application.ClientManagement;
 using Obsidian.Application.Dto;
 using Obsidian.Application.ProcessManagement;
+using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using Obsidian.Misc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Obsidian.Controllers.ApiControllers
 {
@@ -30,6 +32,7 @@ namespace Obsidian.Controllers.ApiControllers
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, typeof(IQueryable<QueryModel.Client>))]
+        [RequireClaim(ManagementAPIClaimsType.IsClientAcquirer, "Yes")]
         public async Task<IActionResult> Get()
         {
             var query = await _clientRepository.QueryAllAsync();
@@ -43,6 +46,7 @@ namespace Obsidian.Controllers.ApiControllers
         [HttpGet("{id:guid}")]
         [SwaggerResponse(200, typeof(QueryModel.Client))]
         [SwaggerResponse(404)]
+        [RequireClaim(ManagementAPIClaimsType.IsClientAcquirer, "Yes")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var client = await _clientRepository.FindByIdAsync(id);
@@ -54,6 +58,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpGet("{id:guid}/Secret")]
+        [RequireClaim(ManagementAPIClaimsType.IsClientSecretAcquirer, "Yes")]
         public async Task<IActionResult> GetSecretById(Guid id)
         {
             var client = await _clientRepository.FindByIdAsync(id);
@@ -72,6 +77,7 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         [SwaggerResponse(201, typeof(CreatedResult))]
         [SwaggerResponse(400), SwaggerResponse(412)]
+        [RequireClaim(ManagementAPIClaimsType.IsClientCreator, "Yes")]
         public async Task<IActionResult> Post([FromBody] ClientCreationDto dto)
         {
             var cmd = new CreateClientCommand { DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
@@ -85,6 +91,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}")]
+        [RequireClaim(ManagementAPIClaimsType.IsClientEditor, "Yes")]
         [ValidateModel]
         public async Task<IActionResult> Put([FromBody]UpdateClientDto dto, Guid id)
         {
@@ -98,6 +105,7 @@ namespace Obsidian.Controllers.ApiControllers
         }
 
         [HttpPut("{id:guid}/Secret")]
+        [RequireClaim(ManagementAPIClaimsType.IsClientSecretEditor, "Yes")]
         [ValidateModel]
         public async Task<IActionResult> UpdateSecret(Guid id)
         {
@@ -109,6 +117,5 @@ namespace Obsidian.Controllers.ApiControllers
             }
             return BadRequest(result.Message);
         }
-
     }
 }

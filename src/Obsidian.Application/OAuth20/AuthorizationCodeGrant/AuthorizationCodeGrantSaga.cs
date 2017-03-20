@@ -1,7 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Obsidian.Application.ProcessManagement;
 using Obsidian.Domain.Repositories;
+using System;
+using System.Threading.Tasks;
 
 namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 {
@@ -23,21 +23,6 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
         public async Task<OAuth20Result> StartAsync(AuthorizationCodeGrantCommand command)
             => await StartSagaAsync(command);
 
-
-        public async override Task<OAuth20Result> HandleAsync(PermissionGrantMessage message)
-        {
-            //check granted scopes
-            if (!TypLoadScopeFromNames(message.GrantedScopeNames, out _grantedScopes))
-            {
-                GoToState(OAuth20State.UserDenied);
-                return CurrentStateResult();
-            }
-
-            //next step
-            return await GrantPermissionAsync();
-
-        }
-
         protected override async Task<OAuth20Result> GrantPermissionAsync()
         {
             _user.GrantClient(_client, _grantedScopes);
@@ -56,7 +41,6 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 
         private Guid GenerateAuthorizationCode() => Id;
 
-
         public Task<OAuth20Result> HandleAsync(AccessTokenRequestMessage message)
         {
             if (VerifyAccessTokenRequest(message.ClientId, message.ClientSecret, message.Code, message.RedirectUri))
@@ -71,12 +55,12 @@ namespace Obsidian.Application.OAuth20.AuthorizationCodeGrant
 
         public bool ShouldHandle(AccessTokenRequestMessage message) => _state == OAuth20State.AuthorizationCodeGenerated && message.SagaId == Id;
 
-
         private bool VerifyAccessTokenRequest(Guid clientId, string clientSecret, Guid authorizationCode, string redirectUri)
             => clientId == _client.Id
             && clientSecret == _client.Secret
             && authorizationCode == Id
             && redirectUri == _redirectUri;
 
+        protected override string GetResponseType() => "code";
     }
 }

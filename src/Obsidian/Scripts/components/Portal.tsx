@@ -1,17 +1,9 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-import * as React from "react";
-import { Link } from "react-router";
-import { styles } from "../styles"
+﻿import * as React from "react";
+import { PortalHeader } from "./PortalElements";
 
-export const Portal = (props) => {
-    return (
-        <div style={styles.portalIndex} className="content-wrapper">
-            <h1>Welcome to Obsidian Management Portal!</h1>
-            <br/>
-            <h2>You can manage all the users, claims and clients here.</h2>
-            <h2>Select what you need in the navigation bar.</h2>
-        </div>
-    )
-}
+export let Portal = (props)=>(
+    <div className="layout-top-nav wrapper skin-purple">
+        <PortalHeader token={props.token}/>
+                {React.cloneElement(props.children, { token: props.token })}
+    </div>
+)
