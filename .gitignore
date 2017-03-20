@@ -261,4 +261,3 @@ src/Obsidian/.vscode/
 
 src/Obsidian/obsidianconfig.dev.json
 !src/Obsidian/key.pfx
-src/Obsidian/yarn.lock
