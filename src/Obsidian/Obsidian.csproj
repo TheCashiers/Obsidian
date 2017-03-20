@@ -3,14 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>Obsidian</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Obsidian</PackageId>
-    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
 
