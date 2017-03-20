@@ -22,7 +22,6 @@ before_script:
     - dotnet restore
     - cd ./src/
     - cd ./Obsidian/
-    - npm install -g npm
     - yarn
 
 script:
