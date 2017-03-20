@@ -1,4 +1,4 @@
-﻿namespace Obsidian.Domain.Shared
+﻿namespace Obsidian.Foundation.Modeling
 {
     public interface IAggregateRoot : IEntity
     {

@@ -1,4 +1,4 @@
-﻿namespace Obsidian.Domain
+﻿namespace Obsidian.Foundation.Modeling
 {
     public interface IValidatable
     {

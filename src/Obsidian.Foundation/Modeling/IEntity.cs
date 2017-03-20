@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Obsidian.Domain.Shared
+namespace Obsidian.Foundation.Modeling
 {
     public interface IEntity
     {

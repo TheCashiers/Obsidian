@@ -1,6 +1,4 @@
-﻿using Obsidian.Domain.Shared;
-
-namespace Obsidian.Domain.Misc
+﻿namespace Obsidian.Foundation.Modeling
 {
     public static class EntityExtensions
     {
