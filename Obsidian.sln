@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Domain.Test", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Application.Test", "test\Obsidian.Application.Test\Obsidian.Application.Test.csproj", "{D18C03EE-DB97-419F-90AD-3502EE65D18D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Foundation", "src\Obsidian.Foundation\Obsidian.Foundation.csproj", "{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,5 +96,6 @@ Global
 		{77401641-D954-4AC9-BB8A-410CF853A375} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
+		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4} = {39F43A57-A505-4A82-A002-71F58516A75C}
 	EndGlobalSection
 EndGlobal
