@@ -25,10 +25,10 @@ namespace Obsidian.Application.ProcessManagement
 
         public SagaBus Register(Type sagaType)
         {
-            var implementedInterfaces = sagaType.GetInterfaces();
+            var implementedInterfaces = sagaType.GetTypeInfo().GetInterfaces();
             var commandTypes = implementedInterfaces
                 .Where(i => i.GetGenericTypeDefinition() == typeof(IStartsWith<,>))
-                .Select(i => i.GetGenericArguments().First()).ToList();
+                .Select(i => i.GetTypeInfo().GetGenericArguments().First()).ToList();
             commandTypes.ForEach(ct => _sagaStarterRegistry.Add(ct, sagaType));
             return this;
         }

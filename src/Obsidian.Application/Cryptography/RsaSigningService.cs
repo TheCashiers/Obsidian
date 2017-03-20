@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Obsidian.Application.Cryptography
@@ -16,11 +15,6 @@ namespace Obsidian.Application.Cryptography
             var cert = new X509Certificate2(fileName, "Obsidian.Cert.Pwd");
             _privateKey = cert.GetRSAPrivateKey();
             _publicKey = cert.GetRSAPublicKey();
-        }
-
-        private static RSACryptoServiceProvider GenerateNew()
-        {
-            return new RSACryptoServiceProvider(2048);
         }
 
         public RSA GetPublicKey()

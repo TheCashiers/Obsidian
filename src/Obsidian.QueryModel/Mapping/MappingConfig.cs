@@ -12,7 +12,7 @@ namespace Obsidian.QueryModel.Mapping
             var assembly = typeof(MappingConfig).GetTypeInfo().Assembly;
             var mappers = from t in assembly.GetTypes()
                           where t.Namespace == ns
-                          from m in t.GetMethods()
+                          from m in t.GetTypeInfo().GetMethods()
                           where m.GetCustomAttribute<QueryModelMapperAttribute>() != null
                           where m.ReturnType == typeof(void)
                           where !m.ContainsGenericParameters
