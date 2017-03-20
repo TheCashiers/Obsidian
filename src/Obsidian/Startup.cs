@@ -8,7 +8,6 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Obsidian.Application.Cryptography;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.OAuth20;
-using Obsidian.Application.ProcessManagement;
 using Obsidian.Application.Services;
 using Obsidian.Config;
 using Obsidian.Domain.Services;
@@ -81,8 +80,6 @@ namespace Obsidian
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -93,10 +90,8 @@ namespace Obsidian
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
-            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions,signingService);
+            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions, signingService);
 
             app.UseMvc(routes =>
             {
