@@ -1,5 +1,5 @@
 ﻿using Obsidian.Domain.Repositories;
-using Obsidian.Domain.Shared;
+using Obsidian.Foundation.Modeling;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,7 +41,6 @@ namespace Obsidian.Persistence.Test.Repositories
         [Fact]
         public virtual async Task FindById_Fail_When_IdEmpty()
             => await Assert.ThrowsAsync<ArgumentNullException>("id", async () => await _repository.FindByIdAsync(Guid.Empty));
-
 
         [Fact]
         public virtual async Task CUD_Fail_When_IdEmpty()

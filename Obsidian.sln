@@ -27,6 +27,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.QueryModel", "src\Obsidian.QueryModel\Obsidian.QueryModel.csproj", "{D723555C-E8AE-4E9E-9DB2-1ED7F4C7A006}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Persistence", "src\Obsidian.Persistence\Obsidian.Persistence.csproj", "{945CC761-2E0D-4921-A954-A11D41C51B1D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4} = {EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Application", "src\Obsidian.Application\Obsidian.Application.csproj", "{3F00572F-7AE4-4F5A-840A-E9C84DCACE2F}"
 EndProject

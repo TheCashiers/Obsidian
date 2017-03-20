@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 using Obsidian.Domain.Repositories;
-using Obsidian.Domain.Shared;
+using Obsidian.Foundation.Modeling;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Obsidian.Foundation\Obsidian.Foundation.csproj" />
     <ProjectReference Include="..\..\src\Obsidian.Persistence\Obsidian.Persistence.csproj" />
     <ProjectReference Include="..\..\src\Obsidian.Domain\Obsidian.Domain.csproj" />
   </ItemGroup>

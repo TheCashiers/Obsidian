@@ -1,5 +1,4 @@
-﻿using Obsidian.Domain.Misc;
-using Obsidian.Domain.Shared;
+﻿using Obsidian.Foundation.Modeling;
 using System;
 using System.Collections.Generic;
 

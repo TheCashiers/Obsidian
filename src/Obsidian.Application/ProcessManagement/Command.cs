@@ -1,4 +1,4 @@
-﻿using Obsidian.Domain;
+﻿using Obsidian.Foundation.Modeling;
 
 namespace Obsidian.Application.ProcessManagement
 {
