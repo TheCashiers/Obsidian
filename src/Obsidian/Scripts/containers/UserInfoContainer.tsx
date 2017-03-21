@@ -19,9 +19,9 @@ export class UserInfoContainer extends React.Component<any, IUserInfoState>{
         this.setState({ description: "A real boss.", level: "Administrator", username: "Henry Chu" });
         
     }
-    public handleSignout(){
-        axios.get(api.configs.signOut.request_uri)
-            .then(()=>{location.reload();});
+    public async handleSignout(){
+        await axios.get(api.configs.signOut.request_uri)
+        location.reload();
     }
     public render() {
         return (

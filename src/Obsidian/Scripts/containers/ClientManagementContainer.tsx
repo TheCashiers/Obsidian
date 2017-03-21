@@ -11,10 +11,13 @@ export class ClientManagementContainer extends React.Component<any, any> {
             clients: []
         };
     }
-    public componentDidMount() {
-        axios.getAxios(this.props.token).get(api.configs.getClient.request_uri)
-            .then((info) => { this.setState({ clients: info.data as Array<any> }); })
-            .catch((e) =>  Notification.Service.pushError("getClient",e));
+    public async componentDidMount() {
+        try {
+            const response = await axios.getAxios(this.props.token).get(api.configs.getClient.request_uri)
+            this.setState({ clients: response.data as Array<any> });
+        } catch (error) {
+            Notification.Service.pushError("getClient", error);
+        }
     }
     public render() {
         return (

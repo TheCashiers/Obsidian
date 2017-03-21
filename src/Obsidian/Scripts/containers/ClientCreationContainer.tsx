@@ -6,32 +6,31 @@ import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer"
 
 
-export class ClientCreationContainer extends FormContainer
-{
+export class ClientCreationContainer extends FormContainer {
     constructor(props: any) {
         super(props);
-        this.state = { displayName:"", redirectUri:""};
+        this.state = { displayName: "", redirectUri: "" };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         let displayName: string = this.state.displayName.trim();
         let redirectUri: string = this.state.redirectUri.trim();
         if (displayName && redirectUri) {
-            axios.getAxios(this.props.token).post(api.configs.createClient.request_uri,
-                { displayName: displayName, redirectUri: redirectUri },
-                
-            )
-                .then(()=>{
-                    this.setState({ displayName: "", redirectUri: "" });
-                    console.log(e);
-                    Notification.Service.pushSuccess("Client creation")
-                })
-                .catch((e) =>  Notification.Service.pushError("Client creation",e));
+            try {
+                let payload = { displayName: displayName, redirectUri: redirectUri };
+                await axios.getAxios(this.props.token).post(api.configs.createClient.request_uri, payload);
+                this.setState({ displayName: "", redirectUri: "" });
+                Notification.Service.pushSuccess("Client creation");
+            } catch (error) {
+                Notification.Service.pushError("Client creation", error);
+            }
+
+
         } else { return; }
     }
-    render(){
+    render() {
         return <ClientForm
             action="Create Client"
             onInputChange={this.handleInputChange}

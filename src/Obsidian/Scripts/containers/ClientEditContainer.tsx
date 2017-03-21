@@ -16,21 +16,29 @@ export class ClientEditContainer extends FormContainer {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public componentWillMount() {
-        axios.getAxios(this.props.token).get(api.configs.getClient.request_uri + this.state.id)
-            .then((info) => { this.setState(info.data); })
-            .catch((e) => Notification.Service.pushError("getClient", e));
+    public async componentWillMount() {
+        try {
+            const response = await axios.getAxios(this.props.token)
+                .get(api.configs.getClient.request_uri + this.state.id);
+            this.setState(response.data);
+        } catch (error) {
+            Notification.Service.pushError("getClient", error)
+        }
+        
     }
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         let displayName: string = this.state.displayName.trim();
         let redirectUri: string = this.state.redirectUri.trim();
         if (displayName && redirectUri) {
-            axios.getAxios(this.props.token).put(api.configs.createClient.request_uri+this.state.id, { displayName: displayName, redirectUri: redirectUri })
-                .then(()=>{
-                    Notification.Service.pushSuccess("Client editing")
-                })
-                .catch((e) =>  Notification.Service.pushError("Client editing",e));
+            try {
+                let payload = { displayName: displayName, redirectUri: redirectUri };
+                await axios.getAxios(this.props.token)
+                    .put(api.configs.createClient.request_uri + this.state.id, payload);
+                Notification.Service.pushSuccess("Client editing");
+            } catch (error) {
+                Notification.Service.pushError("Client editing", e);
+            }
         } else { return; }
     }
     public render() {

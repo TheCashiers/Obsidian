@@ -19,10 +19,14 @@ export class ScopeEditContainer extends FormContainer {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public componentWillMount() {
-        axios.getAxios(this.props.token).get(api.configs.getScope.request_uri + this.state.id)
-            .then((info) => { this.setState(info.data); })
-            .catch((e) => Notification.Service.pushError("getClient", e));
+    public async componentWillMount() {
+        try {
+            const response = await axios.getAxios(this.props.token).get(api.configs.getScope.request_uri + this.state.id)
+            this.setState(response.data);
+
+        } catch (error) {
+            Notification.Service.pushError("getClient", error);
+        }
     }
     handleSubmit(e) {
         e.preventDefault();

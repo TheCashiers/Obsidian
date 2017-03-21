@@ -6,25 +6,26 @@ import { UserForm } from "../components/Form";
 import { UserFormContainer } from "../containers/UserFormContainer"
 
 
-export class UserCreationContainer extends UserFormContainer
-{
+export class UserCreationContainer extends UserFormContainer {
     constructor(props) {
         super(props);
         this.state = { username: "", password: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         let username: string = this.state.username.trim();
         let password: string = this.state.password.trim();
         if (username && password) {
-            axios.getAxios(this.props.token).post(api.configs.createUser.request_uri, { userName: username, password: password })
-                .then(()=>{
-                    this.setState({ username: "", password: "" });
-                    console.log(e);
-                    Notification.Service.pushSuccess("User creation")
-                })
-                .catch((e) =>  Notification.Service.pushError("User creation",e));
+            const payload = { userName: username, password: password };
+            try {
+                await axios.getAxios(this.props.token).post(api.configs.createUser.request_uri, payload);
+                this.setState({ username: "", password: "" });
+                Notification.Service.pushSuccess("User creation")
+            } catch (error) {
+                Notification.Service.pushError("User creation", e);
+            }
+
         } else { return; }
     }
     public render() {
@@ -33,7 +34,7 @@ export class UserCreationContainer extends UserFormContainer
             onSubmit={this.handleSubmit}
             username={this.state.username}
             password={this.state.password}
-            action="Create User"/>);
+            action="Create User" />);
     }
 }
 

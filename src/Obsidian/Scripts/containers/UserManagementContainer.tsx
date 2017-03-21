@@ -5,7 +5,7 @@ import * as api from "../configs/GlobalSettings";
 import * as Notification from "./NotificationContainer"
 
 interface UserManagementState {
-    users: Array<any>; 
+    users: Array<any>;
 }
 
 
@@ -16,14 +16,17 @@ export class UserManagementContainer extends React.Component<any, UserManagement
             users: []
         };
     }
-    public componentDidMount() {
-        axios.getAxios(this.props.token).get(api.configs.getUser.request_uri)
-            .then((info) => { this.setState({ users: info.data as Array<any> }); })
-            .catch((e) =>  Notification.Service.pushError("getUser",e));
+    public async componentDidMount() {
+        try {
+            const response = await axios.getAxios(this.props.token).get(api.configs.getUser.request_uri)
+            this.setState({ users: response.data as Array<any> });
+        } catch (error) {
+            Notification.Service.pushError("getUser", error);
+        }
     }
     public render() {
         return (
-            <UserList users={this.state.users}/>
+            <UserList users={this.state.users} />
         );
     }
 

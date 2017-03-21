@@ -16,7 +16,7 @@ export class ScopeCreationContainer extends FormContainer {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         let scopeName: string = this.state.scopeName.trim();
         let displayName: string = this.state.displayName.trim();
@@ -29,12 +29,13 @@ export class ScopeCreationContainer extends FormContainer {
                 description: description,
                 claimTypes: claimTypes
             };
-            axios.getAxios(this.props.token).post(api.configs.createScope.request_uri, jsonObject)
-                .then(() => {
-                    console.log(e);
-                    Notification.Service.pushSuccess("Scope creation")
-                })
-                .catch((e) => Notification.Service.pushError("Scope creation", e));
+            try {
+                await axios.getAxios(this.props.token).post(api.configs.createScope.request_uri, jsonObject);
+                console.log(e);
+                Notification.Service.pushSuccess("Scope creation")
+            } catch (error) {
+                Notification.Service.pushError("Scope creation", error);
+            }
         } else { return; }
     }
     render() {

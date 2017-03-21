@@ -12,10 +12,13 @@ export class ScopeManagementContainer extends React.Component<any, any>
             scopes: []
         };
     }
-    public componentDidMount() {
-        axios.getAxios(this.props.token).get(api.configs.getScope.request_uri)
-            .then((info) => { this.setState({ scopes: info.data as Array<any> }); })
-            .catch((e) =>  Notification.Service.pushError("getClient",e));
+    public async componentDidMount() {
+        try {
+            const response = await axios.getAxios(this.props.token).get(api.configs.getScope.request_uri);
+            this.setState({ scopes: response.data as Array<any> });
+        } catch (error) {
+            Notification.Service.pushError("getClient", error)
+        }
     }
     public render() {
         return (
