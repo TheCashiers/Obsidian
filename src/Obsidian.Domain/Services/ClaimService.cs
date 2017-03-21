@@ -1,4 +1,6 @@
-﻿using Obsidian.Domain.Misc;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Domain.Misc;
+using Obsidian.Foundation.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +8,7 @@ using System.Security.Claims;
 
 namespace Obsidian.Domain.Services
 {
+    [Service(ServiceLifetime.Singleton)]
     public class ClaimService
     {
         public IEnumerable<Claim> GetClaims(User user, IEnumerable<PermissionScope> scopes)

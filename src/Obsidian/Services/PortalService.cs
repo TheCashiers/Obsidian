@@ -1,8 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Obsidian.Config;
+using Obsidian.Foundation.DependencyInjection;
 
 namespace Obsidian.Services
 {
+    [Service(ServiceLifetime.Scoped)]
     public class PortalService
     {
         private readonly PortalConfig _config;

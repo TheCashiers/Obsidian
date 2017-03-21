@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Obsidian.Domain\Obsidian.Domain.csproj" />
+    <ProjectReference Include="..\Obsidian.Foundation\Obsidian.Foundation.csproj" />
     <ProjectReference Include="..\Obsidian.QueryModel\Obsidian.QueryModel.csproj" />
     <ProjectReference Include="..\Obsidian.Persistence\Obsidian.Persistence.csproj" />
     <ProjectReference Include="..\Obsidian.Application\Obsidian.Application.csproj" />

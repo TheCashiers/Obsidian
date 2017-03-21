@@ -1,8 +1,11 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Foundation.DependencyInjection;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Obsidian.Application.Cryptography
 {
+    [Service(ServiceLifetime.Singleton)]
     public class RsaSigningService
     {
         private readonly RSA _privateKey;

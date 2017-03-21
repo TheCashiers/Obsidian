@@ -1,15 +1,17 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.Cryptography;
 using Obsidian.Domain;
 using Obsidian.Domain.Services;
+using Obsidian.Foundation.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace Obsidian.Application.OAuth20
 {
+    [Service(ServiceLifetime.Scoped)]
     public class OAuth20Service
     {
         private readonly AsymmetricSecurityKey _signingKey;

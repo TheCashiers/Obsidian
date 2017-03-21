@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 using Obsidian.Application.Services;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Services
 {
+    [Service(ServiceLifetime.Scoped, typeof(IIdentityService))]
     public class IdentityService : IIdentityService
     {
         private readonly IHttpContextAccessor _accessor;
@@ -71,7 +74,7 @@ namespace Obsidian.Services
                     user.SetPassword(newPassword);
                     await _userRepo.SaveAsync(user);
                 }
-                    
+
             }
         }
 
