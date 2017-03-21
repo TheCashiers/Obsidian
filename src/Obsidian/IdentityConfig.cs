@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.Cryptography;
 using Obsidian.Application.OAuth20;
 using Obsidian.Authorization;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Obsidian

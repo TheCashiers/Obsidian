@@ -1,5 +1,5 @@
-﻿using Obsidian.Application.ProcessManagement;
-using Obsidian.Domain.Repositories;
+﻿using Obsidian.Domain.Repositories;
+using Obsidian.Foundation.ProcessManagement;
 using System;
 using System.Threading.Tasks;
 
@@ -9,7 +9,6 @@ namespace Obsidian.Application.ClientManagement
                                         , IStartsWith<UpdateClientSecretCommand, ClientSecretUpdateResult>
 
     {
-
         private bool _isCompleted;
         private readonly IClientRepository _repo;
 
@@ -37,7 +36,7 @@ namespace Obsidian.Application.ClientManagement
             await _repo.SaveAsync(client);
             return new MessageResult
             {
-                Succeed =true,
+                Succeed = true,
                 Message = $"Info of Client {client.Id} changed."
             };
         }
@@ -65,6 +64,5 @@ namespace Obsidian.Application.ClientManagement
         }
 
         protected override bool IsProcessCompleted() => _isCompleted;
-
     }
 }

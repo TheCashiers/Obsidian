@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Obsidian.Application.OAuth20;
-using Obsidian.Application.ProcessManagement;
+using Obsidian.Foundation.ProcessManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;

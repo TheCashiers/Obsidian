@@ -1,6 +1,6 @@
 ﻿using Obsidian.Foundation.Modeling;
 
-namespace Obsidian.Application.ProcessManagement
+namespace Obsidian.Foundation.ProcessManagement
 {
     public abstract class Command<TResult> : IValidatable
     {

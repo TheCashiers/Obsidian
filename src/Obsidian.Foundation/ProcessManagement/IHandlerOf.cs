@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Obsidian.Application.ProcessManagement
+namespace Obsidian.Foundation.ProcessManagement
 {
     public interface IHandlerOf<TMessage, TResult> where TMessage : Message<TResult>
     {

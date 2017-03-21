@@ -1,6 +1,6 @@
-﻿using Obsidian.Application.ProcessManagement;
-using Obsidian.Domain;
+﻿using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation.ProcessManagement;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +9,6 @@ namespace Obsidian.Application.ScopeManagement
 {
     public class CreateScopeSaga : Saga, IStartsWith<CreateScopeCommand, ScopeCreationResult>
     {
-
         private bool _isCompleted;
 
         private readonly IPermissionScopeRepository _repo;
@@ -22,7 +21,8 @@ namespace Obsidian.Application.ScopeManagement
         public async Task<ScopeCreationResult> StartAsync(CreateScopeCommand command)
         {
             _isCompleted = true;
-            if(await _repo.FindByScopeNameAsync(command.ScopeName) != null) {
+            if (await _repo.FindByScopeNameAsync(command.ScopeName) != null)
+            {
                 return new ScopeCreationResult
                 {
                     Succeed = false,

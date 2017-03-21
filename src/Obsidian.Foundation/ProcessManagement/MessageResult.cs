@@ -1,4 +1,4 @@
-﻿namespace Obsidian.Application.ProcessManagement
+﻿namespace Obsidian.Foundation.ProcessManagement
 {
     public class MessageResult
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Obsidian.Application.ProcessManagement
+namespace Obsidian.Foundation.ProcessManagement
 {
     public interface IStartsWith<TCommand, TResult> where TCommand : Command<TResult>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Obsidian.Application.ProcessManagement
+namespace Obsidian.Foundation.ProcessManagement
 {
     internal class SagaNotFoundException : Exception
     {

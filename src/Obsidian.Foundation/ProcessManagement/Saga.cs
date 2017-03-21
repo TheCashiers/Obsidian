@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Obsidian.Application.ProcessManagement
+namespace Obsidian.Foundation.ProcessManagement
 {
     public abstract class Saga
     {

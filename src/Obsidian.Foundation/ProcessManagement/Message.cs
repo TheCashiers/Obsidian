@@ -1,7 +1,7 @@
 ﻿using Obsidian.Foundation.Modeling;
 using System;
 
-namespace Obsidian.Application.ProcessManagement
+namespace Obsidian.Foundation.ProcessManagement
 {
     public abstract class Message<TResult> : IValidatable
     {

@@ -1,8 +1,7 @@
-using System;
+using Obsidian.Domain.Repositories;
+using Obsidian.Foundation.ProcessManagement;
 using System.Linq;
 using System.Threading.Tasks;
-using Obsidian.Application.ProcessManagement;
-using Obsidian.Domain.Repositories;
 
 namespace Obsidian.Application.OAuth20
 {
@@ -19,7 +18,6 @@ namespace Obsidian.Application.OAuth20
                                     : base(clientRepo, userRepo, scopeRepo, oauth20Service)
         {
         }
-
 
         protected string _redirectUri;
 
@@ -99,7 +97,6 @@ namespace Obsidian.Application.OAuth20
             return result;
         }
 
-
         public bool ShouldHandle(PermissionGrantMessage message) => _state == OAuth20State.RequirePermissionGrant && message.SagaId == Id;
 
         public bool ShouldHandle(OAuth20SignInMessage message) => _state == OAuth20State.RequireSignIn && message.SagaId == Id;
@@ -108,6 +105,5 @@ namespace Obsidian.Application.OAuth20
             (_state == OAuth20State.RequireSignIn ||
             _state == OAuth20State.RequirePermissionGrant)
             && message.SagaId == Id;
-
     }
 }

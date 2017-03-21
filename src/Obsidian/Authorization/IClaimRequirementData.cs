@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Obsidian.Authorization
 {

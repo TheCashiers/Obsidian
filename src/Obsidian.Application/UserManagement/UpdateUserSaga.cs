@@ -1,5 +1,5 @@
-﻿using Obsidian.Application.ProcessManagement;
-using Obsidian.Domain.Repositories;
+﻿using Obsidian.Domain.Repositories;
+using Obsidian.Foundation.ProcessManagement;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,7 +11,6 @@ namespace Obsidian.Application.UserManagement
                                       , IStartsWith<UpdateUserNameCommand, MessageResult>
                                       , IStartsWith<UpdateUserClaimCommand, MessageResult>
     {
-
         private bool _isCompleted;
 
         private readonly IUserRepository _repo;
@@ -115,8 +114,8 @@ namespace Obsidian.Application.UserManagement
                 Succeed = true,
                 Message = $"Password of User {command.UserId} changed."
             };
-
         }
+
         protected override bool IsProcessCompleted()
         {
             return _isCompleted;

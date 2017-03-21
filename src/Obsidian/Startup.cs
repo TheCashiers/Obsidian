@@ -8,13 +8,10 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Obsidian.Application.Cryptography;
 using Obsidian.Application.DependencyInjection;
 using Obsidian.Application.OAuth20;
-using Obsidian.Application.Services;
 using Obsidian.Config;
-using Obsidian.Domain.Services;
 using Obsidian.Foundation.DependencyInjection;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
-using Obsidian.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 

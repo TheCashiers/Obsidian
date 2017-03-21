@@ -1,4 +1,4 @@
-using Obsidian.Application.ProcessManagement;
+using Obsidian.Foundation.ProcessManagement;
 
 namespace Obsidian.Application.Authentication
 {

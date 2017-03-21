@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Obsidian.Application
+﻿namespace Obsidian.Application
 {
     public class AccountAPIClaimTypes
     {

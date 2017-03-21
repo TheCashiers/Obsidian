@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Obsidian.Application
+﻿namespace Obsidian.Application
 {
     /// <summary>
     /// Contains ClaimType string about Management API in Obsidian
