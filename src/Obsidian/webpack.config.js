@@ -1,4 +1,5 @@
 ﻿var webpack = require('webpack');
+var HappyPack = require('happypack');
 var path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -19,16 +20,18 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
+                    use: path.resolve(__dirname, './node_modules/happypack/loader')+"?id=css"
                 })
             },
-            { test: /\.tsx?$/, loader: "ts-loader" },
+            {
+                test: /\.tsx?$/,
+                loader: "ts-loader",
+                include: path.resolve(__dirname,"./Scripts")
+            },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
                 loader: 'file-loader?name=[name].[ext]&publicPath=fonts/&outputPath=wwwroot/lib/fonts/'
-            },
-            { test: /\.js$/, loader: "source-map-loader", enforce: 'pre' }
+            }
         ]
     },
     plugins: [
@@ -39,6 +42,10 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
+        }),
+        new HappyPack({
+            id: "css",
+            loaders:["css-loader"]
         })
     ],
 };
