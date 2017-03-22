@@ -3,11 +3,14 @@ dist: trusty
 language: csharp
 solution: Obsidian.sln
 mono: none
-dotnet: 1.0.1
+dotnet: none
 services: mongodb
 
 
 before_install:
+    # .NET Core
+    - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
+    - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
     # Repo for Yarn
     - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
     - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -15,7 +18,7 @@ before_install:
 install:
     - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
     - nvm install node
-    - sudo apt-get install -y -qq yarn
+    - sudo apt-get install -y -qq yarn dotnet-dev-1.0.1
 
 before_script:
     - chmod +x ./*.sh
