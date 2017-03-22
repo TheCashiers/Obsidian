@@ -23,5 +23,4 @@ before_script:
 
 script:
     - dotnet build
-    - cd ../../
     - ./test.sh
