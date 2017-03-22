@@ -1,5 +1,4 @@
 dotnet restore
-cd ./src/
-cd ./Obsidian/
+cd ./src/Obsidian/
 yarn
 cd ../../
