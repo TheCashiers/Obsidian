@@ -1,7 +1,6 @@
 sudo: required
 dist: trusty
 language: csharp
-solution: Obsidian.sln
 mono: none
 dotnet: none
 services: mongodb
