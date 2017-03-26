@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClientList render snapshot 1`] = `
+<div
+  className="content-wrapper content"
+>
+  <a
+    onClick={[Function]}
+    style={Object {}}
+  >
+    <button
+      className="btn btn-lg btn-success"
+    >
+      Create Client
+      ...
+    </button>
+  </a>
+  <div
+    className="list-group"
+  >
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa fa-server fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MaterialForm render snapshot 1`] = `
+<div
+  className="well bs-component col-md-6"
+>
+  <form
+    className="form-horizontal"
+    onSubmit={[Function]}
+  >
+    <fieldset>
+      <legend>
+        Create sth
+      </legend>
+    </fieldset>
+    <div
+      className="form-group"
+    >
+      <div
+        className="col-md-10 col-md-offset-2"
+      >
+        <a
+          onClick={[Function]}
+          style={Object {}}
+        >
+          <button
+            className="btn btn-default"
+            type="button"
+          >
+            Cancel
+          </button>
+        </a>
+        <button
+          className="btn btn-primary"
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;

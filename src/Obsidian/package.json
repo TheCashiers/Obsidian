@@ -3,6 +3,8 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
+    "@types/jest": "^19.2.2",
+    "@types/react-test-renderer": "^15.4.2",
     "css-loader": "^0.23.1",
     "enzyme": "^2.8.0",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
@@ -12,11 +14,24 @@
     "react-test-renderer": "^15.4.2",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
+    "ts-jest": "^19.0.5",
     "ts-loader": "^0.8.2",
     "typescript": "^2.2.1",
     "webpack": "^2.2.1"
   },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/Scripts/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
   "scripts": {
+    "test": "jest",
     "start": "webpack"
   },
   "dependencies": {
