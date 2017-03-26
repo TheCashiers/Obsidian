@@ -23,4 +23,5 @@ before_script:
 script:
     - dotnet build
     - ./test.sh
+    - cd ./src/Obsidian
     - npm test

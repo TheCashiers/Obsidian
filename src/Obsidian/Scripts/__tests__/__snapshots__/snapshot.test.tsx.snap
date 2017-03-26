@@ -62,6 +62,50 @@ exports[`ClientList render snapshot 1`] = `
         className="list-group-separator"
       />
     </div>
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa fa-server fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo1
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar1
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
   </div>
 </div>
 `;
@@ -79,6 +123,50 @@ exports[`MaterialForm render snapshot 1`] = `
         Create sth
       </legend>
     </fieldset>
+    <div
+      className="form-group"
+    >
+      <label
+        className="col-md-2 control-label"
+      >
+        Username
+      </label>
+      <div
+        className="col-md-10"
+      >
+        <input
+          className="form-control"
+          name="username"
+          onChange={[Function]}
+          placeholder="Username..."
+          required={true}
+          type="text"
+          value="foo"
+        />
+      </div>
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        className="col-md-2 control-label"
+      >
+        Redirect Uri
+      </label>
+      <div
+        className="col-md-10"
+      >
+        <input
+          className="form-control"
+          name="redirectUri"
+          onChange={[Function]}
+          placeholder="http://example.com"
+          required={true}
+          type="text"
+          value="http://bar.com"
+        />
+      </div>
+    </div>
     <div
       className="form-group"
     >
