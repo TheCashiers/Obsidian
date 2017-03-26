@@ -35,6 +35,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.PrefetchPlugin("axios/index.js"),
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vendor','styles']
         }),
