@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router";
-import { styles } from "../styles";
+import { styles } from "../styles/index";
 export const MaterialForm = (props) => (
     <div className="well bs-component col-md-6">
         <form className="form-horizontal" onSubmit={props.onSubmit}>
