@@ -30,7 +30,7 @@ namespace NamingConversions
     // For classes, enums, use Pascal casing.
     public class SampleClass
     {
-        //For constanrs, use Pascal casing.
+        //For constants, use Pascal casing.
         public const int Count = 0;
 
         //For static menbers, use Pascal casing.
