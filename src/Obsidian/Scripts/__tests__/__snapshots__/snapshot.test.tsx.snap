@@ -110,7 +110,93 @@ exports[`ClientList render snapshot 1`] = `
 </div>
 `;
 
-exports[`ClientList render snapshot 2`] = `
+exports[`MaterialForm render snapshot 1`] = `
+<div
+  className="well bs-component col-md-6"
+>
+  <form
+    className="form-horizontal"
+    onSubmit={[Function]}
+  >
+    <fieldset>
+      <legend>
+        Create sth
+      </legend>
+    </fieldset>
+    <div
+      className="form-group"
+    >
+      <label
+        className="col-md-2 control-label"
+      >
+        Username
+      </label>
+      <div
+        className="col-md-10"
+      >
+        <input
+          className="form-control"
+          name="username"
+          onChange={[Function]}
+          placeholder="Username..."
+          required={true}
+          type="text"
+          value="foo"
+        />
+      </div>
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        className="col-md-2 control-label"
+      >
+        Redirect Uri
+      </label>
+      <div
+        className="col-md-10"
+      >
+        <input
+          className="form-control"
+          name="redirectUri"
+          onChange={[Function]}
+          placeholder="http://example.com"
+          required={true}
+          type="text"
+          value="http://bar.com"
+        />
+      </div>
+    </div>
+    <div
+      className="form-group"
+    >
+      <div
+        className="col-md-10 col-md-offset-2"
+      >
+        <a
+          onClick={[Function]}
+          style={Object {}}
+        >
+          <button
+            className="btn btn-default"
+            type="button"
+          >
+            Cancel
+          </button>
+        </a>
+        <button
+          className="btn btn-primary"
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`PortalHeader render snapshot 1`] = `
 <header
   className="main-header"
 >
@@ -323,88 +409,244 @@ exports[`ClientList render snapshot 2`] = `
 </header>
 `;
 
-exports[`MaterialForm render snapshot 1`] = `
+exports[`PortalIndex render snapshot 1`] = `
 <div
-  className="well bs-component col-md-6"
+  className="content-wrapper"
+  style={
+    Object {
+      "margin": "30px",
+    }
+  }
 >
-  <form
-    className="form-horizontal"
-    onSubmit={[Function]}
+  <h1>
+    Welcome to Obsidian Management Portal!
+  </h1>
+  <br />
+  <h2>
+    You can manage all the users, claims and clients here.
+  </h2>
+  <h2>
+    Select what you need in the navigation bar.
+  </h2>
+</div>
+`;
+
+exports[`ScopeList render snapshot 1`] = `
+<div
+  className="content-wrapper content"
+>
+  <a
+    onClick={[Function]}
+    style={Object {}}
   >
-    <fieldset>
-      <legend>
-        Create sth
-      </legend>
-    </fieldset>
-    <div
-      className="form-group"
+    <button
+      className="btn btn-lg btn-success"
     >
-      <label
-        className="col-md-2 control-label"
-      >
-        Username
-      </label>
+      Create Scope
+      ...
+    </button>
+  </a>
+  <div
+    className="list-group"
+  >
+    <div>
       <div
-        className="col-md-10"
+        className="list-group-item"
       >
-        <input
-          className="form-control"
-          name="username"
-          onChange={[Function]}
-          placeholder="Username..."
-          required={true}
-          type="text"
-          value="foo"
-        />
-      </div>
-    </div>
-    <div
-      className="form-group"
-    >
-      <label
-        className="col-md-2 control-label"
-      >
-        Redirect Uri
-      </label>
-      <div
-        className="col-md-10"
-      >
-        <input
-          className="form-control"
-          name="redirectUri"
-          onChange={[Function]}
-          placeholder="http://example.com"
-          required={true}
-          type="text"
-          value="http://bar.com"
-        />
-      </div>
-    </div>
-    <div
-      className="form-group"
-    >
-      <div
-        className="col-md-10 col-md-offset-2"
-      >
-        <a
-          onClick={[Function]}
-          style={Object {}}
+        <div
+          className="row-action-primary"
         >
-          <button
-            className="btn btn-default"
-            type="button"
+          <i
+            className="fa fa-puzzle-piece fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
           >
-            Cancel
-          </button>
-        </a>
-        <button
-          className="btn btn-primary"
-          type="submit"
-        >
-          Submit
-        </button>
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar
+          </p>
+        </div>
       </div>
+      <div
+        className="list-group-separator"
+      />
     </div>
-  </form>
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa fa-puzzle-piece fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo1
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar1
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UserList render snapshot 1`] = `
+<div
+  className="content-wrapper content"
+>
+  <a
+    onClick={[Function]}
+    style={Object {}}
+  >
+    <button
+      className="btn btn-lg btn-success"
+    >
+      Create User
+      ...
+    </button>
+  </a>
+  <div
+    className="list-group"
+  >
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa fa-user fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa fa-user fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo1
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar1
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+  </div>
 </div>
 `;

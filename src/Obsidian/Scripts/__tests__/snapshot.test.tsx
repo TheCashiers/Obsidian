@@ -3,6 +3,9 @@ import { ClientList } from "../components/ClientManagement"
 import { MaterialForm, MaterialInput } from "../components/Form"
 import { create } from 'react-test-renderer';
 import { PortalHeader, UserInfo } from "../components/PortalElements";
+import { PortalIndex } from "../components/PortalIndex";
+import { ScopeList } from "../components/ScopeManagement";
+import { UserList } from "../components/UserManagement";
 
 
 it('ClientList render snapshot', () => {
@@ -36,9 +39,36 @@ it("MaterialForm render snapshot", () => {
     expect(materialForm).toMatchSnapshot();
 });
 
-it('ClientList render snapshot', () => {
+it('PortalHeader render snapshot', () => {
     const portalHeader = create(
         <PortalHeader token="MockedToken" />
     ).toJSON();
     expect(portalHeader).toMatchSnapshot();
+});
+
+it('PortalIndex render snapshot', () => {
+    const portalIndex = create(
+        <PortalIndex />
+    ).toJSON();
+    expect(portalIndex).toMatchSnapshot();
+});
+
+it('ScopeList render snapshot', () => {
+    const scopeList = create(
+        <ScopeList scopes={[
+            { displayName: "foo", id: "bar" },
+            { displayName: "foo1", id: "bar1" }
+        ]}/>
+    ).toJSON();
+    expect(scopeList).toMatchSnapshot();
+});
+
+it('UserList render snapshot', () => {
+    const userList = create(
+        <UserList users={[
+            { displayName: "foo", id: "bar" },
+            { displayName: "foo1", id: "bar1" }
+        ]}/>
+    ).toJSON();
+    expect(userList).toMatchSnapshot();
 });
