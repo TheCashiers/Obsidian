@@ -6,7 +6,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
     entry: {
         app: "./Scripts/UserPortalPage.tsx",
-        vendor: ["react", "react-dom", "react-router","snackbarjs","jquery"],
+        vendor: ["react", "react-dom", "react-router","snackbarjs","jquery","axios"],
         styles: ["bootstrap","bootstrap-material-design","./Scripts/styles/vendor.js"]
     },
     output: {

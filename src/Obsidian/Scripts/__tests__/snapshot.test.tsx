@@ -35,3 +35,10 @@ it("MaterialForm render snapshot", () => {
     ).toJSON();
     expect(materialForm).toMatchSnapshot();
 });
+
+it('ClientList render snapshot', () => {
+    const portalHeader = create(
+        <PortalHeader token="MockedToken" />
+    ).toJSON();
+    expect(portalHeader).toMatchSnapshot();
+});

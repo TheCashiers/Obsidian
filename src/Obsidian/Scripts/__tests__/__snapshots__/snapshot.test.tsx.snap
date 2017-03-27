@@ -110,6 +110,219 @@ exports[`ClientList render snapshot 1`] = `
 </div>
 `;
 
+exports[`ClientList render snapshot 2`] = `
+<header
+  className="main-header"
+>
+  <nav
+    className="navbar navbar-static-top"
+  >
+    <div
+      className="container-fluid"
+    >
+      <div
+        className="navbar-header"
+      >
+        <a
+          className="navbar-brand"
+          onClick={[Function]}
+          style={Object {}}
+        >
+          Obsidian
+        </a>
+        <button
+          className="navbar-toggle collapsed"
+          data-target="#navbar-collapse"
+          data-toggle="collapse"
+          type="button"
+        >
+          <i
+            className="fa fa-bars"
+          />
+        </button>
+      </div>
+      <div
+        className="collapse navbar-collapse"
+        id="navbar-collapse"
+      >
+        <ul
+          className="nav navbar-nav"
+        >
+          <li>
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Users
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Clients
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Scopes
+            </a>
+          </li>
+          <li
+            className="dropdown"
+          >
+            <a
+              className="dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+            >
+              Dropdown 
+              <span
+                className="caret"
+              />
+            </a>
+            <ul
+              className="dropdown-menu"
+              role="menu"
+            >
+              <li>
+                <a
+                  href="#"
+                >
+                  Action
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                >
+                  Another action
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                >
+                  Something else here
+                </a>
+              </li>
+              <li
+                className="divider"
+              />
+              <li>
+                <a
+                  href="#"
+                >
+                  Separated link
+                </a>
+              </li>
+              <li
+                className="divider"
+              />
+              <li>
+                <a
+                  href="#"
+                >
+                  One more separated link
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <form
+          className="navbar-form navbar-left"
+          role="search"
+        >
+          <div
+            className="form-group"
+          >
+            <input
+              className="form-control"
+              id="navbar-search-input"
+              placeholder="Search"
+              type="text"
+            />
+          </div>
+        </form>
+        <ul
+          className="nav navbar-nav navbar-right"
+        >
+          <li
+            className="dropdown user user-menu"
+          >
+            <a
+              className="dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+            >
+              <span
+                className="hidden-xs"
+              >
+                Henry Chu
+              </span>
+            </a>
+            <ul
+              className="dropdown-menu "
+            >
+              <li
+                style={
+                  Object {
+                    "background": "#EEE",
+                    "color": "black",
+                    "height": "200px",
+                    "textAlign": "center",
+                    "verticalAlign": "center",
+                    "width": "400px",
+                  }
+                }
+              >
+                <h2>
+                  Henry Chu
+                   - 
+                  Administrator
+                  <br />
+                  <small>
+                    A real boss.
+                  </small>
+                </h2>
+              </li>
+              <li
+                className="user-footer"
+              >
+                <div
+                  className="pull-left"
+                >
+                  <a
+                    className="btn btn-default btn-flat"
+                    href="#"
+                  >
+                    Profile
+                  </a>
+                </div>
+                <div
+                  className="pull-right"
+                >
+                  <button
+                    className="btn btn-default btn-flat"
+                    onClick={[Function]}
+                  >
+                    Sign out
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+`;
+
 exports[`MaterialForm render snapshot 1`] = `
 <div
   className="well bs-component col-md-6"

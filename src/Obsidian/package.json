@@ -21,7 +21,7 @@
   },
   "jest": {
     "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/Scripts/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
@@ -37,6 +37,7 @@
   "dependencies": {
     "@types/jquery": "^2.0.40",
     "@types/react": "^15.0.11",
+    "@types/react-dom": "^0.14.23",
     "@types/react-router": "^3.0.4",
     "axios": "^0.13.1",
     "bootstrap": "^3.3.7",
