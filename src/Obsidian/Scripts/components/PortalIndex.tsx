@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
 import { Link } from "react-router";
-import { styles } from "../styles"
+import { styles } from "../styles/index"
 
 export const PortalIndex = (props) => {
     return (

@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import { Link } from "react-router";
 import { UserInfoContainer } from "../containers/UserInfoContainer"
-import { styles } from "../styles"
+import { styles } from "../styles/index"
 
 export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
@@ -12,7 +12,7 @@ export const UserInfo = (props) => (
             <li style={styles.userCard}>
                 <h2>
                     {props.username} - {props.level}
-                    <br/>
+                    <br />
 
                     <small>{props.description}</small>
                 </h2>
@@ -35,7 +35,7 @@ export const PortalHeader = (props) => (
                 <div className="navbar-header">
                     <Link to="/manage" className="navbar-brand">Obsidian</Link>
                     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                        <i className="fa fa-bars"/>
+                        <i className="fa fa-bars" />
                     </button>
                 </div>
                 <div className="collapse navbar-collapse" id="navbar-collapse">
@@ -58,19 +58,19 @@ export const PortalHeader = (props) => (
                     </ul>
                     <form className="navbar-form navbar-left" role="search">
                         <div className="form-group">
-                            <input type="text" className="form-control" id="navbar-search-input" placeholder="Search"/>
+                            <input type="text" className="form-control" id="navbar-search-input" placeholder="Search" />
                         </div>
                     </form>
                     <ul className="nav navbar-nav navbar-right">
-                        <UserInfoContainer token={props.token}/>
+                        <UserInfoContainer token={props.token} />
                     </ul>
                 </div>
             </div>
         </nav>
     </header>);
 
-    const Combobox = (props) =>
-        <label style={styles.comboBox}>
-            <input type="checkbox" onChange={props.onSelectChange}/>
-            {props.name}
-        </label>
+const Combobox = (props) =>
+    <label style={styles.comboBox}>
+        <input type="checkbox" onChange={props.onSelectChange} />
+        {props.name}
+    </label>

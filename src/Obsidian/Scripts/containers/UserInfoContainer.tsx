@@ -20,7 +20,7 @@ export class UserInfoContainer extends React.Component<any, IUserInfoState>{
         
     }
     public async handleSignout(){
-        await axios.get(api.configs.signOut.request_uri)
+        await axios.get(api.configs.signOut.request_uri);
         location.reload();
     }
     public render() {
