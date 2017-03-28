@@ -5,7 +5,7 @@ import { ScopeCreationContainer } from "../containers/ScopeCreationContainer";
 import { ScopeForm } from "../components/Form";
 
 test("throw exceptions when token is undefined", () => {
-    expect(new ScopeCreationContainer({ token: undefined })).toThrowError();
+    expect(() => { new ScopeCreationContainer({}) }).toThrowError();
 });
 
 

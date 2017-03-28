@@ -7,6 +7,7 @@
     "@types/jest": "^19.2.2",
     "@types/react-addons-test-utils": "^0.14.17",
     "@types/react-test-renderer": "^15.4.2",
+    "coveralls": "^2.12.0",
     "css-loader": "^0.23.1",
     "enzyme": "^2.8.0",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
@@ -27,6 +28,7 @@
       "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/Scripts/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -35,6 +37,8 @@
   },
   "scripts": {
     "test": "jest",
+    "test:cover": "npm run test -- --coverage ",
+    "test:cover:travis": "npm run test:cover && cat ./coverage/lcov.info | node_modules/coveralls/bin/coveralls.js",
     "start": "webpack"
   },
   "dependencies": {
