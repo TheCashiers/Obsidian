@@ -24,4 +24,4 @@ script:
     - dotnet build
     - ./test.sh
     - cd ./src/Obsidian
-    - npm test:cover:travis
+    - npm run test:cover:travis
