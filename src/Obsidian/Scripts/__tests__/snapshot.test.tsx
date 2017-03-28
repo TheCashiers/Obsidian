@@ -11,8 +11,9 @@ import { List } from "../components/List";
 it("List render snapshot", () => {
     const list = create(
         <List items={[
-            { displayName: "foo", id: "bar" },
-            { displayName: "foo1", id: "bar1" }
+            { userName: "foo", id: "bar" },
+            { displayName: "foo1", id: "bar1" },
+            { scopeName: "foo2", id: "bar2" }
         ]}/>
     ).toJSON();
     expect(list).toMatchSnapshot();

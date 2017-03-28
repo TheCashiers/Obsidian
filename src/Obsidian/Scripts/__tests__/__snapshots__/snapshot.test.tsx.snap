@@ -215,6 +215,50 @@ exports[`List render snapshot 1`] = `
         className="list-group-separator"
       />
     </div>
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa undefined fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo2
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar2
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
   </div>
 </div>
 `;
