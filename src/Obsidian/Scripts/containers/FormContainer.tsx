@@ -4,6 +4,9 @@ import * as api from "../configs/GlobalSettings";
 
 export abstract class FormContainer extends React.Component<any, any> {
     constructor(props) {
+        if (typeof (props.token) == undefined) {
+            throw new ReferenceError("Token must be fulfilled.");
+        }
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
