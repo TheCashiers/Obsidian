@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as api from "../configs/GlobalSettings";
 import { UserForm } from "../components/Form";
+import { FormContainer } from "./FormContainer";
 
 interface IUserFormState {
     username?: string;
@@ -12,7 +13,7 @@ interface IUserFormProps{
     target:api.IServerConfig;
 }
 
-export abstract class UserFormContainer extends React.Component<any, IUserFormState> {
+export abstract class UserFormContainer extends FormContainer {
     constructor(props: IUserFormProps) {
         super(props);
         this.state = { username: "", password: ""};
