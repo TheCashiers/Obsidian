@@ -23,10 +23,10 @@ before_script:
     - ./restore_packages.sh
 
 script:
-    - sudo service mongod restart
     - cd ./src/Obsidian
     - dotnet build
     - cd ../..
+    - sudo service mongod restart
     - ./test.sh
     - cd ./src/Obsidian
     - npm run test:cover:travis
