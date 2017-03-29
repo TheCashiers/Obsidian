@@ -25,7 +25,7 @@ install:
 before_script:
     - sudo service mongod restart
     - sleep 15
-    - mongo mydb_test --eval 'db.addUser("travis", "test");'
+    - mongo mydb_test --eval 'db.test.insertOne({data:"test"});'
     - chmod +x ./*.sh
     - ./restore_packages.sh
 
