@@ -23,6 +23,7 @@ before_script:
 script:
     - cd ./src/Obsidian
     - dotnet build
+    - cd ../..
     - ./test.sh
     - cd ./src/Obsidian
     - npm test
