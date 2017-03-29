@@ -13,7 +13,7 @@ export class ClientCreationContainer extends FormContainer {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    async handleSubmit(e) {
+    public async handleSubmit(e) {
         e.preventDefault();
         let displayName: string = this.state.displayName.trim();
         let redirectUri: string = this.state.redirectUri.trim();
@@ -26,8 +26,6 @@ export class ClientCreationContainer extends FormContainer {
             } catch (error) {
                 Notification.Service.pushError("Client creation", error);
             }
-
-
         } else { return; }
     }
     render() {

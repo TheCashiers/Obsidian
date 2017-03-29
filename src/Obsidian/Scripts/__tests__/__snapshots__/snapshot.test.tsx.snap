@@ -110,6 +110,159 @@ exports[`ClientList render snapshot 1`] = `
 </div>
 `;
 
+exports[`List render snapshot 1`] = `
+<div
+  className="content-wrapper content"
+>
+  <a
+    onClick={[Function]}
+    style={Object {}}
+  >
+    <button
+      className="btn btn-lg btn-success"
+    >
+      ...
+    </button>
+  </a>
+  <div
+    className="list-group"
+  >
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa undefined fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa undefined fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo1
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar1
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+    <div>
+      <div
+        className="list-group-item"
+      >
+        <div
+          className="row-action-primary"
+        >
+          <i
+            className="fa undefined fa-2x"
+          />
+        </div>
+        <div
+          className="row-content"
+        >
+          <div
+            className="least-content"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              <button
+                className="btn btn-lg btn-primary btn-raised"
+              >
+                Edit
+              </button>
+            </a>
+          </div>
+          <h4
+            className="list-group-item-heading"
+          >
+            foo2
+          </h4>
+          <p
+            className="list-group-item-text"
+          >
+            bar2
+          </p>
+        </div>
+      </div>
+      <div
+        className="list-group-separator"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`MaterialForm render snapshot 1`] = `
 <div
   className="well bs-component col-md-6"

@@ -6,6 +6,18 @@ import { PortalHeader, UserInfo } from "../components/PortalElements";
 import { PortalIndex } from "../components/PortalIndex";
 import { ScopeList } from "../components/ScopeManagement";
 import { UserList } from "../components/UserManagement";
+import { List } from "../components/List";
+
+it("List render snapshot", () => {
+    const list = create(
+        <List items={[
+            { userName: "foo", id: "bar" },
+            { displayName: "foo1", id: "bar1" },
+            { scopeName: "foo2", id: "bar2" }
+        ]}/>
+    ).toJSON();
+    expect(list).toMatchSnapshot();
+})
 
 
 it('ClientList render snapshot', () => {

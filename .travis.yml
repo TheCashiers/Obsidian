@@ -26,4 +26,4 @@ script:
     - cd ../..
     - ./test.sh
     - cd ./src/Obsidian
-    - npm test
+    - npm run test:cover:travis
