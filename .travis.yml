@@ -1,5 +1,9 @@
-sudo: required
+language: csharp
+mono: none
+
+os: linux
 dist: trusty
+sudo: required
 
 
 before_install:
@@ -26,7 +30,6 @@ script:
     - cd ./src/Obsidian
     - dotnet build
     - cd ../..
-    - sudo service mongod restart
     - ./test.sh
     - cd ./src/Obsidian
     - npm run test:cover:travis
