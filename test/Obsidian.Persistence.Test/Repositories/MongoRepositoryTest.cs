@@ -30,6 +30,7 @@ namespace Obsidian.Persistence.Test.Repositories
         {
             try
             {
+                client.Cluster.Initialize();
                 client.DropDatabase(testDbName);
             }
             catch (TimeoutException ex)
