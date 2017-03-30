@@ -24,7 +24,7 @@ namespace Obsidian.Persistence.Test.Repositories
             InitializeContext();
         }
 
-        protected void InitializeContext()
+        protected virtual void InitializeContext()
         {
             _repository = CreateRepository();
         }

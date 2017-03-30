@@ -8,9 +8,23 @@ namespace Obsidian.Persistence.Test.Repositories
     {
         private const string dbUri = "mongodb://127.0.0.1:27017";
         private readonly string testDbName = "ObsidianTest_" + Guid.NewGuid();
-        private IMongoClient client = new MongoClient(dbUri);
+        private IMongoClient client;
+        private IMongoDatabase _db;
 
-        protected IMongoDatabase Database => client.GetDatabase(testDbName);
+        private void InitializeDatabase()
+        {
+            client = new MongoClient(dbUri);
+            _db = client.GetDatabase(testDbName);
+        }
+
+        protected override void InitializeContext()
+        {
+            InitializeDatabase();
+            base.InitializeContext();
+        }
+
+        protected IMongoDatabase Database => _db;
+
 
         protected override void CleanupDatabase() => client.DropDatabase(testDbName);
     }
