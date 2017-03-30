@@ -34,7 +34,7 @@ namespace Obsidian.Persistence.Test.Repositories
             }
             catch (TimeoutException ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex.InnerException?.ToString() ?? "[No InnerException]");
                 throw;
             }
         }
