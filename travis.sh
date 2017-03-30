@@ -19,7 +19,7 @@ cd ./src/Obsidian/
 yarn
 dotnet build
 
-
+sudo service start mongod
 cd ../../test
 for d in ./*/ ; 
 do
