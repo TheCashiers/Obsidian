@@ -26,6 +26,17 @@ namespace Obsidian.Persistence.Test.Repositories
         protected IMongoDatabase Database => _db;
 
 
-        protected override void CleanupDatabase() => client.DropDatabase(testDbName);
+        protected override void CleanupDatabase()
+        {
+            try
+            {
+                client.DropDatabase(testDbName);
+            }
+            catch (TimeoutException ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
     }
 }
