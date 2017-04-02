@@ -4,7 +4,6 @@ import { ScopeForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
 import { FormContainer } from "./FormContainer";
 import * as axios from "../configs/AxiosInstance";
-import * as Notification from "./NotificationContainer"
 
 
 export class ScopeEditContainer extends FormContainer {
@@ -25,7 +24,7 @@ export class ScopeEditContainer extends FormContainer {
             this.setState(response.data);
 
         } catch (error) {
-            Notification.Service.pushError("getClient", error);
+            this.props.push("getClient", error);
         }
     }
     handleSubmit(e) {
@@ -43,9 +42,9 @@ export class ScopeEditContainer extends FormContainer {
             }
             axios.getAxios(this.props.token).put(api.configs.getScope.request_uri + this.state.id, jsonObject)
                 .then(() => {
-                    Notification.Service.pushSuccess("Scope editing")
+                    this.props.push("Scope editing")
                 })
-                .catch((e) => Notification.Service.pushError("Scope editing", e));
+                .catch((e) => this.props.push("Scope editing", e.toString()));
         } else { return; }
     }
     public render() {

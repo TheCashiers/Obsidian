@@ -25,6 +25,5 @@ for d in ./*/ ;
 do
 	(cd "$d" && dotnet test); 
 done
-
 cd ../src/Obsidian
 npm run test:cover:travis

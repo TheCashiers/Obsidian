@@ -349,6 +349,62 @@ exports[`MaterialForm render snapshot 1`] = `
 </div>
 `;
 
+exports[`Notifications render snapshot 1`] = `
+<div
+  style={
+    Object {
+      "bottom": "0",
+      "left": "20px",
+      "position": "fixed",
+      "zIndex": 99999,
+    }
+  }
+>
+  <div
+    className="alert alert-danger"
+    style={
+      Object {
+        "borderRadius": "4px",
+        "clear": "both",
+        "color": "rgba(255,255,255, 0.84)",
+        "cursor": "pointer",
+        "fontSize": "14px",
+        "marginBottom": "10px",
+        "maxWidth": "568px",
+        "minWidth": "288px",
+        "overflow": "hidden",
+        "padding": "15px",
+      }
+    }
+  >
+    <span>
+      foo
+    </span>
+  </div>
+  <div
+    className="alert alert-warning"
+    style={
+      Object {
+        "borderRadius": "4px",
+        "clear": "both",
+        "color": "rgba(255,255,255, 0.84)",
+        "cursor": "pointer",
+        "fontSize": "14px",
+        "marginBottom": "10px",
+        "maxWidth": "568px",
+        "minWidth": "288px",
+        "overflow": "hidden",
+        "padding": "15px",
+      }
+    }
+  >
+    <span>
+      bar
+    </span>
+  </div>
+</div>
+`;
+
 exports[`PortalHeader render snapshot 1`] = `
 <header
   className="main-header"
