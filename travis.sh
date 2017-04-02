@@ -18,6 +18,7 @@ dotnet restore
 cd ./src/Obsidian/
 yarn
 dotnet build
+npm run test:cover:travis
 
 sudo service start mongod
 cd ../../test
@@ -25,6 +26,3 @@ for d in ./*/ ;
 do
 	(cd "$d" && dotnet test); 
 done
-
-cd ./src/Obsidian
-npm run test:cover:travis
