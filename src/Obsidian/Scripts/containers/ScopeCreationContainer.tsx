@@ -2,7 +2,6 @@ import * as React from "react";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 import { FormContainer } from "./FormContainer";
-import * as Notification from "./NotificationContainer";
 import { ScopeForm } from "../components/Form"
 
 export class ScopeCreationContainer extends FormContainer {
@@ -31,10 +30,9 @@ export class ScopeCreationContainer extends FormContainer {
             };
             try {
                 await axios.getAxios(this.props.token).post(api.configs.createScope.request_uri, jsonObject);
-                console.log(e);
-                Notification.Service.pushSuccess("Scope creation")
+                this.props.push("Scope creation")
             } catch (error) {
-                Notification.Service.pushError("Scope creation", error);
+                this.props.push("Scope creation", error.toString());
             }
         } else { return; }
     }

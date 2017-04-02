@@ -31,7 +31,29 @@ const fixLayout = function () {
 export class PortalContainer extends React.Component<any, any>{
     constructor(props) {
         super(props);
-        this.state={ token: "" };
+        this.state = { token: "", notifications: [] as Notification[] };
+        this.pushNotification = this.pushNotification.bind(this);
+    }
+
+    public pushNotification(desc: string, error?: string) {
+        if (typeof (error) === 'string') {
+            console.log(error);
+            let nextNc = { info: `${desc} failed. ${error}.`, state: NotificationState.error };
+            this.setState({
+                notifications: (this.state.notifications as Array<Notification>).concat([nextNc])
+            });
+        }
+        else {
+            let nextNc = { info: `${desc} successfully.`, state: NotificationState.success };
+            this.setState({
+                notifications: (this.state.notifications as Array<Notification>).concat([nextNc])
+            });
+        }
+        setTimeout(function () {
+            this.setState({
+                notifications: this.state.notifications.filter((_, i) => i !== this.state.notifications.length-1)
+            });
+        }.bind(this), 3000);
     }
     public componentWillMount(){
         this.state.token = this.props.location.query.access_token;
@@ -44,9 +66,23 @@ export class PortalContainer extends React.Component<any, any>{
 
     public render() {
         return (
-                <Portal token={this.state.token}>
+            <Portal token={this.state.token} push={this.pushNotification} notifications={this.state.notifications}>
                     {this.props.children}
-                </Portal>
+            </Portal>
         );
     }
 }
+
+interface Notification {
+    info: string;
+    state: NotificationState
+}
+
+
+export enum NotificationState {
+    info,
+    error,
+    caution,
+    success
+}
+

@@ -3,7 +3,6 @@ import { ClientForm } from "../components/Form";
 import { FormContainer } from "./FormContainer";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import * as Notification from "./NotificationContainer"
 
 
 export class ClientCreationContainer extends FormContainer {
@@ -22,9 +21,9 @@ export class ClientCreationContainer extends FormContainer {
                 let payload = { displayName: displayName, redirectUri: redirectUri };
                 await axios.getAxios(this.props.token).post(api.configs.createClient.request_uri, payload);
                 this.setState({ displayName: "", redirectUri: "" });
-                Notification.Service.pushSuccess("Client creation");
+                this.props.push("Client creation");
             } catch (error) {
-                Notification.Service.pushError("Client creation", error);
+                this.props.push("Client creation", error.toString());
             }
         } else { return; }
     }
