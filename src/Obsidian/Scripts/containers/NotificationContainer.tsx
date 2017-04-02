@@ -1,5 +1,5 @@
 import * as $ from "jquery";
-
+import 'snackbarjs'
 export enum NotificationState{
     info,
     error,
