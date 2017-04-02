@@ -37,7 +37,6 @@ export class PortalContainer extends React.Component<any, any>{
 
     public pushNotification(desc: string, error?: string) {
         if (typeof (error) === 'string') {
-            console.log(error);
             let nextNc = { info: `${desc} failed. ${error}.`, state: NotificationState.error };
             this.setState({
                 notifications: (this.state.notifications as Array<Notification>).concat([nextNc])
