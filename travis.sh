@@ -26,5 +26,5 @@ do
 	(cd "$d" && dotnet test); 
 done
 
-cd ./src/Obsidian
+cd ../src/Obsidian
 npm run test:cover:travis
