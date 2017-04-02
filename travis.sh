@@ -13,7 +13,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm install node
 sudo apt-get install -y yarn dotnet-dev-1.0.1 mongodb-org
-sudo service restart mongod
+sudo service mongod restart
 
 dotnet restore
 cd ./src/Obsidian/
