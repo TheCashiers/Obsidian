@@ -3,7 +3,6 @@ import { ClientForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
 import { FormContainer } from "./FormContainer";
 import * as axios from "../configs/AxiosInstance";
-import * as Notification from "./NotificationContainer"
 
 
 export class ClientEditContainer extends FormContainer {
@@ -22,7 +21,7 @@ export class ClientEditContainer extends FormContainer {
                 .get(api.configs.getClient.request_uri + this.state.id);
             this.setState(response.data);
         } catch (error) {
-            Notification.Service.pushError("getClient", error)
+            this.props.push("getClient", error.toString())
         }
         
     }
@@ -35,9 +34,9 @@ export class ClientEditContainer extends FormContainer {
                 let payload = { displayName: displayName, redirectUri: redirectUri };
                 await axios.getAxios(this.props.token)
                     .put(api.configs.createClient.request_uri + this.state.id, payload);
-                Notification.Service.pushSuccess("Client editing");
+                this.props.push("Client editing");
             } catch (error) {
-                Notification.Service.pushError("Client editing", e);
+                this.props.push("Client editing", e);
             }
         } else { return; }
     }

@@ -3,7 +3,6 @@ import { UserFormContainer } from "./UserFormContainer"
 import { UserForm } from "../components/Form";
 import * as api from "../configs/GlobalSettings";
 import * as axios from "../configs/AxiosInstance";
-import * as Notification from "./NotificationContainer"
 
 
 export class UserEditContainer extends UserFormContainer {
@@ -19,7 +18,7 @@ export class UserEditContainer extends UserFormContainer {
                 const response = await axios.getAxios(this.props.token).get(api.configs.getUser.request_uri + this.state.id);
                 this.setState({ username: response.data.userName });
             } catch (error) {
-                Notification.Service.pushError("getClient", error);
+                this.props.push("getClient", error);
             }
         }
         else {
@@ -36,18 +35,18 @@ export class UserEditContainer extends UserFormContainer {
                 try {
                     const payload = { username: username };
                     await axios.getAxios(this.props.token).put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, payload);
-                    Notification.Service.pushSuccess("Username changing");
+                    this.props.push("Username changing");
                 } catch (error) {
-                    Notification.Service.pushError("Username changing", e)
+                    this.props.push("Username changing", e)
                 }
             }
             if (password != "") {
                 try {
                     const payload = { password: password };
                     await axios.getAxios(this.props.token).put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/PassWord`, payload);
-                    Notification.Service.pushSuccess("Password changing");
+                    this.props.push("Password changing");
                 } catch (error) {
-                    Notification.Service.pushError("Password changing", error)
+                    this.props.push("Password changing", error.toString())
                 }
             }
         } else { return; }

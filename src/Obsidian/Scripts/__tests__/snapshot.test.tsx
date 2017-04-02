@@ -7,6 +7,7 @@ import { PortalIndex } from "../components/PortalIndex";
 import { ScopeList } from "../components/ScopeManagement";
 import { UserList } from "../components/UserManagement";
 import { List } from "../components/List";
+import { NotificationCenter } from "../components/Notification";
 
 it("List render snapshot", () => {
     const list = create(
@@ -83,4 +84,14 @@ it('UserList render snapshot', () => {
         ]}/>
     ).toJSON();
     expect(userList).toMatchSnapshot();
+});
+
+it('Notifications render snapshot', () => {
+    const notification = create(
+        <NotificationCenter items={[
+            { info: "foo", state: 1 },
+            { info: "bar", state: 2 }
+        ]} />
+    ).toJSON();
+    expect(notification).toMatchSnapshot();
 });

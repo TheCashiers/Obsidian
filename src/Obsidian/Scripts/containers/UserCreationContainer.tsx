@@ -1,5 +1,4 @@
 ﻿import * as React from "react";
-import * as Notification from "./NotificationContainer"
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 import { UserForm } from "../components/Form";
@@ -21,9 +20,9 @@ export class UserCreationContainer extends UserFormContainer {
             try {
                 await axios.getAxios(this.props.token).post(api.configs.createUser.request_uri, payload);
                 this.setState({ username: "", password: "" });
-                Notification.Service.pushSuccess("User creation")
+                this.props.push("User creation")
             } catch (error) {
-                Notification.Service.pushError("User creation", e);
+                this.props.push("User creation", error.toString());
             }
 
         } else { return; }
