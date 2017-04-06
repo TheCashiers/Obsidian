@@ -1,6 +1,8 @@
 import * as $ from "jquery"
 import * as React from "react";
 import { Portal } from "../components/Portal"
+import { NotificationCenterContainer } from "./NotificationCenterContainer";
+import { PortalHeader } from "../components/PortalElements";
 const fixLayout = function () {
     //Get window height and the wrapper height
     var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
@@ -29,30 +31,15 @@ const fixLayout = function () {
 };
 
 export class PortalContainer extends React.Component<any, any>{
+    _push: Function;
     constructor(props) {
         super(props);
         this.state = { token: "", notifications: [] as Notification[] };
-        this.pushNotification = this.pushNotification.bind(this);
+        this._push = () => { };
     }
-
-    public pushNotification(desc: string, error?: string) {
-        if (typeof (error) === 'string') {
-            let nextNc = { info: `${desc} failed. ${error}.`, state: NotificationState.error };
-            this.setState({
-                notifications: (this.state.notifications as Array<Notification>).concat([nextNc])
-            });
-        }
-        else {
-            let nextNc = { info: `${desc} successfully.`, state: NotificationState.success };
-            this.setState({
-                notifications: (this.state.notifications as Array<Notification>).concat([nextNc])
-            });
-        }
-        setTimeout(function () {
-            this.setState({
-                notifications: this.state.notifications.filter((_, i) => i !== this.state.notifications.length-1)
-            });
-        }.bind(this), 3000);
+    refs: {
+        [string: string]: any;
+        stepInput: any;
     }
     public componentWillMount(){
         this.state.token = this.props.location.query.access_token;
@@ -62,26 +49,18 @@ export class PortalContainer extends React.Component<any, any>{
     public componentDidUpdate() {
         fixLayout();
     }
+    public componentDidMount() {
+        this._push = this.refs.nc.pushNotification;
+    }
 
     public render() {
         return (
-            <Portal token={this.state.token} push={this.pushNotification} notifications={this.state.notifications}>
-                    {this.props.children}
+            <Portal token={this.state.token}>
+                <PortalHeader token={this.state.token} />
+                    <NotificationCenterContainer ref="nc" />
+                    {React.cloneElement(this.props.children, { token: this.state.token,push:this._push })}
             </Portal>
+            
         );
     }
 }
-
-interface Notification {
-    info: string;
-    state: NotificationState
-}
-
-
-export enum NotificationState {
-    info,
-    error,
-    caution,
-    success
-}
-

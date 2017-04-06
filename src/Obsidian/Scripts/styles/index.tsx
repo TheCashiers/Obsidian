@@ -19,7 +19,7 @@ export const styles={
     notificationContainer: {
         position: "fixed",
         left: "20px",
-        bottom: "0",
+        bottom: "14px",
         zIndex:99999
     },
     notification: {

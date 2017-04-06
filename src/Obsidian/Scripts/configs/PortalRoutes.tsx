@@ -16,7 +16,7 @@ import { ScopeEditContainer } from "../containers/ScopeEditContainer";
 import { ClientEditContainer } from "../containers/ClientEditContainer"
 export const routes = (
     <Router history={ browserHistory }>
-        <Route path="/manage" component={ PortalContainer }>
+        <Route path="/manage" component={PortalContainer}>    
             <IndexRoute component={ PortalIndex }/>
             <Route path="/manage/users" component={ UserManagementContainer } />
             <Route path="/manage/users/create" component={ UserCreationContainer } />
