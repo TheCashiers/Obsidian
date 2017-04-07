@@ -353,7 +353,7 @@ exports[`Notifications render snapshot 1`] = `
 <div
   style={
     Object {
-      "bottom": "0",
+      "bottom": "14px",
       "left": "20px",
       "position": "fixed",
       "zIndex": 99999,
@@ -362,6 +362,7 @@ exports[`Notifications render snapshot 1`] = `
 >
   <div
     className="alert alert-danger"
+    onClick={[Function]}
     style={
       Object {
         "borderRadius": "4px",
@@ -383,6 +384,7 @@ exports[`Notifications render snapshot 1`] = `
   </div>
   <div
     className="alert alert-warning"
+    onClick={[Function]}
     style={
       Object {
         "borderRadius": "4px",

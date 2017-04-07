@@ -24,10 +24,10 @@ export class ScopeEditContainer extends FormContainer {
             this.setState(response.data);
 
         } catch (error) {
-            this.props.push("getClient", error);
+            this.props.push("getClient", error.toString());
         }
     }
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         let scopeName: string = this.state.scopeName.trim();
         let displayName: string = this.state.displayName.trim();
@@ -40,11 +40,12 @@ export class ScopeEditContainer extends FormContainer {
                 description: description,
                 claimTypes: claimTypes
             }
-            axios.getAxios(this.props.token).put(api.configs.getScope.request_uri + this.state.id, jsonObject)
-                .then(() => {
-                    this.props.push("Scope editing")
-                })
-                .catch((e) => this.props.push("Scope editing", e.toString()));
+            try {
+                await axios.getAxios(this.props.token).put(api.configs.getScope.request_uri + this.state.id, jsonObject)
+                this.props.push("Scope editing");
+            } catch (error) {
+                this.props.push("Scope editing", error.toString())
+            }
         } else { return; }
     }
     public render() {

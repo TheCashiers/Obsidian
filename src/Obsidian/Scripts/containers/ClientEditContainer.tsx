@@ -36,7 +36,7 @@ export class ClientEditContainer extends FormContainer {
                     .put(api.configs.createClient.request_uri + this.state.id, payload);
                 this.props.push("Client editing");
             } catch (error) {
-                this.props.push("Client editing", e);
+                this.props.push("Client editing", error.toString());
             }
         } else { return; }
     }

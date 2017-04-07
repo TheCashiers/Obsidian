@@ -2,8 +2,6 @@ import * as React from "react";
 import { NotificationCenter } from "../components/Notification";
 import { Motion, spring } from "react-motion";
 export class NotificationCenterContainer extends React.Component<any, any>{
-    
-
     private _timer: number;
     constructor(props) {
         super(props);
@@ -13,7 +11,7 @@ export class NotificationCenterContainer extends React.Component<any, any>{
     }
     public handleDismiss(index:number) {
         this.setState({
-            notifications: this.state.notifications.filter((_, i) => i !== index)
+            shouldShow: false
         });
     }
     public pushNotification(desc: string, error?: string) {
@@ -37,7 +35,15 @@ export class NotificationCenterContainer extends React.Component<any, any>{
     }
 
     render() {
-        return <Motion style={{ bottom: this.state.shouldShow?spring(20):spring(this.state.notifications.length*-60) }}>
+        return <Motion style={
+            {
+                bottom: this.state.shouldShow ?
+                    spring((this.state.notifications.length * -60) + 60) :
+                    spring(this.state.notifications.length * -60),
+                opacity: this.state.shouldShow ?
+                    spring(1) :
+                    spring(0) 
+            }}>
             {(style) =>
                 <NotificationCenter style={style} items={this.state.notifications} handleDismiss={this.handleDismiss}/>
             }

@@ -18,7 +18,7 @@ export class UserEditContainer extends UserFormContainer {
                 const response = await axios.getAxios(this.props.token).get(api.configs.getUser.request_uri + this.state.id);
                 this.setState({ username: response.data.userName });
             } catch (error) {
-                this.props.push("getClient", error);
+                this.props.push("getClient", error.toString());
             }
         }
         else {
@@ -37,7 +37,7 @@ export class UserEditContainer extends UserFormContainer {
                     await axios.getAxios(this.props.token).put(`${api.configs.editUser.request_uri}${this.props.location.query.id}/UserName`, payload);
                     this.props.push("Username changing");
                 } catch (error) {
-                    this.props.push("Username changing", e)
+                    this.props.push("Username changing", error.toString())
                 }
             }
             if (password != "") {
