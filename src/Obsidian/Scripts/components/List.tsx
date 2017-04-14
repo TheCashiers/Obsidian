@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router";
+import { Motion, spring } from "react-motion";
 
 export const List = (props) => (
     <div className="content-wrapper content">
@@ -18,22 +19,26 @@ export const List = (props) => (
 );
 
 export const Item = (props) => (
-    <div>
-        <div className="list-group-item">
-            <div className="row-action-primary">
-                <i className={`fa ${props.icon} fa-2x`}></i>
-            </div>
-            <div className="row-content">
-                <div className="least-content">
-                    <Link to={{pathname:props.editLink ,query:{ id: props.id }}}>
-                        <button className="btn btn-lg btn-primary btn-raised">
-                            Edit
+    <Motion defaultStyle={{ opacity: 0 }} style={{ opacity: spring(1) }}>
+        {(style)=>
+            <div>
+                <div style={style} className="list-group-item">
+                    <div className="row-action-primary">
+                        <i className={`fa ${props.icon} fa-2x`}></i>
+                    </div>
+                    <div className="row-content">
+                        <div className="least-content">
+                            <Link to={{ pathname: props.editLink, query: { id: props.id } }}>
+                                <button className="btn btn-lg btn-primary btn-raised">
+                                    Edit
                         </button>
-                    </Link>
+                            </Link>
+                        </div>
+                        <h4 className="list-group-item-heading">{props.name}</h4>
+                        <p className="list-group-item-text">{props.id}</p>
+                    </div>
                 </div>
-                <h4 className="list-group-item-heading">{props.name}</h4>
-                <p className="list-group-item-text">{props.id}</p>
-            </div>
-        </div>
-        <div className="list-group-separator"></div>
-    </div>);
+                <div className="list-group-separator"></div>
+            </div>}
+    </Motion>
+    );

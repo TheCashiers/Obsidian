@@ -1,6 +1,8 @@
 import * as React from "react";
 import { NotificationCenter } from "../components/Notification";
 import { Motion, spring } from "react-motion";
+
+const NOTIFICATION_DISPLAY_TIME = 3000;
 export class NotificationCenterContainer extends React.Component<any, any>{
     private _timer: number;
     constructor(props) {
@@ -31,23 +33,12 @@ export class NotificationCenterContainer extends React.Component<any, any>{
         clearTimeout(this._timer);
         this._timer = setTimeout(function () {
             this.setState({ shouldShow: false });
-        }.bind(this), 3000);
+        }.bind(this), NOTIFICATION_DISPLAY_TIME);
     }
 
     render() {
-        return <Motion style={
-            {
-                bottom: this.state.shouldShow ?
-                    spring((this.state.notifications.length * -60) + 60) :
-                    spring(this.state.notifications.length * -60),
-                opacity: this.state.shouldShow ?
-                    spring(1) :
-                    spring(0) 
-            }}>
-            {(style) =>
-                <NotificationCenter style={style} items={this.state.notifications} handleDismiss={this.handleDismiss}/>
-            }
-        </Motion>
+        return <NotificationCenter shouldShow={this.state.shouldShow} items={this.state.notifications} handleDismiss={this.handleDismiss}/>
+            
     }
 }
 
