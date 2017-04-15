@@ -4,8 +4,4 @@ import 'bootstrap-material-design/dist/css/ripples.css';
 import 'font-awesome/css/font-awesome.css';
 import * as $ from 'jquery';
 
-$("#fullscreen").ready(InitializeMaterial);
-
-function InitializeMaterial(){
-    $.material.init();
-}
+$("#fullscreen").ready(()=>$.material.init());

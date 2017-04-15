@@ -31,19 +31,27 @@ const fixLayout = function () {
 };
 
 export class PortalContainer extends React.Component<any, any>{
-    _push: Function;
+    private _push: Function;
     constructor(props) {
         super(props);
-        this.state = { token: "", notifications: [] as Notification[] };
+        this.state = { token: "", notifications: [] as Notification[], filter: "" };
         this._push = () => { };
+        this.handleFilterChange = this.handleFilterChange.bind(this);
     }
+
+    //redefined refs type to any to bypass type check.
     refs: {
         [string: string]: any;
         stepInput: any;
     }
-    public componentWillMount(){
+    public handleFilterChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value as string
+        });
+    }
+    public componentWillMount() {
         this.state.token = this.props.location.query.access_token;
-        if(this.state.token) 
+        if (this.state.token)
             window.history.pushState(null, null, "?authorized");
     }
     public componentDidUpdate() {
@@ -56,11 +64,10 @@ export class PortalContainer extends React.Component<any, any>{
     public render() {
         return (
             <Portal token={this.state.token}>
-                <PortalHeader token={this.state.token} />
-                    <NotificationCenterContainer ref="nc" />
-                    {React.cloneElement(this.props.children, { token: this.state.token,push:this._push })}
+                <PortalHeader token={this.state.token} filter={this.state.filter} handleFilterChange={this.handleFilterChange}/>
+                <NotificationCenterContainer ref="nc" />
+                {React.cloneElement(this.props.children, { token: this.state.token, push: this._push, filter: this.state.filter })}
             </Portal>
-            
         );
     }
 }

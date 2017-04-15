@@ -20,7 +20,8 @@ export class ClientManagementContainer extends React.Component<any, any> {
     }
     public render() {
         return (
-            <ClientList clients={this.state.clients}/>
+            <ClientList clients={(this.state.clients as Array<any>).filter(
+                (_, i) => (_.displayName as String).includes(this.props.filter))}/>
         );
     }
 

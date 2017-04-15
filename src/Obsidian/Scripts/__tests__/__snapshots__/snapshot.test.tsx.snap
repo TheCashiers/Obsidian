@@ -378,8 +378,9 @@ exports[`Notifications render snapshot 1`] = `
 <div
   style={
     Object {
-      "bottom": "14px",
+      "bottom": -120,
       "left": "20px",
+      "opacity": 0,
       "position": "fixed",
       "zIndex": 99999,
     }
@@ -565,8 +566,11 @@ exports[`PortalHeader render snapshot 1`] = `
             <input
               className="form-control"
               id="navbar-search-input"
+              name="filter"
+              onChange={undefined}
               placeholder="Search"
               type="text"
+              value={undefined}
             />
           </div>
         </form>

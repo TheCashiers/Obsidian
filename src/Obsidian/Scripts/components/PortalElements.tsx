@@ -56,11 +56,7 @@ export const PortalHeader = (props) => (
                             </ul>
                         </li>
                     </ul>
-                    <form className="navbar-form navbar-left" role="search">
-                        <div className="form-group">
-                            <input type="text" className="form-control" id="navbar-search-input" placeholder="Search" />
-                        </div>
-                    </form>
+                    <SearchBox handleFilterChange={props.handleFilterChange} filter={props.filter}/>
                     <ul className="nav navbar-nav navbar-right">
                         <UserInfoContainer token={props.token} />
                     </ul>
@@ -68,6 +64,13 @@ export const PortalHeader = (props) => (
             </div>
         </nav>
     </header>);
+
+const SearchBox = (props) =>
+    <form className="navbar-form navbar-left" role="search">
+        <div className="form-group">
+            <input type="text" name="filter" onChange={props.handleFilterChange} value={props.filter} className="form-control" id="navbar-search-input" placeholder="Search" />
+        </div>
+    </form>;    
 
 const Combobox = (props) =>
     <label style={styles.comboBox}>

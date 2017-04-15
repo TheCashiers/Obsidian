@@ -21,7 +21,8 @@ export class ScopeManagementContainer extends React.Component<any, any>
     }
     public render() {
         return (
-            <ScopeList scopes={this.state.scopes}/>
+            <ScopeList scopes={(this.state.scopes as Array<any>).filter(
+                (_, i) => (_.scopeName as String).includes(this.props.filter))}/>
         );
     }
 }
