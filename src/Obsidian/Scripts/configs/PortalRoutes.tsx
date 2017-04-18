@@ -1,16 +1,16 @@
 ﻿import * as React from "react";
-import { Router, Route, IndexRoute, browserHistory } from "react-router";
-import { PortalContainer } from "../containers/PortalContainer";
-import { UserManagementContainer } from "../containers/UserManagementContainer";
+import { browserHistory, IndexRoute, Route, Router } from "react-router";
 import { PortalIndex } from "../components/PortalIndex";
-import { UserCreationContainer } from "../containers/UserCreationContainer";
-import { ClientCreationContainer } from "../containers/ClientCreationContainer"
-import { ScopeCreationContainer } from "../containers/ScopeCreationContainer"
-import { UserEditContainer } from "../containers/UserEditContainer";
+import { ClientCreationContainer } from "../containers/ClientCreationContainer";
+import { ClientEditContainer } from "../containers/ClientEditContainer";
 import { ClientManagementContainer } from "../containers/ClientManagementContainer";
-import { ScopeManagementContainer } from "../containers/ScopeManagementContainer"
+import { PortalContainer } from "../containers/PortalContainer";
+import { ScopeCreationContainer } from "../containers/ScopeCreationContainer";
 import { ScopeEditContainer } from "../containers/ScopeEditContainer";
-import { ClientEditContainer } from "../containers/ClientEditContainer"
+import { ScopeManagementContainer } from "../containers/ScopeManagementContainer";
+import { UserCreationContainer } from "../containers/UserCreationContainer";
+import { UserEditContainer } from "../containers/UserEditContainer";
+import { UserManagementContainer } from "../containers/UserManagementContainer";
 export const routes = (
     <Router history={browserHistory}>
         <Route path="/manage" component={PortalContainer}>
@@ -27,4 +27,3 @@ export const routes = (
         </Route>
     </Router>
 );
-

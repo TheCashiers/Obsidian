@@ -1,64 +1,64 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 export enum REQUEST_TYPES {
     GET,
     POST,
-    PUT
+    PUT,
 }
 
 export interface IServerConfig {
-    request_uri: string,
-    request_type: REQUEST_TYPES
+    request_uri: string;
+    request_type: REQUEST_TYPES;
 }
 
 export interface IDefaultProps {
     api: IServerConfig;
 }
 
-interface IServerConfigList{
+interface IServerConfigList {
     [id: string]: IServerConfig;
 }
 export const configs: IServerConfigList = {
-    getUser: {
-        request_uri: "/api/users/",
-        request_type: REQUEST_TYPES.GET
-    },
-    getClient: {
+    createClient: {
+        request_type: REQUEST_TYPES.POST,
         request_uri: "/api/clients/",
-        request_type: REQUEST_TYPES.GET
     },
-    getScope: {
+    createScope: {
+        request_type: REQUEST_TYPES.POST,
         request_uri: "/api/scopes/",
-        request_type: REQUEST_TYPES.GET
     },
     createUser: {
         request_type: REQUEST_TYPES.POST,
-        request_uri: "/api/users/"
+        request_uri: "/api/users/",
     },
-    editUser:{
-        request_type:REQUEST_TYPES.PUT,
-        request_uri:"/api/users/"
+    editClient: {
+        request_type: REQUEST_TYPES.PUT,
+        request_uri: "/api/clients/",
     },
-    createClient: {
-        request_uri:"/api/clients/",
-        request_type:REQUEST_TYPES.POST
+    editScope: {
+        request_type: REQUEST_TYPES.PUT,
+        request_uri: "/api/scopes/",
     },
-    editClient:{
-        request_uri:"/api/clients/",
-        request_type:REQUEST_TYPES.PUT
+    editUser: {
+        request_type: REQUEST_TYPES.PUT,
+        request_uri: "/api/users/",
     },
-    createScope:{
-        request_uri:"/api/scopes/",
-        request_type:REQUEST_TYPES.POST
+    getClient: {
+        request_type: REQUEST_TYPES.GET,
+        request_uri: "/api/clients/",
     },
-    editScope:{
-        request_uri:"/api/scopes/",
-        request_type:REQUEST_TYPES.PUT
+    getScope: {
+        request_type: REQUEST_TYPES.GET,
+        request_uri: "/api/scopes/",
     },
-    signOut:{
-        request_uri:"/manage/signout/",
-        request_type:REQUEST_TYPES.GET
-    }
-}
+    getUser: {
+        request_type: REQUEST_TYPES.GET,
+        request_uri: "/api/users/",
+    },
+    signOut: {
+        request_type: REQUEST_TYPES.GET,
+        request_uri: "/manage/signout/",
+    },
+};

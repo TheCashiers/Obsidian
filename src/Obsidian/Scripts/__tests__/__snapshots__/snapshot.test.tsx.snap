@@ -294,7 +294,7 @@ exports[`MaterialForm render snapshot 1`] = `
 >
   <form
     className="form-horizontal"
-    onSubmit={[Function]}
+    onSubmit={undefined}
   >
     <fieldset>
       <legend>
@@ -386,9 +386,10 @@ exports[`Notifications render snapshot 1`] = `
     }
   }
 >
+  )
   <div
     className="alert alert-danger"
-    onClick={[Function]}
+    onClick={undefined}
     style={
       Object {
         "borderRadius": "4px",
@@ -410,7 +411,7 @@ exports[`Notifications render snapshot 1`] = `
   </div>
   <div
     className="alert alert-warning"
-    onClick={[Function]}
+    onClick={undefined}
     style={
       Object {
         "borderRadius": "4px",
@@ -503,7 +504,7 @@ exports[`PortalHeader render snapshot 1`] = `
               data-toggle="dropdown"
               href="#"
             >
-              Dropdown 
+              Dropdown
               <span
                 className="caret"
               />

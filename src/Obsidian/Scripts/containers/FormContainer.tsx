@@ -1,5 +1,5 @@
+import * as axios from "axios";
 import * as React from "react";
-import * as axios from 'axios';
 import * as api from "../configs/GlobalSettings";
 
 export abstract class FormContainer extends React.Component<any, any> {
@@ -11,10 +11,9 @@ export abstract class FormContainer extends React.Component<any, any> {
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    handleInputChange(e) {
+    public handleInputChange(e) {
         this.setState({
-            [e.target.name]: e.target.value as string
+            [e.target.name]: e.target.value as string,
         });
     }
-};
-
+}

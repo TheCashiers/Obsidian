@@ -1,28 +1,30 @@
 import * as React from "react";
+import { ScopeList } from "../components/ScopeManagement";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import { ScopeList } from "../components/ScopeManagement"
 
-export class ScopeManagementContainer extends React.Component<any, any>
-{
+export class ScopeManagementContainer extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            scopes: []
+            scopes: [],
         };
+        this.getScopes = this.getScopes.bind(this);
     }
     public async componentDidMount() {
         try {
             const response = await axios.getAxios(this.props.token).get(api.configs.getScope.request_uri);
-            this.setState({ scopes: response.data as Array<any> });
+            this.setState({ scopes: response.data as any[] });
         } catch (error) {
-            this.props.push("getClient", error.toString())
+            this.props.push("getScope", error.toString());
         }
+    }
+    public getScopes() {
+        return (this.state.scopes as any[]).filter((_, i) => (_.scopeName as string).includes(this.props.filter));
     }
     public render() {
         return (
-            <ScopeList scopes={(this.state.scopes as Array<any>).filter(
-                (_, i) => (_.scopeName as String).includes(this.props.filter))}/>
+            <ScopeList scopes={this.getScopes()}/>
         );
     }
 }
