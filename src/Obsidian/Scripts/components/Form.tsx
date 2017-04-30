@@ -18,87 +18,111 @@ export const MaterialForm = (props) => (
             </div>
         </form>
     </div>
-)
+);
 
 export const MaterialInput = (props) => (
     <div className="form-group">
         <label className="col-md-2 control-label">{props.label}</label>
         <div className="col-md-10">
-            <input type={props.type} className="form-control"
+            <input
+                type={props.type}
+                className="form-control"
                 name={props.name}
                 onChange={props.onInputChange}
                 value={props.value}
                 placeholder={props.placeholder}
-                required
-                />
+                required={true}
+            />
         </div>
     </div>
-)
+);
 export const UserForm = (props) => (
-    <MaterialForm action={props.action}
+    <MaterialForm
+        action={props.action}
         origin="/manage/users"
-        onSubmit={props.onSubmit}>
-        <MaterialInput name="username"
+        onSubmit={props.onSubmit}
+    >
+        <MaterialInput
+            name="username"
             label="Username"
             onInputChange={props.onInputChange}
             value={props.username}
             placeholder="Username..."
-            type="text" />
-        <MaterialInput name="password"
+            type="text"
+        />
+        <MaterialInput
+            name="password"
             label="Password"
             onInputChange={props.onInputChange}
             value={props.password}
             placeholder="Password..."
-            type="password" />
+            type="password"
+        />
     </MaterialForm>
 );
 
 export const ScopeForm = (props) => (
-    <MaterialForm action={props.action}
+    <MaterialForm
+        action={props.action}
         origin="/manage/scopes"
-        onSubmit={props.onSubmit}>
-    <MaterialInput name="scopeName"
+        onSubmit={props.onSubmit}
+    >
+        <MaterialInput
+            name="scopeName"
             label="Scope Name"
             onInputChange={props.onInputChange}
             value={props.scopeName}
             placeholder="Scope Name..."
-            type="text" />
-    <MaterialInput name="displayName"
-            label="Display Name"
-            onInputChange={props.onInputChange}
-            value={props.displayName}
-            placeholder="Display Name..."
-            type="text" />
-    <MaterialInput name="description"
-            label="Description"
-            onInputChange={props.onInputChange}
-            value={props.description}
-            placeholder="Description..."
-            type="text" />
-     <MaterialInput name="claimTypes"
-            label="Claim Types"
-            onInputChange={props.onInputChange}
-            value={props.claimTypes}
-            placeholder="Claim Types..."
-            type="text" />       
+            type="text"
+        />
+    <MaterialInput
+        name="displayName"
+        label="Display Name"
+        onInputChange={props.onInputChange}
+        value={props.displayName}
+        placeholder="Display Name..."
+        type="text"
+    />
+    <MaterialInput
+        name="description"
+        label="Description"
+        onInputChange={props.onInputChange}
+        value={props.description}
+        placeholder="Description..."
+        type="text"
+    />
+    <MaterialInput
+        name="claimTypes"
+        label="Claim Types"
+        onInputChange={props.onInputChange}
+        value={props.claimTypes}
+        placeholder="Claim Types..."
+        type="text"
+    />
     </MaterialForm>
 );
 
-export const ClientForm = (props)=>(
-    <MaterialForm action={props.action}
+export const ClientForm = (props) => (
+    <MaterialForm
+        action={props.action}
         origin="/manage/clients"
-        onSubmit={props.onSubmit}>
-        <MaterialInput name="displayName"
+        onSubmit={props.onSubmit}
+    >
+        <MaterialInput
+            name="displayName"
             label="Display Name"
             onInputChange={props.onInputChange}
             value={props.displayName}
             placeholder="Display Name..."
-            type="text" />
-        <MaterialInput name="redirectUri"
+            type="text"
+        />
+        <MaterialInput
+            name="redirectUri"
             label="Redirect Uri"
             onInputChange={props.onInputChange}
             value={props.redirectUri}
             placeholder="http://example.com"
-            type="text" />
+            type="text"
+        />
     </MaterialForm>
 );

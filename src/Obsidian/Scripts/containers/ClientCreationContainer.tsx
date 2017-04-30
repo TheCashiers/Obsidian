@@ -1,9 +1,8 @@
 import * as React from "react";
 import { ClientForm } from "../components/Form";
-import { FormContainer } from "./FormContainer";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-
+import { FormContainer } from "./FormContainer";
 
 export class ClientCreationContainer extends FormContainer {
     constructor(props: any) {
@@ -14,11 +13,11 @@ export class ClientCreationContainer extends FormContainer {
     }
     public async handleSubmit(e) {
         e.preventDefault();
-        let displayName: string = this.state.displayName.trim();
-        let redirectUri: string = this.state.redirectUri.trim();
+        const displayName: string = this.state.displayName.trim();
+        const redirectUri: string = this.state.redirectUri.trim();
         if (displayName && redirectUri) {
             try {
-                let payload = { displayName: displayName, redirectUri: redirectUri };
+                const payload = { displayName, redirectUri };
                 await axios.getAxios(this.props.token).post(api.configs.createClient.request_uri, payload);
                 this.setState({ displayName: "", redirectUri: "" });
                 this.props.push("Client creation");
@@ -27,13 +26,15 @@ export class ClientCreationContainer extends FormContainer {
             }
         } else { return; }
     }
-    render() {
-        return <ClientForm
-            action="Create Client"
-            onInputChange={this.handleInputChange}
-            onSubmit={this.handleSubmit}
-            displayName={this.state.displayName}
-            redirectUri={this.state.redirectUri}
-        />
+    public render() {
+        return (
+            <ClientForm
+                action="Create Client"
+                onInputChange={this.handleInputChange}
+                onSubmit={this.handleSubmit}
+                displayName={this.state.displayName}
+                redirectUri={this.state.redirectUri}
+            />
+        );
     }
 }

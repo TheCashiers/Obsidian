@@ -21,6 +21,11 @@ exports[`ClientList render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -65,6 +70,11 @@ exports[`ClientList render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -130,6 +140,11 @@ exports[`List render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -174,6 +189,11 @@ exports[`List render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -218,6 +238,11 @@ exports[`List render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -269,7 +294,7 @@ exports[`MaterialForm render snapshot 1`] = `
 >
   <form
     className="form-horizontal"
-    onSubmit={[Function]}
+    onSubmit={undefined}
   >
     <fieldset>
       <legend>
@@ -353,16 +378,18 @@ exports[`Notifications render snapshot 1`] = `
 <div
   style={
     Object {
-      "bottom": "14px",
+      "bottom": -120,
       "left": "20px",
+      "opacity": 0,
       "position": "fixed",
       "zIndex": 99999,
     }
   }
 >
+  )
   <div
     className="alert alert-danger"
-    onClick={[Function]}
+    onClick={undefined}
     style={
       Object {
         "borderRadius": "4px",
@@ -384,7 +411,7 @@ exports[`Notifications render snapshot 1`] = `
   </div>
   <div
     className="alert alert-warning"
-    onClick={[Function]}
+    onClick={undefined}
     style={
       Object {
         "borderRadius": "4px",
@@ -477,7 +504,7 @@ exports[`PortalHeader render snapshot 1`] = `
               data-toggle="dropdown"
               href="#"
             >
-              Dropdown 
+              Dropdown
               <span
                 className="caret"
               />
@@ -540,8 +567,11 @@ exports[`PortalHeader render snapshot 1`] = `
             <input
               className="form-control"
               id="navbar-search-input"
+              name="filter"
+              onChange={undefined}
               placeholder="Search"
               type="text"
+              value={undefined}
             />
           </div>
         </form>
@@ -663,6 +693,11 @@ exports[`ScopeList render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -707,6 +742,11 @@ exports[`ScopeList render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -773,6 +813,11 @@ exports[`UserList render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"
@@ -817,6 +862,11 @@ exports[`UserList render snapshot 1`] = `
     <div>
       <div
         className="list-group-item"
+        style={
+          Object {
+            "opacity": 0,
+          }
+        }
       >
         <div
           className="row-action-primary"

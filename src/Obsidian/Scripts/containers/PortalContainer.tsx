@@ -1,66 +1,80 @@
-import * as $ from "jquery"
+import * as $ from "jquery";
 import * as React from "react";
-import { Portal } from "../components/Portal"
-import { NotificationCenterContainer } from "./NotificationCenterContainer";
+import { Portal } from "../components/Portal";
 import { PortalHeader } from "../components/PortalElements";
-const fixLayout = function () {
-    //Get window height and the wrapper height
-    var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
-    var window_height = $(window).height();
-    var sidebar_height = $(".sidebar").height();
-    //Set the min-height of the content and sidebar based on the
-    //the height of the document.
+import { NotificationCenterContainer } from "./NotificationCenterContainer";
+const fixLayout = () => {
+    // Get window height and the wrapper height
+    const neg = $(".main-header").outerHeight() + $(".main-footer").outerHeight();
+    const windowHeight = $(window).height();
+    const sidebarHeight = $(".sidebar").height();
+    // Set the min-height of the content and sidebar based on the
+    // the height of the document.
     if ($("body").hasClass("fixed")) {
-        $(".content-wrapper, .right-side").css('min-height', window_height - $('.main-footer').outerHeight());
+        $(".content-wrapper, .right-side").css("min-height", windowHeight - $(".main-footer").outerHeight());
     } else {
-        var postSetWidth;
-        if (window_height >= sidebar_height) {
-            $(".content-wrapper, .right-side").css('min-height', window_height - neg);
-            postSetWidth = window_height - neg;
+        let postSetWidth;
+        if (windowHeight >= sidebarHeight) {
+            $(".content-wrapper, .right-side").css("min-height", windowHeight - neg);
+            postSetWidth = windowHeight - neg;
         } else {
-            $(".content-wrapper, .right-side").css('min-height', sidebar_height);
-            postSetWidth = sidebar_height;
+            $(".content-wrapper, .right-side").css("min-height", sidebarHeight);
+            postSetWidth = sidebarHeight;
         }
-        //Fix for the control sidebar height
-        var controlSidebar = $(".control-sidebar");
+        // Fix for the control sidebar height
+        const controlSidebar = $(".control-sidebar");
         if (typeof controlSidebar !== "undefined") {
-            if (controlSidebar.height() > postSetWidth)
-                $(".content-wrapper, .right-side").css('min-height', controlSidebar.height());
+            if (controlSidebar.height() > postSetWidth) {
+                $(".content-wrapper, .right-side").css("min-height", controlSidebar.height());
+            }
         }
     }
 };
 
-export class PortalContainer extends React.Component<any, any>{
-    _push: Function;
-    constructor(props) {
-        super(props);
-        this.state = { token: "", notifications: [] as Notification[] };
-        this._push = () => { };
-    }
-    refs: {
+export class PortalContainer extends React.Component<any, any> {
+// redefined refs type to any to bypass type check.
+    public refs: {
         [string: string]: any;
         stepInput: any;
+    };
+    private push: () => void;
+    constructor(props) {
+        super(props);
+        this.state = { token: "", notifications: [] as Notification[], filter: "" };
+        this.push = () => { };
+        this.handleFilterChange = this.handleFilterChange.bind(this);
     }
-    public componentWillMount(){
+
+    public handleFilterChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value as string,
+        });
+    }
+    public componentWillMount() {
         this.state.token = this.props.location.query.access_token;
-        if(this.state.token) 
+        if (this.state.token) {
             window.history.pushState(null, null, "?authorized");
+        }
     }
     public componentDidUpdate() {
         fixLayout();
     }
     public componentDidMount() {
-        this._push = this.refs.nc.pushNotification;
+        this.push = this.refs.nc.pushNotification;
     }
 
     public render() {
         return (
             <Portal token={this.state.token}>
-                <PortalHeader token={this.state.token} />
-                    <NotificationCenterContainer ref="nc" />
-                    {React.cloneElement(this.props.children, { token: this.state.token,push:this._push })}
+                <PortalHeader
+                    token={this.state.token}
+                    filter={this.state.filter}
+                    handleFilterChange={this.handleFilterChange}
+                />
+                <NotificationCenterContainer ref="nc" />
+                {React.cloneElement(this.props.children,
+                    { token: this.state.token, push: this.push, filter: this.state.filter })}
             </Portal>
-            
         );
     }
 }
