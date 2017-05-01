@@ -1,20 +1,16 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
     "noEmitOnError": true,
+    "noImplicitAny": false,
+    "outDir": "wwwroot/js",
     "removeComments": false,
     "sourceMap": true,
     "target": "es2015",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "jsx": "react",
-    "outDir": "wwwroot/js",
     "typeRoots": [
       "./Scripts/configs/"
-    ],
-    "allowSyntheticDefaultImports": true
+    ]
   },
   "exclude": [
     "node_modules",
