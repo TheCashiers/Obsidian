@@ -32,6 +32,6 @@ before_script:
 script:
     - dotnet build
     - cd ../../test
-    - for d in ./*/ ; do(cd "$d" && dotnet test); done
+    - for d in ./*/ ; do(cd "$d" && dotnet test && sleep 1); done
     - cd ../src/Obsidian
     - npm run test:cover:travis
