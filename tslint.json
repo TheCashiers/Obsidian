@@ -3,6 +3,7 @@
 	"rules": {
 		// enable tslint-react rules here
 		"jsx-no-lambda": true,
-		"jsx-no-multiline-js":false
+		"jsx-no-multiline-js":false,
+		"object-literal-sort-keys":false
 	}
 }
