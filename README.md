@@ -1,6 +1,6 @@
 # Obsidian Canary branch
 [![Build Status](https://travis-ci.org/ZA-PT/Obsidian.svg?branch=canary)](https://travis-ci.org/ZA-PT/Obsidian)
-[![Coverage Status](https://coveralls.io/repos/github/ZA-PT/Obsidian/badge.svg?branch=front-end-tests)](https://coveralls.io/github/ZA-PT/Obsidian?branch=front-end-tests)
+[![Coverage Status](https://coveralls.io/repos/github/ZA-PT/Obsidian/badge.svg?branch=canary)](https://coveralls.io/github/ZA-PT/Obsidian?branch=canary)
 # Contributing Guide
 1. Make sure these following tools are installed:
   - .NET Core 1.0
