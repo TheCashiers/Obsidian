@@ -26,13 +26,14 @@ namespace Obsidian.Controllers.OAuth
     [Authorize(ActiveAuthenticationSchemes = AuthenticationSchemes.OAuth20Cookie)]
     public class OAuth20Controller : Controller
     {
+        private const string ProtectorKey = "Obsidian.OAuth.Context.Key";
         private readonly IDataProtector _dataProtector;
         private readonly SagaBus _sagaBus;
         private readonly IIdentityService _signinService;
 
         public OAuth20Controller(IDataProtectionProvider dataProtectionProvicer, SagaBus bus, IIdentityService signinService)
         {
-            _dataProtector = dataProtectionProvicer.CreateProtector("Obsidian.OAuth.Context.Key");
+            _dataProtector = dataProtectionProvicer.CreateProtector(ProtectorKey);
             _sagaBus = bus;
             _signinService = signinService;
         }
@@ -312,19 +313,18 @@ namespace Obsidian.Controllers.OAuth
 
         private bool TryConvertToGrantType(string responseType, out AuthorizationGrant grantType)
         {
-            if ("code".Equals(responseType, StringComparison.OrdinalIgnoreCase))
+            switch (responseType)
             {
-                grantType = AuthorizationGrant.AuthorizationCode;
-                return true;
+                case string s when s.Equals("code", StringComparison.OrdinalIgnoreCase):
+                    grantType = AuthorizationGrant.AuthorizationCode;
+                    return true;
+                case string s when s.Equals("token", StringComparison.OrdinalIgnoreCase):
+                    grantType = AuthorizationGrant.AuthorizationCode;
+                    return true;
+                default:
+                    grantType = default(AuthorizationGrant);
+                    return false;
             }
-            else if ("token".Equals(responseType, StringComparison.OrdinalIgnoreCase))
-            {
-                grantType = AuthorizationGrant.Implicit;
-                return true;
-            }
-            else
-                grantType = default(AuthorizationGrant);
-            return false;
         }
 
         private static string BuildImplictReturnUri(OAuth20Result result)
@@ -338,8 +338,7 @@ namespace Obsidian.Controllers.OAuth
             {
                 sb.Append($"&refresh_token={result.Token.RefreshToken}");
             }
-            var tokenRedirectUri = sb.ToString();
-            return tokenRedirectUri;
+            return sb.ToString();
         }
 
         #region Results

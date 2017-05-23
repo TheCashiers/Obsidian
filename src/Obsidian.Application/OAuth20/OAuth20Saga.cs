@@ -77,7 +77,7 @@ namespace Obsidian.Application.OAuth20
             {
                 Scope = _grantedScopes,
                 ExpireIn = TimeSpan.FromMinutes(5),
-                AccessToken = GenerateAccessToken()
+                AccessToken = _oauth20Service.GenerateAccessToken(_user, _grantedScopes)
             };
             return result;
         }
@@ -112,8 +112,6 @@ namespace Obsidian.Application.OAuth20
             => user.IsClientGranted(client, scopes.Select(s => s.ScopeName));
 
         #endregion Percondictions
-
-        private string GenerateAccessToken() => _oauth20Service.GenerateAccessToken(_user, _grantedScopes);
 
         protected void GoToState(OAuth20State state) => _state = state;
     }
