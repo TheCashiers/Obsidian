@@ -2,7 +2,7 @@ echo "=============== Obsidian Build Script for CentOS ============="
 sudo yum install -y curl wget git
 echo "=============== Cloning git repository =================="
 git clone https://github.com/ZA-PT/Obsidian.git
-cd ./Obsidian
+cd ./Obsidian/
 
 echo "=============== Configuring environment =================="
 sudo cp ./mongodb-org-3.4.repo /etc/yum.repos.d/mongodb-org-3.4.repo
