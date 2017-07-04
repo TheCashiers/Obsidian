@@ -8,11 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72272094-C59C-446F-AA02-EFD33C75789D}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
-		build.cent.sh = build.cent.sh
-		build.cmd = build.cmd
-		build.core.sh = build.core.sh
-		build.ps1 = build.ps1
-		mongodb-org-3.4.repo = mongodb-org-3.4.repo
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -44,6 +39,15 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Application.Test", "test\Obsidian.Application.Test\Obsidian.Application.Test.csproj", "{D18C03EE-DB97-419F-90AD-3502EE65D18D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Foundation", "src\Obsidian.Foundation\Obsidian.Foundation.csproj", "{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{53F24C5A-7055-4C7D-93D9-F2506934823C}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.centos.sh = build\build.centos.sh
+		build\build.cmd = build\build.cmd
+		build\build.core.sh = build\build.core.sh
+		build\build.ps1 = build\build.ps1
+		build\mongodb-org-3.4.repo = build\mongodb-org-3.4.repo
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
