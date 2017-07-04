@@ -1,18 +1,15 @@
 echo "=============== Obsidian Build Script for CentOS ============="
-echo "=============== Cloning git repository =================="
 sudo yum install -y curl wget git
+echo "=============== Cloning git repository =================="
 git clone https://github.com/ZA-PT/Obsidian.git
-cd Obsidian
+cd ./Obsidian
 
 echo "=============== Configuring environment =================="
 sudo cp ./mongodb-org-3.4.repo /etc/yum.repos.d/mongodb-org-3.4.repo
 
 sudo wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-source ~/.bashrc
-nvm install node
-source ~/.bashrc
-sudo yum install -y yarn mongodb-org
+curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
+sudo yum install -y nodejs npm yarn mongodb-org
 
 curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?linkid=848821
 sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet
