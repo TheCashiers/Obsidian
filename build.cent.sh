@@ -16,5 +16,5 @@ sudo yum install yarn
 
 sudo service mongod start
 
-chmod +x ./install.sh
-./install.sh
+chmod +x ./build.core.sh
+./build.core.sh
