@@ -14,7 +14,6 @@ sudo yum install -y nodejs npm yarn mongodb-org
 curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?linkid=848821
 sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet
 sudo ln -s /opt/dotnet/dotnet /usr/local/bin
-rm dotnet.tar.gz
 
 echo "=============== Starting database service ===================="
 sudo service mongod start
