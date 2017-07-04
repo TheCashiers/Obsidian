@@ -1,15 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26621.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{39F43A57-A505-4A82-A002-71F58516A75C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72272094-C59C-446F-AA02-EFD33C75789D}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
+		build.cent.sh = build.cent.sh
 		build.cmd = build.cmd
+		build.core.sh = build.core.sh
 		build.ps1 = build.ps1
+		mongodb-org-3.4.repo = mongodb-org-3.4.repo
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -101,5 +104,8 @@ Global
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4} = {39F43A57-A505-4A82-A002-71F58516A75C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83BC2DE3-CA71-4C85-A383-243EFB340A54}
 	EndGlobalSection
 EndGlobal
