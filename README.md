@@ -2,67 +2,36 @@
 [![Build Status](https://travis-ci.org/ZA-PT/Obsidian.svg?branch=canary)](https://travis-ci.org/ZA-PT/Obsidian)
 [![Coverage Status](https://coveralls.io/repos/github/ZA-PT/Obsidian/badge.svg?branch=canary)](https://coveralls.io/github/ZA-PT/Obsidian?branch=canary)
 [![CodeFactor](https://www.codefactor.io/repository/github/za-pt/obsidian/badge)](https://www.codefactor.io/repository/github/za-pt/obsidian)
-# Contributing Guide
-1. Make sure these following tools are installed:
-  - .NET Core 1.0
-2. Run the following commands.
 
-    ```bash
-        cd ./src/Obsidian/
-        dotnet restore
-        dotnet --verbose build
-        npm update
-    ```
-## Naming convention
+# Setting up build and test environment
+## Windows
+Install these folowing tools:
+- .NET Core SDK
+- Node.js with NPM
+- Yarn
+- MongoDB
 
-### For C# code
-
-References
-- [Capitalization Conventions](https://msdn.microsoft.com/en-us/library/ms229043.aspx)
-- [C# Coding Conventions (C# Programming Guide)](https://msdn.microsoft.com/en-us/library/ff926074.aspx)
-
-``` C# 
-using System;
-using System.Threading.Tasks;
-
-//For namespaces, use Pascal casing.
-namespace NamingConversions
-{
-    // For classes, enums, use Pascal casing.
-    public class SampleClass
-    {
-        //For constants, use Pascal casing.
-        public const int Count = 0;
-
-        //For static menbers, use Pascal casing.
-        //For public fields, use Pascak casing.
-        public static string Name = "Obsidian";
-        
-        //For private fieldss, use camel case with an unserscore.
-        private string _name;
-        
-        //For properties, use Pascal casing.
-        public string StatusData { get; set; }
-        
-        //For methods, use Pascal casing.
-        //For parameters, use camel casing.
-        public void MyMethod(int myParameter)
-        {
-        }
-
-        //For asynchronous methods, use Pascal casing with subfix "Async".
-        public async Task ProcessAsync()
-        {
-        }
-
-        //For events, use Pascal casing.
-        public event EventHandler MyEvent;
-    }
-
-    //For interfaces, use Pascal casing with prefix "I".
-    public interface ISample
-    {
-    }
-}
+And run the build script for PowerShell
+``` powershell
+./build.ps1
 ```
-### For Typescript
+or for Command Prompt
+``` winbatch
+build.cmd
+```
+
+## Linux
+### For CentOS
+Run this command to clone the source code to `./Obsidian` directory and install required packages
+```bash
+curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/build/build.centos.sh | bash
+```
+And run this script to build
+```bash
+./build.sh
+```
+### Ubuntu and other linux distributions
+Coming soon
+
+## macOS
+Coming soon
