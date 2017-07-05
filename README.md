@@ -24,7 +24,7 @@ build.cmd
 ### For CentOS
 Run this command to clone the source code to `./Obsidian` directory and install required packages
 ```bash
-curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/build/build.centos.sh | bash
+curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/configure_env/centos/configure_env.sh | bash
 ```
 And run this script to build
 ```bash
