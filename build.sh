@@ -1,3 +1,4 @@
+echo "================= Obsidian Build Script for *NIX System ============="
 echo "================= Start Configuring Package Dependencies (Stage 1 of 3) ============="
 dotnet restore
 cd ./src/Obsidian/

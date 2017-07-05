@@ -1,11 +1,10 @@
-echo "=============== Obsidian Build Script for CentOS ============="
+echo "=============== Obsidian Configuration Script for CentOS ============="
 sudo yum install -y curl wget git libunwind libicu
 echo "=============== Cloning git repository =================="
 git clone https://github.com/ZA-PT/Obsidian.git
-cd ./Obsidian/build/
 
 echo "=============== Configuring environment =================="
-sudo cp ./mongodb-org-3.4.repo /etc/yum.repos.d/mongodb-org-3.4.repo
+sudo cp ./Obsidian/configure_env/centos/mongodb-org-3.4.repo /etc/yum.repos.d/mongodb-org-3.4.repo
 
 sudo wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
 curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
@@ -20,6 +19,6 @@ echo "=============== Starting database service ===================="
 sudo service mongod start
 
 echo "=============== Starting build ====================="
-chmod +x ./build.core.sh
+chmod +x ./build.sh
 cd ..
-./build/build.core.sh
+./build.sh

@@ -42,11 +42,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Foundation", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{53F24C5A-7055-4C7D-93D9-F2506934823C}"
 	ProjectSection(SolutionItems) = preProject
-		build\build.centos.sh = build\build.centos.sh
-		build\build.cmd = build\build.cmd
-		build\build.core.sh = build\build.core.sh
-		build\build.ps1 = build\build.ps1
-		build\mongodb-org-3.4.repo = build\mongodb-org-3.4.repo
+		build.cmd = build.cmd
+		build.ps1 = build.ps1
+		build.sh = build.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configure_env", "configure_env", "{5D18F646-71A9-463D-8989-AE6AD7693A4E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "centos", "centos", "{CE3EE372-8799-4364-B760-85D8AE93433E}"
+	ProjectSection(SolutionItems) = preProject
+		configure_env\centos\configure_env.sh = configure_env\centos\configure_env.sh
+		configure_env\centos\mongodb-org-3.4.repo = configure_env\centos\mongodb-org-3.4.repo
 	EndProjectSection
 EndProject
 Global
@@ -108,6 +114,7 @@ Global
 		{FF8B3AC9-7A39-4943-A45C-034CA525EE38} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4} = {39F43A57-A505-4A82-A002-71F58516A75C}
+		{CE3EE372-8799-4364-B760-85D8AE93433E} = {5D18F646-71A9-463D-8989-AE6AD7693A4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83BC2DE3-CA71-4C85-A383-243EFB340A54}

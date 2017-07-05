@@ -23,15 +23,6 @@ install:
     - nvm install node
     - sudo apt-get install -y yarn dotnet-dev-1.0.1 mongodb-org
 
-before_script:
-    - sudo service mongod restart
-    - dotnet restore
-    - cd ./src/Obsidian/
-    - yarn
-
 script:
-    - dotnet build
-    - cd ../../test
-    - for d in ./*/ ; do(cd "$d" && dotnet test && sleep 5); done
-    - cd ../src/Obsidian
-    - npm run test:cover:travis
+    - chmod +x ./build.sh
+    - ./build.sh
