@@ -17,8 +17,3 @@ rm dotnet.tar.gz
 
 echo "=============== Starting database service ===================="
 sudo service mongod start
-
-echo "=============== Starting build ====================="
-chmod +x ./build.sh
-cd ..
-./build.sh
