@@ -3,7 +3,7 @@ mono: none
 
 os: linux
 dist: trusty
-sudo: required
+group: edge #enable sudo
 
 before_install:
     # MongoDB
