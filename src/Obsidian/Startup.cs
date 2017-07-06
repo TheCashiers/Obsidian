@@ -98,7 +98,7 @@ namespace Obsidian
             MappingConfig.ConfigureQueryModelMapping();
 
             app.UseSwagger();
-            app.UseSwaggerUi(c =>
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Obsidian API");
             });
