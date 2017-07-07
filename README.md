@@ -20,18 +20,21 @@ or for Command Prompt
 build.cmd
 ```
 
-## Linux
-### For CentOS
-Run this command to clone the source code to `./Obsidian` directory and install required packages
+## *NIX systems
+Run these following command to clone the source code to `./Obsidian` directory and install required packages
+
+CentOS
 ```bash
 curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/configure_env/centos/configure_env.sh | bash
 ```
+
+Ubuntu
+```bash
+curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/configure_env/ubuntu/configure_env.sh | bash
+```
+
 And run this script to build
 ```bash
 ./build.sh
 ```
-### Ubuntu and other linux distributions
-Coming soon
-
-## macOS
-Coming soon
+Support for macOS and other linux distributions are coming soon
