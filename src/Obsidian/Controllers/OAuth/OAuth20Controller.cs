@@ -98,7 +98,7 @@ namespace Obsidian.Controllers.OAuth
                 {
                     ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
                     ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
-                    return View("SignIn");
+                    return View("SignIn", model);
                 }
                 currentUser = authResult.User;
             }
@@ -319,7 +319,7 @@ namespace Obsidian.Controllers.OAuth
                     grantType = AuthorizationGrant.AuthorizationCode;
                     return true;
                 case string s when s.Equals("token", StringComparison.OrdinalIgnoreCase):
-                    grantType = AuthorizationGrant.AuthorizationCode;
+                    grantType = AuthorizationGrant.Implicit;
                     return true;
                 default:
                     grantType = default(AuthorizationGrant);
