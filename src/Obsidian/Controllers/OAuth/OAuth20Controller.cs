@@ -98,7 +98,8 @@ namespace Obsidian.Controllers.OAuth
                 {
                     ModelState.AddModelError(nameof(OAuthSignInModel.UserName), "Invaild user name");
                     ModelState.AddModelError(nameof(OAuthSignInModel.Password), "Or invaild password");
-                    return View("SignIn");
+                    
+                    return View("SignIn",model);
                 }
                 currentUser = authResult.User;
             }
