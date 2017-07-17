@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26621.2
+VisualStudioVersion = 15.0.26711.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{39F43A57-A505-4A82-A002-71F58516A75C}"
 EndProject
@@ -53,6 +53,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "centos", "centos", "{CE3EE3
 	ProjectSection(SolutionItems) = preProject
 		configure_env\centos\configure_env.sh = configure_env\centos\configure_env.sh
 		configure_env\centos\mongodb-org-3.4.repo = configure_env\centos\mongodb-org-3.4.repo
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ubuntu", "ubuntu", "{147988F7-4A4D-4599-B8D5-2210283FD6EC}"
+	ProjectSection(SolutionItems) = preProject
+		configure_env\ubuntu\configure_env.sh = configure_env\ubuntu\configure_env.sh
 	EndProjectSection
 EndProject
 Global
@@ -115,6 +120,7 @@ Global
 		{D18C03EE-DB97-419F-90AD-3502EE65D18D} = {F18CD5BA-A962-44AF-AEA3-B24CC81669B4}
 		{EEA27D7C-2856-4DDE-B5F7-7B72123E73A4} = {39F43A57-A505-4A82-A002-71F58516A75C}
 		{CE3EE372-8799-4364-B760-85D8AE93433E} = {5D18F646-71A9-463D-8989-AE6AD7693A4E}
+		{147988F7-4A4D-4599-B8D5-2210283FD6EC} = {5D18F646-71A9-463D-8989-AE6AD7693A4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83BC2DE3-CA71-4C85-A383-243EFB340A54}
