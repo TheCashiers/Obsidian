@@ -14,7 +14,7 @@ namespace Obsidian.Domain
 
         public string Description { get; set; }
 
-        public IList<string> ClaimTypes { get; set; }
+        public IList<(string Type, string Value)> Claims { get; set; }
 
         public static PermissionScope Create(Guid id, string scopeName, string displayName, string description)
             => new PermissionScope
@@ -23,7 +23,7 @@ namespace Obsidian.Domain
                 ScopeName = scopeName,
                 DisplayName = displayName,
                 Description = description,
-                ClaimTypes = new List<string>()
+                Claims = new List<(string, string)>()
             };
 
         #region Equality

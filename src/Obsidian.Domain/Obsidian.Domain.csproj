@@ -11,10 +11,15 @@
 
   <ItemGroup>
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0-preview2-25405-01" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Obsidian.Foundation\Obsidian.Foundation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

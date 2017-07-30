@@ -6,6 +6,6 @@ namespace Obsidian.Application.Dto
     {
         public string DisplayName { get; set; }
         public string Description { get; set; }
-        public IList<string> ClaimTypes { get; set; }
+        public IList<(string Type, string Value)> Claims { get; set; }
     }
 }

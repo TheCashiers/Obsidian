@@ -11,6 +11,6 @@ namespace Obsidian.Application.ScopeManagement
 
         public string Description { get; set; }
 
-        public IList<string> ClaimTypes { get; set; }
+        public IList<(string Type,string Value)> Claims { get; set; }
     }
 }

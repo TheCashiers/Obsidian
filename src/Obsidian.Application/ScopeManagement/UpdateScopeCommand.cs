@@ -9,6 +9,6 @@ namespace Obsidian.Application.ScopeManagement
         public Guid Id { get; set; }
         public string DisplayName { get; set; }
         public string Description { get; set; }
-        public IList<string> ClaimTypes { get; set; }
+        public IList<(string Type, string Value)> Claims { get; set; }
     }
 }

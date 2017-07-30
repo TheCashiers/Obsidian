@@ -52,7 +52,7 @@ namespace Obsidian.Controllers.ApiControllers
         {
             var cmd = new CreateScopeCommand
             {
-                ClaimTypes = dto.ClaimTypes,
+                Claims = dto.Claims,
                 Description = dto.Description,
                 DisplayName = dto.DisplayName,
                 ScopeName = dto.ScopeName
@@ -76,7 +76,7 @@ namespace Obsidian.Controllers.ApiControllers
                 Id = id,
                 Description = dto.Description,
                 DisplayName = dto.DisplayName,
-                ClaimTypes = dto.ClaimTypes
+                Claims = dto.Claims
             };
             var result = await _sagaBus.InvokeAsync<UpdateScopeCommand, MessageResult>(cmd);
             if (result.Succeed)

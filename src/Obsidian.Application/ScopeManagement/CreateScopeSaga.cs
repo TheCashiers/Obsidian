@@ -30,7 +30,7 @@ namespace Obsidian.Application.ScopeManagement
                 };
             }
             var scope = PermissionScope.Create(Guid.NewGuid(), command.ScopeName, command.DisplayName, command.Description);
-            command.ClaimTypes.ToList().ForEach(s => scope.ClaimTypes.Add(s));
+            scope.Claims = command.Claims;
             await _repo.AddAsync(scope);
             return new ScopeCreationResult
             {

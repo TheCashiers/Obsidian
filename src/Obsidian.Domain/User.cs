@@ -18,7 +18,6 @@ namespace Obsidian.Domain
         /// <summary>
         /// Represents the unique identifier of the <see cref="User"/>.
         /// </summary>
-        [ClaimType(ClaimTypes.NameIdentifier)]
         public Guid Id { get; private set; }
 
         public void SetPassword(string password)
@@ -39,7 +38,6 @@ namespace Obsidian.Domain
         /// <summary>
         /// Represents the username used to login.
         /// </summary>
-        [ClaimType(ClaimTypes.Name)]
         public string UserName { get; private set; }
 
         public UserProfile Profile { get; private set; } = new UserProfile();
@@ -87,6 +85,19 @@ namespace Obsidian.Domain
                     ScopeNames = scopes.Select(s => s.ScopeName).ToList()
                 });
             }
+        }
+
+        public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
+            => GetClaims(scopes.SelectMany(s => s.Claims).Distinct());
+
+        public IEnumerable<Claim> GetClaims(IEnumerable<(string Type, string Value)> requestedClaims)
+        {
+            var idClaims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
+                new Claim(ClaimTypes.Name,UserName)
+            };
+            return Claims.Where(c => requestedClaims.Any(r => r.Type == c.Type && r.Value == c.Value)).Union(idClaims);
         }
 
         #region Equality

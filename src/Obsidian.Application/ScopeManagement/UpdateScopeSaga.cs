@@ -29,7 +29,7 @@ namespace Obsidian.Application.ScopeManagement
             //update
             scope.Description = command.Description;
             scope.DisplayName = command.DisplayName;
-            scope.ClaimTypes = command.ClaimTypes;
+            scope.Claims = command.Claims;
             await _repo.SaveAsync(scope);
             return new MessageResult
             {

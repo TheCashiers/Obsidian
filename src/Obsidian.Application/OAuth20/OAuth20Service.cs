@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Obsidian.Application.Cryptography;
 using Obsidian.Domain;
-using Obsidian.Domain.Services;
 using Obsidian.Foundation.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,13 +15,11 @@ namespace Obsidian.Application.OAuth20
     {
         private readonly AsymmetricSecurityKey _signingKey;
         private readonly OAuth20Configuration _config;
-        private readonly ClaimService _claimService;
         private readonly RsaSigningService _rsaService;
 
-        public OAuth20Service(IOptions<OAuth20Configuration> options, ClaimService claimSvc, RsaSigningService signingService)
+        public OAuth20Service(IOptions<OAuth20Configuration> options, RsaSigningService signingService)
         {
             _config = options.Value;
-            _claimService = claimSvc;
             _rsaService = signingService;
             _signingKey = new RsaSecurityKey(_rsaService.GetPrivateKey());
         }
@@ -30,7 +27,7 @@ namespace Obsidian.Application.OAuth20
         public string GenerateAccessToken(User user, IEnumerable<PermissionScope> scopes)
         {
             var signingCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.RsaSha512Signature);
-            var claims = _claimService.GetClaims(user, scopes);
+            var claims = user.GetClaims(scopes);
             var jwt = new JwtSecurityToken(
                 issuer: _config.TokenIssuer,
                 audience: _config.TokenAudience,
