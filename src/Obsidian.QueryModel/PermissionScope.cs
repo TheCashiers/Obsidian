@@ -13,6 +13,6 @@ namespace Obsidian.QueryModel
 
         public string Description { get; set; }
 
-        public IList<string> ClaimTypes { get; set; }
+        public IList<(string Type, string Value)> ClaimTypes { get; set; }
     }
 }
