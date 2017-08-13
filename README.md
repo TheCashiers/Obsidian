@@ -5,7 +5,7 @@
 
 # Setting up build and test environment
 ## Windows
-Install these folowing tools:
+Install these following tools:
 - .NET Core SDK
 - Node.js with NPM
 - Yarn
