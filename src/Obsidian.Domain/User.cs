@@ -90,7 +90,7 @@ namespace Obsidian.Domain
         public IEnumerable<Claim> GetClaims(IEnumerable<PermissionScope> scopes)
             => GetClaims(scopes.SelectMany(s => s.Claims).Distinct());
 
-        public IEnumerable<Claim> GetClaims(IEnumerable<(string Type, string Value)> requestedClaims)
+        public IEnumerable<Claim> GetClaims(IEnumerable<ObsidianClaim> requestedClaims)
         {
             var idClaims = new[]
             {

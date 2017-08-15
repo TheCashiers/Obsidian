@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Obsidian.Domain;
+using System.Collections.Generic;
 
 namespace Obsidian.Application.Dto
 {
@@ -6,6 +7,6 @@ namespace Obsidian.Application.Dto
     {
         public string DisplayName { get; set; }
         public string Description { get; set; }
-        public IList<(string Type, string Value)> Claims { get; set; }
+        public IList<ObsidianClaim> Claims { get; set; }
     }
 }

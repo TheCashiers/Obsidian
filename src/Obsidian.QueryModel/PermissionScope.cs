@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Obsidian.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace Obsidian.QueryModel
@@ -13,6 +14,6 @@ namespace Obsidian.QueryModel
 
         public string Description { get; set; }
 
-        public IList<(string Type, string Value)> ClaimTypes { get; set; }
+        public IList<ObsidianClaim> ClaimTypes { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Obsidian.Foundation.ProcessManagement;
+﻿using Obsidian.Domain;
+using Obsidian.Foundation.ProcessManagement;
 using System.Collections.Generic;
 
 namespace Obsidian.Application.ScopeManagement
@@ -11,6 +12,6 @@ namespace Obsidian.Application.ScopeManagement
 
         public string Description { get; set; }
 
-        public IList<(string Type,string Value)> Claims { get; set; }
+        public IList<ObsidianClaim> Claims { get; set; }
     }
 }
