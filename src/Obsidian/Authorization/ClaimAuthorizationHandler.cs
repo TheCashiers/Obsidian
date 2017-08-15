@@ -21,16 +21,17 @@ namespace Obsidian.Authorization
                     if (requirementData.ClaimValues.All(HasClaimValue))
                     {
                         context.Succeed(requirement);
-                        return Task.CompletedTask;
                     }
                 }
                 else if (requirementData.ClaimValues.Any(HasClaimValue))
                 {
                     context.Succeed(requirement);
-                    return Task.CompletedTask;
                 }
             }
-            context.Fail();
+            else
+            {
+                context.Fail();
+            }
             return Task.CompletedTask;
         }
     }
