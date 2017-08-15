@@ -1,6 +1,5 @@
 ﻿{
   "OAuth20": {
-    "TokenSigningKey": "Obsidian.OAuth20.SigningKey.Jwt",
     "TokenAudience": "ObsidianAud",
     "TokenIssuer": "Obsidian"
   },

@@ -13,10 +13,11 @@ namespace Obsidian
 {
     public static class IdentityConfig
     {
-        public static IApplicationBuilder ConfigJwtAuthentication(this IApplicationBuilder app, IOptions<OAuth20Configuration> oauthOptions, RsaSigningService signingService)
+        public static IApplicationBuilder ConfigJwtAuthentication(this IApplicationBuilder app, 
+                                                IOptions<OAuth20Configuration> oauthOptions, 
+                                                RsaSigningService signingService)
         {
             var oauthConfig = oauthOptions.Value;
-            var key = oauthConfig.TokenSigningKey;
             var signingKey = new RsaSecurityKey(signingService.GetPublicKey());
             var param = new TokenValidationParameters
             {
