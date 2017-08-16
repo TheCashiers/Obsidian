@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using Obsidian.Foundation.Collections;
 using Obsidian.Persistence.Repositories;
 using System.Linq;
 using System.Reflection;
@@ -26,7 +27,6 @@ namespace Obsidian.Persistence.DependencyInjection
                 .Where(ia => ia.Attrs.Count() > 0)
                 .SelectMany(ia => ia.Attrs,
                            (ia, attr) => new { Svc = attr.ServiceType, Impl = ia.Type })
-                .ToList()
                 .ForEach(si => services.AddScoped(si.Svc, si.Impl));
 
             return services.AddScoped(p => new MongoClient("mongodb://127.0.0.1:27017").GetDatabase("Obsidian"));

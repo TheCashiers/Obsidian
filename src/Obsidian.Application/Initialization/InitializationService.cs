@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Foundation.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 
 namespace Obsidian.Application.Initialization
 {
+    [Service(ServiceLifetime.Scoped)]
     public class InitializationService
     {
         public InitializationService()

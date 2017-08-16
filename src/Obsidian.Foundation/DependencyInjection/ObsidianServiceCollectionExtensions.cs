@@ -14,14 +14,14 @@ namespace Obsidian.Foundation.DependencyInjection
             var typeInfos = projectLibs.Select(lib => new AssemblyName(lib.Name)).Select(Assembly.Load).SelectMany(asm => asm.DefinedTypes);
             var serviceDescriptors = typeInfos
                 .SelectMany(t => t.GetCustomAttributes<ServiceAttribute>(),
-                            (ti, attr) => new { TypeInfo = ti, Attribute = attr })
-                .Select(pair =>
+                            (ti, attr) => new { TypeInfo = ti, Service = attr })
+                .Select(info =>
                 {
-                    var implType = pair.TypeInfo.AsType();
-                    var serviceType = pair.Attribute.ServiceType ?? implType;
-                    return new ServiceDescriptor(serviceType, implType, pair.Attribute.Lifetime);
+                    var implType = info.TypeInfo.AsType();
+                    var serviceType = info.Service.ServiceType ?? implType;
+                    return new ServiceDescriptor(serviceType, implType, info.Service.Lifetime);
                 });
-            serviceDescriptors.ForEach(d => services.Add(d));
+            serviceDescriptors.ForEach(services.Add);
             return services;
         }
     }
