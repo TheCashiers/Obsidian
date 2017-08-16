@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Obsidian.Models
+namespace Obsidian.Application.Initialization
 {
     public class InitializationInfo
     {
+        public DbInfo Db { get; set; }
 
-        class DbInfo
+        public DefaultUserInfo User { get; set; }
+
+        public class DbInfo
         {
             public string DbUri { get; set; }
 
             public string DbName { get; set; }
         }
 
-        class DefaultUserInfo
+        public class DefaultUserInfo
         {
             public string UserName { get; set; }
 
