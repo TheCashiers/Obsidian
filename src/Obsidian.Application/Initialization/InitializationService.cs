@@ -15,7 +15,6 @@ namespace Obsidian.Application.Initialization
 
         public async Task InitializeAsync(InitializationInfo initializationInfo)
         {
-            await CreateDbAsync(initializationInfo.Db);
             await CreateDefaultUserAsync(initializationInfo.User);
         }
 
@@ -24,9 +23,6 @@ namespace Obsidian.Application.Initialization
             throw new NotImplementedException();
         }
 
-        private Task CreateDbAsync(InitializationInfo.DbInfo db)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

@@ -7,16 +7,8 @@ namespace Obsidian.Application.Initialization
 {
     public class InitializationInfo
     {
-        public DbInfo Db { get; set; }
-
+       
         public DefaultUserInfo User { get; set; }
-
-        public class DbInfo
-        {
-            public string DbUri { get; set; }
-
-            public string DbName { get; set; }
-        }
 
         public class DefaultUserInfo
         {
@@ -26,8 +18,6 @@ namespace Obsidian.Application.Initialization
 
             public string ConfirmPassword { get; set; }
         }
-
-
 
     }
 }
