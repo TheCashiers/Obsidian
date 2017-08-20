@@ -45,8 +45,8 @@ namespace Obsidian.Domain
         public IList<ClientAuthorizationDetail> GrantedClients { get; private set; }
             = new List<ClientAuthorizationDetail>();
 
-        public IList<Claim> Claims { get; private set; }
-            = new List<Claim>();
+        public IList<ObsidianClaim> Claims { get; private set; }
+            = new List<ObsidianClaim>();
 
         #endregion Props
 
@@ -97,7 +97,7 @@ namespace Obsidian.Domain
                 new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
                 new Claim(ClaimTypes.Name,UserName)
             };
-            return Claims.Where(c => requestedClaims.Any(r => r.Type == c.Type && r.Value == c.Value)).Union(idClaims);
+            return Claims.Where(c => requestedClaims.Contains(c)).Select(obc => new Claim(obc.Type, obc.Value)).Union(idClaims);
         }
 
         #region Equality

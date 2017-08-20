@@ -1,4 +1,6 @@
-﻿using Obsidian.Domain.Repositories;
+﻿using Obsidian.Domain;
+using Obsidian.Domain.Repositories;
+using Obsidian.Foundation.Collections;
 using Obsidian.Foundation.ProcessManagement;
 using System.Linq;
 using System.Security.Claims;
@@ -35,7 +37,7 @@ namespace Obsidian.Application.UserManagement
             }
             //edit claims
             user.Claims.Clear();
-            command.Claims.Select(c => new Claim(c.Key, c.Value)).ToList().ForEach(cm => user.Claims.Add(cm));
+            command.Claims.Select(c => new ObsidianClaim { Type = c.Key, Value = c.Value }).ForEach(user.Claims.Add);
             await _repo.SaveAsync(user);
             return new MessageResult
             {

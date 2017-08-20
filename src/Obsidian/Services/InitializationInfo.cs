@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Obsidian.Application.Initialization
+namespace Obsidian.Services
 {
     public class InitializationInfo
     {
        
         public DefaultUserInfo User { get; set; }
+
+        public string HostUrl { get; set; }
 
         public class DefaultUserInfo
         {
