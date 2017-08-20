@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Obsidian.Foundation.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,19 +18,16 @@ namespace Obsidian.Foundation.ProcessManagement
             _serviceProvider = provider;
         }
 
-        public SagaBus Register<TSaga>() where TSaga : Saga
-        {
-            var sagaType = typeof(TSaga);
-            return Register(sagaType);
-        }
+        public SagaBus Register<TSaga>() where TSaga : Saga => Register(typeof(TSaga));
 
         public SagaBus Register(Type sagaType)
         {
-            var implementedInterfaces = sagaType.GetTypeInfo().GetInterfaces();
-            var commandTypes = implementedInterfaces
+            sagaType
+                .GetTypeInfo()
+                .GetInterfaces()
                 .Where(i => i.GetGenericTypeDefinition() == typeof(IStartsWith<,>))
-                .Select(i => i.GetTypeInfo().GetGenericArguments().First()).ToList();
-            commandTypes.ForEach(ct => _sagaStarterRegistry.Add(ct, sagaType));
+                .Select(i => i.GetTypeInfo().GetGenericArguments().First())
+                .ForEach(ct => _sagaStarterRegistry.Add(ct, sagaType));
             return this;
         }
 
@@ -40,11 +38,10 @@ namespace Obsidian.Foundation.ProcessManagement
             {
                 throw new ArgumentException("Command validation failed.", nameof(command));
             }
-            if (_sagaStarterRegistry.ContainsKey(typeof(TCommand)))
+            if (_sagaStarterRegistry.TryGetValue(typeof(TCommand), out var sagaType))
             {
-                var sagaType = _sagaStarterRegistry[typeof(TCommand)];
                 var service = _serviceProvider.GetService(sagaType);
-                if (service is Saga saga && service is IStartsWith<TCommand, TResult> handler)
+                if (service is Saga saga && saga is IStartsWith<TCommand, TResult> handler)
                 {
                     var result = await handler.StartAsync(command);
                     if (!saga.IsCompleted)
