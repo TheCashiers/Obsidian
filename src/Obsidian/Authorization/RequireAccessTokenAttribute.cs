@@ -10,7 +10,7 @@ namespace Obsidian.Authorization
 
         public RequireAccessTokenAttribute(string policy) : base(policy)
         {
-            ActiveAuthenticationSchemes = AuthenticationSchemes.Bearer;
+            AuthenticationSchemes = ObsidianAuthenticationSchemes.Bearer;
         }
     }
 }

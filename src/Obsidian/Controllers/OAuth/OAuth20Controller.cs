@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 namespace Obsidian.Controllers.OAuth
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Authorize(ActiveAuthenticationSchemes = AuthenticationSchemes.OAuth20Cookie)]
+    [Authorize(AuthenticationSchemes = ObsidianAuthenticationSchemes.OAuth20Cookie)]
     public class OAuth20Controller : Controller
     {
         private const string ProtectorKey = "Obsidian.OAuth.Context.Key";
@@ -139,7 +139,7 @@ namespace Obsidian.Controllers.OAuth
         [ValidateModel]
         public async Task<IActionResult> SignOut([FromQuery(Name = "redurect_uri"), Url]string redirectUri)
         {
-            await _signinService.CookieSignOutCurrentUserAsync(AuthenticationSchemes.OAuth20Cookie);
+            await _signinService.CookieSignOutCurrentUserAsync(ObsidianAuthenticationSchemes.OAuth20Cookie);
             return Redirect(redirectUri);
         }
 
@@ -157,7 +157,7 @@ namespace Obsidian.Controllers.OAuth
             switch (result.State)
             {
                 case OAuth20State.Cancelled:
-                    await _signinService.CookieSignOutCurrentUserAsync(AuthenticationSchemes.OAuth20Cookie);
+                    await _signinService.CookieSignOutCurrentUserAsync(ObsidianAuthenticationSchemes.OAuth20Cookie);
                     return Redirect(CancelRedirectUrl(result.CancelData));
 
                 default:
@@ -278,7 +278,7 @@ namespace Obsidian.Controllers.OAuth
 
         private async Task<IActionResult> OAuth20SignInCore(Guid sagaId, User user, bool isPersistent)
         {
-            await _signinService.CookieSignInAsync(AuthenticationSchemes.OAuth20Cookie, user, isPersistent);
+            await _signinService.CookieSignInAsync(ObsidianAuthenticationSchemes.OAuth20Cookie, user, isPersistent);
 
             var message = new OAuth20SignInMessage(sagaId, user);
 
