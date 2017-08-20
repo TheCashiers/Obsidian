@@ -3,6 +3,7 @@ using Obsidian.Authorization;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation.DependencyInjection;
+using Obsidian.Models;
 using System;
 using System.IO;
 using System.Linq;
@@ -48,8 +49,8 @@ namespace Obsidian.Services
             client.UpdateSecret();
             await _clientRepository.AddAsync(client);
 
-            var user = User.Create(Guid.NewGuid(), initializationInfo.User.UserName);
-            user.SetPassword(initializationInfo.User.Password);
+            var user = User.Create(Guid.NewGuid(), initializationInfo.UserName);
+            user.SetPassword(initializationInfo.Password);
             claims.ForEach(user.Claims.Add);
             await _userRepository.AddAsync(user);
         }
