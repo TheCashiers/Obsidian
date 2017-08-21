@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Obsidian.Misc;
+using Obsidian.Models;
 using Obsidian.Services;
+using System;
+using System.Threading.Tasks;
 
 #pragma warning disable CS1591
 namespace Obsidian.Controllers.ViewControllers
@@ -23,15 +27,42 @@ namespace Obsidian.Controllers.ViewControllers
             return View();
         }
 
+        private bool IsMarkerFileExists()
+        {
+            var markerFilePath = System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, "init.txt");
+            return System.IO.File.Exists(markerFilePath);
+        }
+
+        private async Task CreateMarkerFileAsync()
+        {
+            var markerFilePath = System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, "init.txt");
+            await System.IO.File.WriteAllTextAsync(markerFilePath, DateTime.UtcNow.ToString());
+        }
+
         [HttpGet("firstrun")]
         public IActionResult Initialize()
         {
-            var markFile = System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, "init.txt");
-            if (System.IO.File.Exists(markFile))
+            if (IsMarkerFileExists())
             {
+                // Confuse the attacker by returning 404.
                 return NotFound();
             }
             return View();
+        }
+
+        [HttpPost("firstrun")]
+        [ValidateModel]
+        public async Task<IActionResult> Initialize(InitializationInfo initializationInfo)
+        {
+            if (IsMarkerFileExists())
+            {
+                // Confuse the attacker by returning 404.
+                return NotFound();
+            }
+            var init = _initializationService.InitializeAsync(initializationInfo);
+            var cmf = CreateMarkerFileAsync();
+            await Task.WhenAll(init, cmf);
+            return Redirect("/manage");
         }
 
         public IActionResult Error()

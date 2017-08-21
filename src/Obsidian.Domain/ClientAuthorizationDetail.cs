@@ -7,6 +7,6 @@ namespace Obsidian.Domain
     {
         public Guid ClientId { get; set; }
 
-        public IList<string> ScopeNames { get; set; }
+        public IEnumerable<string> ScopeNames { get; set; }
     }
 }

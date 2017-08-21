@@ -13,15 +13,15 @@ namespace Obsidian
 {
     public static class IdentityConfig
     {
-        public static IApplicationBuilder ConfigJwtAuthentication(this IApplicationBuilder app, 
-                                                IOptions<OAuth20Configuration> oauthOptions, 
+        public static void ConfigJwtAuthentication(this IServiceCollection services,
+                                                IOptions<OAuth20Configuration> oauthOptions,
                                                 RsaSigningService signingService)
         {
             var oauthConfig = oauthOptions.Value;
             var signingKey = new RsaSecurityKey(signingService.GetPublicKey());
             var param = new TokenValidationParameters
             {
-                AuthenticationType = AuthenticationSchemes.Bearer,
+                AuthenticationType = ObsidianAuthenticationSchemes.Bearer,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,
                 ValidateIssuer = true,
@@ -29,29 +29,22 @@ namespace Obsidian
                 ValidAudience = oauthConfig.TokenAudience
             };
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                TokenValidationParameters = param,
-                AutomaticAuthenticate = false,
-                AutomaticChallenge = false
-            });
-            return app;
+            services.AddAuthentication()
+                .AddJwtBearer(ObsidianAuthenticationSchemes.Bearer, o => o.TokenValidationParameters = param);
         }
 
-        public static IApplicationBuilder ConfigOAuth20Cookie(this IApplicationBuilder app)
-            => app.UseCookieAuthentication(new CookieAuthenticationOptions
+        public static void ConfigOAuth20Cookie(this IServiceCollection services)
+            => services.AddAuthentication()
+            .AddCookie(ObsidianAuthenticationSchemes.OAuth20Cookie, options =>
             {
-                AuthenticationScheme = AuthenticationSchemes.OAuth20Cookie,
-                AutomaticChallenge = false,
-                AutomaticAuthenticate = false,
-                Events = new CookieAuthenticationEvents()
+                options.Events = new CookieAuthenticationEvents()
                 {
                     OnRedirectToLogin = ctx =>
                     {
                         ctx.Response.StatusCode = 401;
                         return Task.FromResult(0);
                     }
-                }
+                };
             });
 
         public static IServiceCollection ConfigClaimsBasedAuthorization(this IServiceCollection services)

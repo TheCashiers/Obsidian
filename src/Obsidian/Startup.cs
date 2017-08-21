@@ -33,7 +33,7 @@ namespace Obsidian
                 builder.AddApplicationInsightsSettings(developerMode: true);
                 obsidianConfigFileName = "obsidianconfig.dev.json";
             }
-            builder.AddJsonFile(obsidianConfigFileName, optional: false);
+            builder.AddJsonFile(obsidianConfigFileName, optional: false, reloadOnChange: true);
             Configuration = builder.Build();
         }
 
@@ -65,12 +65,17 @@ namespace Obsidian
             services.Configure<PortalConfig>(Configuration.GetSection("Portal"));
 
             services.AddObsidianServices();
+            services.ConfigOAuth20Cookie();
             services.ConfigClaimsBasedAuthorization();
+
+            var provider = services.BuildServiceProvider();
+            services.ConfigJwtAuthentication(provider.GetService<IOptions<OAuth20Configuration>>(),
+                provider.GetService<RsaSigningService>());
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<OAuth20Configuration> oauthOptions, RsaSigningService signingService)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -86,7 +91,7 @@ namespace Obsidian
             }
 
             app.UseStaticFiles();
-            app.ConfigOAuth20Cookie().ConfigJwtAuthentication(oauthOptions, signingService);
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

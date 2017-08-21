@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Obsidian.Application.Services;
 using Obsidian.Domain;
@@ -36,11 +36,11 @@ namespace Obsidian.Services
             var principal = new ClaimsPrincipal(identity);
             var context = _accessor.HttpContext;
             var props = new AuthenticationProperties { IsPersistent = isPersistent };
-            await context.Authentication.SignInAsync(scheme, principal, props);
+            await context.SignInAsync(scheme, principal, props);
         }
 
         public async Task CookieSignOutCurrentUserAsync(string scheme)
-            => await _accessor.HttpContext.Authentication.SignOutAsync(scheme);
+            => await _accessor.HttpContext.SignOutAsync(scheme);
 
         public async Task<User> GetCurrentUserAsync()
         {

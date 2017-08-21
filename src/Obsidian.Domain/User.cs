@@ -75,14 +75,14 @@ namespace Obsidian.Domain
             var grantDetail = GrantedClients.SingleOrDefault(gd => gd.ClientId == client.Id);
             if (grantDetail != null)
             {
-                grantDetail.ScopeNames = scopes.Select(s => s.ScopeName).ToList();
+                grantDetail.ScopeNames = scopes.Select(s => s.ScopeName);
             }
             else
             {
                 GrantedClients.Add(new ClientAuthorizationDetail
                 {
                     ClientId = client.Id,
-                    ScopeNames = scopes.Select(s => s.ScopeName).ToList()
+                    ScopeNames = scopes.Select(s => s.ScopeName)
                 });
             }
         }
