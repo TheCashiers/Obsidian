@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Obsidian.Domain
 {
-    public struct ObsidianClaim
+    public class ObsidianClaim
     {
         public string Type { get; set; }
         public string Value { get; set; }

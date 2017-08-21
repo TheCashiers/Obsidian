@@ -2,6 +2,19 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewBag.Title = "First Run";
 }
+@model Obsidian.Models.InitializationInfo
 
 <h1>First Run</h1>
+<form asp-controller="Home" asp-action="Initialize" method="post">
+    <label asp-for="UserName"></label>
+    <input asp-for="UserName" type="text"/>
+    <label asp-for="Password"></label>
+    <input asp-for="Password" type="password" />
+    <label asp-for="ConfirmPassword"></label>
+    <input asp-for="ConfirmPassword" type="password" />
+    <label asp-for="HostUrl"></label>
+    <input asp-for="HostUrl" type="url" />
+    <button type="submit">OK</button>
+</form>

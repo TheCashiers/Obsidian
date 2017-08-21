@@ -29,18 +29,15 @@ namespace Obsidian
                 ValidAudience = oauthConfig.TokenAudience
             };
 
-            services.AddAuthentication(ObsidianAuthenticationSchemes.Bearer)
-                .AddJwtBearer(o =>
-            {
-                o.TokenValidationParameters = param;
-            });
+            services.AddAuthentication()
+                .AddJwtBearer(ObsidianAuthenticationSchemes.Bearer, o => o.TokenValidationParameters = param);
         }
 
         public static void ConfigOAuth20Cookie(this IServiceCollection services)
-            => services.AddAuthentication(ObsidianAuthenticationSchemes.OAuth20Cookie)
-            .AddCookie(o =>
+            => services.AddAuthentication()
+            .AddCookie(ObsidianAuthenticationSchemes.OAuth20Cookie, options =>
             {
-                o.Events = new CookieAuthenticationEvents()
+                options.Events = new CookieAuthenticationEvents()
                 {
                     OnRedirectToLogin = ctx =>
                     {

@@ -40,7 +40,7 @@ namespace Obsidian
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IOptions<OAuth20Configuration> oauthOptions, RsaSigningService signingService)
+        public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
@@ -66,8 +66,11 @@ namespace Obsidian
 
             services.AddObsidianServices();
             services.ConfigOAuth20Cookie();
-            services.ConfigJwtAuthentication(oauthOptions, signingService);
             services.ConfigClaimsBasedAuthorization();
+
+            var provider = services.BuildServiceProvider();
+            services.ConfigJwtAuthentication(provider.GetService<IOptions<OAuth20Configuration>>(), 
+                provider.GetService<RsaSigningService>());
 
         }
 
@@ -88,7 +91,7 @@ namespace Obsidian
             }
 
             app.UseStaticFiles();
-
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
