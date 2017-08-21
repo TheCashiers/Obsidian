@@ -20,6 +20,7 @@ install:
     - sudo apt-get install -y yarn
 
 before_script:
+    - cat /etc/mongod.conf
     - dotnet restore
     - cd ./src/Obsidian/
     - yarn
