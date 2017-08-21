@@ -33,7 +33,7 @@ namespace Obsidian
                 builder.AddApplicationInsightsSettings(developerMode: true);
                 obsidianConfigFileName = "obsidianconfig.dev.json";
             }
-            builder.AddJsonFile(obsidianConfigFileName, optional: false);
+            builder.AddJsonFile(obsidianConfigFileName, optional: false, reloadOnChange: true);
             Configuration = builder.Build();
         }
 
@@ -69,7 +69,7 @@ namespace Obsidian
             services.ConfigClaimsBasedAuthorization();
 
             var provider = services.BuildServiceProvider();
-            services.ConfigJwtAuthentication(provider.GetService<IOptions<OAuth20Configuration>>(), 
+            services.ConfigJwtAuthentication(provider.GetService<IOptions<OAuth20Configuration>>(),
                 provider.GetService<RsaSigningService>());
 
         }

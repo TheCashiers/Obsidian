@@ -263,3 +263,4 @@ src/Obsidian/obsidianconfig.dev.json
 !src/Obsidian/key.pfx
 src/Obsidian/.happypack/
 src/Obsidian/coverage/
+src/Obsidian/init.txt
