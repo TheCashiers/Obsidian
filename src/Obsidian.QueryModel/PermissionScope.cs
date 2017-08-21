@@ -14,6 +14,6 @@ namespace Obsidian.QueryModel
 
         public string Description { get; set; }
 
-        public IList<ObsidianClaim> ClaimTypes { get; set; }
+        public IList<ObsidianClaim> Claims { get; set; }
     }
 }

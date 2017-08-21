@@ -15,23 +15,16 @@ namespace Obsidian.Application.Authentication
             _userRepository = userRepo;
         }
 
-        public Task<AuthenticationResult> StartAsync(PasswordAuthenticateCommand command)
+        public async Task<AuthenticationResult> StartAsync(PasswordAuthenticateCommand command)
         {
-            User user;
-            return Task.FromResult(new AuthenticationResult
+            var user = await _userRepository.FindByUserNameAsync(command.UserName);
+            return new AuthenticationResult
             {
-                IsCredentialValid = TryLoadUser(command.UserName, out user)
-                && user.VaildatePassword(command.Password),
+                IsCredentialValid = user?.VaildatePassword(command.Password) ?? false,
                 User = user
-            });
+            };
         }
 
         protected override bool IsProcessCompleted() => true;
-
-        private bool TryLoadUser(string userName, out User user)
-        {
-            user = _userRepository.FindByUserNameAsync(userName).Result;
-            return user != null;
-        }
     }
 }

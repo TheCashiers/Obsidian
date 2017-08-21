@@ -102,7 +102,7 @@ namespace Obsidian.Controllers.OAuth
                 }
                 currentUser = authResult.User;
             }
-            return await OAuth20SignInCore(sagaId, currentUser, model.RememberMe || model.IsAutoSignIn);
+            return await OAuth20SignIn(sagaId, currentUser, model.RememberMe || model.IsAutoSignIn);
         }
 
         [HttpPost("oauth20/authorize/permission")]
@@ -276,7 +276,7 @@ namespace Obsidian.Controllers.OAuth
             return await _sagaBus.InvokeAsync<PasswordAuthenticateCommand, AuthenticationResult>(command);
         }
 
-        private async Task<IActionResult> OAuth20SignInCore(Guid sagaId, User user, bool isPersistent)
+        private async Task<IActionResult> OAuth20SignIn(Guid sagaId, User user, bool isPersistent)
         {
             await _signinService.CookieSignInAsync(ObsidianAuthenticationSchemes.OAuth20Cookie, user, isPersistent);
 
