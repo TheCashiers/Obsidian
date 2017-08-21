@@ -29,6 +29,6 @@ script:
     - dotnet build
     - cd ../../test
     - for d in ./*/ ; do(cd "$d" && dotnet test); done
-    - cat /var/log/mongodb/mongodb.log
+    - cat /var/log/mongodb/mongod.log
     - cd ../src/Obsidian
     - npm run test:cover:travis
