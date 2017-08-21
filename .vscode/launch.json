@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}\\src\\Obsidian\\bin\\Debug\\netcoreapp1.0\\Obsidian.dll",
+            "program": "${workspaceRoot}\\src\\Obsidian\\bin\\Debug\\netcoreapp2.0\\Obsidian.dll",
             "args": [],
             "cwd": "${workspaceRoot}\\src\\Obsidian\\",
             "stopAtEntry": false,

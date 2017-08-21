@@ -1,17 +1,25 @@
 ﻿body {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin:0;
+    min-height: 100vh;
     background: url("../images/obsidian_background.png") 0 / cover fixed;
 }
 
+.body-content{
+    display: flex;
+    margin: auto;
+}
+
 .fullscreen {
+        display: flex;
+        margin: auto;
     border-radius: 5px;
     background: rgba(0,0,0,0.2);
     box-shadow: 0 0 0 1px rgba(111, 111, 111, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
-    position:absolute;
-    width:600px;
-    height:400px;
-    left:50%;
-    top:50%;
-    margin:-200px -300px;
+    width: 100%;
+    height: 50%;
 }
 .fullscreen::before {
     content: '';
@@ -23,18 +31,16 @@
     z-index: -1;
 }
 .left-div {
+    width:30%;
     border-radius: initial;
     background-image: url('../images/obsidian_texture_1.jpg');
-    float: left;
-    height: 100%;
-    width: 200px;
     color:white;
 }
 .left-div>h1{
     padding-bottom:40px;
 }
 .form-padding{
-    padding-left:200px;
+    width:100%;
     height:100%;
 }
 .text-padding{
