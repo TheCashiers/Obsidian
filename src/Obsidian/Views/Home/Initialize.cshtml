@@ -2,19 +2,44 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewBag.Title = "First Run";
+    ViewBag.Title = "Welcome!";
 }
 @model Obsidian.Models.InitializationInfo
 
-<h1>First Run</h1>
-<form asp-controller="Home" asp-action="Initialize" method="post">
-    <label asp-for="UserName"></label>
-    <input asp-for="UserName" type="text"/>
-    <label asp-for="Password"></label>
-    <input asp-for="Password" type="password" />
-    <label asp-for="ConfirmPassword"></label>
-    <input asp-for="ConfirmPassword" type="password" />
-    <label asp-for="HostUrl"></label>
-    <input asp-for="HostUrl" type="url" />
-    <button type="submit">OK</button>
-</form>
+
+<div class="fullscreen">
+
+    <div class="text-padding left-div">
+        @*Left Section*@
+        <h1>Welcome!</h1>
+        <h3>You are just one step away from your own OAuth server!</h3>
+    </div>
+    @*Right Section*@
+    <div class="form form-padding form-white">
+
+        <form role="form" class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" type="text" placeholder="Enter your username" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="Password"></label>
+                <input class="form-control" asp-for="Password" type="password" placeholder="Enter your password" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="ConfirmPassword"></label>
+                <input class="form-control" asp-for="ConfirmPassword" type="password" placeholder="Enter your password again" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="HostUrl" class="control-label"></label>
+                <input asp-for="HostUrl" class="form-control" type="url" placeholder="Enter your website link" required />
+            </div>
+            <button class="btn btn-lg btn-primary btn-block btn-raised" type="submit">Finish</button>
+        </form>
+        
+    </div>
+
+</div>
+
+
+<link href="~/css/SignIn.css" rel="stylesheet" />
