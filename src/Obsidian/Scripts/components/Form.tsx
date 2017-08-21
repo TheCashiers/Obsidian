@@ -95,7 +95,7 @@ export const ScopeForm = (props) => (
         name="claimTypes"
         label="Claim Types"
         onInputChange={props.onInputChange}
-        value={props.claimTypes}
+        value={props.claims}
         placeholder="Claim Types..."
         type="text"
     />

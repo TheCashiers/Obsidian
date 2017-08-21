@@ -8,7 +8,7 @@ export class ScopeEditContainer extends FormContainer {
     constructor(props) {
         super(props);
         this.state = {
-            claimTypes: [],
+            claims: "",
             description: "",
             displayName: "",
             id: props.location.query.id,
@@ -20,10 +20,11 @@ export class ScopeEditContainer extends FormContainer {
         try {
             const response = await axios.getAxios(this.props.token)
                 .get(api.configs.getScope.request_uri + this.state.id);
+            const claimString = JSON.stringify(response.data.claims);
             this.setState(response.data);
-
+            this.setState({claims: claimString});
         } catch (error) {
-            this.props.push("getClient", error.toString());
+            this.props.push("getScope", error.toString());
         }
     }
     public async handleSubmit(e) {
@@ -31,13 +32,13 @@ export class ScopeEditContainer extends FormContainer {
         const scopeName: string = this.state.scopeName.trim();
         const displayName: string = this.state.displayName.trim();
         const description: string = this.state.description.trim();
-        const claimTypes: string[] = (this.state.claimTypes as string).split(",");
-        if (scopeName && displayName && description && claimTypes) {
+        const claims: string[] = JSON.parse(this.state.claims);
+        if (scopeName && displayName && description && claims) {
             const jsonObject = {
                 displayName,
                 scopeName,
                 description,
-                claimTypes,
+                claims,
             };
             try {
                 await axios.getAxios(this.props.token)
@@ -56,7 +57,7 @@ export class ScopeEditContainer extends FormContainer {
                 scopeName={this.state.scopeName}
                 displayName={this.state.displayName}
                 description={this.state.description}
-                claimTypes={this.state.claimTypes}
+                claims={this.state.claims}
                 action="Edit Scope"
             />);
     }
