@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using Obsidian.Foundation.Modeling;
 using System;
+using System.Threading.Tasks;
 
 namespace Obsidian.Persistence.Test.Repositories
 {
@@ -26,6 +27,6 @@ namespace Obsidian.Persistence.Test.Repositories
         protected IMongoDatabase Database => _db;
 
 
-        protected override void CleanupDatabase() => client.DropDatabase(testDbName);
+        protected override async Task CleanupDatabaseAsync() => await client.DropDatabaseAsync(testDbName);
     }
 }

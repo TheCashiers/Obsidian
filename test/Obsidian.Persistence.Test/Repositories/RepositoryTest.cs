@@ -17,7 +17,7 @@ namespace Obsidian.Persistence.Test.Repositories
 
         protected abstract TAggregate CreateAggregate();
 
-        protected abstract void CleanupDatabase();
+        protected abstract Task CleanupDatabaseAsync();
 
         protected RepositoryTest()
         {
@@ -101,6 +101,9 @@ namespace Obsidian.Persistence.Test.Repositories
             Assert.Empty(result);
         }
 
-        public void Dispose() => CleanupDatabase();
+        public async void Dispose()
+        {
+            await CleanupDatabaseAsync();
+        }
     }
 }
