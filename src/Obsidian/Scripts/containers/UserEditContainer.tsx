@@ -18,7 +18,7 @@ export class UserEditContainer extends FormContainer {
                     .get(api.configs.getUser.request_uri + this.state.id);
                 this.setState({ username: response.data.userName });
             } catch (error) {
-                this.props.push("getClient", error.toString());
+                this.props.push("getUser", error.toString());
             }
         } else {
             history.pushState(null, null, "/manage");

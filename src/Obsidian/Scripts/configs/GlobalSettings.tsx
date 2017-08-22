@@ -45,6 +45,10 @@ export const configs: IServerConfigList = {
         request_type: REQUEST_TYPES.PUT,
         request_uri: "/api/users/",
     },
+    editProfile: {
+        request_type: REQUEST_TYPES.PUT,
+        request_uri : "/api/Account/",
+    },
     getClient: {
         request_type: REQUEST_TYPES.GET,
         request_uri: "/api/clients/",
@@ -56,6 +60,10 @@ export const configs: IServerConfigList = {
     getUser: {
         request_type: REQUEST_TYPES.GET,
         request_uri: "/api/users/",
+    },
+    getProfile: {
+        request_type: REQUEST_TYPES.GET,
+        request_uri: "/api/Account/Profile",
     },
     signOut: {
         request_type: REQUEST_TYPES.GET,

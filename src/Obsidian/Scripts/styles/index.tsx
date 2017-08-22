@@ -7,6 +7,13 @@ export const styles = {
         color: "black",
         verticalAlign: "center",
     },
+    modalCard: {
+        color: "black",
+    },
+    modalBody: {
+        display: "flex",
+        flexDirection: "column",
+    },
     portalIndex: {
         margin: "30px",
     },
