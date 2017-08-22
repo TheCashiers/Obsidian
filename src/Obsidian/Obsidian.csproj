@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>Obsidian</PackageId>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
