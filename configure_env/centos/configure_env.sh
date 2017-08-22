@@ -10,10 +10,15 @@ sudo wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
 curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 sudo yum install -y nodejs npm yarn mongodb-org
 
-curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?linkid=848821
-sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet
-sudo ln -s /opt/dotnet/dotnet /usr/local/bin
+curl -sSL -o dotnet.tar.gz https://aka.ms/dotnet-sdk-2.0.0-linux-x64
+mkdir -p ~/dotnet && tar zxf dotnet.tar.gz -C ~/dotnet
+export PATH=$PATH:$HOME/dotnet
 rm dotnet.tar.gz
 
 echo "=============== Starting database service ===================="
 sudo service mongod start
+
+echo "=============== Finished ===================="
+cd ./Obsidian
+chmod +x ./build.sh
+echo "Please run ./build.sh script to build."
