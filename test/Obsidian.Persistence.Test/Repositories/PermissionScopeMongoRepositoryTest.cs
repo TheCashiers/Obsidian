@@ -34,6 +34,15 @@ namespace Obsidian.Persistence.Test.Repositories
             Assert.Equal(scope.Id, found.Id);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public async Task FindByScopeName_Fail_When_ScopeNameIsNullOrWhiteSpace(string value)
+        {
+            await Assert.ThrowsAsync<ArgumentNullException>("scopeName", async () => await PermissionScopeRepo.FindByScopeNameAsync(value));
+        }
+
         protected override PermissionScope CreateAggregate()
             => PermissionScope.Create(Guid.NewGuid(), "test.scope", "Test Scope", "This is a test scope.");
 
