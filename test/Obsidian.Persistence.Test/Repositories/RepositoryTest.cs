@@ -101,9 +101,9 @@ namespace Obsidian.Persistence.Test.Repositories
             Assert.Empty(result);
         }
 
-        public void Dispose()
+        public async void Dispose()
         {
-            CleanupDatabaseAsync().Wait();
+            await CleanupDatabaseAsync();
         }
     }
 }
