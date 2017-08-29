@@ -7,7 +7,7 @@ import {MaterialInput} from "./Form";
 export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-            <span className="hidden-xs">{props.surnName} {props.givenName}</span>
+            <span>{props.surnName} {props.givenName}</span>
         </a>
         <ul className="dropdown-menu">
             <li style={styles.userCard}>

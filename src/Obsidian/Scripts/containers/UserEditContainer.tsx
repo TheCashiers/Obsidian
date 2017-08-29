@@ -10,6 +10,7 @@ export class UserEditContainer extends FormContainer {
         super(props);
         this.state = { username: "", password: "", id: props.location.query.id };
         this.defaultUsername = props.location.query.username;
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     public async componentWillMount() {
         if (this.state.id) {
