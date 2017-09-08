@@ -26,13 +26,19 @@ body {
     box-shadow: 0 0 0 1px rgba(111, 111, 111, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
     width: 100%;
 }
-.fullscreen::before {
+
+form{
+    height: 100%;
+    transform:translateY(-100%);
+}
+
+.form::before {
     content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
+    display: flex;
+    height: 100%;
     background: url("../images/obsidian_background.png") 0 / cover fixed;
     filter: blur(20px);
-    -webkit-filter:blur(3px);
+    -webkit-filter: blur(3px);
     z-index: -1;
 }
 

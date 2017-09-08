@@ -2,7 +2,7 @@
 import { Link } from "react-router";
 import { UserInfoContainer } from "../containers/UserInfoContainer";
 import { styles } from "../styles/index";
-import {MaterialInput} from "./Form";
+import { MaterialInput } from "./Form";
 
 export const UserInfo = (props) => (
     <li className="dropdown user user-menu">
