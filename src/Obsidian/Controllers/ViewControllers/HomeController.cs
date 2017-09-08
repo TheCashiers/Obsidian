@@ -64,15 +64,5 @@ namespace Obsidian.Controllers.ViewControllers
             await Task.WhenAll(init, cmf);
             return Redirect("/manage");
         }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
-
-        public IActionResult Login()
-        {
-            return View();
-        }
     }
 }
