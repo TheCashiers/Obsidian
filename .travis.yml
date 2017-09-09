@@ -32,4 +32,4 @@ script:
     - for d in ./*/ ; do(cd "$d" && dotnet test); done
     - cd ../src/Obsidian
     - npm run test:cover:travis
-    - docker build -t ZA-PT/Obsidian .
+    - docker build -t za-pt/obsidian .

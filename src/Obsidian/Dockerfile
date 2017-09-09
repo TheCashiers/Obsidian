@@ -9,7 +9,7 @@ COPY *.csproj .
 RUN dotnet restore
 
 COPY . .
-RUN dotnet publish --output /app/ --configuration Release
+RUN yarn && dotnet publish --output /app/ --configuration Release
 
 FROM microsoft/aspnetcore
 WORKDIR /app
