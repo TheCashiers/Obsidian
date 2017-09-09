@@ -1,9 +1,9 @@
 ﻿FROM microsoft/aspnetcore-build AS builder
-WORKDIR .
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-COPY *.csproj .
+WORKDIR ../..
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash && export PATH="$HOME/.yarn/bin:$PATH"
 RUN dotnet restore
 COPY . .
+WORKDIR .
 RUN yarn && dotnet publish --output /app/ --configuration Release
 
 FROM microsoft/aspnetcore
