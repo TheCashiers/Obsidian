@@ -1,7 +1,9 @@
 language: csharp
 mono: none
 dotnet: 2.0.0
-services: mongodb
+services: 
+    - mongodb
+    - docker
 
 os: linux
 dist: trusty
@@ -30,3 +32,4 @@ script:
     - for d in ./*/ ; do(cd "$d" && dotnet test); done
     - cd ../src/Obsidian
     - npm run test:cover:travis
+    - docker build -t ZA-PT/Obsidian .
