@@ -1,6 +1,6 @@
 ﻿FROM microsoft/aspnetcore-build AS builder
 WORKDIR .
-RUN curl -o- -L https://yarnpkg.com/install.sh | sudo bash
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 COPY *.csproj .
 RUN dotnet restore
 COPY . .
