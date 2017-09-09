@@ -1,5 +1,5 @@
 ﻿FROM microsoft/aspnetcore-build AS builder
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash && export PATH="$HOME/.yarn/bin:$PATH"
+RUN npm install --global yarn
 WORKDIR .
 COPY . .
 RUN dotnet restore

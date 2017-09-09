@@ -10,5 +10,4 @@ dist: trusty
 group: edge #enable sudo
 
 script:
-    - cd ./src/Obsidian
     - docker build -t za-pt/obsidian .
