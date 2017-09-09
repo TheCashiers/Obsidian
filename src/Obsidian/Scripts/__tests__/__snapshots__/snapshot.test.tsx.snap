@@ -585,14 +585,14 @@ exports[`PortalHeader render snapshot 1`] = `
               data-toggle="dropdown"
               href="#"
             >
-              <span
-                className="hidden-xs"
-              >
-                Henry Chu
+              <span>
+                Admin
+                 
+                
               </span>
             </a>
             <ul
-              className="dropdown-menu "
+              className="dropdown-menu"
             >
               <li
                 style={
@@ -607,12 +607,14 @@ exports[`PortalHeader render snapshot 1`] = `
                 }
               >
                 <h2>
-                  Henry Chu
-                   - 
-                  Administrator
+                  Hi 
+                  Admin
+                   
+                  
+                  !
                   <br />
                   <small>
-                    A real boss.
+                    Administrator
                   </small>
                 </h2>
               </li>
@@ -622,12 +624,12 @@ exports[`PortalHeader render snapshot 1`] = `
                 <div
                   className="pull-left"
                 >
-                  <a
+                  <button
                     className="btn btn-default btn-flat"
-                    href="#"
+                    onClick={[Function]}
                   >
                     Profile
-                  </a>
+                  </button>
                 </div>
                 <div
                   className="pull-right"
@@ -641,6 +643,160 @@ exports[`PortalHeader render snapshot 1`] = `
                 </div>
               </li>
             </ul>
+            <div
+              className="modal"
+              style={
+                Object {
+                  "display": "none",
+                }
+              }
+            >
+              <div
+                className="modal-dialog"
+              >
+                <div
+                  className="modal-content"
+                >
+                  <div
+                    className="modal-header"
+                  >
+                    <button
+                      className="close"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                       × 
+                    </button>
+                    <h2
+                      className="modal-title"
+                      style={
+                        Object {
+                          "color": "black",
+                        }
+                      }
+                    >
+                       Edit your personal information 
+                    </h2>
+                  </div>
+                  <div
+                    className="modal-body"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flexDirection": "column",
+                      }
+                    }
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="col-md-2 control-label"
+                      >
+                        Email Addr
+                      </label>
+                      <div
+                        className="col-md-10"
+                      >
+                        <input
+                          className="form-control"
+                          name="emailAddress"
+                          onChange={[Function]}
+                          placeholder="email..."
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="col-md-2 control-label"
+                      >
+                        gender
+                      </label>
+                      <div
+                        className="col-md-10"
+                      >
+                        <input
+                          className="form-control"
+                          name="gender"
+                          onChange={[Function]}
+                          placeholder="gender..."
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="col-md-2 control-label"
+                      >
+                        givenname
+                      </label>
+                      <div
+                        className="col-md-10"
+                      >
+                        <input
+                          className="form-control"
+                          name="givenName"
+                          onChange={[Function]}
+                          placeholder="givenname..."
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="col-md-2 control-label"
+                      >
+                        surnname
+                      </label>
+                      <div
+                        className="col-md-10"
+                      >
+                        <input
+                          className="form-control"
+                          name="surnName"
+                          onChange={[Function]}
+                          placeholder="surnname..."
+                          required={true}
+                          type="text"
+                          value="Admin"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="modal-footer"
+                  >
+                    <button
+                      className="btn btn-default"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                       Close 
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                       Save changes 
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
       </div>

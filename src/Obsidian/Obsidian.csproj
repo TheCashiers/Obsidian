@@ -32,7 +32,17 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="key.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="key.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
+    <Exec Command="yarn" />
     <Exec Command="npm start --color" />
   </Target>
 

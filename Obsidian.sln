@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26711.1
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{39F43A57-A505-4A82-A002-71F58516A75C}"
 EndProject
@@ -58,6 +58,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ubuntu", "ubuntu", "{147988F7-4A4D-4599-B8D5-2210283FD6EC}"
 	ProjectSection(SolutionItems) = preProject
 		configure_env\ubuntu\configure_env.sh = configure_env\ubuntu\configure_env.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{490121E9-64A5-4286-B753-9B4FB7C70C30}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Global
