@@ -26,4 +26,5 @@ jobs:
 
     - stage: docker
       services: docker
+      group: edge
       script: docker build -t za-pt/obsidian .
