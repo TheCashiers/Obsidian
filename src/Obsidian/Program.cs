@@ -1,20 +1,32 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
 
 namespace Obsidian
 {
-    public class Program
+    public static class Program
     {
+        private static bool keepRunning = true;
+        private static IWebHost host;
+
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
+            while (keepRunning)
+            {
+                keepRunning = false;
+                host = BuildWebHost(args);
+                host.Run();
+            }
         }
+
+        public static async void RestartHostAsync()
+        {
+            keepRunning = true;
+            await host.StopAsync();
+        }
+
+        private static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .Build();
     }
 }

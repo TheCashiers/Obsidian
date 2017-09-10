@@ -13,6 +13,7 @@ using Obsidian.Foundation.DependencyInjection;
 using Obsidian.Persistence.DependencyInjection;
 using Obsidian.QueryModel.Mapping;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
 
 namespace Obsidian
@@ -36,7 +37,7 @@ namespace Obsidian
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
@@ -64,10 +65,14 @@ namespace Obsidian
             services.ConfigOAuth20Cookie();
             services.ConfigClaimsBasedAuthorization();
 
-            var provider = services.BuildServiceProvider();
-            services.ConfigJwtAuthentication(provider.GetService<IOptions<OAuth20Configuration>>(),
-                provider.GetService<RsaSigningService>());
-
+            {
+                var provider = services.BuildServiceProvider();
+                var repo = provider.GetService(typeof(Obsidian.Domain.Repositories.IClientRepository));
+                var oauthOptions = provider.GetService<IOptions<OAuth20Configuration>>();
+                var signingService = provider.GetService<RsaSigningService>();
+                services.ConfigJwtAuthentication(oauthOptions, signingService);
+            }
+            return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
