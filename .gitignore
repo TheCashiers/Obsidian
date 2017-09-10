@@ -259,8 +259,8 @@ paket-files/
 # Visual Studio Code assert file
 src/Obsidian/.vscode/
 
-src/Obsidian/obsidianconfig.dev.json
 !src/Obsidian/key.pfx
 src/Obsidian/.happypack/
 src/Obsidian/coverage/
 src/Obsidian/init.txt
+/src/Obsidian/appsettings.Development.json

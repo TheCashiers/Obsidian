@@ -23,17 +23,13 @@ namespace Obsidian
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
-            var obsidianConfigFileName = "obsidianconfig.json";
             if (env.IsDevelopment())
             {
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
-                obsidianConfigFileName = "obsidianconfig.dev.json";
             }
-            builder.AddJsonFile(obsidianConfigFileName, optional: false, reloadOnChange: true);
             Configuration = builder.Build();
         }
 

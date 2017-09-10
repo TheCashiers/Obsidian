@@ -18,8 +18,8 @@ namespace Obsidian.Controllers.ViewControllers
         public HomeController(IHostingEnvironment hostingEnvironment,
                               InitializationService initializationService)
         {
-            this._hostingEnvironment = hostingEnvironment;
-            this._initializationService = initializationService;
+            _hostingEnvironment = hostingEnvironment;
+            _initializationService = initializationService;
         }
 
         public IActionResult Index()

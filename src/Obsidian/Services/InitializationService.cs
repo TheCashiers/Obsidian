@@ -27,10 +27,10 @@ namespace Obsidian.Services
                                      IClientRepository clientRepository,
                                      IUserRepository userRepository)
         {
-            this._env = env;
-            this._scopeRepository = scopeRepository;
-            this._clientRepository = clientRepository;
-            this._userRepository = userRepository;
+            _env = env;
+            _scopeRepository = scopeRepository;
+            _clientRepository = clientRepository;
+            _userRepository = userRepository;
         }
 
         public async Task InitializeAsync(InitializationInfo initializationInfo)
@@ -60,7 +60,7 @@ namespace Obsidian.Services
             claims.ForEach(user.Claims.Add);
             await _userRepository.AddAsync(user);
 
-            var configFilePath = Path.Combine(_env.ContentRootPath, _env.IsDevelopment() ? "obsidianconfig.dev.json" : "obsidianconfig.json");
+            var configFilePath = Path.Combine(_env.ContentRootPath, $"appsettings.{_env.EnvironmentName}.json");
             var json = JObject.Parse(File.ReadAllText(configFilePath));
             json["Portal"]["AdminPortalClientId"] = client.Id;
             json["Portal"]["AdminPortalScopes"] = new JArray(scope.ScopeName);

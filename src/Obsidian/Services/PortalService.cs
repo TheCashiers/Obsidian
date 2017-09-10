@@ -10,7 +10,7 @@ namespace Obsidian.Services
     {
         private readonly PortalConfig _config;
 
-        public PortalService(IOptionsSnapshot<PortalConfig> options)
+        public PortalService(IOptions<PortalConfig> options)
         {
             _config = options.Value;
         }
