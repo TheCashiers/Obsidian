@@ -59,9 +59,8 @@ namespace Obsidian.Controllers.ViewControllers
                 // Confuse the attacker by returning 404.
                 return NotFound();
             }
-            var init = _initializationService.InitializeAsync(initializationInfo);
-            var cmf = CreateMarkerFileAsync();
-            await Task.WhenAll(init, cmf);
+            await _initializationService.InitializeAsync(initializationInfo);
+            await CreateMarkerFileAsync();
             return Redirect("/manage");
         }
     }

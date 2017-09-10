@@ -4,7 +4,7 @@ WORKDIR .
 COPY . .
 RUN dotnet restore
 WORKDIR ./src/Obsidian
-RUN dotnet publish --output /app/ --configuration Release
+RUN yarn && dotnet publish --output /app/ --configuration Release
 
 FROM microsoft/aspnetcore
 MAINTAINER ZA-PT

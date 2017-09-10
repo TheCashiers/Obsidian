@@ -42,7 +42,6 @@
   </ItemGroup>
 
   <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
-    <Exec Command="yarn" />
     <Exec Command="npm start --color" />
   </Target>
 
