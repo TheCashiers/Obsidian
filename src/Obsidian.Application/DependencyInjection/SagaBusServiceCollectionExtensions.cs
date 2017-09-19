@@ -52,24 +52,18 @@ namespace Obsidian.Application.DependencyInjection
         {
             var assembly = typeof(SagaBusServiceCollectionExtensions).GetTypeInfo().Assembly;
             return assembly.GetTypes()
-                .Select(t => t.GetTypeInfo())
-                .Where(t => !t.IsAbstract)
-                .Where(t => t.HasBaseType(typeof(Saga)))
-                .Select(t => t.AsType());
+                .Where(t => (!t.IsAbstract) && t.HasBaseType(typeof(Saga)));
         }
 
-        private static bool HasBaseType(this TypeInfo typeInfo, Type targetType)
+        private static bool HasBaseType(this Type type, Type targetType)
         {
-            TypeInfo currentType = typeInfo;
-            do
-            {
-                if (currentType.IsEquivalentTo(targetType))
-                {
-                    return true;
-                }
-                currentType = currentType.BaseType.GetTypeInfo();
-            } while (currentType.BaseType != null);
-            return false;
+            return GetBaseTypes(type).Any(t => t.IsEquivalentTo(targetType));
+        }
+
+        private static IEnumerable<Type> GetBaseTypes(this Type type)
+        {
+            while ((type = type.BaseType) != null)
+                yield return type;
         }
     }
 }

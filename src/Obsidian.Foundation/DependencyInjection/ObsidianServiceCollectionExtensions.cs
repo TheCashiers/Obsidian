@@ -10,18 +10,14 @@ namespace Obsidian.Foundation.DependencyInjection
     {
         public static IServiceCollection AddObsidianServices(this IServiceCollection services)
         {
-            var projectLibs = DependencyContext.Default.RuntimeLibraries.Where(lib => lib.Type == "project");
-            var typeInfos = projectLibs.Select(lib => new AssemblyName(lib.Name)).Select(Assembly.Load).SelectMany(asm => asm.DefinedTypes);
-            var serviceDescriptors = typeInfos
+            DependencyContext.Default.RuntimeLibraries
+                .Where(lib => lib.Type == "project")
+                .Select(lib => Assembly.Load(new AssemblyName(lib.Name)))
+                .SelectMany(assembly => assembly.GetTypes())
                 .SelectMany(t => t.GetCustomAttributes<ServiceAttribute>(),
-                            (ti, attr) => new { TypeInfo = ti, Service = attr })
-                .Select(info =>
-                {
-                    var implType = info.TypeInfo.AsType();
-                    var serviceType = info.Service.ServiceType ?? implType;
-                    return new ServiceDescriptor(serviceType, implType, info.Service.Lifetime);
-                });
-            serviceDescriptors.ForEach(services.Add);
+                            (implType, attribute) => new ServiceDescriptor(attribute.ServiceType ?? implType, 
+                                                                              implType, attribute.Lifetime))
+                .ForEach(services.Add);
             return services;
         }
     }

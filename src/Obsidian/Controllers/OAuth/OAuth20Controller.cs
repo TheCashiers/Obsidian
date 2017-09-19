@@ -66,7 +66,6 @@ namespace Obsidian.Controllers.OAuth
             }
             if (result.State == OAuth20State.RequireSignIn)
             {
-
                 return await SignInPageView(result);
             }
             return BadRequest();
