@@ -47,7 +47,7 @@ namespace Obsidian
 
             //Add application components
             services.AddSagaBus().AddSagas();
-            services.AddMongoRepositories();
+            services.AddMongoRepositories(Configuration["ConnectionStrings:MongoDB"]);
 
             services.AddSwaggerGen(c =>
             {

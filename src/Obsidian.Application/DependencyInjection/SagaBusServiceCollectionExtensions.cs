@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Obsidian.Application.OAuth20;
+using Obsidian.Foundation.Collections;
 using Obsidian.Foundation.ProcessManagement;
 using System;
 using System.Collections.Generic;
@@ -30,11 +31,9 @@ namespace Obsidian.Application.DependencyInjection
         public static IServiceCollection AddSagas(this IServiceCollection services)
 
         {
-            foreach (var saga in _sagaTypes)
-            {
-                services.AddTransient(saga);
-            }
-            services.AddTransient<OAuth20Configuration>().AddTransient<OAuth20Service>();
+            _sagaTypes.SelectMany(sagaType => sagaType.GetInterfaces(),
+                                 (t, i) => new ServiceDescriptor(i, t, ServiceLifetime.Transient))
+                      .ForEach(services.Add);
             return services;
         }
 
