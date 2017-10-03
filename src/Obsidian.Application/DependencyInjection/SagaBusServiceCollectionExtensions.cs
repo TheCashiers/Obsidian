@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Obsidian.Application.OAuth20;
 using Obsidian.Foundation.Collections;
 using Obsidian.Foundation.ProcessManagement;
 using System;
@@ -19,7 +18,6 @@ namespace Obsidian.Application.DependencyInjection
         public static IServiceCollection AddSagaBus(this IServiceCollection services) => services.AddSingleton(sp =>
         {
             var bus = new SagaBus(sp);
-            bus.RegisterSagas();
             return bus;
         });
 
@@ -37,14 +35,6 @@ namespace Obsidian.Application.DependencyInjection
             return services;
         }
 
-        public static void RegisterSagas(this SagaBus bus)
-        {
-            foreach (var saga in _sagaTypes)
-            {
-                bus.Register(saga);
-            }
-        }
-
         private static readonly IEnumerable<Type> _sagaTypes = FindSagas();
 
         private static IEnumerable<Type> FindSagas()
@@ -54,10 +44,8 @@ namespace Obsidian.Application.DependencyInjection
                 .Where(t => (!t.IsAbstract) && t.HasBaseType(typeof(Saga)));
         }
 
-        private static bool HasBaseType(this Type type, Type targetType)
-        {
-            return GetBaseTypes(type).Any(t => t.IsEquivalentTo(targetType));
-        }
+        private static bool HasBaseType(this Type type, Type targetType) 
+            => GetBaseTypes(type).Any(t => t.IsEquivalentTo(targetType));
 
         private static IEnumerable<Type> GetBaseTypes(this Type type)
         {

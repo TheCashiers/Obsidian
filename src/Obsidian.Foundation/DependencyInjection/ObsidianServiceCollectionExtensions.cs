@@ -15,8 +15,9 @@ namespace Obsidian.Foundation.DependencyInjection
                 .Select(lib => Assembly.Load(new AssemblyName(lib.Name)))
                 .SelectMany(assembly => assembly.GetTypes())
                 .SelectMany(t => t.GetCustomAttributes<ServiceAttribute>(),
-                            (implType, attribute) => new ServiceDescriptor(attribute.ServiceType ?? implType, 
-                                                                              implType, attribute.Lifetime))
+                            (implType, attribute) =>
+                            new ServiceDescriptor(attribute.ServiceType ?? implType,
+                                                  implType, attribute.Lifetime))
                 .ForEach(services.Add);
             return services;
         }

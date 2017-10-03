@@ -10,25 +10,11 @@ namespace Obsidian.Foundation.ProcessManagement
     public class SagaBus
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly Dictionary<Type, Type> _sagaStarterRegistry = new Dictionary<Type, Type>();
         private readonly List<Saga> _sagaCache = new List<Saga>();
 
         public SagaBus(IServiceProvider provider)
         {
             _serviceProvider = provider;
-        }
-
-        public SagaBus Register<TSaga>() where TSaga : Saga => Register(typeof(TSaga));
-
-        public SagaBus Register(Type sagaType)
-        {
-            sagaType
-                .GetTypeInfo()
-                .GetInterfaces()
-                .Where(i => i.GetGenericTypeDefinition() == typeof(IStartsWith<,>))
-                .Select(i => i.GetTypeInfo().GetGenericArguments().First())
-                .ForEach(ct => _sagaStarterRegistry.Add(ct, sagaType));
-            return this;
         }
 
         public async Task<TResult> InvokeAsync<TCommand, TResult>(TCommand command)
@@ -38,18 +24,16 @@ namespace Obsidian.Foundation.ProcessManagement
             {
                 throw new ArgumentException("Command validation failed.", nameof(command));
             }
-            if (_sagaStarterRegistry.TryGetValue(typeof(TCommand), out var sagaType))
+
+            var service = _serviceProvider.GetService(typeof(IStartsWith<TCommand, TResult>));
+            if (service is Saga saga && saga is IStartsWith<TCommand, TResult> handler)
             {
-                var service = _serviceProvider.GetService(sagaType);
-                if (service is Saga saga && saga is IStartsWith<TCommand, TResult> handler)
+                var result = await handler.StartAsync(command);
+                if (!saga.IsCompleted)
                 {
-                    var result = await handler.StartAsync(command);
-                    if (!saga.IsCompleted)
-                    {
-                        _sagaCache.Add(saga);
-                    }
-                    return result;
+                    _sagaCache.Add(saga);
                 }
+                return result;
             }
             throw new SagaNotFoundException();
         }
