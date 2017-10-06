@@ -6,6 +6,7 @@ using Obsidian.Application.ClientManagement;
 using Obsidian.Application.Dto;
 using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation;
 using Obsidian.Foundation.ProcessManagement;
 using Obsidian.Misc;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -18,14 +19,12 @@ namespace Obsidian.Controllers.ApiControllers
     [Route("api/[controller]")]
     public class ClientsController : Controller
     {
-        private readonly SagaBus _sagaBus;
         private readonly IClientRepository _clientRepository;
         private readonly ClientService _service;
 
-        public ClientsController(IClientRepository repo, SagaBus bus, ClientService service)
+        public ClientsController(IClientRepository repo, ClientService service)
         {
             _clientRepository = repo;
-            _sagaBus = bus;
             _service = service;
         }
 
@@ -96,14 +95,15 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> Put([FromBody]UpdateClientDto dto, Guid id)
         {
-            var client = await _clientRepository.FindByIdAsync(id);
-            if (client == null) return NotFound();
-            client = await _service.UpdateClient(id, dto.DisplayName, dto.RedirectUri);
-            if (client != null)
+            try
             {
+                await _service.UpdateClient(id, dto.DisplayName, dto.RedirectUri);
                 return Created(Url.Action(), null);
             }
-            return BadRequest();
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/Secret")]
@@ -111,14 +111,15 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> UpdateSecret(Guid id)
         {
-            var client = await _clientRepository.FindByIdAsync(id);
-            if (client == null) return NotFound();
-            client = await _service.UpdateClientSecret(id);
-            if (client != null)
+            try
             {
+                await _service.UpdateClientSecret(id);
                 return Created(Url.Action(), null);
             }
-            return BadRequest();
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
