@@ -20,11 +20,13 @@ namespace Obsidian.Controllers.ApiControllers
     {
         private readonly SagaBus _sagaBus;
         private readonly IClientRepository _clientRepository;
+        private readonly ClientService _service;
 
-        public ClientsController(IClientRepository repo, SagaBus bus)
+        public ClientsController(IClientRepository repo, SagaBus bus, ClientService service)
         {
             _clientRepository = repo;
             _sagaBus = bus;
+            _service = service;
         }
 
         /// <summary>
@@ -80,14 +82,13 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsClientCreator, "Yes")]
         public async Task<IActionResult> Post([FromBody] ClientCreationDto dto)
         {
-            var cmd = new CreateClientCommand { DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
-            var result = await _sagaBus.InvokeAsync<CreateClientCommand, ClientCreationResult>(cmd);
-            if (result.Succeed)
+            var client = await _service.CreateClient(dto.DisplayName, dto.RedirectUri);
+            if (client != null)
             {
-                var url = Url.Action(nameof(GetById), new { id = result.Id });
+                var url = Url.Action(nameof(GetById), new { id = client.Id });
                 return Created(url, null);
             }
-            return StatusCode(412, result.Message);
+            return StatusCode(412);
         }
 
         [HttpPut("{id:guid}")]
@@ -95,13 +96,14 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> Put([FromBody]UpdateClientDto dto, Guid id)
         {
-            var cmd = new UpdateClientCommand { ClientId = id, DisplayName = dto.DisplayName, RedirectUri = dto.RedirectUri };
-            var result = await _sagaBus.InvokeAsync<UpdateClientCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            var client = await _clientRepository.FindByIdAsync(id);
+            if (client == null) return NotFound();
+            client = await _service.UpdateClient(id, dto.DisplayName, dto.RedirectUri);
+            if (client != null)
             {
                 return Created(Url.Action(), null);
             }
-            return BadRequest(result.Message);
+            return BadRequest();
         }
 
         [HttpPut("{id:guid}/Secret")]
@@ -109,13 +111,14 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> UpdateSecret(Guid id)
         {
-            var cmd = new UpdateClientSecretCommand { ClientId = id };
-            var result = await _sagaBus.InvokeAsync<UpdateClientSecretCommand, ClientSecretUpdateResult>(cmd);
-            if (result.Succeed)
+            var client = await _clientRepository.FindByIdAsync(id);
+            if (client == null) return NotFound();
+            client = await _service.UpdateClientSecret(id);
+            if (client != null)
             {
                 return Created(Url.Action(), null);
             }
-            return BadRequest(result.Message);
+            return BadRequest();
         }
     }
 }
