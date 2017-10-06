@@ -41,5 +41,15 @@ namespace Obsidian.Application.UserManagement
             user.UpdateUserName(newUserName);
             await _repo.SaveAsync(user);
         }
+
+        public async Task SetPassword(Guid id, string newPassword)
+        {
+            var user = await _repo.FindByIdAsync(id);
+            if (user == null)
+                throw new EntityNotFoundException($"Can not find user with id {id}");
+
+            user.SetPassword(newPassword);
+            await _repo.SaveAsync(user);
+        }
     }
 }

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Obsidian.Application.UserManagement
 {
     public class UpdateUserSaga : Saga, IStartsWith<UpdateUserProfileCommand, MessageResult>
-                                      , IStartsWith<UpdateUserPasswordCommand, MessageResult>
                                       , IStartsWith<UpdateUserClaimCommand, MessageResult>
     {
         private bool _isCompleted;
@@ -68,27 +67,7 @@ namespace Obsidian.Application.UserManagement
             };
         }
 
-        public async Task<MessageResult> StartAsync(UpdateUserPasswordCommand command)
-        {
-            _isCompleted = true;
-            //check user
-            var user = await _repo.FindByIdAsync(command.UserId);
-            if (user == null)
-            {
-                return new MessageResult
-                {
-                    Succeed = false,
-                    Message = $"User of user id {command.UserId} doesn't exists."
-                };
-            }
-            user.SetPassword(command.NewPassword);
-            await _repo.SaveAsync(user);
-            return new MessageResult
-            {
-                Succeed = true,
-                Message = $"Password of User {command.UserId} changed."
-            };
-        }
+      
 
         protected override bool IsProcessCompleted()
         {

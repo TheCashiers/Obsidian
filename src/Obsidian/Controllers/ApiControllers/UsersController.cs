@@ -102,14 +102,15 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserPasswordEditor, "Yes")]
         public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
-            var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
-            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(), null);
+                await _userManagementService.SetUserName(id, dto.Password);
+                return Ok();
             }
-            //if user doesn't exist.
-            return BadRequest(result.Message);
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/UserName")]
