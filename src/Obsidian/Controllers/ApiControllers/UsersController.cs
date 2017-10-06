@@ -20,11 +20,13 @@ namespace Obsidian.Controllers.ApiControllers
     {
         private readonly SagaBus _sagaBus;
         private readonly IUserRepository _userRepository;
+        private readonly UserManagementService _userManagementService;
 
-        public UsersController(IUserRepository userRepo, SagaBus bus)
+        public UsersController(IUserRepository userRepo, SagaBus bus, UserManagementService userManagementService)
         {
             _userRepository = userRepo;
             _sagaBus = bus;
+            _userManagementService = userManagementService;
         }
 
         [HttpGet]
@@ -52,14 +54,16 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserCreator, "Yes")]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
-            var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };
-            var result = await _sagaBus.InvokeAsync<CreateUserCommand, UserCreationResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(nameof(GetById), new { id = result.UserId }), null);
+                var newUser = await _userManagementService.CreateAsync(dto);
+                return Created(Url.Action(nameof(GetById), new { id = newUser.Id }), null);
             }
-            // currently, the only reason for failure is that a user of the same username exists.
-            return StatusCode(412, result.Message);
+            catch (ArgumentException ex)
+            {
+                // HTTP 409 Conflict
+                return StatusCode(409, ex.Message);
+            }
         }
 
         [HttpPut("{id:guid}/Claims")]
