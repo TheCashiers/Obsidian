@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UserManagement\UpdateUserSaga.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Obsidian.Domain\Obsidian.Domain.csproj" />
   </ItemGroup>
 

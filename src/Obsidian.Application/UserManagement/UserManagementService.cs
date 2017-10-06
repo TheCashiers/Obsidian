@@ -2,9 +2,9 @@
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
+using Obsidian.Foundation.Collections;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
@@ -59,6 +59,22 @@ namespace Obsidian.Application.UserManagement
                 throw new EntityNotFoundException($"Can not find user with id {id}");
 
             user.UpdateProfile(profile);
+            await _repo.SaveAsync(user);
+        }
+
+        public async Task UpdateUserClaimsAsync(Guid id, UpdateUserClaimsDto dto)
+        {
+            var user = await _repo.FindByIdAsync(id);
+            if (user == null)
+                throw new EntityNotFoundException($"Can not find user with id {id}");
+
+            user.Claims.Clear();
+            dto.Claims.Select(c => new ObsidianClaim
+            {
+                Type = c.ClaimType,
+                Value = c.ClaimValue
+            })
+            .ForEach(user.Claims.Add);
             await _repo.SaveAsync(user);
         }
     }

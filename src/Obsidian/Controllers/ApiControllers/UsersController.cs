@@ -72,14 +72,15 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserClaimsEditor, "Yes")]
         public async Task<IActionResult> UpdateClaims([FromBody]UpdateUserClaimsDto dto, Guid id)
         {
-            var cmd = new UpdateUserClaimCommand { UserId = id, Claims = dto.Claims.ToDictionary(t => t.ClaimType, v => v.ClaimValue) };
-            var result = await _sagaBus.InvokeAsync<UpdateUserClaimCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(), null);
+                await _userManagementService.UpdateUserClaimsAsync(id, dto);
+                return Ok();
             }
-            //if user doesn't exist.
-            return BadRequest(result.Message);
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/Profile")]
