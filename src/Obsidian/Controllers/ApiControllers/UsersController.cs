@@ -8,25 +8,21 @@ using Obsidian.Authorization;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
-using Obsidian.Foundation.ProcessManagement;
 using Obsidian.Misc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
     public class UsersController : Controller
-    {
-        private readonly SagaBus _sagaBus;
+    { 
         private readonly IUserRepository _userRepository;
         private readonly UserManagementService _userManagementService;
 
-        public UsersController(IUserRepository userRepo, SagaBus bus, UserManagementService userManagementService)
+        public UsersController(IUserRepository userRepo, UserManagementService userManagementService)
         {
             _userRepository = userRepo;
-            _sagaBus = bus;
             _userManagementService = userManagementService;
         }
 
