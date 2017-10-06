@@ -97,7 +97,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> Put([FromBody]UpdateClientDto dto, Guid id)
         {
             var client = await _clientRepository.FindByIdAsync(id);
-            if (client == null) return BadRequest();
+            if (client == null) return NotFound();
             client = await _service.UpdateClient(id, dto.DisplayName, dto.RedirectUri);
             if (client != null)
             {
@@ -112,7 +112,7 @@ namespace Obsidian.Controllers.ApiControllers
         public async Task<IActionResult> UpdateSecret(Guid id)
         {
             var client = await _clientRepository.FindByIdAsync(id);
-            if (client == null) return BadRequest();
+            if (client == null) return NotFound();
             client = await _service.UpdateClientSecret(id);
             if (client != null)
             {
