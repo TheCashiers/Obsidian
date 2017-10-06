@@ -10,7 +10,6 @@ namespace Obsidian.Application.UserManagement
 {
     public class UpdateUserSaga : Saga, IStartsWith<UpdateUserProfileCommand, MessageResult>
                                       , IStartsWith<UpdateUserPasswordCommand, MessageResult>
-                                      , IStartsWith<UpdateUserNameCommand, MessageResult>
                                       , IStartsWith<UpdateUserClaimCommand, MessageResult>
     {
         private bool _isCompleted;
@@ -66,33 +65,6 @@ namespace Obsidian.Application.UserManagement
             {
                 Succeed = true,
                 Message = $"Profile of User {user.Id} changed."
-            };
-        }
-
-        public async Task<MessageResult> StartAsync(UpdateUserNameCommand command)
-        {
-            _isCompleted = true;
-            //check user
-            if (!(await _repo.FindByUserNameAsync(command.UserName) == null))
-                return new MessageResult
-                {
-                    Succeed = false,
-                    Message = $"User of user name {command.UserName} exists."
-                };
-            var user = await _repo.FindByIdAsync(command.UserId);
-            if (user == null)
-                return new MessageResult
-                {
-                    Succeed = false,
-                    Message = $"User of user id {command.UserId} doesn't exists."
-                };
-            //set user name
-            user.UpdateUserName(command.UserName);
-            await _repo.SaveAsync(user);
-            return new MessageResult
-            {
-                Succeed = true,
-                Message = $"UserName of user {user.Id} changed."
             };
         }
 

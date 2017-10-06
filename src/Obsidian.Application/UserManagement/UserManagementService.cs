@@ -1,6 +1,7 @@
 ﻿using Obsidian.Application.Dto;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,19 @@ namespace Obsidian.Application.UserManagement
             user.SetPassword(dto.Password);
             await _repo.AddAsync(user);
             return user;
+        }
+
+        public async Task SetUserName(Guid id, string newUserName)
+        {
+            var user = await _repo.FindByIdAsync(id);
+            if (user == null)
+                throw new EntityNotFoundException($"Can not find user with id {id}");
+
+            if ((await _repo.FindByUserNameAsync(newUserName) != null))
+                throw new ArgumentException($"User name {newUserName} already exists.", nameof(newUserName));
+
+            user.UpdateUserName(newUserName);
+            await _repo.SaveAsync(user);
         }
     }
 }

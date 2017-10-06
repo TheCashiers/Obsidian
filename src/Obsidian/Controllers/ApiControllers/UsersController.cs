@@ -7,6 +7,7 @@ using Obsidian.Application.UserManagement;
 using Obsidian.Authorization;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation;
 using Obsidian.Foundation.ProcessManagement;
 using Obsidian.Misc;
 using System;
@@ -116,18 +117,19 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserNameEditor, "Yes")]
         public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
         {
-            var cmd = new UpdateUserNameCommand
+            try
             {
-                UserId = id,
-                UserName = dto.UserName
-            };
-            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand, MessageResult>(cmd);
-            if (result.Succeed)
-            {
-                return Created(Url.Action(), null);
+                await _userManagementService.SetUserName(id, dto.UserName);
+                return Ok();
             }
-            //if error
-            return BadRequest(result.Message);
+            catch (ArgumentException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
