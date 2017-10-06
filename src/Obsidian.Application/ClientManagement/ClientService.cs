@@ -1,5 +1,6 @@
 ﻿using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +28,7 @@ namespace Obsidian.Application.ClientManagement
         public async Task<Client> UpdateClientSecret(Guid clientId)
         {
             var client = await _repo.FindByIdAsync(clientId);
+            if (client == null) throw new EntityNotFoundException($"Can not find client with id {clientId}");
             client.UpdateSecret();
             await _repo.SaveAsync(client);
             return client;
@@ -35,6 +37,7 @@ namespace Obsidian.Application.ClientManagement
         public async Task<Client> UpdateClient(Guid clientId,string displayName,string redirectUri)
         {
             var client = await _repo.FindByIdAsync(clientId);
+            if (client == null) throw new EntityNotFoundException($"Can not find client with id {clientId}");
             client.DisplayName = displayName;
             client.RedirectUri = new Uri(redirectUri);
             await _repo.SaveAsync(client);

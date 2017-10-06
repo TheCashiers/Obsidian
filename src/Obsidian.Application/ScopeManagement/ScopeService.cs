@@ -1,10 +1,10 @@
 ﻿using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Obsidian.Application.ScopeManagement
 {
     public class ScopeService
@@ -23,9 +23,10 @@ namespace Obsidian.Application.ScopeManagement
             return scope;
         }
 
-        public async Task<PermissionScope> UpdateScope(Guid Id, string displayName, string description, IList<ObsidianClaim> claims)
+        public async Task<PermissionScope> UpdateScope(Guid id, string displayName, string description, IList<ObsidianClaim> claims)
         {
-            var scope = await _repo.FindByIdAsync(Id);
+            var scope = await _repo.FindByIdAsync(id);
+            if (scope == null) throw new EntityNotFoundException($"Can not find client with id {id}");
             scope.Description = description;
             scope.DisplayName = displayName;
             scope.Claims = claims;

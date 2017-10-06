@@ -6,6 +6,7 @@ using Obsidian.Application.Dto;
 using Obsidian.Application.ScopeManagement;
 using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
+using Obsidian.Foundation;
 using Obsidian.Foundation.ProcessManagement;
 using Obsidian.Misc;
 using System;
@@ -16,14 +17,12 @@ namespace Obsidian.Controllers.ApiControllers
     [Route("api/[controller]")]
     public class ScopesController : Controller
     {
-        private readonly SagaBus _sagaBus;
         private readonly IPermissionScopeRepository _scopeRepository;
         private readonly ScopeService _service;
 
-        public ScopesController(IPermissionScopeRepository scopeRepo, SagaBus bus, ScopeService service)
+        public ScopesController(IPermissionScopeRepository scopeRepo, ScopeService service)
         {
             _scopeRepository = scopeRepo;
-            _sagaBus = bus;
             _service = service;
         }
 
@@ -65,14 +64,15 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsScopeEditor, "Yes")]
         public async Task<IActionResult> Put([FromBody] UpdateScopeDto dto, Guid id)
         {
-            var scope = await _scopeRepository.FindByIdAsync(id);
-            if (scope == null) return NotFound();
-            scope = await _service.UpdateScope(id, dto.DisplayName, dto.Description, dto.Claims);
-            if (scope != null)
+            try
             {
+                await _service.UpdateScope(id, dto.DisplayName, dto.Description, dto.Claims);
                 return Created(Url.Action(), null);
             }
-            return BadRequest();
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }         
         }
     }
 }
