@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
-    public class UpdateUserSaga : Saga, IStartsWith<UpdateUserProfileCommand, MessageResult>
-                                      , IStartsWith<UpdateUserClaimCommand, MessageResult>
+    public class UpdateUserSaga : Saga, IStartsWith<UpdateUserClaimCommand, MessageResult>
     {
         private bool _isCompleted;
 
@@ -43,31 +42,6 @@ namespace Obsidian.Application.UserManagement
                 Message = $"Claims of User {user.Id} changed."
             };
         }
-
-        public async Task<MessageResult> StartAsync(UpdateUserProfileCommand command)
-        {
-            _isCompleted = true;
-            //check user
-            var user = await _repo.FindByIdAsync(command.UserId);
-            if (user == null)
-            {
-                return new MessageResult
-                {
-                    Succeed = false,
-                    Message = $"User of user id {command.UserId} doesn't exist."
-                };
-            }
-            //edit profile
-            user.UpdateProfile(command.NewProfile);
-            await _repo.SaveAsync(user);
-            return new MessageResult
-            {
-                Succeed = true,
-                Message = $"Profile of User {user.Id} changed."
-            };
-        }
-
-      
 
         protected override bool IsProcessCompleted()
         {

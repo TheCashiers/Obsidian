@@ -29,7 +29,7 @@ namespace Obsidian.Application.UserManagement
             return user;
         }
 
-        public async Task SetUserName(Guid id, string newUserName)
+        public async Task SetUserNameAsync(Guid id, string newUserName)
         {
             var user = await _repo.FindByIdAsync(id);
             if (user == null)
@@ -42,13 +42,23 @@ namespace Obsidian.Application.UserManagement
             await _repo.SaveAsync(user);
         }
 
-        public async Task SetPassword(Guid id, string newPassword)
+        public async Task SetPasswordAsync(Guid id, string newPassword)
         {
             var user = await _repo.FindByIdAsync(id);
             if (user == null)
                 throw new EntityNotFoundException($"Can not find user with id {id}");
 
             user.SetPassword(newPassword);
+            await _repo.SaveAsync(user);
+        }
+
+        public async Task UpdateUserProfileAsync(Guid id, UserProfile profile)
+        {
+            var user = await _repo.FindByIdAsync(id);
+            if (user == null)
+                throw new EntityNotFoundException($"Can not find user with id {id}");
+
+            user.UpdateProfile(profile);
             await _repo.SaveAsync(user);
         }
     }

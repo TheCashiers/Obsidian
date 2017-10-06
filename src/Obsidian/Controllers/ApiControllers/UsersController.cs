@@ -87,14 +87,15 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
-            var cmd = new UpdateUserProfileCommand { UserId = id, NewProfile = profile };
-            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(), null);
+                await _userManagementService.UpdateUserProfileAsync(id, profile);
+                return Ok();
             }
-            //if user doesn't exist.
-            return BadRequest(result.Message);
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/Password")]
@@ -104,7 +105,7 @@ namespace Obsidian.Controllers.ApiControllers
         {
             try
             {
-                await _userManagementService.SetUserName(id, dto.Password);
+                await _userManagementService.SetPasswordAsync(id, dto.Password);
                 return Ok();
             }
             catch (EntityNotFoundException)
@@ -120,7 +121,7 @@ namespace Obsidian.Controllers.ApiControllers
         {
             try
             {
-                await _userManagementService.SetUserName(id, dto.UserName);
+                await _userManagementService.SetUserNameAsync(id, dto.UserName);
                 return Ok();
             }
             catch (ArgumentException ex)
