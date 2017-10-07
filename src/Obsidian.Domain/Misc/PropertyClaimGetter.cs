@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Security.Claims;
-using System.Text;
 
 namespace Obsidian.Domain.Misc
 {

@@ -7,24 +7,23 @@ using Obsidian.Application.UserManagement;
 using Obsidian.Authorization;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
-using Obsidian.Foundation.ProcessManagement;
+using Obsidian.Foundation;
 using Obsidian.Misc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
     public class UsersController : Controller
-    {
-        private readonly SagaBus _sagaBus;
+    { 
         private readonly IUserRepository _userRepository;
+        private readonly UserManagementService _userManagementService;
 
-        public UsersController(IUserRepository userRepo, SagaBus bus)
+        public UsersController(IUserRepository userRepo, UserManagementService userManagementService)
         {
             _userRepository = userRepo;
-            _sagaBus = bus;
+            _userManagementService = userManagementService;
         }
 
         [HttpGet]
@@ -52,14 +51,16 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserCreator, "Yes")]
         public async Task<IActionResult> Post([FromBody]UserCreationDto dto)
         {
-            var cmd = new CreateUserCommand { UserName = dto.UserName, Password = dto.Password };
-            var result = await _sagaBus.InvokeAsync<CreateUserCommand, UserCreationResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(nameof(GetById), new { id = result.UserId }), null);
+                var newUser = await _userManagementService.CreateAsync(dto);
+                return Created(Url.Action(nameof(GetById), new { id = newUser.Id }), null);
             }
-            // currently, the only reason for failure is that a user of the same username exists.
-            return StatusCode(412, result.Message);
+            catch (ArgumentException ex)
+            {
+                // HTTP 409 Conflict
+                return StatusCode(409, ex.Message);
+            }
         }
 
         [HttpPut("{id:guid}/Claims")]
@@ -67,14 +68,15 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserClaimsEditor, "Yes")]
         public async Task<IActionResult> UpdateClaims([FromBody]UpdateUserClaimsDto dto, Guid id)
         {
-            var cmd = new UpdateUserClaimCommand { UserId = id, Claims = dto.Claims.ToDictionary(t => t.ClaimType, v => v.ClaimValue) };
-            var result = await _sagaBus.InvokeAsync<UpdateUserClaimCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(), null);
+                await _userManagementService.UpdateUserClaimsAsync(id, dto);
+                return Ok();
             }
-            //if user doesn't exist.
-            return BadRequest(result.Message);
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/Profile")]
@@ -82,14 +84,15 @@ namespace Obsidian.Controllers.ApiControllers
         [ValidateModel]
         public async Task<IActionResult> UpdateProfile([FromBody]UserProfile profile, Guid id)
         {
-            var cmd = new UpdateUserProfileCommand { UserId = id, NewProfile = profile };
-            var result = await _sagaBus.InvokeAsync<UpdateUserProfileCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(), null);
+                await _userManagementService.UpdateUserProfileAsync(id, profile);
+                return Ok();
             }
-            //if user doesn't exist.
-            return BadRequest(result.Message);
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/Password")]
@@ -97,14 +100,15 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserPasswordEditor, "Yes")]
         public async Task<IActionResult> SetPassword([FromBody]UpdateUserPasswordDto dto, Guid id)
         {
-            var cmd = new UpdateUserPasswordCommand { NewPassword = dto.Password, UserId = id };
-            var result = await _sagaBus.InvokeAsync<UpdateUserPasswordCommand, MessageResult>(cmd);
-            if (result.Succeed)
+            try
             {
-                return Created(Url.Action(), null);
+                await _userManagementService.SetPasswordAsync(id, dto.Password);
+                return Ok();
             }
-            //if user doesn't exist.
-            return BadRequest(result.Message);
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{id:guid}/UserName")]
@@ -112,18 +116,19 @@ namespace Obsidian.Controllers.ApiControllers
         [RequireClaim(ManagementAPIClaimsType.IsUserNameEditor, "Yes")]
         public async Task<IActionResult> SetUserName([FromBody]UpdateUserNameDto dto, Guid id)
         {
-            var cmd = new UpdateUserNameCommand
+            try
             {
-                UserId = id,
-                UserName = dto.UserName
-            };
-            var result = await _sagaBus.InvokeAsync<UpdateUserNameCommand, MessageResult>(cmd);
-            if (result.Succeed)
-            {
-                return Created(Url.Action(), null);
+                await _userManagementService.SetUserNameAsync(id, dto.UserName);
+                return Ok();
             }
-            //if error
-            return BadRequest(result.Message);
+            catch (ArgumentException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }

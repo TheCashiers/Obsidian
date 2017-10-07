@@ -1,4 +1,3 @@
-using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation.ProcessManagement;
 using System.Threading.Tasks;
