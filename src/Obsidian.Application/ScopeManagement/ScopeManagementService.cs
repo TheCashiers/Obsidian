@@ -1,16 +1,19 @@
-﻿using Obsidian.Domain;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
+using Obsidian.Foundation.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+
 namespace Obsidian.Application.ScopeManagement
 {
-    public class ScopeService
+    [Service(ServiceLifetime.Scoped)]
+    public class ScopeManagementService
     {
         private readonly IPermissionScopeRepository _repo;
-        public ScopeService(IPermissionScopeRepository repo)
+        public ScopeManagementService(IPermissionScopeRepository repo)
         {
             _repo = repo;
         }

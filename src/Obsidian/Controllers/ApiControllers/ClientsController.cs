@@ -7,7 +7,6 @@ using Obsidian.Application.Dto;
 using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
-using Obsidian.Foundation.ProcessManagement;
 using Obsidian.Misc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -20,9 +19,9 @@ namespace Obsidian.Controllers.ApiControllers
     public class ClientsController : Controller
     {
         private readonly IClientRepository _clientRepository;
-        private readonly ClientService _service;
+        private readonly ClientManagementService _service;
 
-        public ClientsController(IClientRepository repo, ClientService service)
+        public ClientsController(IClientRepository repo, ClientManagementService service)
         {
             _clientRepository = repo;
             _service = service;

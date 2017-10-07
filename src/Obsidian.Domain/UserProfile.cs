@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Obsidian.Domain
+﻿namespace Obsidian.Domain
 {
     public class UserProfile
     {

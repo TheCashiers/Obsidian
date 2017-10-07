@@ -1,14 +1,18 @@
-﻿using Obsidian.Application.Dto;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Application.Dto;
 using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
 using Obsidian.Foundation.Collections;
+using Obsidian.Foundation.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obsidian.Application.UserManagement
 {
+
+    [Service(ServiceLifetime.Scoped)]
     public class UserManagementService
     {
         private readonly IUserRepository _repo;

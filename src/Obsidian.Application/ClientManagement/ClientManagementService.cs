@@ -1,17 +1,18 @@
-﻿using Obsidian.Domain;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
+using Obsidian.Foundation.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Obsidian.Application.ClientManagement
 {
-    public class ClientService
+    [Service(ServiceLifetime.Scoped)]
+    public class ClientManagementService
     {
         private readonly IClientRepository _repo;
-        public ClientService(IClientRepository repo)
+        public ClientManagementService(IClientRepository repo)
         {
             _repo = repo;
         }

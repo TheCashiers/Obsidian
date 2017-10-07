@@ -7,7 +7,6 @@ using Obsidian.Application.ScopeManagement;
 using Obsidian.Authorization;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
-using Obsidian.Foundation.ProcessManagement;
 using Obsidian.Misc;
 using System;
 using System.Threading.Tasks;
@@ -18,9 +17,9 @@ namespace Obsidian.Controllers.ApiControllers
     public class ScopesController : Controller
     {
         private readonly IPermissionScopeRepository _scopeRepository;
-        private readonly ScopeService _service;
+        private readonly ScopeManagementService _service;
 
-        public ScopesController(IPermissionScopeRepository scopeRepo, ScopeService service)
+        public ScopesController(IPermissionScopeRepository scopeRepo, ScopeManagementService service)
         {
             _scopeRepository = scopeRepo;
             _service = service;

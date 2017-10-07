@@ -4,8 +4,6 @@ using Obsidian.Domain;
 using Obsidian.Domain.Repositories;
 using Obsidian.Foundation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,7 +15,7 @@ namespace Obsidian.Application.Test.ClientManagement
         public async Task CreateTest()
         {
             var mockRepo = new Mock<IClientRepository>();
-            var service = new ClientService(mockRepo.Object);
+            var service = new ClientManagementService(mockRepo.Object);
             await service.CreateClient("xxx", "http://xxx.com");
             mockRepo.Verify(r => r.AddAsync(It.IsAny<Client>()));
         }
@@ -27,7 +25,7 @@ namespace Obsidian.Application.Test.ClientManagement
         {
             var mockRepo = new Mock<IClientRepository>();
             mockRepo.Setup(r => r.FindByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult<Client>(null));
-            var service = new ClientService(mockRepo.Object);
+            var service = new ClientManagementService(mockRepo.Object);
             await Assert.ThrowsAsync<EntityNotFoundException>(() => service.UpdateClient(Guid.NewGuid(), "xxx", "xxx"));
             await Assert.ThrowsAsync<EntityNotFoundException>(() => service.UpdateClientSecret(Guid.NewGuid()));
         }
@@ -41,7 +39,7 @@ namespace Obsidian.Application.Test.ClientManagement
             var mockRepo = new Mock<IClientRepository>();
             mockRepo.Setup(r => r.FindByIdAsync(It.Is<Guid>(i => i == id)))
                 .Returns(Task.FromResult(client));
-            var service = new ClientService(mockRepo.Object);
+            var service = new ClientManagementService(mockRepo.Object);
             var newClient = await service.UpdateClientSecret(id);
             Assert.NotEqual(secret, newClient.Secret);
         }
@@ -58,7 +56,7 @@ namespace Obsidian.Application.Test.ClientManagement
                 .Callback<Client>(c => client = c)
                 .Returns(Task.CompletedTask);
             client.RedirectUri = new Uri("http://zzz.com");
-            var service = new ClientService(mockRepo.Object);
+            var service = new ClientManagementService(mockRepo.Object);
             const string newUri = "http://yyy.com";
             await service.UpdateClient(id, "aaa", newUri);
             Assert.Equal(newUri, client.RedirectUri.OriginalString);
