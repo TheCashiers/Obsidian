@@ -90,7 +90,7 @@ namespace Obsidian
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/Exception");
             }
 
             app.UseStaticFiles();
