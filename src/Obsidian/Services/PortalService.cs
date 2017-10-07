@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Obsidian.Config;
 using Obsidian.Foundation.DependencyInjection;
+using System.Collections.Generic;
 
 namespace Obsidian.Services
 {
@@ -13,6 +14,8 @@ namespace Obsidian.Services
         public PortalService(IOptions<PortalConfig> options)
         {
             _config = options.Value;
+            if (_config.AdminPortalScopes == null)
+                _config.AdminPortalScopes = new List<string>();
         }
 
         public string AuthorizeUriForAdminPortal(string redirectUri)
