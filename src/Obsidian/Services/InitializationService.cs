@@ -61,7 +61,7 @@ namespace Obsidian.Services
             await _userRepository.AddAsync(user);
 
             var configFilePath = Path.Combine(_env.ContentRootPath, $"appsettings.{_env.EnvironmentName}.json");
-            var json = File.Exists(configFilePath) ? JObject.Parse(File.ReadAllText(configFilePath)) : JObject.Parse("{}")
+            var json = File.Exists(configFilePath) ? JObject.Parse(File.ReadAllText(configFilePath)) : JObject.Parse("{}");
             json["Portal"]["AdminPortalClientId"] = client.Id;
             json["Portal"]["AdminPortalScopes"] = new JArray(scope.ScopeName);
             await File.WriteAllTextAsync(configFilePath, json.ToString());
