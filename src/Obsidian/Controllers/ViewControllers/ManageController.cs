@@ -29,8 +29,7 @@ namespace Obsidian.Controllers.ViewControllers
             if (string.IsNullOrWhiteSpace(accessToken))
             {
                 //try load token from cookie
-                string protectedToken;
-                if (Request.Cookies.TryGetValue(CookieKey, out protectedToken))
+                if (Request.Cookies.TryGetValue(CookieKey, out var protectedToken))
                 {
                     var token = _dataProtector.Unprotect(protectedToken);
                     return RedirectToAction(nameof(Index), new { access_token = token, path = path });
@@ -43,8 +42,10 @@ namespace Obsidian.Controllers.ViewControllers
                     return Redirect(authUrl);
                 }
             }
-
-            Response.Cookies.Append(CookieKey, _dataProtector.Protect(accessToken));
+            {
+                var protectedToken = _dataProtector.Protect(accessToken);
+                Response.Cookies.Append(CookieKey, protectedToken);
+            }
             ViewData["FrontendRoute"] = path;
             return View();
         }
