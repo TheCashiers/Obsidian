@@ -1,12 +1,15 @@
-﻿@{
+﻿@using System.Runtime.InteropServices;
+@{
     ViewData["Title"] = "Home Page";
-    var version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion;
-    var fwVersion = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.RuntimeFramework.Version;
-    var buildTime = System.IO.File.GetCreationTimeUtc(typeof(Startup).Assembly.Location);
+    var assembly = typeof(Startup).Assembly;
+    var version = assembly.GetName().Version;
+    var app = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application;
+    var buildTime = System.IO.File.GetCreationTimeUtc(assembly.Location);
 }
 
 <div class="container">
-    <h1>Project Obsidian <small>@version</small></h1>
-    <h3>Runtime version: @fwVersion</h3>
-    <h3>Built on: @buildTime UTC</h3>
+    <h1>Project Obsidian @version.ToString(2) <small>Build @version.Build</small></h1>
+    <h3>Runtime: @app.RuntimeFramework.FullName</h3>
+    <h3>Environment: @RuntimeInformation.ProcessArchitecture process running on @RuntimeInformation.OSArchitecture @RuntimeInformation.OSDescription</h3>
+    <h3>Built at: @buildTime UTC</h3>
 </div>
