@@ -62,8 +62,14 @@ namespace Obsidian.Services
 
             var configFilePath = Path.Combine(_env.ContentRootPath, $"appsettings.{_env.EnvironmentName}.json");
             var json = File.Exists(configFilePath) ? JObject.Parse(File.ReadAllText(configFilePath)) : JObject.Parse("{}");
-            json["Portal"]["AdminPortalClientId"] = client.Id;
-            json["Portal"]["AdminPortalScopes"] = new JArray(scope.ScopeName);
+            var portalSection = json["Portal"];
+            if (portalSection == null)
+            {
+                portalSection = (json["Portal"] = JObject.Parse("{}"));
+            }
+            portalSection["AdminPortalClientId"] = client.Id;
+            portalSection["AdminPortalScopes"] = new JArray(scope.ScopeName);
+
             await File.WriteAllTextAsync(configFilePath, json.ToString());
         }
     }

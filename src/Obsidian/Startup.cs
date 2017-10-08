@@ -83,6 +83,7 @@ namespace Obsidian
             loggerFactory.AddDebug();
 
             var env = app.ApplicationServices.GetService<IHostingEnvironment>();
+            env.EnvironmentName = "Production";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
