@@ -35,9 +35,9 @@ namespace Obsidian.Services
 
         public async Task InitializeAsync(InitializationInfo initializationInfo)
         {
-            var typeInfos = typeof(InitializationService).GetTypeInfo().Assembly.GetTypes().Select(t => t.GetTypeInfo());
-            var claims = typeInfos.SelectMany(i => i.GetCustomAttributes<RequireClaimAttribute>())
-                         .Union(typeInfos.SelectMany(i => i.GetMethods()).SelectMany(m => m.GetCustomAttributes<RequireClaimAttribute>()))
+            var types = typeof(InitializationService).Assembly.GetTypes();
+            var claims = types.SelectMany(i => i.GetCustomAttributes<RequireClaimAttribute>())
+                         .Union(types.SelectMany(i => i.GetMethods()).SelectMany(m => m.GetCustomAttributes<RequireClaimAttribute>()))
                          .SelectMany(attr => attr.ClaimValues, (attr, val) => new ObsidianClaim { Type = attr.ClaimType, Value = val })
                          .Distinct()
                          .ToList();
