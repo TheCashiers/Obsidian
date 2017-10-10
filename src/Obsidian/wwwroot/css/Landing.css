@@ -2,6 +2,10 @@
     font-size: 20em;
 }
 
+.btn-purple{
+    color:white !important;
+}
+
 .col-md-4{
     text-align: center;
 }
@@ -11,10 +15,11 @@
 }
 
 .container{
-    background-color: rgba(233, 233, 233, 0.5)
+    background-color: rgba(233, 233, 233, 0.3)
 }
 
 body {
+    color:whitesmoke;
     margin:0;
     height: 100%;
     background: url("../images/obsidian_background.png") 0 / cover fixed;
