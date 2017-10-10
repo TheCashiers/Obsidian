@@ -20,7 +20,12 @@ export class UserInfoContainer extends FormContainer {
 
         try {
             const response = await axios.getAxios(this.props.token).get(api.configs.getProfile.request_uri);
-            this.setState(response.data);
+            if (response.data.emailAddress == null) {
+                // alert user to finish personal information.
+                this.handleChangeEditState(true);
+            } else {
+                this.setState(response.data);
+            }
         } catch (error) {
             this.setState({ surnName: "error" });
         }
