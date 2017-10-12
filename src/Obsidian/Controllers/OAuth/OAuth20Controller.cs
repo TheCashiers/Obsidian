@@ -166,6 +166,7 @@ namespace Obsidian.Controllers.OAuth
 
         [HttpPost("oauth20/token")]
         [ValidateModel]
+        [AllowAnonymous]
         public async Task<IActionResult> Token([FromBody]AuthorizationCodeGrantRequestModel model)
         {
             if ("authorization_code".Equals(model.GrantType, StringComparison.OrdinalIgnoreCase))
