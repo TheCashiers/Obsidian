@@ -15,10 +15,11 @@
         <h3>One-stop Authenication Solution</h3>
     </div>
     @*Right Section*@
-    <div class="form form-padding form-white">
+    <div class="right-div form-size form-white">
         @if (Model.IsAutoSignIn)
             {
-            <form role="form" class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
+            <div class="form-content">
+                <form role="form" class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
                 <h3 class="center">Hello @Model.UserName!</h3>
                 
                     <div class="face-wrapper">
@@ -40,10 +41,11 @@
                 <input asp-for="ProtectedOAuthContext" type="hidden" />
                 <button class="btn btn-lg btn-primary btn-block btn-raised" type="submit">Switch user / Sign out</button>
             </form>
+            </div>
         }
         else
         {
-            <form role="form" class="text-padding" asp-action="Authorize" asp-controller="OAuth20">
+            <form role="form" class="text-padding form-content" asp-action="Authorize" asp-controller="OAuth20">
                 <div class="form-group">
                     <label asp-for="UserName" class="control-label"></label>
                     <input asp-for="UserName" class="form-control" type="text" placeholder="Enter your E-mail address" required />
