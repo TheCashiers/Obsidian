@@ -2,6 +2,7 @@ import * as $ from "jquery";
 import * as React from "react";
 import { Portal } from "../components/Portal";
 import { PortalHeader } from "../components/PortalElements";
+import { INamedEvent } from "./FormContainer";
 import { NotificationCenterContainer } from "./NotificationCenterContainer";
 const fixLayout = () => {
     // Get window height and the wrapper height
@@ -31,27 +32,46 @@ const fixLayout = () => {
     }
 };
 
-export class PortalContainer extends React.Component<any, any> {
+interface IPortalProps {
+    location: {
+        query: {
+            id: string;
+            username: string;
+            access_token: string;
+        };
+    };
+    children: React.ReactElement<any>;
+}
+
+interface IPortalState {
+    token: string;
+    notifications: Notification[];
+    filter: string;
+
+}
+
+export class PortalContainer extends React.Component<IPortalProps, IPortalState> {
 // redefined refs type to any to bypass type check.
     public refs: {
-        [string: string]: any;
+        [str: string]: any;
         stepInput: any;
     };
     private push: () => void;
-    constructor(props) {
+    constructor(props: IPortalProps) {
         super(props);
         this.state = { token: "", notifications: [] as Notification[], filter: "" };
+        // tslint:disable-next-line:no-empty
         this.push = () => { };
         this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
-    public handleFilterChange(e) {
+    public handleFilterChange(e: INamedEvent) {
         this.setState({
-            [e.target.name]: e.target.value as string,
+            filter: e.target.value as string,
         });
     }
     public componentWillMount() {
-        this.state.token = this.props.location.query.access_token;
+        this.setState({ token : this.props.location.query.access_token });
         if (this.state.token) {
             window.history.pushState(null, null, "?authorized");
         }

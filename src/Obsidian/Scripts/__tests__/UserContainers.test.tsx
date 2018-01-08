@@ -2,16 +2,20 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import create from "react-test-renderer";
 import { UserForm } from "../components/Form";
+import { INamedEvent } from "../containers/FormContainer";
 import { UserCreationContainer } from "../containers/UserCreationContainer";
 
-const mockChange = jest.fn();
+const mockChange = jest.fn<INamedEvent>();
 const mockSubmit = jest.fn();
-const userForm = mount(<UserForm onSubmit={mockSubmit} onInputChange={mockChange} />);
+const userForm = mount(
+    <UserForm
+        onSubmit={mockSubmit}
+        onInputChange={mockChange}
+        username=""
+        password=""
+        action="mock"
+    />);
 const container = mount(<UserCreationContainer token="MockedToken" />);
-
-test("throw exceptions when token is undefined", () => {
-    expect(() => { new UserCreationContainer({}); }).toThrowError();
-});
 
 test("handle submit function get called", () => {
     expect(userForm.props().onSubmit).toBeDefined();

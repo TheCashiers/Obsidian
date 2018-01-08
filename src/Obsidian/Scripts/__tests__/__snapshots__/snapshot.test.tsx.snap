@@ -294,7 +294,7 @@ exports[`MaterialForm render snapshot 1`] = `
 >
   <form
     className="form-horizontal"
-    onSubmit={undefined}
+    onSubmit={[Function]}
   >
     <fieldset>
       <legend>
@@ -378,17 +378,17 @@ exports[`Notifications render snapshot 1`] = `
 <div
   style={
     Object {
-      "bottom": -120,
+      "bottom": -60,
       "left": "20px",
-      "opacity": 0,
+      "opacity": 1,
       "position": "fixed",
-      "zIndex": 99999,
+      "zIndex": 2,
     }
   }
 >
   <div
     className="alert alert-danger"
-    onClick={undefined}
+    onClick={[Function]}
     style={
       Object {
         "borderRadius": "4px",
@@ -410,7 +410,7 @@ exports[`Notifications render snapshot 1`] = `
   </div>
   <div
     className="alert alert-warning"
-    onClick={undefined}
+    onClick={[Function]}
     style={
       Object {
         "borderRadius": "4px",
@@ -507,10 +507,10 @@ exports[`PortalHeader render snapshot 1`] = `
               className="form-control"
               id="navbar-search-input"
               name="filter"
-              onChange={undefined}
+              onChange={[Function]}
               placeholder="Search"
               type="text"
-              value={undefined}
+              value=""
             />
           </div>
         </form>
