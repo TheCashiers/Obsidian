@@ -2,10 +2,10 @@ import * as React from "react";
 import { ScopeForm } from "../components/Form";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import { FormContainer } from "./FormContainer";
+import { FormContainer, IFormProps } from "./FormContainer";
 
 export class ScopeEditContainer extends FormContainer {
-    constructor(props) {
+    constructor(props: IFormProps) {
         super(props);
         this.state = {
             claims: "",
@@ -27,7 +27,7 @@ export class ScopeEditContainer extends FormContainer {
             this.props.push("getScope", error.toString());
         }
     }
-    public async handleSubmit(e) {
+    public async handleSubmit(e: Event) {
         e.preventDefault();
         const scopeName: string = this.state.scopeName.trim();
         const displayName: string = this.state.displayName.trim();

@@ -1,10 +1,18 @@
 ﻿import * as React from "react";
 import { Link } from "react-router";
+import { IFormState } from "../containers/FormContainer";
 import { UserInfoContainer } from "../containers/UserInfoContainer";
 import { styles } from "../styles/index";
 import { MaterialInput } from "./Form";
 
-export const UserInfo = (props) => (
+interface IUserInfoState extends IFormState {
+    children: React.ReactElement<any>;
+    onOpenModal(): void;
+    onSignout(): void;
+
+}
+
+export const UserInfo = (props: IUserInfoState) => (
     <li className="dropdown user user-menu">
         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
             <span>{props.surnName} {props.givenName}</span>
@@ -31,7 +39,14 @@ export const UserInfo = (props) => (
     </li>
 );
 
-export const UserInfoEdit = (props) => (
+interface IUSerInfoEditProps extends IFormState {
+    shouldDisplay: boolean;
+    onCloseModal(): void;
+    onInputChange(): void;
+    onSubmit(): void;
+}
+
+export const UserInfoEdit = (props: IUSerInfoEditProps) => (
     <div className="modal" style={{ display: props.shouldDisplay ? "block" : "none" }}>
         <div className = "modal-dialog">
             <div className = "modal-content">
@@ -81,8 +96,12 @@ export const UserInfoEdit = (props) => (
         </div>
     </div>
 );
-
-export const PortalHeader = (props) => (
+interface IPortalHeaderProps {
+    token?: string;
+    filter: string;
+    handleFilterChange(): void;
+}
+export const PortalHeader = (props: IPortalHeaderProps) => (
     <header className="main-header">
         <nav className="navbar navbar-static-top">
             <div className="container-fluid">
@@ -112,7 +131,7 @@ export const PortalHeader = (props) => (
         </nav>
     </header>);
 
-const SearchBox = (props) =>
+const SearchBox = (props: IPortalHeaderProps) =>
     (
         <form className="navbar-form navbar-left" role="search">
             <div className="form-group">
@@ -129,7 +148,12 @@ const SearchBox = (props) =>
         </form>
     );
 
-const Combobox = (props) =>
+interface IComboBoxProps {
+    name: string;
+    onSelectChange(): void;
+}
+
+const Combobox = (props: IComboBoxProps) =>
     (
         <label style={styles.comboBox}>
             <input type="checkbox" onChange={props.onSelectChange} />

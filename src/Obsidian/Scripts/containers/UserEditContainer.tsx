@@ -2,11 +2,11 @@ import * as React from "react";
 import { UserForm } from "../components/Form";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import { FormContainer } from "./FormContainer";
+import { FormContainer, IFormProps } from "./FormContainer";
 
 export class UserEditContainer extends FormContainer {
     public defaultUsername: string;
-    constructor(props) {
+    constructor(props: IFormProps) {
         super(props);
         this.state = { username: "", password: "", id: props.location.query.id };
         this.defaultUsername = props.location.query.username;
@@ -26,7 +26,7 @@ export class UserEditContainer extends FormContainer {
             history.go();
         }
     }
-    public async handleSubmit(e) {
+    public async handleSubmit(e: Event) {
         e.preventDefault();
         const username: string = this.state.username.trim();
         const password: string = this.state.password.trim();

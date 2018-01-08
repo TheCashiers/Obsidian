@@ -3,7 +3,7 @@ import { UserList } from "../components/UserManagement";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 
-interface IUserManagementState {
+export interface IUserManagementState {
     users: any[];
 }
 

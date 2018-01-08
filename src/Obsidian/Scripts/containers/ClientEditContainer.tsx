@@ -2,10 +2,10 @@ import * as React from "react";
 import { ClientForm } from "../components/Form";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import { FormContainer } from "./FormContainer";
+import { FormContainer, IFormProps } from "./FormContainer";
 
 export class ClientEditContainer extends FormContainer {
-    constructor(props) {
+    constructor(props: IFormProps) {
         super(props);
         this.state = {
             displayName: "",
@@ -23,7 +23,7 @@ export class ClientEditContainer extends FormContainer {
             this.props.push("getClient", error.toString());
         }
     }
-    public async handleSubmit(e) {
+    public async handleSubmit(e: Event) {
         e.preventDefault();
         const displayName: string = this.state.displayName.trim();
         const redirectUri: string = this.state.redirectUri.trim();

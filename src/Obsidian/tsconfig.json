@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "noEmitOnError": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "outDir": "wwwroot/js",
     "removeComments": false,
     "sourceMap": true,

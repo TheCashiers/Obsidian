@@ -3,10 +3,15 @@ import { Motion, spring } from "react-motion";
 import { NotificationCenter } from "../components/Notification";
 
 const NOTIFICATION_DISPLAY_TIME = 3000;
-export class NotificationCenterContainer extends React.Component<any, any> {
+
+interface INotificationCenterState {
+    notifications: INotification[];
+    shouldShow: boolean;
+}
+export class NotificationCenterContainer extends React.Component<{}, INotificationCenterState> {
     private timer: number;
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = { notifications: [] as INotification[], shouldShow: false };
         this.pushNotification = this.pushNotification.bind(this);
         this.handleDismiss = this.handleDismiss.bind(this);

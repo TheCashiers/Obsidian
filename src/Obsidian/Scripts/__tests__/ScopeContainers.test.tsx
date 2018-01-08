@@ -23,7 +23,8 @@ test("forms get right input from users", () => {
     const scopeForm = mount(<ScopeForm onInputChange={mockChange}/>);
     const input = scopeForm.find('[name="scopeName"]').first();
     input.simulate("change", { target: { value: "Scope #1" } });
-    expect(mockChange.mock.calls[0][0]["target"]).toEqual({ value: "Scope #1"  });
+    const target = "target";
+    expect(mockChange.mock.calls[0][0][target]).toEqual({ value: "Scope #1"  });
 });
 
 test("containers received new state", () => {

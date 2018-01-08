@@ -3,7 +3,13 @@ import { ClientList } from "../components/ClientManagement";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
 
-export class ClientManagementContainer extends React.Component<any, any> {
+interface IClientManagementProps {
+    token: string;
+}
+interface IClientManagementState{
+    clients:;
+}
+export class ClientManagementContainer extends React.Component<IClientManagementProps, any> {
     constructor(props: any) {
         super(props);
         this.state = {

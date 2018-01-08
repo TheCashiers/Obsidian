@@ -1,14 +1,31 @@
 import * as React from "react";
+import { CSSProperties } from "react";
 import { Motion, spring } from "react-motion";
 import { Link } from "react-router";
 
-export const List = (props) => (
+export interface IListItem {
+    displayName?: string;
+    userName?: string;
+    scopeName?: string;
+    id: string;
+}
+
+export interface IListProps {
+    createLink?: string;
+    action?: string;
+    editLink?: string;
+    icon?: string;
+    items?: IListItem[];
+    name?: string;
+    id?: string;
+}
+export const List = (props: IListProps) => (
     <div className="content-wrapper content">
         <Link to={props.createLink}>
             <button className="btn btn-lg btn-success">{props.action}...</button>
         </Link>
         <div className="list-group">
-            {props.items.map((item, index) =>
+            {props.items.map((item: IListItem, index: number) =>
                 (
                     <Item
                         name={item.displayName || item.userName || item.scopeName}
@@ -21,9 +38,9 @@ export const List = (props) => (
     </div>
 );
 
-export const Item = (props) => (
+export const Item = (props: IListProps) => (
     <Motion defaultStyle={{ opacity: 0 }} style={{ opacity: spring(1) }}>
-        {(style) =>
+        {(style: CSSProperties) =>
             (
                 <div>
                     <div style={style} className="list-group-item">
