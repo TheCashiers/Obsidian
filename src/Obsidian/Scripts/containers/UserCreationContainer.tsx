@@ -10,7 +10,7 @@ export class UserCreationContainer extends FormContainer {
         this.state = { username: "", password: "", id: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const username: string = this.state.username.trim();
         const password: string = this.state.password.trim();

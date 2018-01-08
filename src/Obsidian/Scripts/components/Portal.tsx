@@ -3,7 +3,7 @@ import { Motion, spring } from "react-motion";
 import { NotificationCenterContainer } from "../containers/NotificationCenterContainer";
 import { PortalHeader } from "./PortalElements";
 
-export let Portal = (props: {children: React.ReactElement<any>}) => (
+export let Portal = (props: { children?: React.ReactElement<any>; token?: string; }) => (
     <Motion defaultStyle={{ opacity: 0 }} style={{ opacity: spring(1) }}>
         {(style: CSSStyleRule) =>
             (

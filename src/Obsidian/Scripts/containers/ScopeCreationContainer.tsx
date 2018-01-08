@@ -15,7 +15,7 @@ export class ScopeCreationContainer extends FormContainer {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const scopeName: string = this.state.scopeName.trim();
         const displayName: string = this.state.displayName.trim();

@@ -23,7 +23,7 @@ export class ClientEditContainer extends FormContainer {
             this.props.push("getClient", error.toString());
         }
     }
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const displayName: string = this.state.displayName.trim();
         const redirectUri: string = this.state.redirectUri.trim();

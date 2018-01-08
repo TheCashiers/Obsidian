@@ -1,13 +1,15 @@
 import * as React from "react";
 import { ClientList } from "../components/ClientManagement";
+import { IListItem } from "../components/List";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
+import { IFormProps } from "./FormContainer";
 
-interface IClientManagementProps {
+interface IClientManagementProps extends IFormProps {
     token: string;
 }
-interface IClientManagementState{
-    clients:;
+interface IClientManagementState {
+    clients: IListItem[];
 }
 export class ClientManagementContainer extends React.Component<IClientManagementProps, any> {
     constructor(props: any) {

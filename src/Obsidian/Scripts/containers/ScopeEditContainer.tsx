@@ -27,7 +27,7 @@ export class ScopeEditContainer extends FormContainer {
             this.props.push("getScope", error.toString());
         }
     }
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const scopeName: string = this.state.scopeName.trim();
         const displayName: string = this.state.displayName.trim();
@@ -57,7 +57,7 @@ export class ScopeEditContainer extends FormContainer {
                 scopeName={this.state.scopeName}
                 displayName={this.state.displayName}
                 description={this.state.description}
-                claims={this.state.claims}
+                claimTypes={this.state.claims}
                 action="Edit Scope"
             />);
     }

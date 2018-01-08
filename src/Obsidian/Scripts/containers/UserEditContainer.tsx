@@ -26,7 +26,7 @@ export class UserEditContainer extends FormContainer {
             history.go();
         }
     }
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const username: string = this.state.username.trim();
         const password: string = this.state.password.trim();

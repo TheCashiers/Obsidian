@@ -31,7 +31,7 @@ export class UserInfoContainer extends FormContainer {
         }
     }
 
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLInputElement>) {
         e.preventDefault();
         const emailAddress: string = this.state.emailAddress;
         const gender: string = this.state.gender;

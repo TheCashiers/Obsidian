@@ -1,12 +1,12 @@
 ﻿import * as React from "react";
 import { Link } from "react-router";
-import { IFormState } from "../containers/FormContainer";
+import { IFormState, INamedEvent } from "../containers/FormContainer";
 import { UserInfoContainer } from "../containers/UserInfoContainer";
 import { styles } from "../styles/index";
 import { MaterialInput } from "./Form";
 
 interface IUserInfoState extends IFormState {
-    children: React.ReactElement<any>;
+    children?: React.ReactElement<IUSerInfoEditProps>;
     onOpenModal(): void;
     onSignout(): void;
 
@@ -42,8 +42,8 @@ export const UserInfo = (props: IUserInfoState) => (
 interface IUSerInfoEditProps extends IFormState {
     shouldDisplay: boolean;
     onCloseModal(): void;
-    onInputChange(): void;
-    onSubmit(): void;
+    onInputChange(e: INamedEvent): void;
+    onSubmit(e: React.MouseEvent<HTMLInputElement>): void;
 }
 
 export const UserInfoEdit = (props: IUSerInfoEditProps) => (
@@ -99,7 +99,7 @@ export const UserInfoEdit = (props: IUSerInfoEditProps) => (
 interface IPortalHeaderProps {
     token?: string;
     filter: string;
-    handleFilterChange(): void;
+    handleFilterChange(e: INamedEvent): void;
 }
 export const PortalHeader = (props: IPortalHeaderProps) => (
     <header className="main-header">

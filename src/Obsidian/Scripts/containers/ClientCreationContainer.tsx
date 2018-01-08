@@ -11,7 +11,7 @@ export class ClientCreationContainer extends FormContainer {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public async handleSubmit(e: Event) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const displayName: string = this.state.displayName.trim();
         const redirectUri: string = this.state.redirectUri.trim();

@@ -52,7 +52,7 @@ export class NotificationCenterContainer extends React.Component<{}, INotificati
     }
 }
 
-interface INotification {
+export interface INotification {
     info: string;
     state: NotificationState;
 }
