@@ -1,5 +1,4 @@
 import * as React from "react";
-import { CSSProperties } from "react";
 import { Motion, spring } from "react-motion";
 import { Link } from "react-router";
 
@@ -40,7 +39,7 @@ export const List = (props: IListProps) => (
 
 export const Item = (props: IListProps) => (
     <Motion defaultStyle={{ opacity: 0 }} style={{ opacity: spring(1) }}>
-        {(style: CSSProperties) =>
+        {(style: React.CSSProperties) =>
             (
                 <div>
                     <div style={style} className="list-group-item">

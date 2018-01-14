@@ -28,7 +28,8 @@ test("handle submit function get called", () => {
 test("forms get right input from users", () => {
     const input = userForm.find('[name="username"]').first();
     input.simulate("change", { target: { value: "User #1" } });
-    expect(mockChange.mock.calls[0][0]["target"]).toEqual({ value: "User #1" });
+    const targetStr = "target";
+    expect(mockChange.mock.calls[0][0][targetStr]).toEqual({ value: "User #1" });
 });
 
 test("containers received new state", () => {

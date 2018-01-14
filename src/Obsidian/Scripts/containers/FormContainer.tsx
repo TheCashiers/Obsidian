@@ -3,12 +3,12 @@ import * as React from "react";
 import * as api from "../configs/GlobalSettings";
 
 export interface IFormProps {
-    token: string;
-    location?: {
-        query: {
-            id: string;
-            username: string;
-        };
+  token: string;
+  location?: {
+      query: {
+          id: string;
+          username: string;
+      };
   };
   filter?: string;
   push?(reason: string, error?: string): void;
