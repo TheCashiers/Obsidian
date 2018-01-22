@@ -6,7 +6,5 @@ import { NotificationCenterContainer } from "../containers/NotificationCenterCon
 test("dismiss function works correctly", () => {
     const mockSubmit = jest.fn();
     const notificationCenterContainer = mount(
-        <NotificationCenterContainer
-            items={[{ info: "foo", state: 1 }, { info: "bar", state: 2 }]}
-        />);
+        <NotificationCenterContainer/>);
 });

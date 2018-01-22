@@ -2,12 +2,12 @@
 import {UserInfo, UserInfoEdit} from "../components/PortalElements";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import {FormContainer} from "./FormContainer";
+import {FormContainer, IFormProps} from "./FormContainer";
 
 export class UserInfoContainer extends FormContainer {
     public handleClose: () => void;
     public handleOpen: () => void;
-    constructor(props) {
+    constructor(props: IFormProps) {
         super(props);
         this.state = { emailAddress: "", gender: "", givenName: "", surnName: "Admin", editing: false };
         this.handleSignout = this.handleSignout.bind(this);
@@ -31,7 +31,7 @@ export class UserInfoContainer extends FormContainer {
         }
     }
 
-    public async handleSubmit(e) {
+    public async handleSubmit(e: React.MouseEvent<HTMLInputElement>) {
         e.preventDefault();
         const emailAddress: string = this.state.emailAddress;
         const gender: string = this.state.gender;

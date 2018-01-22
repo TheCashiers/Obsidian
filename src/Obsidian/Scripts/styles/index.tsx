@@ -27,7 +27,7 @@ export const styles = {
         position: "fixed",
         left: "20px",
         bottom: "14px",
-        zIndex: 99999,
+        zIndex: 2,
     },
     notification: {
         padding: "15px",

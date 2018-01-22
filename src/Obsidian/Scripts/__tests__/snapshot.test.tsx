@@ -8,6 +8,11 @@ import { PortalHeader, UserInfo } from "../components/PortalElements";
 import { PortalIndex } from "../components/PortalIndex";
 import { ScopeList } from "../components/ScopeManagement";
 import { UserList } from "../components/UserManagement";
+import { INamedEvent } from "../containers/FormContainer";
+
+const mockChange = jest.fn<INamedEvent>();
+const mockSubmit = jest.fn();
+const mockDismiss = jest.fn();
 
 it("List render snapshot", () => {
     const list = create(
@@ -36,11 +41,11 @@ it("ClientList render snapshot", () => {
 
 it("MaterialForm render snapshot", () => {
     const materialForm = create(
-        <MaterialForm action="Create sth" origin="../foo">
+        <MaterialForm action="Create sth" origin="../foo" onSubmit={mockSubmit}>
             <MaterialInput
                 name="username"
                 label="Username"
-                onInputChange={new Function()}
+                onInputChange={mockChange}
                 value="foo"
                 placeholder="Username..."
                 type="text"
@@ -48,7 +53,7 @@ it("MaterialForm render snapshot", () => {
             <MaterialInput
                 name="redirectUri"
                 label="Redirect Uri"
-                onInputChange={new Function()}
+                onInputChange={mockChange}
                 value="http://bar.com"
                 placeholder="http://example.com"
                 type="text"
@@ -60,7 +65,7 @@ it("MaterialForm render snapshot", () => {
 
 it("PortalHeader render snapshot", () => {
     const portalHeader = create(
-        <PortalHeader token="MockedToken" />,
+        <PortalHeader token="MockedToken" filter="" handleFilterChange={mockChange} />,
     ).toJSON();
     expect(portalHeader).toMatchSnapshot();
 });
@@ -103,6 +108,8 @@ it("Notifications render snapshot", () => {
             { info: "foo", state: 1 },
             { info: "bar", state: 2 },
             ]}
+            shouldShow={true}
+            handleDismiss={mockDismiss}
         />,
     ).toJSON();
     expect(notification).toMatchSnapshot();

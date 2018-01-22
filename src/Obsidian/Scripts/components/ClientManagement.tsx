@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router";
 import { styles } from "../styles/index";
-import { List } from "./List";
+import { IListItem, List } from "./List";
 
-export const ClientList = (props) => (
+export const ClientList = (props: {clients: IListItem[]}) => (
     <List
         createLink="/manage/clients/create"
         editLink="/manage/clients/edit"

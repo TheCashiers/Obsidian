@@ -2,15 +2,15 @@
 import { UserForm } from "../components/Form";
 import * as axios from "../configs/AxiosInstance";
 import * as api from "../configs/GlobalSettings";
-import { FormContainer } from "../containers/FormContainer";
+import { FormContainer, IFormProps } from "../containers/FormContainer";
 
 export class UserCreationContainer extends FormContainer {
-    constructor(props) {
+    constructor(props: IFormProps) {
         super(props);
-        this.state = { username: "", password: "" };
+        this.state = { username: "", password: "", id: "" };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    public async handleSubmit(e) {
+    public async handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault();
         const username: string = this.state.username.trim();
         const password: string = this.state.password.trim();

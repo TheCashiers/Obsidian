@@ -1,7 +1,17 @@
 import * as React from "react";
 import { Link } from "react-router";
+import { INamedEvent } from "../containers/FormContainer";
 import { styles } from "../styles/index";
-export const MaterialForm = (props) => (
+
+interface IFormStubProps {
+    origin?: string;
+    children?: React.ReactElement<IInputProps>;
+    action: string;
+    onSubmit(e: React.MouseEvent<HTMLFormElement>): void;
+    onInputChange?(e: INamedEvent): void;
+
+}
+export const MaterialForm = (props: IFormStubProps) => (
     <div className="well bs-component col-md-6">
         <form className="form-horizontal" onSubmit={props.onSubmit}>
             <fieldset>
@@ -20,7 +30,16 @@ export const MaterialForm = (props) => (
     </div>
 );
 
-export const MaterialInput = (props) => (
+interface IInputProps {
+    label: string;
+    type: string;
+    name: string;
+    value: string;
+    placeholder: string;
+    onInputChange(e: INamedEvent): void;
+}
+
+export const MaterialInput = (props: IInputProps) => (
     <div className="form-group">
         <label className="col-md-2 control-label">{props.label}</label>
         <div className="col-md-10">
@@ -36,7 +55,12 @@ export const MaterialInput = (props) => (
         </div>
     </div>
 );
-export const UserForm = (props) => (
+interface IUserFormProps extends IFormStubProps {
+    username: string;
+    password: string;
+
+}
+export const UserForm = (props: IUserFormProps) => (
     <MaterialForm
         action={props.action}
         origin="/manage/users"
@@ -60,8 +84,13 @@ export const UserForm = (props) => (
         />
     </MaterialForm>
 );
-
-export const ScopeForm = (props) => (
+interface IScopeFormProps extends IFormStubProps {
+    scopeName: string;
+    displayName: string;
+    description: string;
+    claimTypes: string;
+}
+export const ScopeForm = (props: IScopeFormProps) => (
     <MaterialForm
         action={props.action}
         origin="/manage/scopes"
@@ -95,14 +124,17 @@ export const ScopeForm = (props) => (
         name="claimTypes"
         label="Claim Types"
         onInputChange={props.onInputChange}
-        value={props.claims}
+        value={props.claimTypes}
         placeholder="Claim Types..."
         type="text"
     />
     </MaterialForm>
 );
-
-export const ClientForm = (props) => (
+interface IClientFormProps extends IFormStubProps {
+    displayName: string;
+    redirectUri: string;
+}
+export const ClientForm = (props: IClientFormProps) => (
     <MaterialForm
         action={props.action}
         origin="/manage/clients"

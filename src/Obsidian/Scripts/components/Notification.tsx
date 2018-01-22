@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Motion, spring} from "react-motion";
-import {NotificationState} from "../containers/NotificationCenterContainer";
+import {INotification, NotificationState} from "../containers/NotificationCenterContainer";
 import {styles} from "../styles/index";
 
 const getClassName = (state: NotificationState) => {
@@ -23,7 +23,13 @@ const getClassName = (state: NotificationState) => {
     }
     return "alert " + ncStyle;
 };
-export const NotificationCenter = (props) => (
+
+interface INotificationProps {
+    shouldShow: boolean;
+    items: INotification[];
+    handleDismiss(): void;
+}
+export const NotificationCenter = (props: INotificationProps) => (
     <Motion
         style={{
         bottom: props.shouldShow
@@ -34,7 +40,7 @@ export const NotificationCenter = (props) => (
             : spring(0),
         }}
     >
-        {(style) =>
+        {(style: CSSStyleRule) =>
             (
                 <div style={{ ...styles.notificationContainer, ...style }}>
                 {props.items.map((item, index) =>
@@ -52,7 +58,11 @@ export const NotificationCenter = (props) => (
     </Motion>
 );
 
-export const NotificationItem = (props) => (
+interface INotificationItemProps extends INotification {
+    index: number;
+    handleDismiss(): void;
+}
+export const NotificationItem = (props: INotificationItemProps) => (
     <div
         style={styles.notification}
         className={getClassName(props.state)}

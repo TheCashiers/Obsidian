@@ -2,15 +2,22 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import create from "react-test-renderer";
 import { ScopeForm } from "../components/Form";
+import { INamedEvent } from "../containers/FormContainer";
 import { ScopeCreationContainer } from "../containers/ScopeCreationContainer";
 
-test("throw exceptions when token is undefined", () => {
-    expect(() => { new ScopeCreationContainer({}); }).toThrowError();
-});
+const mockChange = jest.fn<INamedEvent>();
+const mockSubmit = jest.fn();
 
 test("handle submit function get called", () => {
-    const mockSubmit = jest.fn();
-    const scopeForm = mount(<ScopeForm onSubmit={mockSubmit} />);
+    const scopeForm = mount(
+        <ScopeForm
+            onSubmit={mockSubmit}
+            scopeName=""
+            displayName=""
+            description=""
+            claimTypes=""
+            action="mockAction"
+        />);
     expect(scopeForm.props().onSubmit).toBeDefined();
     const form = scopeForm.find("form").first();
     const input = scopeForm.find("input").first();
@@ -19,11 +26,21 @@ test("handle submit function get called", () => {
 });
 
 test("forms get right input from users", () => {
-    const mockChange = jest.fn();
-    const scopeForm = mount(<ScopeForm onInputChange={mockChange}/>);
+    const scopeForm = mount(
+        <ScopeForm
+            onInputChange={mockChange}
+            scopeName=""
+            displayName=""
+            description=""
+            claimTypes="mockTypes"
+            action="mockAction"
+            onSubmit={mockSubmit}
+        />,
+    );
     const input = scopeForm.find('[name="scopeName"]').first();
     input.simulate("change", { target: { value: "Scope #1" } });
-    expect(mockChange.mock.calls[0][0]["target"]).toEqual({ value: "Scope #1"  });
+    const target = "target";
+    expect(mockChange.mock.calls[0][0][target]).toEqual({ value: "Scope #1"  });
 });
 
 test("containers received new state", () => {

@@ -2,16 +2,20 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import create from "react-test-renderer";
 import { UserForm } from "../components/Form";
+import { INamedEvent } from "../containers/FormContainer";
 import { UserCreationContainer } from "../containers/UserCreationContainer";
 
-const mockChange = jest.fn();
+const mockChange = jest.fn<INamedEvent>();
 const mockSubmit = jest.fn();
-const userForm = mount(<UserForm onSubmit={mockSubmit} onInputChange={mockChange} />);
+const userForm = mount(
+    <UserForm
+        onSubmit={mockSubmit}
+        onInputChange={mockChange}
+        username=""
+        password=""
+        action="mock"
+    />);
 const container = mount(<UserCreationContainer token="MockedToken" />);
-
-test("throw exceptions when token is undefined", () => {
-    expect(() => { new UserCreationContainer({}); }).toThrowError();
-});
 
 test("handle submit function get called", () => {
     expect(userForm.props().onSubmit).toBeDefined();
@@ -24,7 +28,8 @@ test("handle submit function get called", () => {
 test("forms get right input from users", () => {
     const input = userForm.find('[name="username"]').first();
     input.simulate("change", { target: { value: "User #1" } });
-    expect(mockChange.mock.calls[0][0]["target"]).toEqual({ value: "User #1" });
+    const targetStr = "target";
+    expect(mockChange.mock.calls[0][0][targetStr]).toEqual({ value: "User #1" });
 });
 
 test("containers received new state", () => {
