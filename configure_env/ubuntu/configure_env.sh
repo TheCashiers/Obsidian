@@ -8,10 +8,10 @@ cd /home/Obsidian/
 git clone https://github.com/ZA-PT/Obsidian.git
 echo "======== Configuring environment ========"
 echo ".Net Core SDK"
-sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
- apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
+sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main" > /etc/apt/sources.list.d/dotnetdev.list'
 apt-get update
-apt-get install dotnet-dev-1.0.4
+apt-get install dotnet-sdk-2.1.4
 echo "Node.js"
 DOWNLOADDIR="/home/nodejs/"
 wget -P $DOWNLOADDIR https://nodejs.org/dist/v6.11.0/node-v6.11.0-linux-x64.tar.xz
