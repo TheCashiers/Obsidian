@@ -22,6 +22,6 @@ namespace Obsidian.Authorization
 
         public string ClaimType { get; set; }
         public IList<string> ClaimValues { get; set; }
-        public bool RequireAllValues { get; set; }
+        public  ClaimRequirement RequirementMode  { get; set; } = ClaimRequirement.All;
     }
 }

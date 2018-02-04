@@ -6,6 +6,6 @@ namespace Obsidian.Authorization
     {
         string ClaimType { get; set; }
         IList<string> ClaimValues { get; set; }
-        bool RequireAllValues { get; set; }
+        ClaimRequirement RequirementMode { get; set; }
     }
 }

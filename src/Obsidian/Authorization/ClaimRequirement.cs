@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace Obsidian.Authorization
 {
-    public class ClaimRequirement: IAuthorizationRequirement
+    public enum ClaimRequirement
     {
+        All,
+        Any
     }
 }

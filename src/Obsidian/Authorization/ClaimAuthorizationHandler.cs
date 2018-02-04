@@ -7,23 +7,22 @@ using System.Threading.Tasks;
 
 namespace Obsidian.Authorization
 {
-    public class ClaimAuthorizationHandler : AuthorizationHandler<ClaimRequirement>
+    public class ClaimAuthorizationHandler : AuthorizationHandler<ClaimAuthorizationRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimAuthorizationRequirement requirement)
         {
-            if (context.Resource is AuthorizationFilterContext authCtx
-                            && authCtx.ActionDescriptor is ControllerActionDescriptor desc)
+            if (context.Resource is AuthorizationFilterContext authcontext
+                            && authcontext.ActionDescriptor is ControllerActionDescriptor descriptor)
             {
-                var requirementData = desc.MethodInfo.GetCustomAttribute<RequireClaimAttribute>() as IClaimRequirementData;
+                var requirementData = descriptor.MethodInfo.GetCustomAttribute<RequireClaimAttribute>() as IClaimRequirementData;
                 bool HasClaimValue(string value) => context.User.HasClaim(requirementData.ClaimType, value);
-                if (requirementData.RequireAllValues)
+                if (requirementData.RequirementMode == ClaimRequirement.All
+                    && requirementData.ClaimValues.All(HasClaimValue))
                 {
-                    if (requirementData.ClaimValues.All(HasClaimValue))
-                    {
-                        context.Succeed(requirement);
-                    }
+                    context.Succeed(requirement);
                 }
-                else if (requirementData.ClaimValues.Any(HasClaimValue))
+                if (requirementData.RequirementMode == ClaimRequirement.Any
+                    && requirementData.ClaimValues.Any(HasClaimValue))
                 {
                     context.Succeed(requirement);
                 }

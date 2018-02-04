@@ -53,7 +53,7 @@ namespace Obsidian
                 builder =>
                 {
                     //builder.RequireAuthenticatedUser();
-                    builder.AddRequirements(new ClaimRequirement());
+                    builder.AddRequirements(new ClaimAuthorizationRequirement());
                 }));
             services.AddSingleton<IAuthorizationHandler, ClaimAuthorizationHandler>();
             return services;
