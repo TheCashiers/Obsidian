@@ -35,7 +35,7 @@ namespace Obsidian.Controllers.ApiControllers
         [HttpPut("Password")]
         public async Task<IActionResult> SetPassword([FromBody]UpdateAccountPasswordDto dto)
         {
-            await _identityService.SetCurrentUserPasswordAsync(dto.OldPassword, dto.NewPassword);
+            await _identityService.ChangeCurrentUserPasswordAsync(dto.OldPassword, dto.NewPassword);
             return NoContent();
         }
 
