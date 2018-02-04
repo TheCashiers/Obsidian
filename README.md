@@ -32,6 +32,10 @@ Ubuntu
 ```bash
 curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/configure_env/ubuntu/configure_env.sh | bash
 ```
+Arch Linux
+```bash
+curl -o- https://raw.githubusercontent.com/ZA-PT/Obsidian/canary/configure_env/arch/configure_env.sh | bash
+```
 
 And run this script to build
 ```bash
