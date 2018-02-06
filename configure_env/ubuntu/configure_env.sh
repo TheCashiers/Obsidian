@@ -1,7 +1,7 @@
 #!bin/sh
 
 echo "========Obisidian Configuration Script for Ubuntu========"
-apt-get install curl wget libunwind8-dev libicu-dev
+apt-get -y install curl wget libunwind8-dev libicu-dev
 echo "========Cloning Git Repository ========"
 mkdir /home/Obsidian/
 cd /home/Obsidian/
@@ -11,7 +11,7 @@ echo ".Net Core SDK"
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
 sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main" > /etc/apt/sources.list.d/dotnetdev.list'
 apt-get update
-apt-get install dotnet-sdk-2.1.4
+apt-get -y install dotnet-sdk-2.1.4
 echo "Node.js"
 DOWNLOADDIR="/home/nodejs/"
 wget -P $DOWNLOADDIR https://nodejs.org/dist/v6.11.0/node-v6.11.0-linux-x64.tar.xz
@@ -25,5 +25,5 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt-get update && sudo apt-get install yarn
 echo "MongoDB"
 mkdir -p /data/db
-apt-get install mongodb-server
+apt-get -y install mongodb-server
 netstat -nalp | grep "27017"
