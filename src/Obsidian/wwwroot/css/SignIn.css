@@ -10,6 +10,10 @@ body {
     background: url("../images/obsidian_background.png") 0 / cover fixed;
 }
 
+.form{
+    width: 100%;
+}
+
 .body-content{
     display: flex;
     margin: auto;
